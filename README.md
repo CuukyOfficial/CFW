@@ -8,6 +8,7 @@ In the following I will show you the advantages of using my FrameWork and how mu
 #### **CFW** makes it much easier to make your plugin 1.7+ compatible by having following included:
 
 - A NetworkManager which contains following methods:
+```java
   - sendPacket(Packet packet) - Sends a packet
   - getPing() - Gets the ping of a player
   - respawnPlayer() - Respawns a player instantly without waiting for them to press the respawn button
@@ -17,11 +18,14 @@ In the following I will show you the advantages of using my FrameWork and how mu
   - setnTablist(String header, String footer) (1.8+) - Sends tablist header and footer
   - sendActionbar(String message) (1.8+) - Sends a string to the actionbar of the player
   - setAttributeSpeed(double value) (1.9+) - Sets (removes) the hit delay implemented in 1.9
-  
+```
+
 - VersionUtils which contain following:
+```java
   - getNmsClass() - returns Nms Class of you server version
   - getVersion() - returns your current BukkitVersion (containing .isHigherThan and more)
   - getServerSoftware() - returns Server Software type (containing hasForgeSupport etc.)
+```
 
 #### There are more utilities which will help you a lot while working with Bukkit included:
 - SuperInventory - Easily create clickable GUI's without much effort
@@ -74,21 +78,21 @@ this.cuukyFrameWork.getClientAdapterManager().setBoardTypeEnabled(CustomBoardTyp
 ```java
 Main.getInstance().getCuukyFrameWork().getHookManager().registerHook(new ItemHook(player, new ItemBuilder().displayname("§bWähle dein Kit").material(Material.CHEST).build(), 0, new ItemHookHandler() {
 
-			@Override
-			public void onInteractEntity(PlayerInteractEntityEvent event) {}
+	@Override
+	public void onInteractEntity(PlayerInteractEntityEvent event) {}
 
-			@Override
-			public void onInteract(PlayerInteractEvent event) {
-				if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR)
-					return;
+	@Override
+	public void onInteract(PlayerInteractEvent event) {
+		if(event.getAction() != Action.RIGHT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_AIR)
+			return;
 
-				new KitMenu(player);
+		new KitMenu(player);
 
-				event.setCancelled(true);
-			}
+		event.setCancelled(true);
+	}
 
-			@Override
-			public void onEntityHit(EntityDamageByEntityEvent event) {}
+	@Override
+	public void onEntityHit(EntityDamageByEntityEvent event) {}
 		}));
 ```
 
@@ -144,7 +148,7 @@ public class VoteMainMenu extends SuperInventory {
 ### How to check the server version
 ```java
 if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
-			return;
+	return;
 ```
 
 There is much more to use, but this is the most important stuff
