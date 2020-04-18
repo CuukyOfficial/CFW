@@ -2,7 +2,9 @@
 ### A powerful bukkit framework that runs on 1.7+ and makes coding with bukkit less painful
 
 ## Dear developers
-In the following I will show you the advantages of using my FrameWork and how much work it can save 
+In the following I will show you the advantages of using my FrameWork and how much work it can save.
+I love feedback and suggestions to improve my framework, but please, leave the coding to me.
+I won't accept any pull requests.
 
 ## Why should I use it for my plugin?
 #### **CFW** makes it much easier to make your plugin 1.7+ compatible by having following included:
