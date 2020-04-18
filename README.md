@@ -1,11 +1,11 @@
 # CFW - Cuuky FrameWork
 ###A powerful bukkit framework that runs on 1.7+ and makes coding with bukkit less painful
 
-##Dear developers
+## Dear developers
 In the following I will show you the advantages of using my FrameWork and how much work it can save 
 
-##Why should I use it for my plugin?
-####**CFW** makes it much easier to make your plugin 1.7+ compatible by having following included:
+## Why should I use it for my plugin?
+#### **CFW** makes it much easier to make your plugin 1.7+ compatible by having following included:
 
 - A NetworkManager which contains following methods:
   - sendPacket(Packet packet) - Sends a packet
@@ -23,7 +23,7 @@ In the following I will show you the advantages of using my FrameWork and how mu
   - getVersion() - returns your current BukkitVersion (containing .isHigherThan and more)
   - getServerSoftware() - returns Server Software type (containing hasForgeSupport etc.)
 
-####There are more utilities which will help you a lot while working with Bukkit included:
+#### There are more utilities which will help you a lot while working with Bukkit included:
 - SuperInventory - Easily create clickable GUI's without much effort
 - ItemBuilder - Create ItemStacks with Enchantments, Lore, Displayname, Amount and Material in one line
 - Hooks:
@@ -39,4 +39,4 @@ In the following I will show you the advantages of using my FrameWork and how mu
     - Efficient replaced - if the nametag string didnt change for example, it won't send any new information to the client
     - Can be completely disabled
 
-##How to use it?
+## How to use it?
