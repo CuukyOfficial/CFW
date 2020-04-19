@@ -104,6 +104,14 @@ public class MessagePlaceholderLoader {
 	}
 
 	private void loadPlayerPlaceholder() {
+		new PlayerMessagePlaceholder("ping", 1, "Ersetzt durch den Countdown des Spielers") {
+
+			@Override
+			protected String getValue(CustomPlayer player) {
+				return String.valueOf(player.getNetworkManager().getPing());
+			}
+		};
+		
 		new PlayerMessagePlaceholder("locale", 1, "Ersetzt durch die Sprache des Spielers") {
 
 			@Override
