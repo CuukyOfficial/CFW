@@ -13,8 +13,9 @@ import de.cuuky.cfw.utils.listener.InventoryClickUtil;
 import de.cuuky.cfw.version.types.Sounds;
 
 public class InventoryListener implements Listener {
-	
+
 	private SuperInventoryManager inventoryManager;
+
 	public InventoryListener(SuperInventoryManager inventoryManager) {
 		this.inventoryManager = inventoryManager;
 	}
@@ -23,36 +24,36 @@ public class InventoryListener implements Listener {
 	@EventHandler
 	public void onInvClick(InventoryClickEvent event) {
 		Inventory inventory = new InventoryClickUtil(event).getInventory();
-		if(inventory == null || event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null)
+		if (inventory == null || event.getCurrentItem() == null || event.getCurrentItem().getItemMeta() == null || event.getCurrentItem().getItemMeta().getDisplayName() == null)
 			return;
 
 		Player player = (Player) event.getWhoClicked();
 		String itemName = event.getCurrentItem().getItemMeta().getDisplayName();
 
-		for(int i = 0; i < this.inventoryManager.getInventories().size(); i++) {
+		for (int i = 0; i < this.inventoryManager.getInventories().size(); i++) {
 			SuperInventory inv = this.inventoryManager.getInventories().get(i);
-			if(!inv.getInventory().equals(inventory))
+			if (!inv.getInventory().equals(inventory))
 				continue;
 
 			player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
 			event.setCancelled(true);
-			if(itemName.equals("§c"))
+			if (itemName.equals("Â§c"))
 				return;
 
-			switch(itemName) {
-			case "§aForwards":
+			switch (itemName) {
+			case "Â§aForwards":
 				inv.pageForwards();
 				inv.pageActionChanged(PageAction.PAGE_SWITCH_FORWARDS);
 				return;
-			case "§cBackwards":
+			case "Â§cBackwards":
 				inv.pageBackwards();
 				inv.pageActionChanged(PageAction.PAGE_SWITCH_FORWARDS);
 				return;
-			case "§4Close":
+			case "Â§4Close":
 				inv.closeInventory();
 				return;
-			case "§4Back":
-				inv.closeInventory();
+			case "Â§4Back":
+//				inv.closeInventory();
 				inv.back();
 				return;
 			default:
@@ -67,19 +68,19 @@ public class InventoryListener implements Listener {
 
 	@EventHandler
 	public void onInvClose(InventoryCloseEvent event) {
-		if(event.getInventory() == null)
+		if (event.getInventory() == null)
 			return;
 
 		SuperInventory inv1 = null;
-		for(SuperInventory inv : this.inventoryManager.getInventories()) {
-			if(!inv.getInventory().equals(event.getInventory()))
+		for (SuperInventory inv : this.inventoryManager.getInventories()) {
+			if (!inv.getInventory().equals(event.getInventory()))
 				continue;
 
 			inv1 = inv;
 			break;
 		}
 
-		if(inv1 != null) {
+		if (inv1 != null) {
 			inv1.onClose(event);
 			inv1.closeInventory();
 		}

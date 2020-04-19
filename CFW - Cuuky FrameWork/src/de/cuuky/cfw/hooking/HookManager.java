@@ -30,14 +30,14 @@ public class HookManager {
 	}
 
 	public void clearHooks() {
-		for(int i = hooks.size() - 1; i > -1; i--)
+		for (int i = hooks.size() - 1; i > -1; i--)
 			hooks.get(i).unregister();
 	}
 
 	public void clearHooks(HookEntityType type) {
-		for(int i = hooks.size() - 1; i > -1; i--) {
+		for (int i = hooks.size() - 1; i > -1; i--) {
 			HookEntity ent = hooks.get(i);
-			if(ent.getType() != type)
+			if (ent.getType() != type)
 				continue;
 
 			hooks.get(i).unregister();
@@ -46,24 +46,24 @@ public class HookManager {
 
 	public ArrayList<HookEntity> getHooks(HookEntityType type) {
 		ArrayList<HookEntity> rHooks = new ArrayList<>();
-		for(HookEntity ent : hooks)
-			if(ent.getType() == type)
+		for (HookEntity ent : hooks)
+			if (ent.getType() == type)
 				rHooks.add(ent);
 
 		return rHooks;
 	}
 
 	public HookEntity getHook(HookEntityType type, Player player) {
-		for(HookEntity ent : hooks)
-			if(ent.getType() == type && ent.getPlayer().equals(player))
+		for (HookEntity ent : hooks)
+			if (ent.getType() == type && ent.getPlayer().equals(player))
 				return ent;
 
 		return null;
 	}
 
 	public ItemHook getItemHook(ItemStack stack, Player player) {
-		for(HookEntity ent : hooks)
-			if(ent.getType() == HookEntityType.ITEM && ent.getPlayer().equals(player) && ((ItemHook) ent).getItemStack().equals(stack))
+		for (HookEntity ent : hooks)
+			if (ent.getType() == HookEntityType.ITEM && ent.getPlayer().equals(player) && ((ItemHook) ent).getItemStack().equals(stack))
 				return (ItemHook) ent;
 
 		return null;

@@ -49,11 +49,11 @@ public enum ServerSoftware {
 
 		ServerSoftware found = null;
 		String foundName = null;
-		for(ServerSoftware software : values()) {
-			for(String softwareName : software.getVersionNames()) {
+		for (ServerSoftware software : values()) {
+			for (String softwareName : software.getVersionNames()) {
 				softwareName = softwareName.toLowerCase();
 
-				if(!version.contains(softwareName) || found != null && softwareName.length() < foundName.length())
+				if (!version.contains(softwareName) || found != null && softwareName.length() < foundName.length())
 					continue;
 
 				found = software;
@@ -61,26 +61,26 @@ public enum ServerSoftware {
 			}
 		}
 
-		if(found == null)
+		if (found == null)
 			found = UNKNOWN;
-		else if(found != UNKNOWN) {
+		else if (found != UNKNOWN) {
 			int location = version.indexOf(foundName);
 
-			if(location - 1 > -1)
-				if(abc.contains(version.charAt(location - 1)))
+			if (location - 1 > -1)
+				if (abc.contains(version.charAt(location - 1)))
 					found = UNKNOWN;
 
-			if(location + foundName.length() + 1 < version.length())
-				if(abc.contains(version.charAt(location + foundName.length())))
+			if (location + foundName.length() + 1 < version.length())
+				if (abc.contains(version.charAt(location + foundName.length())))
 					found = UNKNOWN;
 		}
 
-		if(found == UNKNOWN) {
-			for(ServerSoftware software : values()) {
-				for(String softwareName : software.getVersionNames()) {
+		if (found == UNKNOWN) {
+			for (ServerSoftware software : values()) {
+				for (String softwareName : software.getVersionNames()) {
 					softwareName = softwareName.toLowerCase();
 
-					if(!name.equals(softwareName))
+					if (!name.equals(softwareName))
 						continue;
 
 					found = software;

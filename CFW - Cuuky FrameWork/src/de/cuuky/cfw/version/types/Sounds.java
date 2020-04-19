@@ -239,16 +239,16 @@ public enum Sounds {
 	}
 
 	public Sound bukkitSound() {
-		if(resolvedSound != null)
+		if (resolvedSound != null)
 			return resolvedSound;
 
 		try {
 			return resolvedSound = Sound.valueOf(pre19sound);
-		} catch(IllegalArgumentException e) {
-			for(String s : post19sounds) {
+		} catch (IllegalArgumentException e) {
+			for (String s : post19sounds) {
 				try {
 					return resolvedSound = Sound.valueOf(s);
-				} catch(IllegalArgumentException e2) {
+				} catch (IllegalArgumentException e2) {
 					continue;
 				}
 			}

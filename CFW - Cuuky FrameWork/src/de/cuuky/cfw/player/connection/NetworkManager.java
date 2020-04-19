@@ -39,13 +39,13 @@ public class NetworkManager {
 			ioBase = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent");
 			ioBaseChatMethod = ioBaseChat.getDeclaredMethod("a", String.class);
 
-			if(VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
+			if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
 				Class<?> titleClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutTitle");
 
 				Class<?> enumTitleClass = null;
 				try {
 					enumTitleClass = titleClass.getDeclaredClasses()[0];
-				} catch(Exception e) {
+				} catch (Exception e) {
 					enumTitleClass = Class.forName(VersionUtils.getNmsClass() + ".EnumTitleAction");
 				}
 
@@ -58,13 +58,13 @@ public class NetworkManager {
 				try {
 					chatMessageTypeClass = Class.forName(VersionUtils.getNmsClass() + ".ChatMessageType");
 					chatEnumMethod = packetChatClass.getConstructor(ioBase, chatMessageTypeClass);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					chatByteMethod = packetChatClass.getConstructor(ioBase, byte.class);
 				}
 
 				tablistClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutPlayerListHeaderFooter");
 			}
-		} catch(ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
+		} catch (ClassNotFoundException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
 			e.printStackTrace();
 		}
 	}
@@ -88,22 +88,22 @@ public class NetworkManager {
 			this.sendPacketMethod = connection.getClass().getMethod("sendPacket", Class.forName(VersionUtils.getNmsClass() + ".Packet"));
 			this.networkManager = this.connection.getClass().getField("networkManager").get(this.connection);
 
-			if(VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11)) {
+			if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11)) {
 				Method localeMethod = player.getClass().getDeclaredMethod("getLocale");
 				localeMethod.setAccessible(true);
-				this.locale= (String) localeMethod.invoke(player);
+				this.locale = (String) localeMethod.invoke(player);
 			} else {
 				try {
 					Field localeField = playerHandle.getClass().getField("locale");
 					localeField.setAccessible(true);
 					this.locale = (String) localeField.get(playerHandle);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-			
+
 			this.locale = this.locale.toLowerCase();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -115,7 +115,7 @@ public class NetworkManager {
 	public int getPing() {
 		try {
 			return pingField.getInt(playerHandle);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -130,34 +130,34 @@ public class NetworkManager {
 		try {
 			Object respawnEnum = Class.forName(VersionUtils.getNmsClass() + ".EnumClientCommand").getEnumConstants()[0];
 			Constructor<?>[] constructors = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand").getConstructors();
-			for(Constructor<?> constructor : constructors) {
+			for (Constructor<?> constructor : constructors) {
 				Class<?>[] args = constructor.getParameterTypes();
-				if(args.length == 1 && args[0] == respawnEnum.getClass()) {
+				if (args.length == 1 && args[0] == respawnEnum.getClass()) {
 					Object packet = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand").getConstructor(args).newInstance(respawnEnum);
 					sendPacket(packet);
 					break;
 				}
 			}
-		} catch(Throwable e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void sendActionbar(String message) {
-		if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
 			return;
 
 		try {
 			Object barchat = ioBaseChatMethod.invoke(ioBaseChat, "{\"text\": \"" + message + "\"}");
 
 			Object packet = null;
-			if(chatEnumMethod == null)
+			if (chatEnumMethod == null)
 				packet = chatByteMethod.newInstance(barchat, (byte) 2);
 			else
 				packet = chatEnumMethod.newInstance(barchat, chatMessageTypeClass.getDeclaredField("GAME_INFO").get(null));
 
 			sendPacket(packet);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -172,7 +172,7 @@ public class NetworkManager {
 			field.set(packetFinal, text);
 
 			sendPacket(packetFinal);
-		} catch(Throwable e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
@@ -180,20 +180,20 @@ public class NetworkManager {
 	public void sendPacket(Object packet) {
 		try {
 			sendPacketMethod.invoke(connection, packet);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void sendTablist(String header, String footer) {
-		if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
 			return;
 
 		try {
 			Object tabheader = ioBaseChatMethod.invoke(ioBaseChat, "{\"text\": \"" + header + "\"}");
 			Object tabfooter = ioBaseChatMethod.invoke(ioBaseChat, "{\"text\": \"" + footer + "\"}");
 
-			if(tablist == null) {
+			if (tablist == null) {
 				tablist = tablistClass.newInstance();
 
 				headerField = getField(tablist.getClass(), "a", "header");
@@ -207,13 +207,13 @@ public class NetworkManager {
 			footerField.set(tablist, tabfooter);
 
 			sendPacket(tablist);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void sendTitle(String header, String footer) {
-		if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
 			return;
 
 		try {
@@ -225,17 +225,17 @@ public class NetworkManager {
 
 			sendPacket(headerPacket);
 			sendPacket(footerPacket);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void setAttributeSpeed(double value) {
-		if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_8))
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_8))
 			return;
 
 		try {
-			if(genericSpeedType == null) {
+			if (genericSpeedType == null) {
 				Class<?> attribute = Class.forName("org.bukkit.attribute.Attribute");
 				genericSpeedType = attribute.getField("GENERIC_ATTACK_SPEED").get(attribute);
 			}
@@ -243,7 +243,7 @@ public class NetworkManager {
 			Object attributeInstance = player.getClass().getMethod("getAttribute", genericSpeedType.getClass()).invoke(player, genericSpeedType);
 
 			attributeInstance.getClass().getMethod("setBaseValue", double.class).invoke(attributeInstance, value);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -257,10 +257,10 @@ public class NetworkManager {
 	}
 
 	private static Field getField(Class<?> clazz, String... strings) {
-		for(String s : strings) {
+		for (String s : strings) {
 			try {
 				return clazz.getDeclaredField(s);
-			} catch(NoSuchFieldException e) {
+			} catch (NoSuchFieldException e) {
 				continue;
 			}
 		}

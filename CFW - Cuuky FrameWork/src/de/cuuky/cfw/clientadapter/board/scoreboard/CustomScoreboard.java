@@ -16,6 +16,7 @@ import de.cuuky.cfw.player.CustomPlayer;
 public final class CustomScoreboard extends CustomBoard {
 
 	private ArrayList<String> replaces;
+	private String title;
 
 	public CustomScoreboard(CustomPlayer player) {
 		super(CustomBoardType.SCOREBOARD, player);
@@ -30,7 +31,7 @@ public final class CustomScoreboard extends CustomBoard {
 	private String prepareScoreboardStatement(int index, String line) {
 		Scoreboard board = player.getPlayer().getScoreboard();
 		Team team = board.getTeam("team-" + getAsTeam(index));
-		if(team == null)
+		if (team == null)
 			team = board.registerNewTeam("team-" + getAsTeam(index));
 
 		String playerName = getAsTeam(index);
@@ -46,9 +47,9 @@ public final class CustomScoreboard extends CustomBoard {
 		String prefix = getPrefix(value);
 		String suffix = "";
 
-		if(prefix.substring(prefix.length() - 1, prefix.length()).equals("§")) {
+		if (prefix.substring(prefix.length() - 1, prefix.length()).equals("ï¿½")) {
 			prefix = prefix.substring(0, prefix.length() - 1);
-			suffix = getPrefix("§" + getSuffix(value));
+			suffix = getPrefix("ï¿½" + getSuffix(value));
 		} else
 			suffix = getPrefix(ChatColor.getLastColors(prefix) + getSuffix(value));
 
@@ -70,7 +71,7 @@ public final class CustomScoreboard extends CustomBoard {
 	}
 
 	private void updateHeartBar() {
-		if(!player.getPlayer().getScoreboard().getObjectives().stream().noneMatch(objective -> objective.getName().equals("name")))
+		if (!player.getPlayer().getScoreboard().getObjectives().stream().noneMatch(objective -> objective.getName().equals("name")))
 			return;
 
 		Objective healthName = player.getPlayer().getScoreboard().registerNewObjective("name", "health");
@@ -84,32 +85,32 @@ public final class CustomScoreboard extends CustomBoard {
 		Scoreboard board = player.getPlayer().getScoreboard();
 		Objective objective = board.getObjective(DisplaySlot.SIDEBAR);
 
-		if(objective == null) {
+		if (objective == null || this.title == null || !this.title.equals(objective.getDisplayName())) {
 			sendScoreBoard();
 			return;
 		}
 
-		if(this.getUpdateHandler().showHeartsBelowName(player.getPlayer()))
+		if (this.getUpdateHandler().showHeartsBelowName(player.getPlayer()))
 			updateHeartBar();
 
-		if(board.getEntries().size() > scoreboardLines.size()) {
-			for(Team team : board.getTeams())
-				if(team.getName().startsWith("team-"))
+		if (board.getEntries().size() > scoreboardLines.size()) {
+			for (Team team : board.getTeams())
+				if (team.getName().startsWith("team-"))
 					team.unregister();
 
-			for(String s : board.getEntries())
+			for (String s : board.getEntries())
 				board.resetScores(s);
 
 			replaces = new ArrayList<>();
 		}
 
-		for(int index = 0; index < scoreboardLines.size(); index++) {
+		for (int index = 0; index < scoreboardLines.size(); index++) {
 			String line = scoreboardLines.get(index);
 
-			if(replaces.size() < scoreboardLines.size()) {
+			if (replaces.size() < scoreboardLines.size()) {
 				objective.getScore(prepareScoreboardStatement(index, line)).setScore(index + 1);
 				replaces.add(line);
-			} else if(!replaces.get(index).equals(line)) {
+			} else if (!replaces.get(index).equals(line)) {
 				String sbs = prepareScoreboardStatement(index, line);
 				board.resetScores(sbs);
 				objective.getScore(sbs).setScore(index + 1);
@@ -121,7 +122,7 @@ public final class CustomScoreboard extends CustomBoard {
 	public void sendScoreBoard() {
 		Scoreboard sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
 		Objective obj = sb.registerNewObjective("silent", "dummy");
-		obj.setDisplayName(this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer()));
+		obj.setDisplayName(this.title = this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer()));
 
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		player.getPlayer().setScoreboard(sb);

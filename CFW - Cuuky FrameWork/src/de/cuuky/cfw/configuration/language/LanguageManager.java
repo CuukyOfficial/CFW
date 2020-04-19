@@ -21,22 +21,22 @@ public class LanguageManager {
 	}
 
 	protected String getMessage(String messagePath, String locale) {
-		if(locale == null)
+		if (locale == null)
 			return defaultLanguage.getMessage(messagePath);
 		else {
 			Language language = languages.get(locale);
 			String message = null;
 
-			if(language == null)
+			if (language == null)
 				message = (language = defaultLanguage).getMessage(messagePath);
 			else {
 				message = language.getMessage(messagePath);
 
-				if(message == null)
+				if (message == null)
 					message = (language = defaultLanguage).getMessage(messagePath);
 			}
 
-			if(message == null)
+			if (message == null)
 				message = languages.get(fallbackLocale).getMessage(messagePath);
 
 			return message;
@@ -57,37 +57,37 @@ public class LanguageManager {
 	protected void setDefaultLanguage(Language defaultLanguage) {
 		this.defaultLanguage = defaultLanguage;
 		this.defaultMessages = getValues(defaultLanguage.getClazz());
-		
+
 		this.defaultLanguage.load();
-		for(Language lang : this.languages.values())
-			if(!lang.isLoaded() && !lang.getFile().exists())
+		for (Language lang : this.languages.values())
+			if (!lang.isLoaded() && !lang.getFile().exists())
 				lang.load();
 	}
-	
+
 	protected HashMap<String, String> getValues(Class<? extends LoadableMessage> clazz) {
 		HashMap<String, String> values = new HashMap<>();
 		LoadableMessage[] messages = null;
-		
+
 		try {
 			messages = (LoadableMessage[]) clazz.getMethod("values").invoke(null);
-		} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 			return null;
 		}
 
-		for(LoadableMessage lm : messages) 
+		for (LoadableMessage lm : messages)
 			values.put(lm.getPath(), lm.getDefaultMessage());
-		
+
 		return values;
 	}
 
 	public void loadLanguages() {
 		File file = new File(languagePath);
-		if(!file.isDirectory())
+		if (!file.isDirectory())
 			file.mkdir();
-		
-		for(File listFile : file.listFiles()) {
-			if(!listFile.getName().endsWith(".yml") || languages.containsKey(listFile.getName().replace(".yml", "")))
+
+		for (File listFile : file.listFiles()) {
+			if (!listFile.getName().endsWith(".yml") || languages.containsKey(listFile.getName().replace(".yml", "")))
 				continue;
 
 			registerLanguage(listFile.getName().replace(".yml", ""));

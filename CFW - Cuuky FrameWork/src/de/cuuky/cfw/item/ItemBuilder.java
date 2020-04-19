@@ -27,7 +27,7 @@ public class ItemBuilder {
 	static {
 		try {
 			loadReflections();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -50,22 +50,22 @@ public class ItemBuilder {
 	}
 
 	public ItemStack build() {
-		if(stack == null)
+		if (stack == null)
 			stack = new ItemStack(this.material);
 
 		ItemMeta stackMeta = stack.getItemMeta();
-		if(displayName != null && stack.getType() != Material.AIR)
+		if (displayName != null && stack.getType() != Material.AIR)
 			stackMeta.setDisplayName(displayName);
 
-		if(lore != null)
+		if (lore != null)
 			stackMeta.setLore(lore);
 
-		if(enchantments != null)
-			for(Enchantment ent : enchantments.keySet())
+		if (enchantments != null)
+			for (Enchantment ent : enchantments.keySet())
 				stackMeta.addEnchant(ent, enchantments.get(ent), true);
 
 		this.stack.setItemMeta(stackMeta);
-//		this.deleteDamageAnnotation();
+		// this.deleteDamageAnnotation();
 		this.stack.setAmount(amount);
 		return stack;
 	}
@@ -77,7 +77,7 @@ public class ItemBuilder {
 		skullMeta.setDisplayName(displayName != null ? displayName : playerName);
 		skullMeta.setOwner(playerName != null ? playerName : displayName);
 
-		if(lore != null)
+		if (lore != null)
 			skullMeta.setLore(lore);
 
 		stack.setItemMeta(skullMeta);
@@ -87,7 +87,7 @@ public class ItemBuilder {
 	}
 
 	public ItemBuilder addEnchantment(Enchantment enchantment, int amplifier) {
-		if(enchantments == null)
+		if (enchantments == null)
 			enchantments = new HashMap<>();
 
 		enchantments.put(enchantment, amplifier);
@@ -96,7 +96,7 @@ public class ItemBuilder {
 
 	public ItemBuilder deleteDamageAnnotation() {
 		ItemMeta meta = stack.getItemMeta();
-		if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
 			// for(Enchantment key : meta.getEnchants().keySet()) {
 			// meta.removeEnchant(key);
 			// }
@@ -120,13 +120,13 @@ public class ItemBuilder {
 		} else {
 			// Reflections for errorless display of the menu for 1.7
 			try {
-				for(Object obj : itemFlags) {
+				for (Object obj : itemFlags) {
 					Object[] s = (Object[]) Array.newInstance(itemFlagClass, 1);
 					Array.set(s, 0, obj);
 
 					addFlagMethod.invoke(meta, new Object[] { s });
 				}
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -176,16 +176,16 @@ public class ItemBuilder {
 	}
 
 	private static void loadReflections() throws Exception {
-		if(VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
+		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
 			itemFlagClass = Class.forName("org.bukkit.inventory.ItemFlag");
 
 			attributes = new String[] { "HIDE_ATTRIBUTES", "HIDE_DESTROYS", "HIDE_ENCHANTS", "HIDE_PLACED_ON", "HIDE_POTION_EFFECTS", "HIDE_UNBREAKABLE" };
 			itemFlags = new Object[attributes.length];
 
-			for(int i = 0; i < attributes.length; i++) {
+			for (int i = 0; i < attributes.length; i++) {
 				try {
 					itemFlags[i] = itemFlagClass.getDeclaredField(attributes[i]).get(null);
-				} catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+				} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 					e.printStackTrace();
 				}
 			}
@@ -193,7 +193,7 @@ public class ItemBuilder {
 			try {
 				addFlagMethod = Class.forName("org.bukkit.inventory.meta.ItemMeta").getDeclaredMethod("addItemFlags", Array.newInstance(itemFlagClass, 1).getClass());
 				addFlagMethod.setAccessible(true);
-			} catch(NoSuchMethodException | SecurityException | NegativeArraySizeException e) {
+			} catch (NoSuchMethodException | SecurityException | NegativeArraySizeException e) {
 				e.printStackTrace();
 			}
 		}

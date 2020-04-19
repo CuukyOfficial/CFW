@@ -1,20 +1,23 @@
 package de.cuuky.cfw.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
 public final class JavaUtils {
 
 	public static ArrayList<String> addIntoEvery(ArrayList<String> input, String into, boolean start) {
-		for(int i = 0; i < input.size(); i++)
+		for (int i = 0; i < input.size(); i++)
 			input.set(i, (start ? into + input.get(i) : input.get(i) + into));
 
 		return input;
 	}
 
 	public static String[] addIntoEvery(String[] input, String into, boolean start) {
-		for(int i = 0; i < input.length; i++)
+		for (int i = 0; i < input.length; i++)
 			input[i] = (start ? into + input[i] : input[i] + into);
 
 		return input;
@@ -23,7 +26,7 @@ public final class JavaUtils {
 	public static String[] arrayToCollection(List<String> strings) {
 		String[] newStrings = new String[strings.size()];
 
-		for(int i = 0; i < strings.size(); i++)
+		for (int i = 0; i < strings.size(); i++)
 			newStrings[i] = strings.get(i);
 
 		return newStrings;
@@ -31,7 +34,7 @@ public final class JavaUtils {
 
 	public static ArrayList<String> collectionToArray(String[] strings) {
 		ArrayList<String> newStrings = new ArrayList<>();
-		for(String string : strings)
+		for (String string : strings)
 			newStrings.add(string);
 
 		return newStrings;
@@ -40,8 +43,8 @@ public final class JavaUtils {
 	public static String[] combineArrays(String[]... strings) {
 		ArrayList<String> string = new ArrayList<>();
 
-		for(String[] ss : strings)
-			for(String strin : ss)
+		for (String[] ss : strings)
+			for (String strin : ss)
 				string.add(strin);
 
 		return getAsArray(string);
@@ -49,8 +52,8 @@ public final class JavaUtils {
 
 	public static String getArgsToString(ArrayList<String> args, String insertBewteen) {
 		String command = "";
-		for(String arg : args)
-			if(command.equals(""))
+		for (String arg : args)
+			if (command.equals(""))
 				command = arg;
 			else
 				command = command + insertBewteen + arg;
@@ -60,8 +63,8 @@ public final class JavaUtils {
 
 	public static String getArgsToString(String[] args, String insertBewteen) {
 		String command = "";
-		for(String arg : args)
-			if(command.equals(""))
+		for (String arg : args)
+			if (command.equals(""))
 				command = arg;
 			else
 				command = command + insertBewteen + arg;
@@ -71,7 +74,7 @@ public final class JavaUtils {
 
 	public static String[] getAsArray(ArrayList<String> string) {
 		String[] list = new String[string.size()];
-		for(int i = 0; i < string.size(); i++)
+		for (int i = 0; i < string.size(); i++)
 			list[i] = string.get(i);
 
 		return list;
@@ -79,7 +82,7 @@ public final class JavaUtils {
 
 	public static ArrayList<Object> getAsList(String[] lis) {
 		ArrayList<Object> list = new ArrayList<>();
-		for(Object u : lis)
+		for (Object u : lis)
 			list.add(u);
 
 		return list;
@@ -93,17 +96,17 @@ public final class JavaUtils {
 	public static Object getStringObject(String obj) {
 		try {
 			return Integer.parseInt(obj);
-		} catch(NumberFormatException e) {}
+		} catch (NumberFormatException e) {}
 
 		try {
 			return Long.parseLong(obj);
-		} catch(NumberFormatException e) {}
+		} catch (NumberFormatException e) {}
 
 		try {
 			return Double.parseDouble(obj);
-		} catch(NumberFormatException e) {}
+		} catch (NumberFormatException e) {}
 
-		if(obj.equalsIgnoreCase("true") || obj.equalsIgnoreCase("false"))
+		if (obj.equalsIgnoreCase("true") || obj.equalsIgnoreCase("false"))
 			return obj.equalsIgnoreCase("true") ? true : false;
 		else
 			return obj;
@@ -127,8 +130,8 @@ public final class JavaUtils {
 		String[] ret = new String[string.length - 1];
 		int i = 0;
 		boolean removed = false;
-		for(String arg : string) {
-			if(i == loc && !removed) {
+		for (String arg : string) {
+			if (i == loc && !removed) {
 				removed = true;
 				continue;
 			}
@@ -143,13 +146,13 @@ public final class JavaUtils {
 	public static String replaceAllColors(String s) {
 		String newMessage = "";
 		boolean lastPara = false;
-		for(char c : s.toCharArray()) {
-			if(lastPara) {
+		for (char c : s.toCharArray()) {
+			if (lastPara) {
 				lastPara = false;
 				continue;
 			}
 
-			if(c == '§' || c == '&') {
+			if (c == 'ï¿½' || c == '&') {
 				lastPara = true;
 				continue;
 			}
@@ -158,5 +161,12 @@ public final class JavaUtils {
 		}
 
 		return newMessage;
+	}
+
+	public static String getCurrentDateAsFileable() {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		Date date = new Date();
+
+		return dateFormat.format(date);
 	}
 }

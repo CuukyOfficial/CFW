@@ -27,11 +27,11 @@ public class HookListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		if(event.getItem() == null)
+		if (event.getItem() == null)
 			return;
 
 		ItemHook hook = manager.getItemHook(event.getItem(), event.getPlayer());
-		if(hook == null)
+		if (hook == null)
 			return;
 
 		hook.getHookListener().onInteract(event);
@@ -39,11 +39,11 @@ public class HookListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-		if(event.getPlayer().getItemInHand() == null || event.getRightClicked() == null)
+		if (event.getPlayer().getItemInHand() == null || event.getRightClicked() == null)
 			return;
 
 		ItemHook hook = manager.getItemHook(event.getPlayer().getItemInHand(), event.getPlayer());
-		if(hook == null)
+		if (hook == null)
 			return;
 
 		hook.getHookListener().onInteractEntity(event);
@@ -51,12 +51,12 @@ public class HookListener implements Listener {
 
 	@EventHandler
 	public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
-		if(!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player) || ((Player) event.getDamager()).getItemInHand() == null)
+		if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Player) || ((Player) event.getDamager()).getItemInHand() == null)
 			return;
 
 		Player damager = (Player) event.getDamager();
 		ItemHook hook = manager.getItemHook(damager.getItemInHand(), damager);
-		if(hook == null)
+		if (hook == null)
 			return;
 
 		hook.getHookListener().onEntityHit(event);
@@ -65,31 +65,40 @@ public class HookListener implements Listener {
 	@EventHandler
 	public void onItemMove(InventoryClickEvent event) {
 		ItemHook hook = manager.getItemHook(event.getCurrentItem(), (Player) event.getWhoClicked());
-		if(hook != null && !hook.isDragable())
+		if (hook != null && !hook.isDragable())
 			event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
 		ItemHook hook = manager.getItemHook(event.getItemDrop().getItemStack(), event.getPlayer());
-		if(hook != null && !hook.isDropable())
+		if (hook != null && !hook.isDropable())
 			event.setCancelled(true);
 	}
 
 	@EventHandler
 	public void onItemPick(PlayerPickupItemEvent event) {
 		ItemHook hook = manager.getItemHook(event.getItem().getItemStack(), event.getPlayer());
-		if(hook != null && !hook.isDropable())
+		if (hook != null && !hook.isDropable())
 			event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onASyncChat(AsyncPlayerChatEvent event) {
 		ChatHook hook = (ChatHook) manager.getHook(HookEntityType.CHAT, event.getPlayer());
-		if(hook == null)
+		if (hook == null)
 			return;
 
-		if(hook.run(event))
-			event.setCancelled(true);
+		event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onASyncChatLow(AsyncPlayerChatEvent event) {
+		ChatHook hook = (ChatHook) manager.getHook(HookEntityType.CHAT, event.getPlayer());
+		if (hook == null)
+			return;
+
+		hook.run(event);
+		event.setCancelled(true);
 	}
 }

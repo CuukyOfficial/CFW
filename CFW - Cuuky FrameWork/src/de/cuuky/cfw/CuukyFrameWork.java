@@ -16,9 +16,8 @@ public class CuukyFrameWork {
 	/*
 	 * CFW - A Bukkit framework
 	 * 
-	 * VERSION: 0.1 (2020) 
-	 * AUTHOR: Cuuky
-	 * CONTACT: { website: "varoplugin.de", discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
+	 * VERSION: 0.1 (2020) AUTHOR: Cuuky CONTACT: { website: "varoplugin.de",
+	 * discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
 	 */
 
 	private JavaPlugin ownerInstance;
@@ -33,7 +32,7 @@ public class CuukyFrameWork {
 		this.hookManager = new HookManager(this);
 		this.clientAdapterManager = new ClientAdapterManager(this);
 		this.inventoryManager = new SuperInventoryManager(this);
-		
+
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
 
 		registerListener();

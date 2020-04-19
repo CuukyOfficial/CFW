@@ -912,10 +912,10 @@ public enum Materials {
 	public Materials fromMaterial(Material mat) {
 		try {
 			return Materials.valueOf(mat.toString());
-		} catch(IllegalArgumentException e) {
-			for(Materials xmat : Materials.values()) {
-				for(String test : xmat.matches) {
-					if(test.equalsIgnoreCase(mat.toString())) {
+		} catch (IllegalArgumentException e) {
+			for (Materials xmat : Materials.values()) {
+				for (String test : xmat.matches) {
+					if (test.equalsIgnoreCase(mat.toString())) {
 						return xmat;
 					}
 				}
@@ -933,11 +933,11 @@ public enum Materials {
 	}
 
 	public boolean isDamageable(Materials type) {
-		if(type == null)
+		if (type == null)
 			return false;
 		String[] split = type.toString().split("_");
 		int length = split.length;
-		switch(split[length - 1]) {
+		switch (split[length - 1]) {
 		case "HELMET":
 			return true;
 		case "CHESTPLATE":
@@ -973,15 +973,15 @@ public enum Materials {
 
 	@SuppressWarnings("deprecation")
 	public boolean isSameMaterial(ItemStack comp) {
-		if(isNewVersion())
+		if (isNewVersion())
 			return comp.getType() == this.parseMaterial();
 
-		if(comp.getType() == this.parseMaterial() && (int) comp.getData().getData() == (int) this.data)
+		if (comp.getType() == this.parseMaterial() && (int) comp.getData().getData() == (int) this.data)
 			return true;
 
 		Materials xmat = fromMaterial(comp.getType());
-		if(isDamageable(xmat)) {
-			if(this.parseMaterial() == comp.getType()) {
+		if (isDamageable(xmat)) {
+			if (this.parseMaterial() == comp.getType()) {
 				return true;
 			}
 		}
@@ -990,23 +990,23 @@ public enum Materials {
 
 	public ItemStack parseItem() {
 		Material mat = parseMaterial();
-		if(isNewVersion())
+		if (isNewVersion())
 			return new ItemStack(mat);
 
 		return new ItemStack(mat, 1, (byte) data);
 	}
 
 	public Material parseMaterial() {
-		if(parsed != null)
+		if (parsed != null)
 			return parsed;
 
 		Material mat = Material.matchMaterial(getName());
-		if(mat != null && isNewVersion())
+		if (mat != null && isNewVersion())
 			return parsed = mat;
 
-		for(String m : this.matches) {
+		for (String m : this.matches) {
 			Material found = Material.matchMaterial(m);
-			if(found == null)
+			if (found == null)
 				continue;
 
 			return parsed = found;
@@ -1018,7 +1018,7 @@ public enum Materials {
 	public static Materials fromString(String key) {
 		Materials xmat = null;
 		String[] split = key.split(":");
-		if(split.length == 1) {
+		if (split.length == 1) {
 			xmat = requestMaterial(key, (byte) 0);
 		} else {
 			xmat = requestMaterial(split[0], (byte) Integer.parseInt(split[1]));
@@ -1028,24 +1028,24 @@ public enum Materials {
 
 	public static boolean isNewVersion() {
 		Material mat = Material.getMaterial("RED_WOOL");
-		if(mat != null)
+		if (mat != null)
 			return true;
 
 		return false;
 	}
 
 	public static Materials requestMaterial(String name, byte data) {
-		if(cachedSearch.containsKey(name.toUpperCase() + "," + data))
+		if (cachedSearch.containsKey(name.toUpperCase() + "," + data))
 			return cachedSearch.get(name.toUpperCase() + "," + data);
 
-		for(Materials mat : Materials.values()) {
-			if(mat.getName().equals(name) && data == 0) {
+		for (Materials mat : Materials.values()) {
+			if (mat.getName().equals(name) && data == 0) {
 				cachedSearch.put(mat.getName() + "," + 0, mat);
 				return mat;
 			}
 
-			for(String test : mat.matches) {
-				if(name.toUpperCase().equals(test) && ((byte) mat.data) == data) {
+			for (String test : mat.matches) {
+				if (name.toUpperCase().equals(test) && ((byte) mat.data) == data) {
 					cachedSearch.put(test + "," + data, mat);
 					return mat;
 				}

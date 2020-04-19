@@ -15,14 +15,14 @@ public final class PermissionUtils {
 
 		try {
 			toAdd.add(Class.forName("ru.tehkode.permissions.bukkit.PermissionsEx"));
-		} catch(Exception e) {}
+		} catch (Exception e) {}
 
 		try {
 			toAdd.add(Class.forName("me.lucko.luckperms.LuckPerms"));
 			toAdd.add(Class.forName("me.lucko.luckperms.api.Contexts"));
-		} catch(Exception e) {}
+		} catch (Exception e) {}
 
-		for(Class<?> clazz : toAdd)
+		for (Class<?> clazz : toAdd)
 			clazzes.put(clazz.getName(), clazz);
 	}
 
@@ -40,7 +40,7 @@ public final class PermissionUtils {
 
 			Object metadata = cachedData.getClass().getMethod("getMetaData", contexts.getClass()).invoke(cachedData, contexts);
 			return (String) metadata.getClass().getMethod("getPrefix").invoke(metadata);
-		} catch(Throwable e) {}
+		} catch (Throwable e) {}
 
 		return "";
 	}
@@ -51,14 +51,14 @@ public final class PermissionUtils {
 			Object permissionUser = clazzes.get("ru.tehkode.permissions.bukkit.PermissionsEx").getDeclaredMethod("getUser", String.class).invoke(null, player.getName());
 			Object[] groups = ((Object[]) permissionUser.getClass().getDeclaredMethod("getGroups").invoke(permissionUser));
 
-			if(groups.length > 1)
+			if (groups.length > 1)
 				prefix = (String) groups[0].getClass().getMethod("getPrefix").invoke(groups[0]);
-			else 
+			else
 				prefix = (String) permissionUser.getClass().getMethod("getPrefix").invoke(permissionUser);
-		} catch(Throwable e) {
+		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 
-		return prefix.replace("&", "§");
+		return prefix.replace("&", "ï¿½");
 	}
 }

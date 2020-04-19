@@ -9,12 +9,15 @@ import de.cuuky.cfw.clientadapter.board.CustomBoard;
 import de.cuuky.cfw.clientadapter.board.CustomBoardType;
 import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.utils.JavaUtils;
+import de.cuuky.cfw.version.BukkitVersion;
+import de.cuuky.cfw.version.VersionUtils;
 
 public class CustomTablist extends CustomBoard {
 
 	private HashMap<Player, ArrayList<String>> headerReplaces;
-
 	private HashMap<Player, ArrayList<String>> footerReplaces;
+
+	private String tabname;
 
 	public CustomTablist(CustomPlayer player) {
 		super(CustomBoardType.TABLIST, player);
@@ -29,24 +32,24 @@ public class CustomTablist extends CustomBoard {
 	private Object[] updateList(CustomPlayer player, boolean header) {
 		ArrayList<String> tablistLines = header ? this.getUpdateHandler().getTablistHeader(player.getPlayer()) : this.getUpdateHandler().getTablistFooter(player.getPlayer()), oldList = null;
 
-		if(header) {
+		if (header) {
 			oldList = headerReplaces.get(player.getPlayer());
-			if(oldList == null)
+			if (oldList == null)
 				headerReplaces.put(player.getPlayer(), oldList = new ArrayList<>());
 		} else {
 			oldList = footerReplaces.get(player.getPlayer());
-			if(oldList == null)
+			if (oldList == null)
 				footerReplaces.put(player.getPlayer(), oldList = new ArrayList<>());
 		}
 
 		boolean changed = false;
-		for(int index = 0; index < tablistLines.size(); index++) {
+		for (int index = 0; index < tablistLines.size(); index++) {
 			String line = tablistLines.get(index);
 
-			if(oldList.size() < tablistLines.size()) {
+			if (oldList.size() < tablistLines.size()) {
 				oldList.add(line);
 				changed = true;
-			} else if(!oldList.get(index).equals(line)) {
+			} else if (!oldList.get(index).equals(line)) {
 				oldList.set(index, line);
 				changed = true;
 			}
@@ -58,10 +61,21 @@ public class CustomTablist extends CustomBoard {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onUpdate() {
+		String tablistname = getUpdateHandler().getTablistName(player.getPlayer());
+
+		int maxlength = BukkitVersion.ONE_8.isHigherThan(VersionUtils.getVersion()) ? 16 : -1;
+		if (maxlength > 0)
+			if (tablistname.length() > maxlength)
+				tablistname = this.player.getName();
+
+		if (this.tabname == null || !this.tabname.equals(tablistname))
+			player.getPlayer().setPlayerListName(this.tabname = tablistname);
+
 		Object[] headerUpdate = updateList(player, true);
 		Object[] footerUpdate = updateList(player, false);
 
-		if((boolean) headerUpdate[0] || (boolean) footerUpdate[0])
+		if ((boolean) headerUpdate[0] || (boolean) footerUpdate[0]) {
 			player.getNetworkManager().sendTablist(JavaUtils.getArgsToString((ArrayList<String>) headerUpdate[1], "\n"), JavaUtils.getArgsToString((ArrayList<String>) footerUpdate[1], "\n"));
+		}
 	}
 }

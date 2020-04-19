@@ -22,7 +22,7 @@ public class ClientAdapterManager {
 		this.boards = new ArrayList<>();
 		this.boardTypesEnabled = new HashMap<>();
 
-		for(CustomBoardType type : CustomBoardType.values())
+		for (CustomBoardType type : CustomBoardType.values())
 			this.boardTypesEnabled.put(type, true);
 	}
 
@@ -41,21 +41,21 @@ public class ClientAdapterManager {
 	public BoardUpdateHandler getUpdateHandler() {
 		return updateHandler;
 	}
-	
+
 	public CustomBoard registerBoard(CustomBoard board) {
 		board.setManager(this);
 		this.boards.add(board);
 		return board;
 	}
-	
+
 	public boolean unregisterBoard(CustomBoard board) {
 		return this.boards.remove(board);
 	}
 
 	public ArrayList<CustomBoard> getBoards(CustomBoardType type) {
 		ArrayList<CustomBoard> rBoards = new ArrayList<>();
-		for(CustomBoard board : boards) 
-			if(board.getBoardType() == type) 
+		for (CustomBoard board : boards)
+			if (board.getBoardType() == type)
 				rBoards.add(board);
 
 		return rBoards;

@@ -14,7 +14,7 @@ public abstract class HookEntity {
 		this.type = type;
 		this.player = player;
 	}
-	
+
 	public void setManager(HookManager manager) {
 		this.manager = manager;
 	}
@@ -22,7 +22,7 @@ public abstract class HookEntity {
 	public void unregister() {
 		this.manager.unregisterHook(this);
 	}
-	
+
 	public HookEntityType getType() {
 		return type;
 	}

@@ -18,19 +18,19 @@ public class ChatHook extends HookEntity {
 
 		player.sendMessage(message);
 	}
-	
+
 	@Override
 	public void setManager(HookManager manager) {
-		if(manager.getHook(HookEntityType.CHAT, player) != null)
+		if (manager.getHook(HookEntityType.CHAT, player) != null)
 			manager.getHook(HookEntityType.CHAT, player).unregister();
-		
+
 		super.setManager(manager);
 	}
 
 	public boolean run(AsyncPlayerChatEvent event) {
 		boolean unregister = listener.onChat(event);
 
-		if(unregister)
+		if (unregister)
 			this.unregister();
 
 		return unregister;

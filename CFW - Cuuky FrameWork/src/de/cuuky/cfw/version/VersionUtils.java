@@ -11,7 +11,7 @@ public class VersionUtils {
 	private static String nmsClass;
 	private static Object spigot;
 	private static Class<?> chatSerializer;
-	
+
 	private static BukkitVersion version;
 	private static ServerSoftware serverSoftware;
 
@@ -19,17 +19,17 @@ public class VersionUtils {
 		nmsClass = "net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 		version = BukkitVersion.getVersion(nmsClass);
 		serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
-		
+
 		try {
 			spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
-		} catch(Exception e) {}
+		} catch (Exception e) {}
 
 		try {
 			chatSerializer = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent$ChatSerializer");
-		} catch(ClassNotFoundException | NullPointerException e) {
+		} catch (ClassNotFoundException | NullPointerException e) {
 			try {
 				chatSerializer = Class.forName(VersionUtils.getNmsClass() + ".ChatSerializer");
-			} catch(ClassNotFoundException e1) {}
+			} catch (ClassNotFoundException e1) {}
 		}
 	}
 
@@ -51,7 +51,7 @@ public class VersionUtils {
 
 	public static ArrayList<Player> getOnlinePlayer() {
 		ArrayList<Player> list = new ArrayList<Player>();
-		for(Player p : Bukkit.getOnlinePlayers())
+		for (Player p : Bukkit.getOnlinePlayers())
 			list.add(p);
 
 		return list;
@@ -60,7 +60,7 @@ public class VersionUtils {
 	public static BukkitVersion getVersion() {
 		return version;
 	}
-	
+
 	public static ServerSoftware getServerSoftware() {
 		return serverSoftware;
 	}

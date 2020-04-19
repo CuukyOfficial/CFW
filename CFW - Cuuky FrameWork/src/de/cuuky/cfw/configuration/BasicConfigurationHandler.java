@@ -16,14 +16,14 @@ public class BasicConfigurationHandler {
 
 		this.configuration.options().copyDefaults(true);
 
-		if(!this.file.exists())
+		if (!this.file.exists())
 			save();
 	}
 
 	public void save() {
 		try {
 			this.configuration.save(this.file);
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -33,13 +33,13 @@ public class BasicConfigurationHandler {
 	}
 
 	public Object getValue(String name, Object defaultValue) {
-		if(this.configuration.contains(name))
+		if (this.configuration.contains(name))
 			return this.configuration.get(name);
 		else {
 			this.configuration.addDefault(name, defaultValue);
 			save();
 		}
-		
+
 		return defaultValue;
 	}
 
@@ -50,7 +50,7 @@ public class BasicConfigurationHandler {
 	public String getString(String name, String defaultValue) {
 		return (String) getValue(name, defaultValue);
 	}
-	
+
 	public int getInt(String name, int defaultValue) {
 		return (Integer) getValue(name, defaultValue);
 	}

@@ -20,13 +20,13 @@ public class CustomNametag extends CustomBoard {
 	private static Method setVisibilityMethod, getVisibilityMethod;
 
 	static {
-		if(VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
+		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
 			try {
 				visibilityClass = Class.forName("org.bukkit.scoreboard.NameTagVisibility");
 
 				setVisibilityMethod = Team.class.getDeclaredMethod("setNameTagVisibility", visibilityClass);
 				getVisibilityMethod = Team.class.getDeclaredMethod("getNameTagVisibility");
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -64,17 +64,17 @@ public class CustomNametag extends CustomBoard {
 		String newName = this.getUpdateHandler().getNametagName(player.getPlayer());
 		String newPrefix = this.getUpdateHandler().getNametagPrefix(player.getPlayer());
 		String newSuffix = this.getUpdateHandler().getNametagSuffix(player.getPlayer());
-		if(newName.length() > 16)
+		if (newName.length() > 16)
 			newName = newName.substring(0, 16);
 
-		if(newPrefix.length() > 16)
+		if (newPrefix.length() > 16)
 			newPrefix = newPrefix.substring(0, 16);
 
-		if(newSuffix.length() > 16)
+		if (newSuffix.length() > 16)
 			newSuffix = newSuffix.substring(0, 16);
 
 		boolean changed = name == null || !newName.equals(name) || !newPrefix.equals(prefix) || !newSuffix.equals(suffix);
-		if(!changed)
+		if (!changed)
 			return false;
 
 		this.oldName = this.name;
@@ -88,7 +88,7 @@ public class CustomNametag extends CustomBoard {
 	private Object getVisibility(Team team) {
 		try {
 			return getVisibilityMethod.invoke(team);
-		} catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
 
@@ -96,66 +96,66 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	private void setVisibility(Team team) {
-		if(!visibilityEnabled)
+		if (!visibilityEnabled)
 			return;
 
-		if(visibility == null) {
+		if (visibility == null) {
 			try {
 				this.visibility = this.getUpdateHandler().isNametagVisible(player.getPlayer()) ? visibilityClass.getDeclaredField("NEVER").get(null) : visibilityClass.getDeclaredField("ALWAYS").get(null);
-			} catch(Exception e) {
+			} catch (Exception e) {
 				this.visibilityEnabled = false;
 				return;
 			}
 		}
 
-		if(getVisibility(team).equals(visibility))
+		if (getVisibility(team).equals(visibility))
 			return;
 
 		try {
 			setVisibilityMethod.invoke(team, visibility);
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	private void updateFor(Scoreboard board, CustomNametag nametag) {
-		if(nametag.getName() == null)
+		if (nametag.getName() == null)
 			return;
 
-		if(nametag.getOldName() != null) {
+		if (nametag.getOldName() != null) {
 			Team oldTeam = board.getTeam(nametag.getOldName());
 
-			if(oldTeam != null)
+			if (oldTeam != null)
 				oldTeam.unregister();
 		}
 
 		Team team = board.getTeam(nametag.getName());
 
-		if(team == null) {
+		if (team == null) {
 			team = board.registerNewTeam(nametag.getName());
 			team.addPlayer(nametag.getPlayer().getPlayer());
 		}
 
 		setVisibility(team);
-		if(nametag.getPrefix() != null) {
-			if(team.getPrefix() == null)
+		if (nametag.getPrefix() != null) {
+			if (team.getPrefix() == null)
 				team.setPrefix(nametag.getPrefix());
-			else if(!team.getPrefix().equals(nametag.getPrefix()))
+			else if (!team.getPrefix().equals(nametag.getPrefix()))
 				team.setPrefix(nametag.getPrefix());
 		}
 
-		if(nametag.getSuffix() != null) {
-			if(team.getSuffix() == null)
+		if (nametag.getSuffix() != null) {
+			if (team.getSuffix() == null)
 				team.setSuffix(nametag.getSuffix());
-			else if(!team.getSuffix().equals(nametag.getSuffix()))
+			else if (!team.getSuffix().equals(nametag.getSuffix()))
 				team.setSuffix(nametag.getSuffix());
 		}
 	}
 
 	@Override
 	protected void onUpdate() {
-		if(!init || !refreshPrefix())
+		if (!init || !refreshPrefix())
 			return;
 
 		setToAll();
@@ -164,12 +164,12 @@ public class CustomNametag extends CustomBoard {
 
 	public void giveAll() {
 		Scoreboard board = player.getPlayer().getScoreboard();
-		for(CustomBoard nametag : this.manager.getBoards(CustomBoardType.NAMETAG)) 
+		for (CustomBoard nametag : this.manager.getBoards(CustomBoardType.NAMETAG))
 			updateFor(board, (CustomNametag) nametag);
 	}
 
 	public void setToAll() {
-		for(Player toSet : Bukkit.getOnlinePlayers())
+		for (Player toSet : Bukkit.getOnlinePlayers())
 			updateFor(toSet.getScoreboard(), this);
 	}
 

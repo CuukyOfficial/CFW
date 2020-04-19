@@ -29,8 +29,8 @@ public abstract class SuperInventory {
 	private static ItemStack forward, backwards;
 
 	static {
-		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
-		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
+		forward = new ItemBuilder().displayname("Â§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
+		backwards = new ItemBuilder().displayname("Â§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
 
 		fill_inventory = true;
 		animations = false;
@@ -43,7 +43,7 @@ public abstract class SuperInventory {
 	protected Player opener;
 	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier;
 	protected int page, size;
-	
+
 	private HashMap<ItemMeta, Runnable> itemlinks;
 
 	public SuperInventory(String title, Player opener, int size, boolean homePage) {
@@ -61,14 +61,14 @@ public abstract class SuperInventory {
 
 	@SuppressWarnings("deprecation")
 	private void doAnimation() {
-		if(!animations)
+		if (!animations)
 			return;
 
 		HashMap<Integer, ItemStack> itemlist = new HashMap<Integer, ItemStack>();
-		for(int i = 0; i < (inv.getSize() - 9); i++)
+		for (int i = 0; i < (inv.getSize() - 9); i++)
 			itemlist.put(i, inv.getItem(i));
 
-		for(int i = 0; i < (inv.getSize() - 9); i++)
+		for (int i = 0; i < (inv.getSize() - 9); i++)
 			inv.setItem(i, null);
 		opener.updateInventory();
 
@@ -79,13 +79,13 @@ public abstract class SuperInventory {
 			@Override
 			public void run() {
 				int middle = (int) Math.ceil(itemlist.size() / 2);
-				for(int radius = 0; middle + radius != itemlist.size(); radius++) {
-					if(!isOpen())
+				for (int radius = 0; middle + radius != itemlist.size(); radius++) {
+					if (!isOpen())
 						break;
 
 					try {
 						Thread.sleep(delay);
-					} catch(InterruptedException e) {
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 
@@ -94,7 +94,7 @@ public abstract class SuperInventory {
 
 					try {
 						Thread.sleep(delay);
-					} catch(InterruptedException e) {
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 
@@ -102,10 +102,10 @@ public abstract class SuperInventory {
 					opener.updateInventory();
 				}
 
-				if((inv.getSize() - 9) % 2 == 0 && isOpen()) {
+				if ((inv.getSize() - 9) % 2 == 0 && isOpen()) {
 					try {
 						Thread.sleep(delay);
-					} catch(InterruptedException e) {
+					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					inv.setItem(0, itemlist.get(0));
@@ -116,22 +116,22 @@ public abstract class SuperInventory {
 	}
 
 	private void fillSpace() {
-		if(!fill_inventory)
+		if (!fill_inventory)
 			return;
 
-		for(int i = 0; i < inv.getSize(); i++)
-			if(inv.getItem(i) == null)
-				inv.setItem(i, new ItemBuilder().displayname("§c").itemstack(new ItemStack(Materials.BLACK_STAINED_GLASS_PANE.parseMaterial(), 1, (short) 15)).build());
+		for (int i = 0; i < inv.getSize(); i++)
+			if (inv.getItem(i) == null)
+				inv.setItem(i, new ItemBuilder().displayname("Â§c").itemstack(new ItemStack(Materials.BLACK_STAINED_GLASS_PANE.parseMaterial(), 1, (short) 15)).build());
 	}
 
 	/*
 	 * Getter for the back button
 	 */
 	private String getBack() {
-		if(!homePage)
-			return "§4Back";
+		if (!homePage)
+			return "Â§4Back";
 		else
-			return "§4Close";
+			return "Â§4Close";
 	}
 
 	/*
@@ -146,22 +146,22 @@ public abstract class SuperInventory {
 	 * Set Back and Forwards
 	 */
 	private void setSwitcher() {
-		if(!setModifier)
-			return;
-		
-		inv.setItem(modifier.get(2), new ItemBuilder().displayname(getBack()).itemstack(getBack().equals("Â§4Bacl") ? new ItemStack(Materials.STONE_BUTTON.parseMaterial()) : Materials.REDSTONE.parseItem()).build());
-		if(!hasMorePages)
+		if (!setModifier)
 			return;
 
-		if(!isLastPage)
+		inv.setItem(modifier.get(2), new ItemBuilder().displayname(getBack()).itemstack(getBack().equals("Â§4Back") ? new ItemStack(Materials.STONE_BUTTON.parseMaterial()) : Materials.REDSTONE.parseItem()).build());
+		if (!hasMorePages)
+			return;
+
+		if (!isLastPage)
 			inv.setItem(modifier.get(0), forward);
 
-		if(page != 1)
+		if (page != 1)
 			inv.setItem(modifier.get(1), backwards);
 	}
 
 	protected void close(boolean unregister) {
-		if(!unregister)
+		if (!unregister)
 			ignoreNextClose = true;
 		else
 			this.manager.unregisterInventory(this);
@@ -178,15 +178,17 @@ public abstract class SuperInventory {
 	}
 
 	public void back() {
-		close(true);
+		// close(true);
+		if (!onBackClick())
+			close(true);
 
-//		if(!onBackClick())
-//			new MainMenu(opener);
+		// if(!onBackClick())
+		// new MainMenu(opener);
 	}
 
 	public void clear(boolean all) {
-		for(int i = 0; i < inv.getContents().length; i++) {
-			if(modifier.contains(i) && !all)
+		for (int i = 0; i < inv.getContents().length; i++) {
+			if (modifier.contains(i) && !all)
 				continue;
 
 			inv.setItem(i, new ItemStack(Material.AIR));
@@ -194,7 +196,7 @@ public abstract class SuperInventory {
 	}
 
 	public void closeInventory() {
-		if(ignoreNextClose) {
+		if (ignoreNextClose) {
 			ignoreNextClose = false;
 			return;
 		}
@@ -207,17 +209,17 @@ public abstract class SuperInventory {
 	 * Executes itemlinks
 	 */
 	public void executeLink(ItemStack item) {
-		for(ItemMeta stack : itemlinks.keySet())
-			if(stack.getDisplayName().equals(item.getItemMeta().getDisplayName())) {
-				if(itemlinks.get(stack) != null)
+		for (ItemMeta stack : itemlinks.keySet())
+			if (stack.getDisplayName().equals(item.getItemMeta().getDisplayName())) {
+				if (itemlinks.get(stack) != null)
 					itemlinks.get(stack).run();
 				break;
 			}
 	}
 
 	public int getFixedSize(int size) {
-		if(VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_8))
-			return(size < 1 ? 1 : (size > 64 ? 64 : size));
+		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_8))
+			return (size < 1 ? 1 : (size > 64 ? 64 : size));
 		else
 			return size;
 	}
@@ -226,19 +228,19 @@ public abstract class SuperInventory {
 	 * String for page title
 	 */
 	public void open() {
-		if(manager == null)
+		if (manager == null)
 			throw new IllegalStateException("Cannot open inventory without manager defined");
-		
+
 		isLastPage = this.onOpen();
-		if(!isLastPage)
+		if (!isLastPage)
 			hasMorePages = true;
 
 		setSwitcher();
 		fillSpace();
-		
-		if(this.opener.getOpenInventory() == null || !this.opener.getOpenInventory().getTopInventory().equals(this.inv))
+
+		if (this.opener.getOpenInventory() == null || !this.opener.getOpenInventory().getTopInventory().equals(this.inv))
 			this.opener.openInventory(inv);
-		
+
 		doAnimation();
 	}
 
@@ -274,7 +276,7 @@ public abstract class SuperInventory {
 	 */
 	public void updateInventory() {
 		String title = getPageUpdate();
-		if(opener.getOpenInventory() != null && !this.title.equals(title)) {
+		if (opener.getOpenInventory() != null && !this.title.equals(title)) {
 			ignoreNextClose = true;
 			opener.closeInventory();
 			Inventory newInv = Bukkit.createInventory(null, size != 54 ? size + 9 : size, title);
@@ -303,19 +305,19 @@ public abstract class SuperInventory {
 	 * @return Return if this is the last page
 	 */
 	public abstract boolean onOpen();
-	
+
 	public void setManager(SuperInventoryManager manager) {
 		SuperInventory inv = manager.getInventory(opener);
-		if(inv != null)
+		if (inv != null)
 			inv.close(true);
-		
+
 		this.manager = manager;
 	}
-	
+
 	public SuperInventoryManager getManager() {
 		return manager;
 	}
-	
+
 	public Inventory getInventory() {
 		return this.inv;
 	}
@@ -349,7 +351,7 @@ public abstract class SuperInventory {
 	 */
 	protected static int calculatePages(int amount, int pageSize) {
 		int res = (int) Math.ceil((double) amount / pageSize);
-		if(res == 0)
+		if (res == 0)
 			res = 1;
 		return res;
 	}
