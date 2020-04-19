@@ -70,15 +70,6 @@ public final class CustomScoreboard extends CustomBoard {
 		return ChatColor.values()[index].toString();
 	}
 
-	private void updateHeartBar() {
-		if (!player.getPlayer().getScoreboard().getObjectives().stream().noneMatch(objective -> objective.getName().equals("name")))
-			return;
-
-		Objective healthName = player.getPlayer().getScoreboard().registerNewObjective("name", "health");
-		healthName.setDisplaySlot(DisplaySlot.BELOW_NAME);
-		healthName.setDisplayName(String.valueOf(ChatColor.DARK_RED));
-	}
-
 	@Override
 	protected void onUpdate() {
 		ArrayList<String> scoreboardLines = this.getUpdateHandler().getScoreboardEntries(this.player.getPlayer());
@@ -89,9 +80,6 @@ public final class CustomScoreboard extends CustomBoard {
 			sendScoreBoard();
 			return;
 		}
-
-		if (this.getUpdateHandler().showHeartsBelowName(player.getPlayer()))
-			updateHeartBar();
 
 		if (board.getEntries().size() > scoreboardLines.size()) {
 			for (Team team : board.getTeams())

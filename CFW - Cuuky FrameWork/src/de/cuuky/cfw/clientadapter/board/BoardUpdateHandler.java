@@ -16,8 +16,6 @@ public interface BoardUpdateHandler {
 
 	public ArrayList<String> getScoreboardEntries(Player player);
 
-	public boolean showHeartsBelowName(Player player);
-
 	public String getNametagName(Player player);
 
 	public String getNametagPrefix(Player player);
