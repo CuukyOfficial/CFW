@@ -54,8 +54,7 @@ public class CustomNametag extends CustomBoard {
 			public void run() {
 				init = true;
 
-				refreshPrefix();
-				giveAll();
+				update();
 			}
 		}, 1);
 	}
@@ -101,7 +100,7 @@ public class CustomNametag extends CustomBoard {
 
 		if (visibility == null) {
 			try {
-				this.visibility = this.getUpdateHandler().isNametagVisible(player.getPlayer()) ? visibilityClass.getDeclaredField("NEVER").get(null) : visibilityClass.getDeclaredField("ALWAYS").get(null);
+				this.visibility = !this.getUpdateHandler().isNametagVisible(player.getPlayer()) ? visibilityClass.getDeclaredField("NEVER").get(null) : visibilityClass.getDeclaredField("ALWAYS").get(null);
 			} catch (Exception e) {
 				this.visibilityEnabled = false;
 				return;
