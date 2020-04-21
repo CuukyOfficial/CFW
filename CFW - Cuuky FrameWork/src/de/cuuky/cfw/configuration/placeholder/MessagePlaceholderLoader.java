@@ -116,7 +116,7 @@ public class MessagePlaceholderLoader {
 
 			@Override
 			protected String getValue(CustomPlayer player) {
-				return player.getNetworkManager().getLocale();
+				return player.getLocale() == null ? "-" : player.getLocale();
 			}
 		};
 	}
