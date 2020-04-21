@@ -13,5 +13,7 @@ public interface CustomPlayer {
 	public String getName();
 
 	public String getUUID();
+	
+	public String getLocale();
 
 }
