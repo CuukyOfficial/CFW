@@ -2,13 +2,19 @@ package de.cuuky.cfw.configuration.language;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import de.cuuky.cfw.configuration.language.broadcast.MessageHolder;
 import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
+import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
+import de.cuuky.cfw.player.CustomLanguagePlayer;
+import de.cuuky.cfw.player.CustomPlayer;
 
 public class LanguageManager extends FrameworkManager {
 
@@ -20,17 +26,17 @@ public class LanguageManager extends FrameworkManager {
 	public LanguageManager(JavaPlugin ownerInstance) {
 		this("plugins/" + ownerInstance.getName() + "/languages/", "en_us", ownerInstance);
 	}
-	
+
 	public LanguageManager(String languagesPath, String fallbackLocale, JavaPlugin ownerInstance) {
 		super(FrameworkManagerType.LANGUAGE, ownerInstance);
-		
+
 		this.languagePath = languagesPath;
 		this.fallbackLocale = fallbackLocale;
 		this.languages = new HashMap<>();
 		this.defaultMessages = new HashMap<>();
 	}
 
-	protected String getMessage(String messagePath, String locale) {
+	public String getMessage(String messagePath, String locale) {
 		if (locale == null)
 			return defaultLanguage.getMessage(messagePath);
 		else {
@@ -53,18 +59,18 @@ public class LanguageManager extends FrameworkManager {
 		}
 	}
 
-	protected Language registerLanguage(String name) {
+	public Language registerLanguage(String name) {
 		return registerLoadableLanguage(name, null);
 	}
 
-	protected Language registerLoadableLanguage(String name, Class<? extends LoadableMessage> clazz) {
+	public Language registerLoadableLanguage(String name, Class<? extends LoadableMessage> clazz) {
 		Language language = null;
 		languages.put(name, language = new Language(name, this, clazz));
 
 		return language;
 	}
 
-	protected void setDefaultLanguage(Language defaultLanguage) {
+	public void setDefaultLanguage(Language defaultLanguage) {
 		this.defaultLanguage = defaultLanguage;
 		this.defaultMessages = getValues(defaultLanguage.getClazz());
 
@@ -74,7 +80,7 @@ public class LanguageManager extends FrameworkManager {
 				lang.load();
 	}
 
-	protected HashMap<String, String> getValues(Class<? extends LoadableMessage> clazz) {
+	public HashMap<String, String> getValues(Class<? extends LoadableMessage> clazz) {
 		HashMap<String, String> values = new HashMap<>();
 		LoadableMessage[] messages = null;
 
@@ -102,6 +108,22 @@ public class LanguageManager extends FrameworkManager {
 
 			registerLanguage(listFile.getName().replace(".yml", ""));
 		}
+	}
+
+	public MessageHolder broadcastMessage(LoadableMessage message, CustomPlayer replace, MessagePlaceholderManager placeholderManager, ArrayList<CustomLanguagePlayer> players) {
+		MessageHolder holder = new MessageHolder(placeholderManager);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(ownerInstance, new Runnable() {
+
+			@Override
+			public void run() {
+				Bukkit.getConsoleSender().sendMessage(holder.getReplaced(getMessage(message.getPath(), defaultLanguage.getName()), replace));
+				for (CustomLanguagePlayer player : players)
+					if (player.getPlayer() != null)
+						player.getPlayer().sendMessage(holder.getReplaced(getMessage(message.getPath(), ((CustomPlayer) player).getLocale()), replace != null ? replace : (CustomPlayer) player));
+			}
+		}, 1);
+
+		return holder;
 	}
 
 	public String getLanguagePath() {

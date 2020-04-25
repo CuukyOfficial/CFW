@@ -37,7 +37,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 			if (!pmp.containsPlaceholder(value))
 				continue;
 
-			if (vp != null)
+			if (pmp instanceof PlayerMessagePlaceholder)
 				value = ((PlayerMessagePlaceholder) pmp).replacePlaceholder(value, vp);
 			else
 				value = ((GeneralMessagePlaceholder) pmp).replacePlaceholder(value);
@@ -63,6 +63,10 @@ public class MessagePlaceholderManager extends FrameworkManager {
 			cachedRequests.put(type, reqs);
 			return (String) result[0];
 		}
+	}
+	
+	public String replacePlaceholders(String value, PlaceholderType type) {
+		return replacePlaceholders(value, null, type);
 	}
 
 	public MessagePlaceholder registerPlaceholder(MessagePlaceholder placeholder) {

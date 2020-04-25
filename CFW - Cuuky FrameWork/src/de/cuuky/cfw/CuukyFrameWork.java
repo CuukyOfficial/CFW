@@ -48,6 +48,7 @@ public class CuukyFrameWork {
 			try {
 				this.manager.put(type, (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
 			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+				e.printStackTrace();
 				throw new IllegalStateException("Failed to initialize type " + type.toString() + "!");
 			}
 		}
