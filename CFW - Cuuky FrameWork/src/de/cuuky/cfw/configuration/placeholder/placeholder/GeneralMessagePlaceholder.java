@@ -1,20 +1,12 @@
 package de.cuuky.cfw.configuration.placeholder.placeholder;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholder;
+import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
 
 public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
-
-	private static ArrayList<GeneralMessagePlaceholder> generalPlaceholder;
-	private static HashMap<String, ArrayList<GeneralMessagePlaceholder>> cachedRequests;
-
-	static {
-		cachedRequests = new HashMap<>();
-	}
 
 	private static long lastDateRefreshTime;
 	private static String[] lastDateRefresh;
@@ -27,14 +19,9 @@ public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
 	}
 
 	public GeneralMessagePlaceholder(String identifier, int refreshDelay, boolean rawIdentifier, String description) {
-		super(identifier, refreshDelay, rawIdentifier, description);
-
-		if (generalPlaceholder == null)
-			generalPlaceholder = new ArrayList<>();
+		super(MessagePlaceholderType.GENERAL, identifier, refreshDelay, rawIdentifier, description);
 
 		this.lastRefresh = 0;
-
-		generalPlaceholder.add(this);
 	}
 
 	private void checkRefresh() {
@@ -54,8 +41,7 @@ public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
 	public String replacePlaceholder(String message) {
 		checkRefresh();
 
-		String value = message.replace(this.identifier, this.value);
-		return message.replace(this.identifier, value != null ? value : "");
+		return message.replace(this.identifier, this.value != null ? this.value : "");
 	}
 
 	@Override
@@ -71,35 +57,5 @@ public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
 		}
 
 		return lastDateRefresh[index];
-	}
-
-	private static Object[] replaceByList(String value, ArrayList<GeneralMessagePlaceholder> list) {
-		ArrayList<GeneralMessagePlaceholder> cached = new ArrayList<>();
-		for (GeneralMessagePlaceholder pmp : list)
-			if (pmp.containsPlaceholder(value)) {
-				value = pmp.replacePlaceholder(value);
-				cached.add(pmp);
-			}
-
-		return new Object[] { value, cached };
-	}
-
-	@SuppressWarnings("unchecked")
-	public static String replacePlaceholders(String value) {
-		if (cachedRequests.get(value) != null)
-			return (String) replaceByList(value, cachedRequests.get(value))[0];
-		else {
-			Object[] result = replaceByList(value, generalPlaceholder);
-			cachedRequests.put(value, (ArrayList<GeneralMessagePlaceholder>) result[1]);
-			return (String) result[0];
-		}
-	}
-
-	public static void clearCache() {
-		cachedRequests.clear();
-	}
-
-	public static ArrayList<GeneralMessagePlaceholder> getGeneralPlaceholderMatching() {
-		return generalPlaceholder;
 	}
 }

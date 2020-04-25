@@ -1,30 +1,23 @@
 package de.cuuky.cfw.configuration.placeholder;
 
-import java.util.ArrayList;
-
-import de.cuuky.cfw.configuration.placeholder.placeholder.GeneralMessagePlaceholder;
-import de.cuuky.cfw.configuration.placeholder.placeholder.PlayerMessagePlaceholder;
+import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
 
 public abstract class MessagePlaceholder {
 
 	private static final int TICK_TOLERANCE = 900;
 
-	private static ArrayList<MessagePlaceholder> placeholders;
-
-	static {
-		placeholders = new ArrayList<>();
-
-		new MessagePlaceholderLoader();
-	}
-
+	protected PlaceholderType type;
 	protected String identifier, description;
 	protected int defaultRefresh, refreshDelay;
+	protected MessagePlaceholderManager managar;
 
-	public MessagePlaceholder(String identifier, int refreshDelay, String description) {
-		this(identifier, refreshDelay, false, description);
+	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, String description) {
+		this(type, identifier, refreshDelay, false, description);
 	}
 
-	public MessagePlaceholder(String identifier, int refreshDelay, boolean rawIdentifier, String description) {
+	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, boolean rawIdentifier, String description) {
+		this.type = type;
+		
 		if (rawIdentifier)
 			this.identifier = identifier;
 		else
@@ -33,8 +26,6 @@ public abstract class MessagePlaceholder {
 		this.description = description;
 		this.defaultRefresh = refreshDelay;
 		this.refreshDelay = (int) (refreshDelay * 1000);
-
-		placeholders.add(this);
 	}
 
 	protected boolean shallRefresh(long last) {
@@ -46,6 +37,10 @@ public abstract class MessagePlaceholder {
 
 	public boolean containsPlaceholder(String message) {
 		return message.contains(identifier);
+	}
+	
+	public PlaceholderType getType() {
+		return this.type;
 	}
 
 	public String getIdentifier() {
@@ -59,18 +54,14 @@ public abstract class MessagePlaceholder {
 	public int getDefaultRefresh() {
 		return this.defaultRefresh;
 	}
+	
+	public void setManager(MessagePlaceholderManager managaer) {
+		this.managar = managaer;
+	}
+	
+	public MessagePlaceholderManager getManager() {
+		return this.managar;
+	}
 
 	public abstract void clearValue();
-
-	public static void clearPlaceholder() {
-		GeneralMessagePlaceholder.clearCache();
-		PlayerMessagePlaceholder.clearCache();
-
-		for (MessagePlaceholder placeholder : placeholders)
-			placeholder.clearValue();
-	}
-
-	public static ArrayList<MessagePlaceholder> getPlaceholders() {
-		return placeholders;
-	}
 }

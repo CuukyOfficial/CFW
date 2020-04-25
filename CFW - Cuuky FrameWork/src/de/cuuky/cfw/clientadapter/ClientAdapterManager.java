@@ -3,22 +3,24 @@ package de.cuuky.cfw.clientadapter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.cuuky.cfw.CuukyFrameWork;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import de.cuuky.cfw.clientadapter.board.BoardUpdateHandler;
 import de.cuuky.cfw.clientadapter.board.CustomBoard;
 import de.cuuky.cfw.clientadapter.board.CustomBoardType;
+import de.cuuky.cfw.manager.FrameworkManager;
+import de.cuuky.cfw.manager.FrameworkManagerType;
 
-public class ClientAdapterManager {
-
-	private CuukyFrameWork instance;
-
+public class ClientAdapterManager extends FrameworkManager {
+	
 	private BoardUpdateHandler updateHandler;
 
 	private ArrayList<CustomBoard> boards;
 	private HashMap<CustomBoardType, Boolean> boardTypesEnabled;
 
-	public ClientAdapterManager(CuukyFrameWork instance) {
-		this.instance = instance;
+	public ClientAdapterManager(JavaPlugin ownerInstance) {
+		super(FrameworkManagerType.CLIENT_ADAPTER, ownerInstance);
+		
 		this.boards = new ArrayList<>();
 		this.boardTypesEnabled = new HashMap<>();
 
@@ -59,9 +61,5 @@ public class ClientAdapterManager {
 				rBoards.add(board);
 
 		return rBoards;
-	}
-
-	public CuukyFrameWork getInstance() {
-		return instance;
 	}
 }

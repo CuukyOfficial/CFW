@@ -48,7 +48,7 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	private void startDelayedRefresh() {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this.manager.getInstance().getPluginInstance(), new Runnable() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
 
 			@Override
 			public void run() {

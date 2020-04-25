@@ -74,7 +74,7 @@ public abstract class SuperInventory {
 
 		int delay = (int) (600) / (getSize());
 
-		Bukkit.getScheduler().scheduleAsyncDelayedTask(this.manager.getInstance().getPluginInstance(), new Runnable() {
+		Bukkit.getScheduler().scheduleAsyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
 
 			@Override
 			public void run() {
@@ -262,7 +262,7 @@ public abstract class SuperInventory {
 	 * A little method to reopen the gui, for example if you used a AnvilGUI
 	 */
 	public void reopenSoon() {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this.manager.getInstance().getPluginInstance(), new Runnable() {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
 
 			@Override
 			public void run() {

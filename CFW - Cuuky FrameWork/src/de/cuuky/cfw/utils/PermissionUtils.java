@@ -56,9 +56,7 @@ public final class PermissionUtils {
 			Object metadata = cachedData.getClass().getMethod("getMetaData", clazzes.get("net.luckperms.api.query.QueryOptions")).invoke(cachedData, queryOptions);
 			String prefix = (String) metadata.getClass().getMethod("getPrefix").invoke(metadata);
 			return prefix != null ? prefix.replace("&", "§") : prefix;
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
+		} catch (Throwable e) {}
 
 		return "";
 	}

@@ -4,16 +4,26 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
-import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
+import org.bukkit.plugin.java.JavaPlugin;
 
-public class LanguageManager {
+import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
+import de.cuuky.cfw.manager.FrameworkManager;
+import de.cuuky.cfw.manager.FrameworkManagerType;
+
+public class LanguageManager extends FrameworkManager {
 
 	private String languagePath, fallbackLocale;
 	private Language defaultLanguage;
 	private HashMap<String, Language> languages;
 	private HashMap<String, String> defaultMessages;
 
-	public LanguageManager(String languagesPath, String fallbackLocale) {
+	public LanguageManager(JavaPlugin ownerInstance) {
+		this("plugins/" + ownerInstance.getName() + "/languages/", "en_us", ownerInstance);
+	}
+	
+	public LanguageManager(String languagesPath, String fallbackLocale, JavaPlugin ownerInstance) {
+		super(FrameworkManagerType.LANGUAGE, ownerInstance);
+		
 		this.languagePath = languagesPath;
 		this.fallbackLocale = fallbackLocale;
 		this.languages = new HashMap<>();
