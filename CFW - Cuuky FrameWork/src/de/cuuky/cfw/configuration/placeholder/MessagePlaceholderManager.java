@@ -51,9 +51,9 @@ public class MessagePlaceholderManager extends FrameworkManager {
 	@SuppressWarnings("unchecked")
 	public String replacePlaceholders(String value, CustomPlayer vp, PlaceholderType type) {
 		HashMap<String, ArrayList<MessagePlaceholder>> reqs = cachedRequests.get(type);
-		if(reqs == null)
+		if (reqs == null)
 			reqs = new HashMap<>();
-		
+
 		if (reqs.get(value) != null)
 			return (String) replaceByList(value, vp, reqs.get(value))[0];
 		else {
@@ -64,7 +64,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 			return (String) result[0];
 		}
 	}
-	
+
 	public String replacePlaceholders(String value, PlaceholderType type) {
 		return replacePlaceholders(value, null, type);
 	}
@@ -83,7 +83,10 @@ public class MessagePlaceholderManager extends FrameworkManager {
 	}
 
 	public void clear() {
-		this.placeholders.clear();
+		for (PlaceholderType type : placeholders.keySet())
+			for (MessagePlaceholder pl : this.placeholders.get(type))
+				pl.clearValue();
+
 		this.cachedRequests.clear();
 	}
 
