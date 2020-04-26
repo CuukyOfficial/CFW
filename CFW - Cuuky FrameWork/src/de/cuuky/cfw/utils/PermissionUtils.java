@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import de.cuuky.cfw.player.CustomPlayer;
-import net.luckperms.api.LuckPerms;
 
 public final class PermissionUtils {
 
@@ -37,7 +36,7 @@ public final class PermissionUtils {
 			luckPermsAPI = null;
 
 			if (provider != null)
-				luckPermsAPI = (LuckPerms) provider.getProvider();
+				luckPermsAPI = provider.getProvider();
 
 			userManager = luckPermsAPI.getClass().getMethod("getUserManager").invoke(luckPermsAPI);
 			groupManager = luckPermsAPI.getClass().getMethod("getGroupManager").invoke(luckPermsAPI);
