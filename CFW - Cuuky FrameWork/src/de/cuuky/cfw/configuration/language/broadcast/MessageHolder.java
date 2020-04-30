@@ -15,8 +15,9 @@ public class MessageHolder {
 		this.replacements = new HashMap<String, String>();
 	}
 	
-	public String replace(String needle, String replacement) {
-		return replacements.put(needle, replacement);
+	public MessageHolder replace(String needle, String replacement) {
+		replacements.put(needle, replacement);
+		return this;
 	}
 	
 	public String getReplaced(String message, CustomPlayer cp) {
