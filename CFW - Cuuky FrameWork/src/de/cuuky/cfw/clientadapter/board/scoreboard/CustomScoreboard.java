@@ -110,7 +110,12 @@ public final class CustomScoreboard extends CustomBoard {
 	public void sendScoreBoard() {
 		Scoreboard sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
 		Objective obj = sb.registerNewObjective("silent", "dummy");
-		obj.setDisplayName(this.title = this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer()));
+		this.title = this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer());
+		
+		if(this.title.length() >= 32)
+			this.title = this.title.substring(0, 32);
+		
+		obj.setDisplayName(this.title);
 
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		player.getPlayer().setScoreboard(sb);
