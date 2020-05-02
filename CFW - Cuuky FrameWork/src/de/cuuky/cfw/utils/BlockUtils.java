@@ -4,14 +4,14 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.cfw.version.types.Materials;
 
-public final class BlockUtils {
-
-	private BlockUtils() {}
+public class BlockUtils {
 
 	private static boolean isGrass(Material type) {
 		if (!type.toString().contains("GRASS"))
@@ -47,5 +47,30 @@ public final class BlockUtils {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static Object getBlockData(Block block, Object from) {
+		BlockState blockState = block.getState();
+		try {
+			return from.getClass().getMethod("getBlockData").invoke(from);
+		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+			return blockState.getData();
+		}
+	}
+
+	public static BlockFace getAttachedSignFace(Object sign) {
+		BlockFace attachedFace = null;
+		try {
+			attachedFace = (BlockFace) sign.getClass().getMethod("getAttachedFace").invoke(sign);
+		} catch (ClassCastException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+			try {
+				Object facing = sign.getClass().getMethod("getFacing").invoke(sign);
+				attachedFace = (BlockFace) facing.getClass().getMethod("getOppositeFace").invoke(facing);
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+
+		return attachedFace;
 	}
 }
