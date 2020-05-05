@@ -49,7 +49,7 @@ public final class CustomScoreboard extends CustomBoard {
 
 		if (prefix.substring(prefix.length() - 1, prefix.length()).equals("�")) {
 			prefix = prefix.substring(0, prefix.length() - 1);
-			suffix = getPrefix("�" + getSuffix(value));
+			suffix = getPrefix("§" + getSuffix(value));
 		} else
 			suffix = getPrefix(ChatColor.getLastColors(prefix) + getSuffix(value));
 
