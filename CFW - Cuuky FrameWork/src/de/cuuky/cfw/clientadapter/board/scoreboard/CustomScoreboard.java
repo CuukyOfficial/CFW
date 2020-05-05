@@ -47,7 +47,7 @@ public final class CustomScoreboard extends CustomBoard {
 		String prefix = getPrefix(value);
 		String suffix = "";
 
-		if (prefix.substring(prefix.length() - 1, prefix.length()).equals("�")) {
+		if (prefix.substring(prefix.length() - 1, prefix.length()).equals("§")) {
 			prefix = prefix.substring(0, prefix.length() - 1);
 			suffix = getPrefix("§" + getSuffix(value));
 		} else
