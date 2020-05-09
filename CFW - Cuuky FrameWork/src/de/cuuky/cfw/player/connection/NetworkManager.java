@@ -86,23 +86,30 @@ public class NetworkManager {
 			this.pingField = playerHandle.getClass().getField("ping");
 			this.connection = playerHandle.getClass().getField("playerConnection").get(playerHandle);
 			this.sendPacketMethod = connection.getClass().getMethod("sendPacket", Class.forName(VersionUtils.getNmsClass() + ".Packet"));
-			this.networkManager = this.connection.getClass().getField("networkManager").get(this.connection);
 
-			if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11)) {
-				Method localeMethod = player.getClass().getDeclaredMethod("getLocale");
-				localeMethod.setAccessible(true);
-				this.locale = (String) localeMethod.invoke(player);
-			} else {
-				try {
-					Field localeField = playerHandle.getClass().getField("locale");
-					localeField.setAccessible(true);
-					this.locale = (String) localeField.get(playerHandle);
-				} catch (Exception e) {
-					e.printStackTrace();
+			for (Field f : this.connection.getClass().getFields())
+				if (f.getName().equals("networkManager"))
+					this.networkManager = f.get(this.connection);
+
+			if (this.networkManager == null)
+				System.err.println("[CFW] Failed to initalize networkManager! Are you using a modified version of Spigot/Bukkit?");
+			else {
+				if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11)) {
+					Method localeMethod = player.getClass().getDeclaredMethod("getLocale");
+					localeMethod.setAccessible(true);
+					this.locale = (String) localeMethod.invoke(player);
+				} else {
+					try {
+						Field localeField = playerHandle.getClass().getField("locale");
+						localeField.setAccessible(true);
+						this.locale = (String) localeField.get(playerHandle);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
 
-			this.locale = this.locale.toLowerCase();
+				this.locale = this.locale.toLowerCase();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
