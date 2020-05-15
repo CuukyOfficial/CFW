@@ -30,40 +30,37 @@ public final class CustomScoreboard extends CustomBoard {
 	@SuppressWarnings("deprecation")
 	private String prepareScoreboardStatement(int index, String line) {
 		Scoreboard board = player.getPlayer().getScoreboard();
-		Team team = board.getTeam("team-" + getAsTeam(index));
+		String name = getAsTeam(index);
+		
+		int firstEndIndex = 16;
+		String line16Char = line.substring(0, line.length() > firstEndIndex ? firstEndIndex : line.length());
+		if (line.length() > firstEndIndex) {
+			String lastColor = "";
+			
+			if (line16Char.endsWith("§")) {
+				lastColor = ChatColor.getLastColors("§" + line.charAt(firstEndIndex));
+				
+				if(!lastColor.isEmpty()) {
+					line = line.substring(0, firstEndIndex - 1) + line.substring(firstEndIndex + 1);
+					firstEndIndex = 15;
+				}
+			}
+			
+			if (lastColor.isEmpty())
+				lastColor = ChatColor.getLastColors(line16Char);
+
+			name = name + (!lastColor.isEmpty() ? lastColor : "§f");
+		}
+
+		Team team = board.getTeam("team-" + name);
 		if (team == null)
-			team = board.registerNewTeam("team-" + getAsTeam(index));
+			team = board.registerNewTeam("team-" + name);
 
-		String playerName = getAsTeam(index);
-		String[] pas = getPrefixAndSuffix(line);
-		team.setPrefix(pas[0]);
-		team.setSuffix(pas[1]);
-		team.addPlayer(new FakeOfflinePlayer(playerName));
+		team.setPrefix(line.substring(0, line.length() < firstEndIndex ? line.length() : firstEndIndex));
+		team.setSuffix(line.length() > firstEndIndex ? line.substring(firstEndIndex, firstEndIndex + 16) : "");
+		team.addPlayer(new FakeOfflinePlayer(name));
 
-		return playerName;
-	}
-
-	private String[] getPrefixAndSuffix(String value) {
-		String prefix = getPrefix(value);
-		String suffix = "";
-
-		if (prefix.substring(prefix.length() - 1, prefix.length()).equals("§")) {
-			prefix = prefix.substring(0, prefix.length() - 1);
-			suffix = getPrefix("§" + getSuffix(value));
-		} else
-			suffix = getPrefix(ChatColor.getLastColors(prefix) + getSuffix(value));
-
-		return new String[] { prefix, suffix };
-	}
-
-	private String getPrefix(String value) {
-		return value.length() > 16 ? value.substring(0, 16) : value;
-	}
-
-	private String getSuffix(String value) {
-		value = value.length() > 32 ? value.substring(0, 32) : value;
-
-		return value.length() > 16 ? value.substring(16) : "";
+		return name;
 	}
 
 	private String getAsTeam(int index) {
@@ -111,10 +108,10 @@ public final class CustomScoreboard extends CustomBoard {
 		Scoreboard sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
 		Objective obj = sb.registerNewObjective("silent", "dummy");
 		this.title = this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer());
-		
-		if(this.title.length() >= 32)
+
+		if (this.title.length() >= 32)
 			this.title = this.title.substring(0, 32);
-		
+
 		obj.setDisplayName(this.title);
 
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
