@@ -31,21 +31,21 @@ public final class CustomScoreboard extends CustomBoard {
 	private String prepareScoreboardStatement(int index, String line) {
 		Scoreboard board = player.getPlayer().getScoreboard();
 		String name = getAsTeam(index);
-		
+
 		int firstEndIndex = 16;
 		String line16Char = line.substring(0, line.length() > firstEndIndex ? firstEndIndex : line.length());
 		if (line.length() > firstEndIndex) {
 			String lastColor = "";
-			
+
 			if (line16Char.endsWith("§")) {
 				lastColor = ChatColor.getLastColors("§" + line.charAt(firstEndIndex));
-				
-				if(!lastColor.isEmpty()) {
+
+				if (!lastColor.isEmpty()) {
 					line = line.substring(0, firstEndIndex - 1) + line.substring(firstEndIndex + 1);
 					firstEndIndex = 15;
 				}
 			}
-			
+
 			if (lastColor.isEmpty())
 				lastColor = ChatColor.getLastColors(line16Char);
 
@@ -57,7 +57,9 @@ public final class CustomScoreboard extends CustomBoard {
 			team = board.registerNewTeam("team-" + name);
 
 		team.setPrefix(line.substring(0, line.length() < firstEndIndex ? line.length() : firstEndIndex));
-		team.setSuffix(line.length() > firstEndIndex ? line.substring(firstEndIndex, firstEndIndex + 16) : "");
+		
+		int suffixLength = (line.length() > firstEndIndex + 16 ? firstEndIndex + 16 : line.length());
+		team.setSuffix(line.length() > firstEndIndex ? line.substring(firstEndIndex, suffixLength) : "");
 		team.addPlayer(new FakeOfflinePlayer(name));
 
 		return name;
