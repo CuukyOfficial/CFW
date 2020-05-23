@@ -22,27 +22,17 @@ import de.cuuky.cfw.version.types.Materials;
 public abstract class SuperInventory {
 
 	// AUTHOR: "Cuuky",
-	// VERSION: "0.3.3";
-
-	private static boolean fill_inventory, animations;
-
-	private static ItemStack forward, backwards;
-
-	static {
-		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
-		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
-
-		fill_inventory = true;
-		animations = false;
-	}
+	// VERSION: "0.3.4";
 
 	protected SuperInventoryManager manager;
 	protected String firstTitle, title;
 	protected ArrayList<Integer> modifier;
 	protected Inventory inv;
 	protected Player opener;
-	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier;
+	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier, fillInventory, animations;
 	protected int page, size;
+	
+	protected ItemStack forward, backwards;
 
 	private HashMap<ItemMeta, Runnable> itemlinks;
 
@@ -52,9 +42,14 @@ public abstract class SuperInventory {
 		this.page = 1;
 		this.homePage = homePage;
 		this.size = size;
+		this.animations = false;
+		this.fillInventory = true;
 		this.title = getPageUpdate();
 		this.inv = Bukkit.createInventory(null, size != 54 ? size + 9 : size, getPageUpdate());
 		this.itemlinks = new HashMap<ItemMeta, Runnable>();
+		
+		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
+		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
 
 		this.modifier = new ArrayList<Integer>(Arrays.asList(inv.getSize() - 1, inv.getSize() - 9, inv.getSize() - 5));
 	}
@@ -116,7 +111,7 @@ public abstract class SuperInventory {
 	}
 
 	private void fillSpace() {
-		if (!fill_inventory)
+		if (!fillInventory)
 			return;
 
 		for (int i = 0; i < inv.getSize(); i++)
