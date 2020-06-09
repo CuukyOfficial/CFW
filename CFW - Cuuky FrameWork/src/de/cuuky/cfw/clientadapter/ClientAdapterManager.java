@@ -25,7 +25,7 @@ public class ClientAdapterManager extends FrameworkManager {
 		this.boardTypesEnabled = new HashMap<>();
 
 		for (CustomBoardType type : CustomBoardType.values())
-			this.boardTypesEnabled.put(type, true);
+			this.boardTypesEnabled.put(type, false);
 	}
 
 	public void setBoardTypeEnabled(CustomBoardType type, boolean enabled) {
