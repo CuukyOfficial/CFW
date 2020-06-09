@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -33,7 +34,7 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	private String name, prefix, suffix, oldName;
-	private boolean init, visibilityEnabled;
+	private boolean visibilityEnabled;
 	private Object visibility;
 
 	public CustomNametag(CustomPlayer player) {
@@ -43,17 +44,13 @@ public class CustomNametag extends CustomBoard {
 	@Override
 	public void onEnable() {
 		this.visibilityEnabled = true;
-
-		startDelayedRefresh();
 	}
 
-	private void startDelayedRefresh() {
+	public void startDelayedRefresh() {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
 
 			@Override
 			public void run() {
-				init = true;
-
 				update();
 			}
 		}, 1);
@@ -122,6 +119,15 @@ public class CustomNametag extends CustomBoard {
 		if (nametag.getName() == null)
 			return;
 
+		for (Team team : board.getTeams()) {
+			if (nametag.getOldName() != null && team.getName().equals(nametag.getOldName()))
+				team.unregister();
+			else
+				for (OfflinePlayer pl : team.getPlayers())
+					if (pl.getUniqueId().equals(nametag.getPlayer().getPlayer().getUniqueId()))
+						team.unregister();
+		}
+
 		if (nametag.getOldName() != null) {
 			Team oldTeam = board.getTeam(nametag.getOldName());
 
@@ -154,7 +160,7 @@ public class CustomNametag extends CustomBoard {
 
 	@Override
 	protected void onUpdate() {
-		if (!init || !refreshPrefix())
+		if (!refreshPrefix())
 			return;
 
 		setToAll();
@@ -168,7 +174,7 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	public void setToAll() {
-		for (Player toSet : Bukkit.getOnlinePlayers())
+		for (Player toSet : VersionUtils.getOnlinePlayer())
 			updateFor(toSet.getScoreboard(), this);
 	}
 

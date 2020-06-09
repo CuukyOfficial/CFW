@@ -72,7 +72,7 @@ public class CustomTablist extends CustomBoard {
 				if(tablistname.length() > maxlength)
 					tablistname = this.player.getName();
 
-			if(!this.tabname.equals(tablistname))
+			if(this.tabname == null || !this.tabname.equals(tablistname))
 				player.getPlayer().setPlayerListName(this.tabname = tablistname);
 		}
 
