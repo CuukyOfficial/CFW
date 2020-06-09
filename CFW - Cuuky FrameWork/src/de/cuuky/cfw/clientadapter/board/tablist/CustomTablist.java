@@ -66,13 +66,15 @@ public class CustomTablist extends CustomBoard {
 	protected void onUpdate() {
 		String tablistname = getUpdateHandler().getTablistName(player.getPlayer());
 
-		int maxlength = BukkitVersion.ONE_8.isHigherThan(VersionUtils.getVersion()) ? 16 : -1;
-		if(maxlength > 0)
-			if(tablistname.length() > maxlength)
-				tablistname = this.player.getName();
+		if(tablistname != null) {
+			int maxlength = BukkitVersion.ONE_8.isHigherThan(VersionUtils.getVersion()) ? 16 : -1;
+			if(maxlength > 0)
+				if(tablistname.length() > maxlength)
+					tablistname = this.player.getName();
 
-		if(this.tabname == null || !this.tabname.equals(tablistname))
-			player.getPlayer().setPlayerListName(this.tabname = tablistname);
+			if(!this.tabname.equals(tablistname))
+				player.getPlayer().setPlayerListName(this.tabname = tablistname);
+		}
 
 		Object[] headerUpdate = updateList(player, true);
 		Object[] footerUpdate = updateList(player, false);
