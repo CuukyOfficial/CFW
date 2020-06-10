@@ -1,6 +1,7 @@
 package de.cuuky.cfw.clientadapter.board.scoreboard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -72,6 +73,8 @@ public final class CustomScoreboard extends CustomBoard {
 	@Override
 	protected void onUpdate() {
 		ArrayList<String> scoreboardLines = this.getUpdateHandler().getScoreboardEntries(this.player.getPlayer());
+		Collections.reverse(scoreboardLines);
+		
 		Scoreboard board = player.getPlayer().getScoreboard();
 		Objective objective = board.getObjective(DisplaySlot.SIDEBAR);
 

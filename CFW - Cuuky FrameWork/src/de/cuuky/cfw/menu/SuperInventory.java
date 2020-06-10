@@ -42,10 +42,9 @@ public abstract class SuperInventory {
 		this.page = 1;
 		this.homePage = homePage;
 		this.size = size;
-		this.animations = false;
 		this.fillInventory = true;
 		this.title = getPageUpdate();
-		this.inv = Bukkit.createInventory(null, size != 54 ? size + 9 : size, getPageUpdate());
+		this.inv = Bukkit.createInventory(null, size != 54 && setModifier ? size + 9 : size, getPageUpdate());
 		this.itemlinks = new HashMap<ItemMeta, Runnable>();
 		
 		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
@@ -60,10 +59,11 @@ public abstract class SuperInventory {
 			return;
 
 		HashMap<Integer, ItemStack> itemlist = new HashMap<Integer, ItemStack>();
-		for (int i = 0; i < (inv.getSize() - 9); i++)
+		int animationInvSize = (setModifier ? inv.getSize() - 9 : inv.getSize());
+		for (int i = 0; i < animationInvSize; i++)
 			itemlist.put(i, inv.getItem(i));
 
-		for (int i = 0; i < (inv.getSize() - 9); i++)
+		for (int i = 0; i < animationInvSize; i++)
 			inv.setItem(i, null);
 		opener.updateInventory();
 
@@ -97,7 +97,7 @@ public abstract class SuperInventory {
 					opener.updateInventory();
 				}
 
-				if ((inv.getSize() - 9) % 2 == 0 && isOpen()) {
+				if (animationInvSize % 2 == 0 && isOpen()) {
 					try {
 						Thread.sleep(delay);
 					} catch (InterruptedException e) {

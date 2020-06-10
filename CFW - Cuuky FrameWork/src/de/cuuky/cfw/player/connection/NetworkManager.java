@@ -4,7 +4,10 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
@@ -148,6 +151,27 @@ public class NetworkManager {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void sendActionbar(String message, int duration, Plugin instance) {
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
+			return;
+		
+		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BukkitRunnable() {
+			
+			private int count;
+			
+			@Override
+			public void run() {
+				count++;
+				
+				sendActionbar(message);
+				
+				if(count >= duration)
+					this.cancel();
+			}
+		}, 0, 20);
 	}
 
 	public void sendActionbar(String message) {
