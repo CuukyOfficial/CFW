@@ -38,9 +38,9 @@ public class BasicConfigurationHandler {
 		else {
 			this.configuration.addDefault(name, defaultValue);
 			save();
+			
+			return defaultValue;
 		}
-
-		return defaultValue;
 	}
 
 	public boolean getBool(String name, boolean defaultValue) {
