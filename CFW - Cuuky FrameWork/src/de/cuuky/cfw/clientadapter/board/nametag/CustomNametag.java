@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -44,6 +43,10 @@ public class CustomNametag extends CustomBoard {
 	@Override
 	public void onEnable() {
 		this.visibilityEnabled = true;
+		
+		for (Team team : this.player.getPlayer().getScoreboard().getTeams()) 
+			if(!team.getName().startsWith("team-"))
+				team.unregister();
 	}
 
 	public void startDelayedRefresh() {
@@ -58,6 +61,9 @@ public class CustomNametag extends CustomBoard {
 
 	private boolean refreshPrefix() {
 		String newName = this.getUpdateHandler().getNametagName(player.getPlayer());
+		if(newName.startsWith("team-"))
+			throw new IllegalArgumentException("Player nametag name cannot start with 'team-'");
+		
 		String newPrefix = this.getUpdateHandler().getNametagPrefix(player.getPlayer());
 		String newSuffix = this.getUpdateHandler().getNametagSuffix(player.getPlayer());
 		if (newName.length() > 16)
@@ -119,14 +125,9 @@ public class CustomNametag extends CustomBoard {
 		if (nametag.getName() == null)
 			return;
 
-		for (Team team : board.getTeams()) {
+		for (Team team : board.getTeams()) 
 			if (nametag.getOldName() != null && team.getName().equals(nametag.getOldName()))
 				team.unregister();
-			else
-				for (OfflinePlayer pl : team.getPlayers())
-					if (pl.getUniqueId().equals(nametag.getPlayer().getPlayer().getUniqueId()))
-						team.unregister();
-		}
 
 		if (nametag.getOldName() != null) {
 			Team oldTeam = board.getTeam(nametag.getOldName());
