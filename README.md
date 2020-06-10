@@ -1,4 +1,4 @@
-# CFW - Cuuky FrameWork
+# CFW - CuukyFrameWork
 ### A powerful bukkit framework that runs on 1.7+ and makes coding with bukkit less painful
 
 ## Dear developers
