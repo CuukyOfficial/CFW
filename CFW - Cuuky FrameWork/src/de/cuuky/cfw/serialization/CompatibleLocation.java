@@ -38,6 +38,8 @@ public class CompatibleLocation implements ConfigurationSerializable {
 	}
 
 	public static CompatibleLocation deserialize(Map<String, Object> args) {
-		return new CompatibleLocation((String) args.get("world"), (double) args.get("x"), (double) args.get("y"), (double) args.get("z"), (float) args.get("yaw"), (float) args.get("pitch"));
+		Number yaw = (Number) args.get("yaw"),  pitch = (Number) args.get("pitch");
+		
+		return new CompatibleLocation((String) args.get("world"), (double) args.get("x"), (double) args.get("y"), (double) args.get("z"), yaw.floatValue(), pitch.floatValue());
 	}
 }
