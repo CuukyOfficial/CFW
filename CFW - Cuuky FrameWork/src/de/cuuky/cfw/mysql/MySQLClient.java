@@ -30,6 +30,45 @@ public class MySQLClient {
 		this.asyncRequestHandler.start();
 	}
 
+	private void startConnecting() {
+		new Thread(() -> {
+			while (true) {
+				if (isConnected()) {
+					try {
+						Thread.sleep(10);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					continue;
+				}
+
+				try {
+					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":3306/" + database + "?autoReconnect=true", user, password);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.err.println("[MySQL] MYSQL USERNAME, IP ODER PASSWORT FALSCH!");
+				}
+			}
+		}).start();
+	}
+
+	private boolean getQuery(MySQLRequest mqr) {
+		if (!isConnected())
+			return false;
+
+		try {
+			PreparedStatement statement = connection.prepareStatement(mqr.getSql());
+			mqr.getHandler().onStatementPrepared(statement);
+			mqr.doRequest(statement);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.err.println("[MySQL] Connection to MySQL-Database lost!");
+			return false;
+		}
+
+		return true;
+	}
+
 	private void prepareAsyncHandler() {
 		this.asyncRequestHandler = new Thread(() -> {
 			while (true) {
@@ -61,28 +100,6 @@ public class MySQLClient {
 		});
 	}
 
-	private void startConnecting() {
-		new Thread(() -> {
-			while (true) {
-				if (isConnected()) {
-					try {
-						Thread.sleep(10);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					continue;
-				}
-
-				try {
-					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":3306/" + database + "?autoReconnect=true", user, password);
-				} catch (SQLException e) {
-					e.printStackTrace();
-					System.err.println("[MySQL] MYSQL USERNAME, IP ODER PASSWORT FALSCH!");
-				}
-			}
-		}).start();
-	}
-
 	public void disconnect() {
 		if (!isConnected())
 			return;
@@ -94,23 +111,6 @@ public class MySQLClient {
 		}
 
 		this.connection = null;
-	}
-
-	private boolean getQuery(MySQLRequest mqr) {
-		if (!isConnected())
-			return false;
-
-		try {
-			PreparedStatement statement = connection.prepareStatement(mqr.getSql());
-			mqr.getHandler().onStatementPrepared(statement);
-			mqr.doRequest(statement);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.err.println("[MySQL] Connection to MySQL-Database lost!");
-			return false;
-		}
-
-		return true;
 	}
 
 	public boolean getQuery(String query, PreparedStatementHandler handler) {
