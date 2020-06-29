@@ -11,12 +11,17 @@ import java.util.concurrent.Executors;
 import de.cuuky.cfw.mysql.request.PreparedStatementHandler;
 
 public class MySQLClient {
+	
+	private static final ExecutorService THREAD_POOL;
+	
+	static {
+		THREAD_POOL = Executors.newCachedThreadPool();
+	}
 
 	private Connection connection;
 	private String host, database, user, password;
 	private int port;
 
-	private ExecutorService threadPool;
 	private volatile CopyOnWriteArrayList<MySQLRequest> queries;
 
 	public MySQLClient(String host, int port, String database, String user, String password) {
@@ -26,14 +31,13 @@ public class MySQLClient {
 		this.user = user;
 		this.password = password;
 		this.queries = new CopyOnWriteArrayList<MySQLRequest>();
-		this.threadPool = Executors.newCachedThreadPool();
 
 		startConnecting();
-		this.threadPool.execute(this::prepareAsyncHandler);
+		THREAD_POOL.execute(this::prepareAsyncHandler);
 	}
 
 	private void startConnecting() {
-		threadPool.execute(() -> {
+		THREAD_POOL.execute(() -> {
 			while (true) {
 				if (isConnected()) {
 					try {
@@ -87,7 +91,7 @@ public class MySQLClient {
 			for (int i = loop.length - 1; i != 0; i--) {
 				MySQLRequest mqr = loop[i];
 				queries.remove(mqr);
-				threadPool.execute(() -> {
+				THREAD_POOL.execute(() -> {
 					if (!getQuery(mqr))
 						queries.add(mqr);
 				});
