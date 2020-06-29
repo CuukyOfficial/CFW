@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -29,32 +28,27 @@ public class MySQLClient {
 		this.queries = new CopyOnWriteArrayList<MySQLRequest>();
 		this.threadPool = Executors.newCachedThreadPool();
 
-		Runnable handler = getPrepareAsyncHandler();
 		startConnecting();
-		this.threadPool.execute(handler);
+		this.threadPool.execute(this::prepareAsyncHandler);
 	}
 
 	private void startConnecting() {
-		threadPool.execute(new Runnable() {
-
-			@Override
-			public void run() {
-				while (true) {
-					if (isConnected()) {
-						try {
-							Thread.sleep(50);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-						continue;
-					}
-
+		threadPool.execute(() -> {
+			while (true) {
+				if (isConnected()) {
 					try {
-						connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", user, password);
-					} catch (SQLException e) {
+						Thread.sleep(50);
+					} catch (InterruptedException e) {
 						e.printStackTrace();
-						System.err.println("[MySQL] Couldn't connect to mysql database!");
 					}
+					continue;
+				}
+
+				try {
+					connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", user, password);
+				} catch (SQLException e) {
+					e.printStackTrace();
+					System.err.println("[MySQL] Couldn't connect to MySQL-Database!");
 				}
 			}
 		});
@@ -78,37 +72,27 @@ public class MySQLClient {
 		return true;
 	}
 
-	private Runnable getPrepareAsyncHandler() {
-		return new Runnable() {
-
-			@Override
-			public void run() {
-				while (true) {
-					try {
-						Thread.sleep(isConnected() ? 10 : 100);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-
-					if (!isConnected())
-						continue;
-
-					ArrayList<MySQLRequest> loop = new ArrayList<>(queries);
-					for (int i = loop.size() - 1; i != 0; i--) {
-						MySQLRequest mqr = loop.get(i);
-						queries.remove(mqr);
-						threadPool.execute(new Runnable() {
-
-							@Override
-							public void run() {
-								if (!getQuery(mqr))
-									queries.add(mqr);
-							}
-						});
-					}
-				}
+	private Runnable prepareAsyncHandler() {
+		while (true) {
+			try {
+				Thread.sleep(isConnected() ? 10 : 100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		};
+
+			if (!isConnected())
+				continue;
+
+			MySQLRequest[] loop = queries.toArray(new MySQLRequest[0]);
+			for (int i = loop.length - 1; i != 0; i--) {
+				MySQLRequest mqr = loop[i];
+				queries.remove(mqr);
+				threadPool.execute(() -> {
+					if (!getQuery(mqr))
+						queries.add(mqr);
+				});
+			}
+		}
 	}
 
 	public void disconnect() {
