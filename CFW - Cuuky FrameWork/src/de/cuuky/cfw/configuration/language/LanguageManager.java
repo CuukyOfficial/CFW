@@ -5,7 +5,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.cuuky.cfw.configuration.language.broadcast.MessageHolder;
@@ -112,11 +111,11 @@ public class LanguageManager extends FrameworkManager {
 
 	public MessageHolder broadcastMessage(LoadableMessage message, CustomPlayer replace, MessagePlaceholderManager placeholderManager, ArrayList<CustomLanguagePlayer> players) {
 		MessageHolder holder = new MessageHolder(placeholderManager);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(ownerInstance, new Runnable() {
+		this.ownerInstance.getServer().getScheduler().scheduleSyncDelayedTask(ownerInstance, new Runnable() {
 
 			@Override
 			public void run() {
-				Bukkit.getConsoleSender().sendMessage(holder.getReplaced(getMessage(message.getPath(), defaultLanguage.getName()), replace));
+				ownerInstance.getServer().getConsoleSender().sendMessage(holder.getReplaced(getMessage(message.getPath(), defaultLanguage.getName()), replace));
 				for (CustomLanguagePlayer player : players)
 					if (player.getPlayer() != null)
 						player.getPlayer().sendMessage(holder.getReplaced(getMessage(message.getPath(), ((CustomPlayer) player).getLocale()), replace != null ? replace : (CustomPlayer) player));

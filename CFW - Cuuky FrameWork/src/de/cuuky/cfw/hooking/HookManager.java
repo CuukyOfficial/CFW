@@ -2,7 +2,6 @@ package de.cuuky.cfw.hooking;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,7 +21,7 @@ public class HookManager extends FrameworkManager {
 		super(FrameworkManagerType.HOOKING, ownerInstance);
 		
 		this.hooks = new ArrayList<>();
-		Bukkit.getPluginManager().registerEvents(new HookListener(this), ownerInstance);
+		this.ownerInstance.getServer().getPluginManager().registerEvents(new HookListener(this), ownerInstance);
 	}
 
 	public HookEntity registerHook(HookEntity hook) {

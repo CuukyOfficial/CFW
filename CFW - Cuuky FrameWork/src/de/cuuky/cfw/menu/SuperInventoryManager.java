@@ -2,7 +2,6 @@ package de.cuuky.cfw.menu;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -18,7 +17,7 @@ public class SuperInventoryManager extends FrameworkManager {
 		super(FrameworkManagerType.INVENTORY, ownerInstance);
 		
 		this.inventories = new ArrayList<>();
-		Bukkit.getPluginManager().registerEvents(new InventoryListener(this), ownerInstance);
+		this.ownerInstance.getServer().getPluginManager().registerEvents(new InventoryListener(this), ownerInstance);
 	}
 
 	public SuperInventory registerInventory(SuperInventory inventory) {

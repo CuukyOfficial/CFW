@@ -3,7 +3,6 @@ package de.cuuky.cfw.clientadapter.board.scoreboard;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -110,7 +109,7 @@ public final class CustomScoreboard extends CustomBoard {
 	}
 
 	public void sendScoreBoard() {
-		Scoreboard sb = Bukkit.getServer().getScoreboardManager().getNewScoreboard();
+		Scoreboard sb = this.manager.getOwnerInstance().getServer().getScoreboardManager().getNewScoreboard();
 		Objective obj = sb.registerNewObjective("silent", "dummy");
 		this.title = this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer());
 

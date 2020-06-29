@@ -2,7 +2,6 @@ package de.cuuky.cfw.clientadapter.board.nametag;
 
 import java.lang.reflect.Method;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
@@ -57,7 +56,7 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	public void startDelayedRefresh() {
-		Bukkit.getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
+		this.manager.getOwnerInstance().getServer().getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
 
 			@Override
 			public void run() {

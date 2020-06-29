@@ -141,7 +141,7 @@ public class PlayerChooseInventory {
 
 				event.setCancelled(true);
 
-				Player choosen = Bukkit.getPlayerExact(displayname.replaceFirst("§c", ""));
+				Player choosen = instance.getPluginInstance().getServer().getPlayerExact(displayname.replaceFirst("§c", ""));
 				handler.onPlayerChoose(new PlayerChooseEvent(choosen, displayname.equals("§aChoose all")));
 
 				player.closeInventory();
@@ -156,7 +156,7 @@ public class PlayerChooseInventory {
 			}
 		};
 
-		Bukkit.getPluginManager().registerEvents(listener, this.instance.getPluginInstance());
+		instance.getPluginInstance().getServer().getPluginManager().registerEvents(listener, this.instance.getPluginInstance());
 	}
 
 	private void open() {

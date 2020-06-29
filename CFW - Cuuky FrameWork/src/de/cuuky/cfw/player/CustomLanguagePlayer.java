@@ -1,7 +1,5 @@
 package de.cuuky.cfw.player;
 
-import org.bukkit.Bukkit;
-
 import de.cuuky.cfw.configuration.language.LanguageManager;
 import de.cuuky.cfw.configuration.language.broadcast.MessageHolder;
 import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
@@ -11,7 +9,7 @@ public abstract class CustomLanguagePlayer implements CustomPlayer {
 	
 	public MessageHolder sendTranslatedMessage(LoadableMessage message, CustomPlayer replace,  MessagePlaceholderManager placeholder, LanguageManager languageManager) {
 		MessageHolder holder = new MessageHolder(placeholder);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(placeholder.getOwnerInstance(), new Runnable() {
+		placeholder.getOwnerInstance().getServer().getScheduler().scheduleSyncDelayedTask(placeholder.getOwnerInstance(), new Runnable() {
 
 			@Override
 			public void run() {
