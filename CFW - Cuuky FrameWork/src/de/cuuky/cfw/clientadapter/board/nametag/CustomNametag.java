@@ -1,8 +1,6 @@
 package de.cuuky.cfw.clientadapter.board.nametag;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -18,15 +16,16 @@ import de.cuuky.cfw.version.VersionUtils;
 public class CustomNametag extends CustomBoard {
 
 	private static Class<?> visibilityClass;
-	private static Method setVisibilityMethod, getVisibilityMethod;
+	private static Method setVisibilityMethod;
+	private static Object visibilityNever, visibilityAlways;
 
 	static {
 		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
 			try {
 				visibilityClass = Class.forName("org.bukkit.scoreboard.NameTagVisibility");
-
+				visibilityNever = visibilityClass.getDeclaredField("NEVER").get(null);
+				visibilityAlways = visibilityClass.getDeclaredField("ALWAYS").get(null);
 				setVisibilityMethod = Team.class.getDeclaredMethod("setNameTagVisibility", visibilityClass);
-				getVisibilityMethod = Team.class.getDeclaredMethod("getNameTagVisibility");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -34,8 +33,7 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	private String name, prefix, suffix, oldName;
-	private boolean visibilityEnabled;
-	private Object visibility;
+	private boolean initalized, nametagShown;
 
 	public CustomNametag(CustomPlayer player) {
 		super(CustomBoardType.NAMETAG, player);
@@ -43,15 +41,19 @@ public class CustomNametag extends CustomBoard {
 
 	@Override
 	public void onEnable() {
-		this.visibilityEnabled = true;
+		this.nametagShown = true;
+		Scoreboard sb = player.getPlayer().getScoreboard();
+		if (sb.getTeams().size() > 0)
+			for (int i = sb.getTeams().size() - 1; i != 0; i--) {
+				Team team = (Team) sb.getTeams().toArray()[i];
+				try {
+					if (!team.getName().startsWith("team-"))
+						team.unregister();
+				} catch (IllegalStateException e) {}
+			}
 
-		
-		for (Team team : new ArrayList<>(this.player.getPlayer().getScoreboard().getTeams())) {
-			try {
-				if (!team.getName().startsWith("team-"))
-					team.unregister();
-			} catch (IllegalStateException e) {}
-		}
+		giveAll();
+		this.initalized = true;
 	}
 
 	public void startDelayedRefresh() {
@@ -69,8 +71,7 @@ public class CustomNametag extends CustomBoard {
 		if (newName.startsWith("team-"))
 			throw new IllegalArgumentException("Player nametag name cannot start with 'team-'");
 
-		String newPrefix = this.getUpdateHandler().getNametagPrefix(player.getPlayer());
-		String newSuffix = this.getUpdateHandler().getNametagSuffix(player.getPlayer());
+		String newPrefix = this.getUpdateHandler().getNametagPrefix(player.getPlayer()), newSuffix = this.getUpdateHandler().getNametagSuffix(player.getPlayer());
 		if (newName.length() > 16)
 			newName = newName.substring(0, 16);
 
@@ -80,7 +81,8 @@ public class CustomNametag extends CustomBoard {
 		if (newSuffix.length() > 16)
 			newSuffix = newSuffix.substring(0, 16);
 
-		boolean changed = name == null || !newName.equals(name) || !newPrefix.equals(prefix) || !newSuffix.equals(suffix);
+		boolean newNametagShown = this.getUpdateHandler().isNametagVisible(player.getPlayer());
+		boolean changed = name == null || !newName.equals(name) || !newPrefix.equals(prefix) || !newSuffix.equals(suffix) || newNametagShown != this.nametagShown;
 		if (!changed)
 			return false;
 
@@ -88,41 +90,9 @@ public class CustomNametag extends CustomBoard {
 		this.name = newName;
 		this.prefix = newPrefix;
 		this.suffix = newSuffix;
+		this.nametagShown = newNametagShown;
 
-		return changed;
-	}
-
-	private Object getVisibility(Team team) {
-		try {
-			return getVisibilityMethod.invoke(team);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private void setVisibility(Team team) {
-		if (!visibilityEnabled)
-			return;
-
-		if (visibility == null) {
-			try {
-				this.visibility = !this.getUpdateHandler().isNametagVisible(player.getPlayer()) ? visibilityClass.getDeclaredField("NEVER").get(null) : visibilityClass.getDeclaredField("ALWAYS").get(null);
-			} catch (Exception e) {
-				this.visibilityEnabled = false;
-				return;
-			}
-		}
-
-		if (getVisibility(team).equals(visibility))
-			return;
-
-		try {
-			setVisibilityMethod.invoke(team, visibility);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		return true;
 	}
 
 	@SuppressWarnings("deprecation")
@@ -138,13 +108,12 @@ public class CustomNametag extends CustomBoard {
 		}
 
 		Team team = board.getTeam(nametag.getName());
-
 		if (team == null) {
 			team = board.registerNewTeam(nametag.getName());
 			team.addPlayer(nametag.getPlayer().getPlayer());
 		}
 
-		setVisibility(team);
+		setVisibility(team, nametag.isNametagShown());
 		if (nametag.getPrefix() != null) {
 			if (team.getPrefix() == null)
 				team.setPrefix(nametag.getPrefix());
@@ -166,13 +135,13 @@ public class CustomNametag extends CustomBoard {
 			return;
 
 		setToAll();
-		giveAll();
 	}
 
 	public void giveAll() {
 		Scoreboard board = player.getPlayer().getScoreboard();
 		for (CustomBoard nametag : this.manager.getBoards(CustomBoardType.NAMETAG))
-			updateFor(board, (CustomNametag) nametag);
+			if (((CustomNametag) nametag).isInitalized())
+				updateFor(board, (CustomNametag) nametag);
 	}
 
 	public void setToAll() {
@@ -194,5 +163,24 @@ public class CustomNametag extends CustomBoard {
 
 	public String getOldName() {
 		return oldName;
+	}
+
+	public boolean isNametagShown() {
+		return nametagShown;
+	}
+
+	public boolean isInitalized() {
+		return initalized;
+	}
+
+	private static void setVisibility(Team team, boolean shown) {
+		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
+			return;
+
+		try {
+			setVisibilityMethod.invoke(team, shown ? visibilityAlways : visibilityNever);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
