@@ -4,7 +4,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -153,25 +152,24 @@ public class NetworkManager {
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void sendActionbar(String message, int duration, Plugin instance) {
 		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
 			return;
 		
-		Bukkit.getScheduler().scheduleAsyncRepeatingTask(instance, new BukkitRunnable() {
+		new BukkitRunnable() {
 			
 			private int count;
 			
 			@Override
 			public void run() {
-				count++;
-				
 				sendActionbar(message);
 				
 				if(count >= duration)
 					this.cancel();
+				
+				count++;
 			}
-		}, 0, 20);
+		}.runTaskTimerAsynchronously(instance, 0, 20);
 	}
 
 	public void sendActionbar(String message) {
