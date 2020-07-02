@@ -6,8 +6,8 @@ public interface CFWSerializeable {
 	 * To mark classes
 	 */
 
-	void onDeserializeEnd();
-
 	void onSerializeStart();
+	
+	void onDeserializeEnd();
 
 }
