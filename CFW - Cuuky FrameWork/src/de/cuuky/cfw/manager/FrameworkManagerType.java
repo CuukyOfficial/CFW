@@ -6,6 +6,7 @@ import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.menu.SuperInventoryManager;
 import de.cuuky.cfw.player.LanguagePlayerManager;
+import de.cuuky.cfw.serialize.VaroSerializeHandler;
 
 public enum FrameworkManagerType {
 
@@ -14,7 +15,8 @@ public enum FrameworkManagerType {
 	INVENTORY(SuperInventoryManager.class),
 	HOOKING(HookManager.class),
 	CLIENT_ADAPTER(ClientAdapterManager.class),
-	PLAYER(LanguagePlayerManager.class);
+	PLAYER(LanguagePlayerManager.class),
+	SERIALIZE(VaroSerializeHandler.class);
 
 	private Class<? extends FrameworkManager> manager;
 
