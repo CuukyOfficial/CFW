@@ -1,4 +1,4 @@
-package de.cuuky.cfw.serialize.identifier;
+package de.cuuky.cfw.serialize.identifiers;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

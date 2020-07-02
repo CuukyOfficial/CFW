@@ -1,4 +1,4 @@
-package de.cuuky.cfw.serialize.identifier;
+package de.cuuky.cfw.serialize.identifiers;
 
 public class NullClass implements CFWSerializeable {
 
@@ -11,4 +11,5 @@ public class NullClass implements CFWSerializeable {
 
 	@Override
 	public void onSerializeStart() {}
+
 }

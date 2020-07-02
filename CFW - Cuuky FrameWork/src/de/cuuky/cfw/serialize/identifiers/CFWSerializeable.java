@@ -1,13 +1,13 @@
-package de.cuuky.cfw.serialize.identifier;
+package de.cuuky.cfw.serialize.identifiers;
 
 public interface CFWSerializeable {
 
 	/**
 	 * To mark classes
 	 */
-
-	void onSerializeStart();
 	
 	void onDeserializeEnd();
+
+	void onSerializeStart();
 
 }
