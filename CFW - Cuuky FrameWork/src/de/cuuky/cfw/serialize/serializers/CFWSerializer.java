@@ -1,6 +1,9 @@
 package de.cuuky.cfw.serialize.serializers;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -24,9 +27,10 @@ public class CFWSerializer {
 	public void serialize() {
 		serializeable.onSerializeStart();
 		FieldLoader loader = manager.loadClass(serializeable.getClass());
-		System.out.println(serializeable.getClass());
-		System.out.println(loader);
-		fieldLoop: for (String saveLocation : loader.getFields().keySet()) {
+		List<String> keys = loader.getFields().keySet().stream().collect(Collectors.toList());
+		Collections.reverse(keys);
+		
+		fieldLoop: for (String saveLocation : keys) {
 			Field field = loader.getFields().get(saveLocation);
 			field.setAccessible(true);
 			Object value = null;

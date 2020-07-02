@@ -19,7 +19,7 @@ public class CFWSerializeableSerializer extends CFWSerializeType {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
-		if (!field.getType().isAssignableFrom(CFWSerializeable.class) || !section.isConfigurationSection(key))
+		if (!CFWSerializeable.class.isAssignableFrom(field.getType()) || !section.isConfigurationSection(key))
 			return null;
 
 		return new CFWDeserializer(manager, section.getConfigurationSection(key), instance, (Class<? extends CFWSerializeable>) field.getType()).deserialize();
