@@ -19,7 +19,7 @@ public class CFWSerializeableSerializer extends CFWSerializeType {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
-		if (!CFWSerializeable.class.isAssignableFrom(field.getType()) || !section.isConfigurationSection(key))
+		if (!CFWSerializeable.class.isAssignableFrom(field.getType()) || !section.isConfigurationSection(key) || field.getType().isEnum())
 			return null;
 
 		return new CFWDeserializer(manager, section.getConfigurationSection(key), instance, (Class<? extends CFWSerializeable>) field.getType()).deserialize();
@@ -27,9 +27,9 @@ public class CFWSerializeableSerializer extends CFWSerializeType {
 
 	@Override
 	public boolean serialize(CFWSerializeable instance, Field field, Object value, String saveLocation, ConfigurationSection section) {
-		if(!(value instanceof CFWSerializeable))
+		if (!(value instanceof CFWSerializeable) || field.getType().isEnum())
 			return false;
-		
+
 		new CFWSerializer(manager, section.createSection(saveLocation), (CFWSerializeable) value).serialize();
 		return true;
 	}

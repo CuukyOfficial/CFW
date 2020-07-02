@@ -64,7 +64,7 @@ public class CFWSerializeManager extends FrameworkManager {
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 
 		for (T serializeable : list)
-			saveSerializeable(visit.onVisit(serializeable), (CFWSerializeable) serializeable, config);
+			saveSerializeable(visit.onKeySave(serializeable), (CFWSerializeable) serializeable, config);
 
 		try {
 			config.save(file);
@@ -93,7 +93,7 @@ public class CFWSerializeManager extends FrameworkManager {
 
 	public static abstract class SaveVisit<T> {
 
-		public abstract String onVisit(T object);
+		public abstract String onKeySave(T object);
 
 	}
 }
