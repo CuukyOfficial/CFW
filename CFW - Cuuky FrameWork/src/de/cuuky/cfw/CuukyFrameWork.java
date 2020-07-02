@@ -13,7 +13,7 @@ import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.SuperInventoryManager;
-import de.cuuky.cfw.serialize.VaroSerializeHandler;
+import de.cuuky.cfw.serialize.CFWSerializeManager;
 
 public class CuukyFrameWork {
 
@@ -79,7 +79,7 @@ public class CuukyFrameWork {
 		return (MessagePlaceholderManager) this.manager.get(FrameworkManagerType.PLACEHOLDER);
 	}
 
-	public VaroSerializeHandler getSerializeManager() {
-		return (VaroSerializeHandler) this.manager.get(FrameworkManagerType.SERIALIZE);
+	public CFWSerializeManager getSerializeManager() {
+		return (CFWSerializeManager) this.manager.get(FrameworkManagerType.SERIALIZE);
 	}
 }
