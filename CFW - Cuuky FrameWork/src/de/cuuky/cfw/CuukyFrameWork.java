@@ -1,7 +1,6 @@
 package de.cuuky.cfw;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,15 +28,17 @@ public class CuukyFrameWork {
 	private HashMap<FrameworkManagerType, FrameworkManager> manager;
 
 	public CuukyFrameWork(JavaPlugin pluginInstance) {
-		this(pluginInstance, new ArrayList<>());
+		this(pluginInstance, new FrameworkManager[0]);
 	}
 
-	public CuukyFrameWork(JavaPlugin pluginInstance, ArrayList<FrameworkManager> manager) {
+	public CuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
 		this.ownerInstance = pluginInstance;
 		this.manager = new HashMap<>();
 		this.consolePrefix = "[" + pluginInstance.getName() + "] ";
 
-		manager.forEach(manage -> this.manager.put(manage.getType(), manage));
+		for (FrameworkManager fm : manager)
+			this.manager.put(fm.getType(), fm);
+
 		for (FrameworkManagerType type : FrameworkManagerType.values()) {
 			if (this.manager.containsKey(type))
 				continue;
@@ -54,7 +55,7 @@ public class CuukyFrameWork {
 	public JavaPlugin getPluginInstance() {
 		return this.ownerInstance;
 	}
-	
+
 	public String getConsolePrefix() {
 		return consolePrefix;
 	}
