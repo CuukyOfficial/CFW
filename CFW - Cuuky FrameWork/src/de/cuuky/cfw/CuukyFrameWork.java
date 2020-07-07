@@ -40,6 +40,7 @@ public class CuukyFrameWork<T extends CustomPlayer> {
 		for (FrameworkManager fm : manager)
 			this.manager.put(fm.getType(), fm);
 
+		// Maybe remove this and only create manager on need
 		for (FrameworkManagerType type : FrameworkManagerType.values()) {
 			if (this.manager.containsKey(type))
 				continue;
