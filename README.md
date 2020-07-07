@@ -5,6 +5,8 @@
 In the following I will show you the advantages of using my FrameWork and how much work it can save.
 I love feedback and suggestions to improve my framework, but please, leave the coding to me.
 I won't accept any pull requests.
+This framework has been updated very frequently over the last weeks, it has some new sweet features like a serializer (and more)
+but I'm too lazy to log that here.
 
 ## Why should I use it for my plugin?
 #### **CFW** makes it much easier to make your plugin 1.7+ compatible by having following included:
