@@ -10,7 +10,7 @@ public class LanguagePlayerManager extends FrameworkManager {
 	
 	private ArrayList<CustomLanguagePlayer> players;
 
-	public LanguagePlayerManager(CuukyFrameWork framework) {
+	public LanguagePlayerManager(CuukyFrameWork<?> framework) {
 		super(FrameworkManagerType.PLAYER, framework);
 		
 		this.players = new ArrayList<>();

@@ -21,11 +21,11 @@ public class LanguageManager extends FrameworkManager {
 	private HashMap<String, Language> languages;
 	private HashMap<String, String> defaultMessages;
 
-	public LanguageManager(CuukyFrameWork framework) {
+	public LanguageManager(CuukyFrameWork<?> framework) {
 		this("plugins/" + framework.getPluginInstance().getName() + "/languages/", "en_us", framework);
 	}
 
-	public LanguageManager(String languagesPath, String fallbackLocale, CuukyFrameWork framework) {
+	public LanguageManager(String languagesPath, String fallbackLocale, CuukyFrameWork<?> framework) {
 		super(FrameworkManagerType.LANGUAGE, framework);
 
 		this.languagePath = languagesPath;

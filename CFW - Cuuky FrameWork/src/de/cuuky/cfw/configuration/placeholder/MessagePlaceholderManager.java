@@ -18,7 +18,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 	private HashMap<PlaceholderType, ArrayList<MessagePlaceholder>> placeholders;
 	private HashMap<PlaceholderType, HashMap<String, ArrayList<MessagePlaceholder>>> cachedRequests;
 
-	public MessagePlaceholderManager(CuukyFrameWork framework) {
+	public MessagePlaceholderManager(CuukyFrameWork<?> framework) {
 		super(FrameworkManagerType.PLACEHOLDER, framework);
 
 		this.tickTolerance = 900;

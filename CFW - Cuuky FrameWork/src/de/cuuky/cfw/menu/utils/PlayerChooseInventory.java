@@ -85,7 +85,7 @@ public class PlayerChooseInventory {
 
 	}
 
-	private CuukyFrameWork instance;
+	private CuukyFrameWork<?> instance;
 
 	@SuppressWarnings("unused")
 	private PlayerChooseHandler chooseHandler;
@@ -101,11 +101,11 @@ public class PlayerChooseInventory {
 
 	private int size;
 
-	public PlayerChooseInventory(Player player, Player[] players, PlayerChooseHandler handler, CuukyFrameWork instance) {
+	public PlayerChooseInventory(Player player, Player[] players, PlayerChooseHandler handler, CuukyFrameWork<?> instance) {
 		this(player, players, handler, null, instance);
 	}
 
-	public PlayerChooseInventory(Player player, Player[] players, PlayerChooseHandler handler, PlayerInventoryHandler invHandler, CuukyFrameWork instance) {
+	public PlayerChooseInventory(Player player, Player[] players, PlayerChooseHandler handler, PlayerInventoryHandler invHandler, CuukyFrameWork<?> instance) {
 		this.player = player;
 		this.chooseHandler = handler;
 		this.size = 54;

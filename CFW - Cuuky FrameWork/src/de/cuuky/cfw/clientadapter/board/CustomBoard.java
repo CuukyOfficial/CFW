@@ -3,15 +3,15 @@ package de.cuuky.cfw.clientadapter.board;
 import de.cuuky.cfw.clientadapter.ClientAdapterManager;
 import de.cuuky.cfw.player.CustomPlayer;
 
-public abstract class CustomBoard {
+public abstract class CustomBoard<T extends CustomPlayer> {
 
-	protected ClientAdapterManager manager;
-	protected CustomPlayer player;
+	protected ClientAdapterManager<T> manager;
+	protected T player;
 	protected boolean enabled;
 
 	private CustomBoardType boardType;
 
-	public CustomBoard(CustomBoardType boardType, CustomPlayer player) {
+	public CustomBoard(CustomBoardType boardType, T player) {
 		this.player = player;
 		this.boardType = boardType;
 		this.enabled = true;
@@ -25,7 +25,7 @@ public abstract class CustomBoard {
 		this.manager.unregisterBoard(this);
 	}
 
-	public void setManager(ClientAdapterManager manager) {
+	public void setManager(ClientAdapterManager<T> manager) {
 		this.manager = manager;
 
 		if (this.manager.isBoardTypeEnabled(this.boardType)) {
@@ -49,7 +49,7 @@ public abstract class CustomBoard {
 		this.enabled = enabled;
 	}
 
-	public BoardUpdateHandler getUpdateHandler() {
+	public BoardUpdateHandler<T> getUpdateHandler() {
 		return this.manager.getUpdateHandler();
 	}
 

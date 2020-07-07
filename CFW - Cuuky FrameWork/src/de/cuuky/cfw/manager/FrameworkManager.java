@@ -7,10 +7,10 @@ import de.cuuky.cfw.CuukyFrameWork;
 public class FrameworkManager {
 	
 	protected JavaPlugin ownerInstance;
-	protected CuukyFrameWork framework;
+	protected CuukyFrameWork<?> framework;
 	protected FrameworkManagerType type;
 	
-	public FrameworkManager(FrameworkManagerType type, CuukyFrameWork framework) {
+	public FrameworkManager(FrameworkManagerType type, CuukyFrameWork<?> framework) {
 		this.type = type;
 		this.framework = framework;
 		this.ownerInstance = framework.getPluginInstance();
@@ -24,7 +24,7 @@ public class FrameworkManager {
 		return this.type;
 	}
 	
-	public CuukyFrameWork getFramework() {
+	public CuukyFrameWork<?> getFramework() {
 		return framework;
 	}
 }

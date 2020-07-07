@@ -13,12 +13,12 @@ import de.cuuky.cfw.clientadapter.board.CustomBoard;
 import de.cuuky.cfw.clientadapter.board.CustomBoardType;
 import de.cuuky.cfw.player.CustomPlayer;
 
-public final class CustomScoreboard extends CustomBoard {
+public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<T> {
 
 	private ArrayList<String> replaces;
 	private String title;
 
-	public CustomScoreboard(CustomPlayer player) {
+	public CustomScoreboard(T player) {
 		super(CustomBoardType.SCOREBOARD, player);
 	}
 
@@ -71,7 +71,7 @@ public final class CustomScoreboard extends CustomBoard {
 
 	@Override
 	protected void onUpdate() {
-		ArrayList<String> scoreboardLines = this.getUpdateHandler().getScoreboardEntries(this.player.getPlayer());
+		ArrayList<String> scoreboardLines = this.getUpdateHandler().getScoreboardEntries(this.player);
 		Collections.reverse(scoreboardLines);
 		
 		Scoreboard board = player.getPlayer().getScoreboard();
@@ -111,7 +111,7 @@ public final class CustomScoreboard extends CustomBoard {
 	public void sendScoreBoard() {
 		Scoreboard sb = this.manager.getOwnerInstance().getServer().getScoreboardManager().getNewScoreboard();
 		Objective obj = sb.registerNewObjective("silent", "dummy");
-		this.title = this.getUpdateHandler().getScoreboardTitle(this.player.getPlayer());
+		this.title = this.getUpdateHandler().getScoreboardTitle(this.player);
 
 		if (this.title.length() >= 32)
 			this.title = this.title.substring(0, 32);

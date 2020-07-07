@@ -12,7 +12,7 @@ import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 
-public class CustomNametag extends CustomBoard {
+public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 
 	private static Class<?> visibilityClass;
 	private static Method setVisibilityMethod;
@@ -34,7 +34,7 @@ public class CustomNametag extends CustomBoard {
 	private String name, prefix, suffix, oldName;
 	private boolean initalized, nametagShown;
 
-	public CustomNametag(CustomPlayer player) {
+	public CustomNametag(T player) {
 		super(CustomBoardType.NAMETAG, player);
 	}
 
@@ -66,11 +66,11 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	private boolean refreshPrefix() {
-		String newName = this.getUpdateHandler().getNametagName(player.getPlayer());
+		String newName = this.getUpdateHandler().getNametagName(player);
 		if (newName.startsWith("team-"))
 			throw new IllegalArgumentException("Player nametag name cannot start with 'team-'");
 
-		String newPrefix = this.getUpdateHandler().getNametagPrefix(player.getPlayer()), newSuffix = this.getUpdateHandler().getNametagSuffix(player.getPlayer());
+		String newPrefix = this.getUpdateHandler().getNametagPrefix(player), newSuffix = this.getUpdateHandler().getNametagSuffix(player);
 		if (newName.length() > 16)
 			newName = newName.substring(0, 16);
 
@@ -80,7 +80,7 @@ public class CustomNametag extends CustomBoard {
 		if (newSuffix.length() > 16)
 			newSuffix = newSuffix.substring(0, 16);
 
-		boolean newNametagShown = this.getUpdateHandler().isNametagVisible(player.getPlayer());
+		boolean newNametagShown = this.getUpdateHandler().isNametagVisible(player);
 		boolean changed = name == null || !newName.equals(name) || !newPrefix.equals(prefix) || !newSuffix.equals(suffix) || newNametagShown != this.nametagShown;
 		if (!changed)
 			return false;
@@ -95,7 +95,7 @@ public class CustomNametag extends CustomBoard {
 	}
 
 	@SuppressWarnings("deprecation")
-	private void updateFor(Scoreboard board, CustomNametag nametag) {
+	private void updateFor(Scoreboard board, CustomNametag<T> nametag) {
 		if (nametag.getName() == null)
 			return;
 
@@ -138,9 +138,9 @@ public class CustomNametag extends CustomBoard {
 
 	public void giveAll() {
 		Scoreboard board = player.getPlayer().getScoreboard();
-		for (CustomBoard nametag : this.manager.getBoards(CustomBoardType.NAMETAG))
-			if (((CustomNametag) nametag).isInitalized())
-				updateFor(board, (CustomNametag) nametag);
+		for (CustomBoard<T> nametag : this.manager.getBoards(CustomBoardType.NAMETAG))
+			if (((CustomNametag<T>) nametag).isInitalized())
+				updateFor(board, (CustomNametag<T>) nametag);
 	}
 
 	public void setToAll() {

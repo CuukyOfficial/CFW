@@ -17,7 +17,7 @@ public class HookManager extends FrameworkManager {
 
 	private ArrayList<HookEntity> hooks;
 
-	public HookManager(CuukyFrameWork framework) {
+	public HookManager(CuukyFrameWork<?> framework) {
 		super(FrameworkManagerType.HOOKING, framework);
 		
 		this.hooks = new ArrayList<>();

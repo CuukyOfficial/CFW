@@ -12,14 +12,14 @@ import de.cuuky.cfw.utils.JavaUtils;
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 
-public class CustomTablist extends CustomBoard {
+public class CustomTablist<T extends CustomPlayer> extends CustomBoard<T> {
 
 	private HashMap<Player, ArrayList<String>> headerReplaces;
 	private HashMap<Player, ArrayList<String>> footerReplaces;
 
 	private String tabname;
 
-	public CustomTablist(CustomPlayer player) {
+	public CustomTablist(T player) {
 		super(CustomBoardType.TABLIST, player);
 	}
 
@@ -29,8 +29,8 @@ public class CustomTablist extends CustomBoard {
 		this.footerReplaces = new HashMap<>();
 	}
 
-	private Object[] updateList(CustomPlayer player, boolean header) {
-		ArrayList<String> tablistLines = header ? this.getUpdateHandler().getTablistHeader(player.getPlayer()) : this.getUpdateHandler().getTablistFooter(player.getPlayer()), oldList = null;
+	private Object[] updateList(T player, boolean header) {
+		ArrayList<String> tablistLines = header ? this.getUpdateHandler().getTablistHeader(player) : this.getUpdateHandler().getTablistFooter(player), oldList = null;
 
 		if(header) {
 			oldList = headerReplaces.get(player.getPlayer());
@@ -64,7 +64,7 @@ public class CustomTablist extends CustomBoard {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onUpdate() {
-		String tablistname = getUpdateHandler().getTablistName(player.getPlayer());
+		String tablistname = getUpdateHandler().getTablistName(player);
 
 		if(tablistname != null) {
 			int maxlength = BukkitVersion.ONE_8.isHigherThan(VersionUtils.getVersion()) ? 16 : -1;

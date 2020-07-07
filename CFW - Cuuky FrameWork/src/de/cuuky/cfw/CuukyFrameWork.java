@@ -12,9 +12,10 @@ import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.SuperInventoryManager;
+import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
 
-public class CuukyFrameWork {
+public class CuukyFrameWork<T extends CustomPlayer> {
 
 	/*
 	 * CFW - A Bukkit framework
@@ -60,8 +61,9 @@ public class CuukyFrameWork {
 		return consolePrefix;
 	}
 
-	public ClientAdapterManager getClientAdapterManager() {
-		return (ClientAdapterManager) this.manager.get(FrameworkManagerType.CLIENT_ADAPTER);
+	@SuppressWarnings("unchecked")
+	public ClientAdapterManager<T> getClientAdapterManager() {
+		return (ClientAdapterManager<T>) this.manager.get(FrameworkManagerType.CLIENT_ADAPTER);
 	}
 
 	public HookManager getHookManager() {

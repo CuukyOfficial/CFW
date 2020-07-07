@@ -13,7 +13,7 @@ public class SuperInventoryManager extends FrameworkManager {
 
 	private ArrayList<SuperInventory> inventories;
 
-	public SuperInventoryManager(CuukyFrameWork framework) {
+	public SuperInventoryManager(CuukyFrameWork<?> framework) {
 		super(FrameworkManagerType.INVENTORY, framework);
 		
 		this.inventories = new ArrayList<>();

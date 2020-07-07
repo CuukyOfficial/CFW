@@ -28,7 +28,7 @@ public class CFWSerializeManager extends FrameworkManager {
 
 	private ArrayList<CFWSerializeType> serializer;
 
-	public CFWSerializeManager(CuukyFrameWork framework) {
+	public CFWSerializeManager(CuukyFrameWork<?> framework) {
 		super(FrameworkManagerType.SERIALIZE, framework);
 
 		this.loaded = new HashMap<Class<?>, FieldLoader>();

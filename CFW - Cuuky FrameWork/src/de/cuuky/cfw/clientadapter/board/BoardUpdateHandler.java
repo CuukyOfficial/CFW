@@ -2,26 +2,26 @@ package de.cuuky.cfw.clientadapter.board;
 
 import java.util.ArrayList;
 
-import org.bukkit.entity.Player;
+import de.cuuky.cfw.player.CustomPlayer;
 
-public interface BoardUpdateHandler {
+public interface BoardUpdateHandler<T extends CustomPlayer> {
 
-	public ArrayList<String> getTablistHeader(Player player);
+	public ArrayList<String> getTablistHeader(T player);
 
-	public ArrayList<String> getTablistFooter(Player player);
+	public ArrayList<String> getTablistFooter(T player);
 
-	public String getTablistName(Player player);
+	public String getTablistName(T player);
 
-	public String getScoreboardTitle(Player player);
+	public String getScoreboardTitle(T player);
 
-	public ArrayList<String> getScoreboardEntries(Player player);
+	public ArrayList<String> getScoreboardEntries(T player);
 
-	public String getNametagName(Player player);
+	public String getNametagName(T player);
 
-	public String getNametagPrefix(Player player);
+	public String getNametagPrefix(T player);
 
-	public String getNametagSuffix(Player player);
+	public String getNametagSuffix(T player);
 
-	public boolean isNametagVisible(Player player);
+	public boolean isNametagVisible(T player);
 
 }
