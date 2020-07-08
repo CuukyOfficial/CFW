@@ -20,7 +20,7 @@ public class CuukyFrameWork<T extends CustomPlayer> {
 	/*
 	 * CFW - A Bukkit framework
 	 * 
-	 * VERSION: 0.2 (2020) AUTHOR: Cuuky CONTACT: { website: "varoplugin.de",
+	 * VERSION: 0.3 (2020) AUTHOR: Cuuky CONTACT: { website: "varoplugin.de",
 	 * discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
 	 */
 
