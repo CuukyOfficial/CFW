@@ -31,7 +31,7 @@ public abstract class SuperInventory {
 	protected Player opener;
 	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier, fillInventory, animations;
 	protected int page, size;
-	
+
 	protected ItemStack forward, backwards;
 
 	private HashMap<ItemMeta, Runnable> itemlinks;
@@ -46,7 +46,7 @@ public abstract class SuperInventory {
 		this.title = getPageUpdate();
 		this.inv = Bukkit.createInventory(null, size != 54 && setModifier ? size + 9 : size, getPageUpdate());
 		this.itemlinks = new HashMap<ItemMeta, Runnable>();
-		
+
 		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
 		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
 

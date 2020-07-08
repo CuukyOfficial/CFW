@@ -151,22 +151,22 @@ public class NetworkManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendActionbar(String message, int duration, Plugin instance) {
 		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
 			return;
-		
+
 		new BukkitRunnable() {
-			
+
 			private int count;
-			
+
 			@Override
 			public void run() {
 				sendActionbar(message);
-				
-				if(count >= duration)
+
+				if (count >= duration)
 					this.cancel();
-				
+
 				count++;
 			}
 		}.runTaskTimerAsynchronously(instance, 0, 20);

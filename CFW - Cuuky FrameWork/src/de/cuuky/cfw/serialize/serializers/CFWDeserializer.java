@@ -23,14 +23,14 @@ public class CFWDeserializer {
 		this.parent = parent;
 		this.clazz = clazz;
 	}
-	
+
 	public CFWSerializeable deserialize() {
 		CFWSerializeable instance = null;
 		FieldLoader loader = manager.loadClass(clazz);
-		
+
 		try {
 			instance = clazz.getConstructor(parent.getClass()).newInstance(parent);
-		} catch ( NullPointerException | IllegalArgumentException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+		} catch (NullPointerException | IllegalArgumentException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
 			try {
 				instance = clazz.newInstance();
 			} catch (InstantiationException | IllegalAccessException e1) {

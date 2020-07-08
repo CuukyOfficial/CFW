@@ -81,7 +81,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 
 		return placeholder;
 	}
-	
+
 	public MessagePlaceholder unregisterPlaceholder(MessagePlaceholder placeholder) {
 		if (placeholders.containsKey(placeholder.getType()))
 			placeholders.get(placeholder.getType()).remove(placeholder);

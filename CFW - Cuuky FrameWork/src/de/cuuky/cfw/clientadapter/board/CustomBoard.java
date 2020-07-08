@@ -49,10 +49,6 @@ public abstract class CustomBoard<T extends CustomPlayer> {
 		this.enabled = enabled;
 	}
 
-	public BoardUpdateHandler<T> getUpdateHandler() {
-		return this.manager.getUpdateHandler();
-	}
-
 	public CustomPlayer getPlayer() {
 		return player;
 	}

@@ -53,7 +53,7 @@ public class InventoryListener implements Listener {
 				inv.closeInventory();
 				return;
 			case "§4Back":
-//				inv.closeInventory();
+				// inv.closeInventory();
 				inv.back();
 				return;
 			default:

@@ -10,22 +10,23 @@ public class MessageHolder {
 
 	private MessagePlaceholderManager placeholderManager;
 	private HashMap<String, String> replacements;
+
 	public MessageHolder(MessagePlaceholderManager manager) {
 		this.placeholderManager = manager;
 		this.replacements = new HashMap<String, String>();
 	}
-	
+
 	public MessageHolder replace(String needle, String replacement) {
 		replacements.put(needle, replacement);
 		return this;
 	}
-	
+
 	public String getReplaced(String message, CustomPlayer cp) {
-		for(String repl : replacements.keySet()) 
+		for (String repl : replacements.keySet())
 			message = message.replace(repl, replacements.get(repl));
-		
+
 		message = placeholderManager.replacePlaceholders(message, MessagePlaceholderType.GENERAL);
-		if(cp != null)
+		if (cp != null)
 			message = placeholderManager.replacePlaceholders(message, cp, MessagePlaceholderType.PLAYER);
 		return message;
 	}

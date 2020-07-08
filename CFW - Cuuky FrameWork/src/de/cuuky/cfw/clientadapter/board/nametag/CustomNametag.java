@@ -31,16 +31,20 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 		}
 	}
 
-	private String name, prefix, suffix, oldName;
+	// 0 = name, 1 = prefix, 2 = suffix
+	private String[] nametagContent;
+	private String oldName;
 	private boolean initalized, nametagShown;
 
 	public CustomNametag(T player) {
 		super(CustomBoardType.NAMETAG, player);
+
+		this.nametagContent = new String[3];
+		this.nametagShown = true;
 	}
 
 	@Override
 	public void onEnable() {
-		this.nametagShown = true;
 		Scoreboard sb = player.getPlayer().getScoreboard();
 		if (sb.getTeams().size() > 0)
 			for (int i = sb.getTeams().size() - 1; i != 0; i--) {
@@ -66,31 +70,28 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 	}
 
 	private boolean refreshPrefix() {
-		String newName = this.getUpdateHandler().getNametagName(player);
-		if (newName.startsWith("team-"))
+		String newName = this.player.getUpdateHandler().getNametagName();
+		if (newName != null && newName.startsWith("team-"))
 			throw new IllegalArgumentException("Player nametag name cannot start with 'team-'");
 
-		String newPrefix = this.getUpdateHandler().getNametagPrefix(player), newSuffix = this.getUpdateHandler().getNametagSuffix(player);
-		if (newName.length() > 16)
-			newName = newName.substring(0, 16);
+		String[] check = new String[] { newName, this.player.getUpdateHandler().getNametagPrefix(), this.player.getUpdateHandler().getNametagSuffix() };
+		for (int i = 0; i < check.length; i++) {
+			String newContent = check[i];
+			if (newContent == null)
+				continue;
 
-		if (newPrefix.length() > 16)
-			newPrefix = newPrefix.substring(0, 16);
+			if (newContent.length() > 16)
+				check[i] = newContent.substring(0, 16);
+		}
 
-		if (newSuffix.length() > 16)
-			newSuffix = newSuffix.substring(0, 16);
-
-		boolean newNametagShown = this.getUpdateHandler().isNametagVisible(player);
-		boolean changed = name == null || !newName.equals(name) || !newPrefix.equals(prefix) || !newSuffix.equals(suffix) || newNametagShown != this.nametagShown;
+		boolean showNametag = this.player.getUpdateHandler().isNametagVisible();
+		boolean changed = !check.equals(nametagContent) || showNametag != this.nametagShown;
 		if (!changed)
 			return false;
 
-		this.oldName = this.name;
-		this.name = newName;
-		this.prefix = newPrefix;
-		this.suffix = newSuffix;
-		this.nametagShown = newNametagShown;
-
+		this.oldName = nametagContent[0];
+		this.nametagContent = check;
+		this.nametagShown = showNametag;
 		return true;
 	}
 
@@ -99,16 +100,14 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 		if (nametag.getName() == null)
 			return;
 
-		if (nametag.getOldName() != null) {
-			Team oldTeam = board.getTeam(nametag.getOldName());
+		Team oldTeam = board.getTeam(nametag.getOldName() != null ? nametag.getOldName() : this.player.getPlayer().getName());
+		if (oldTeam != null)
+			oldTeam.unregister();
 
-			if (oldTeam != null)
-				oldTeam.unregister();
-		}
-
-		Team team = board.getTeam(nametag.getName());
+		String teamName = nametag.getName() == null ? this.player.getPlayer().getName() : nametag.getName();
+		Team team = board.getTeam(teamName);
 		if (team == null) {
-			team = board.registerNewTeam(nametag.getName());
+			team = board.registerNewTeam(teamName);
 			team.addPlayer(nametag.getPlayer().getPlayer());
 		}
 
@@ -118,14 +117,16 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 				team.setPrefix(nametag.getPrefix());
 			else if (!team.getPrefix().equals(nametag.getPrefix()))
 				team.setPrefix(nametag.getPrefix());
-		}
+		} else
+			team.setPrefix(null);
 
 		if (nametag.getSuffix() != null) {
 			if (team.getSuffix() == null)
 				team.setSuffix(nametag.getSuffix());
 			else if (!team.getSuffix().equals(nametag.getSuffix()))
 				team.setSuffix(nametag.getSuffix());
-		}
+		} else
+			team.setSuffix(null);
 	}
 
 	@Override
@@ -149,15 +150,15 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 	}
 
 	public String getPrefix() {
-		return this.prefix;
+		return this.nametagContent[1];
 	}
 
 	public String getName() {
-		return this.name;
+		return this.nametagContent[0];
 	}
 
 	public String getSuffix() {
-		return this.suffix;
+		return this.nametagContent[2];
 	}
 
 	public String getOldName() {

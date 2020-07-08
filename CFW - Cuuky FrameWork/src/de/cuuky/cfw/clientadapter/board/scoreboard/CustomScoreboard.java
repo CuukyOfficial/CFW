@@ -57,7 +57,7 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 			team = board.registerNewTeam("team-" + name);
 
 		team.setPrefix(line.substring(0, line.length() < firstEndIndex ? line.length() : firstEndIndex));
-		
+
 		int suffixLength = (line.length() > firstEndIndex + 16 ? firstEndIndex + 16 : line.length());
 		team.setSuffix(line.length() > firstEndIndex ? line.substring(firstEndIndex, suffixLength) : "");
 		team.addPlayer(new FakeOfflinePlayer(name));
@@ -71,9 +71,12 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 
 	@Override
 	protected void onUpdate() {
-		ArrayList<String> scoreboardLines = this.getUpdateHandler().getScoreboardEntries(this.player);
+		ArrayList<String> scoreboardLines = this.player.getUpdateHandler().getScoreboardEntries();
+		if (scoreboardLines == null)
+			scoreboardLines = new ArrayList<String>();
+
 		Collections.reverse(scoreboardLines);
-		
+
 		Scoreboard board = player.getPlayer().getScoreboard();
 		Objective objective = board.getObjective(DisplaySlot.SIDEBAR);
 
@@ -110,14 +113,15 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 
 	public void sendScoreBoard() {
 		Scoreboard sb = this.manager.getOwnerInstance().getServer().getScoreboardManager().getNewScoreboard();
-		Objective obj = sb.registerNewObjective("silent", "dummy");
-		this.title = this.getUpdateHandler().getScoreboardTitle(this.player);
+		Objective obj = sb.registerNewObjective("CFW", "dummy");
+		this.title = this.player.getUpdateHandler().getScoreboardTitle();
+		if (this.title == null)
+			this.title = "";
 
 		if (this.title.length() >= 32)
 			this.title = this.title.substring(0, 32);
 
 		obj.setDisplayName(this.title);
-
 		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 		player.getPlayer().setScoreboard(sb);
 

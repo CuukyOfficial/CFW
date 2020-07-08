@@ -38,7 +38,7 @@ public class BasicConfigurationHandler {
 		else {
 			this.configuration.addDefault(name, defaultValue);
 			save();
-			
+
 			return defaultValue;
 		}
 	}

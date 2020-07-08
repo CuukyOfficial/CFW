@@ -19,7 +19,7 @@ public class HookManager extends FrameworkManager {
 
 	public HookManager(JavaPlugin instance) {
 		super(FrameworkManagerType.HOOKING, instance);
-		
+
 		this.hooks = new ArrayList<>();
 		this.ownerInstance.getServer().getPluginManager().registerEvents(new HookListener(this), ownerInstance);
 	}

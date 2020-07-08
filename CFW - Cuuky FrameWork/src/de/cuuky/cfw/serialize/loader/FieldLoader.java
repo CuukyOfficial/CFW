@@ -13,17 +13,17 @@ public class FieldLoader {
 
 	private Map<Field, Class<? extends CFWSerializeable>> arrayTypes;
 	private Map<String, Field> fields;
-	
+
 	private Class<?> clazz;
 
 	public FieldLoader(Class<?> clazz) {
 		this.fields = new HashMap<String, Field>();
 		this.arrayTypes = new HashMap<Field, Class<? extends CFWSerializeable>>();
 		this.clazz = clazz;
-		
+
 		loadFields();
 	}
-	
+
 	private void loadFields() {
 		Field[] declFields = clazz.getDeclaredFields();
 		for (Field field : declFields) {

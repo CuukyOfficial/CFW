@@ -41,7 +41,7 @@ public abstract class PlayerMessagePlaceholder extends MessagePlaceholder {
 
 	public String replacePlaceholder(String message, CustomPlayer player) {
 		checkRefresh(player);
-		
+
 		String value = placeholderValues.get(player);
 		return message.replace(identifier, value != null ? value : "");
 	}

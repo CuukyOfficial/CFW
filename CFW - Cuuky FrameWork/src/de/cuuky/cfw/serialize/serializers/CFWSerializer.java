@@ -29,7 +29,7 @@ public class CFWSerializer {
 		FieldLoader loader = manager.loadClass(serializeable.getClass());
 		List<String> keys = loader.getFields().keySet().stream().collect(Collectors.toList());
 		Collections.reverse(keys);
-		
+
 		fieldLoop: for (String saveLocation : keys) {
 			Field field = loader.getFields().get(saveLocation);
 			field.setAccessible(true);

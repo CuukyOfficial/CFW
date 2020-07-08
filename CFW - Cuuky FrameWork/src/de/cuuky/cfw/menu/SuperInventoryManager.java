@@ -15,7 +15,7 @@ public class SuperInventoryManager extends FrameworkManager {
 
 	public SuperInventoryManager(JavaPlugin instance) {
 		super(FrameworkManagerType.INVENTORY, instance);
-		
+
 		this.inventories = new ArrayList<>();
 		this.ownerInstance.getServer().getPluginManager().registerEvents(new InventoryListener(this), ownerInstance);
 	}

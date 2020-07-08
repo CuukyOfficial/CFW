@@ -2,18 +2,21 @@ package de.cuuky.cfw.player;
 
 import org.bukkit.entity.Player;
 
+import de.cuuky.cfw.player.clientadapter.BoardUpdateHandler;
 import de.cuuky.cfw.player.connection.NetworkManager;
 
 public interface CustomPlayer {
 
-	public NetworkManager getNetworkManager();
-
-	public Player getPlayer();
+	public String getUUID();
 
 	public String getName();
 
-	public String getUUID();
-	
+	public Player getPlayer();
+
+	public NetworkManager getNetworkManager();
+
 	public String getLocale();
+
+	public BoardUpdateHandler<? extends CustomPlayer> getUpdateHandler();
 
 }

@@ -17,7 +17,7 @@ public abstract class MessagePlaceholder {
 
 	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, boolean rawIdentifier, String description) {
 		this.type = type;
-		
+
 		if (rawIdentifier)
 			this.identifier = identifier;
 		else
@@ -38,7 +38,7 @@ public abstract class MessagePlaceholder {
 	public boolean containsPlaceholder(String message) {
 		return message.contains(identifier);
 	}
-	
+
 	public PlaceholderType getType() {
 		return this.type;
 	}
@@ -54,11 +54,11 @@ public abstract class MessagePlaceholder {
 	public int getDefaultRefresh() {
 		return this.defaultRefresh;
 	}
-	
+
 	public void setManager(MessagePlaceholderManager managaer) {
 		this.managar = managaer;
 	}
-	
+
 	public MessagePlaceholderManager getManager() {
 		return this.managar;
 	}

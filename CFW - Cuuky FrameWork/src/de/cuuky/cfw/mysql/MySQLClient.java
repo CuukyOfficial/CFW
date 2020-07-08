@@ -11,9 +11,9 @@ import java.util.concurrent.Executors;
 import de.cuuky.cfw.mysql.request.PreparedStatementHandler;
 
 public class MySQLClient {
-	
+
 	private static final ExecutorService THREAD_POOL;
-	
+
 	static {
 		THREAD_POOL = Executors.newCachedThreadPool();
 	}
