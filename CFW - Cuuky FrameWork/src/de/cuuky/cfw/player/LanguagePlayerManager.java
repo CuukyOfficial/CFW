@@ -2,7 +2,8 @@ package de.cuuky.cfw.player;
 
 import java.util.ArrayList;
 
-import de.cuuky.cfw.CuukyFrameWork;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 
@@ -10,8 +11,8 @@ public class LanguagePlayerManager extends FrameworkManager {
 	
 	private ArrayList<CustomLanguagePlayer> players;
 
-	public LanguagePlayerManager(CuukyFrameWork<?> framework) {
-		super(FrameworkManagerType.PLAYER, framework);
+	public LanguagePlayerManager(JavaPlugin instance) {
+		super(FrameworkManagerType.PLAYER, instance);
 		
 		this.players = new ArrayList<>();
 	}

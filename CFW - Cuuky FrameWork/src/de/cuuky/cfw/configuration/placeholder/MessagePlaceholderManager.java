@@ -3,7 +3,8 @@ package de.cuuky.cfw.configuration.placeholder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.cuuky.cfw.CuukyFrameWork;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import de.cuuky.cfw.configuration.placeholder.placeholder.GeneralMessagePlaceholder;
 import de.cuuky.cfw.configuration.placeholder.placeholder.PlayerMessagePlaceholder;
 import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
@@ -18,8 +19,8 @@ public class MessagePlaceholderManager extends FrameworkManager {
 	private HashMap<PlaceholderType, ArrayList<MessagePlaceholder>> placeholders;
 	private HashMap<PlaceholderType, HashMap<String, ArrayList<MessagePlaceholder>>> cachedRequests;
 
-	public MessagePlaceholderManager(CuukyFrameWork<?> framework) {
-		super(FrameworkManagerType.PLACEHOLDER, framework);
+	public MessagePlaceholderManager(JavaPlugin instance) {
+		super(FrameworkManagerType.PLACEHOLDER, instance);
 
 		this.tickTolerance = 900;
 

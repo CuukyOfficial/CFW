@@ -2,20 +2,18 @@ package de.cuuky.cfw.manager;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.cuuky.cfw.CuukyFrameWork;
-
 public class FrameworkManager {
-	
+
 	protected JavaPlugin ownerInstance;
-	protected CuukyFrameWork<?> framework;
+	protected String consolePrefix;
 	protected FrameworkManagerType type;
-	
-	public FrameworkManager(FrameworkManagerType type, CuukyFrameWork<?> framework) {
+
+	public FrameworkManager(FrameworkManagerType type, JavaPlugin ownerInstance) {
 		this.type = type;
-		this.framework = framework;
-		this.ownerInstance = framework.getPluginInstance();
+		this.consolePrefix = "[" + ownerInstance.getName() + "] ";
+		this.ownerInstance = ownerInstance;
 	}
-	
+
 	public JavaPlugin getOwnerInstance() {
 		return this.ownerInstance;
 	}
@@ -23,8 +21,8 @@ public class FrameworkManager {
 	public FrameworkManagerType getType() {
 		return this.type;
 	}
-	
-	public CuukyFrameWork<?> getFramework() {
-		return framework;
+
+	public String getConsolePrefix() {
+		return consolePrefix;
 	}
 }

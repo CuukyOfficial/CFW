@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import de.cuuky.cfw.CuukyFrameWork;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
@@ -28,8 +28,8 @@ public class CFWSerializeManager extends FrameworkManager {
 
 	private ArrayList<CFWSerializeType> serializer;
 
-	public CFWSerializeManager(CuukyFrameWork<?> framework) {
-		super(FrameworkManagerType.SERIALIZE, framework);
+	public CFWSerializeManager(JavaPlugin instance) {
+		super(FrameworkManagerType.SERIALIZE, instance);
 
 		this.loaded = new HashMap<Class<?>, FieldLoader>();
 		this.serializer = new ArrayList<CFWSerializeType>();

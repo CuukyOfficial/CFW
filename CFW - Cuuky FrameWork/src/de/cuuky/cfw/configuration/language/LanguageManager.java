@@ -5,7 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.cuuky.cfw.CuukyFrameWork;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import de.cuuky.cfw.configuration.language.broadcast.MessageHolder;
 import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
@@ -21,12 +22,12 @@ public class LanguageManager extends FrameworkManager {
 	private HashMap<String, Language> languages;
 	private HashMap<String, String> defaultMessages;
 
-	public LanguageManager(CuukyFrameWork<?> framework) {
-		this("plugins/" + framework.getPluginInstance().getName() + "/languages/", "en_us", framework);
+	public LanguageManager(JavaPlugin instance) {
+		this("plugins/" + instance.getName() + "/languages/", "en_us", instance);
 	}
 
-	public LanguageManager(String languagesPath, String fallbackLocale, CuukyFrameWork<?> framework) {
-		super(FrameworkManagerType.LANGUAGE, framework);
+	public LanguageManager(String languagesPath, String fallbackLocale, JavaPlugin instance) {
+		super(FrameworkManagerType.LANGUAGE, instance);
 
 		this.languagePath = languagesPath;
 		this.fallbackLocale = fallbackLocale;
