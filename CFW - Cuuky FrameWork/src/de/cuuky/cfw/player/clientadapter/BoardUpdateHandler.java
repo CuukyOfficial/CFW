@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import de.cuuky.cfw.player.CustomPlayer;
 
-public class BoardUpdateHandler<T extends CustomPlayer> {
+public abstract class BoardUpdateHandler<T extends CustomPlayer> {
 
 	protected T player;
 
