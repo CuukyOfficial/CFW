@@ -25,7 +25,6 @@ public class CuukyFrameWork<T extends CustomPlayer> {
 	 */
 
 	private JavaPlugin ownerInstance;
-	private String consolePrefix;
 	private HashMap<FrameworkManagerType, FrameworkManager> manager;
 
 	public CuukyFrameWork(JavaPlugin pluginInstance) {
@@ -35,55 +34,50 @@ public class CuukyFrameWork<T extends CustomPlayer> {
 	public CuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
 		this.ownerInstance = pluginInstance;
 		this.manager = new HashMap<>();
-		this.consolePrefix = "[" + pluginInstance.getName() + "] ";
 
 		for (FrameworkManager fm : manager)
 			this.manager.put(fm.getType(), fm);
+	}
 
-		// Maybe remove this and only create manager on need
-		for (FrameworkManagerType type : FrameworkManagerType.values()) {
-			if (this.manager.containsKey(type))
-				continue;
-
+	private FrameworkManager loadManager(FrameworkManagerType type) {
+		if (!this.manager.containsKey(type)) {
 			try {
-				this.manager.put(type, (FrameworkManager) type.getManager().getDeclaredConstructor(CuukyFrameWork.class).newInstance(this));
+				this.manager.put(type, (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
 			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
-				throw new IllegalStateException("Failed to initialize type " + type.toString() + "!");
+				throw new IllegalStateException("[CFW] Failed to initialize type " + type.toString() + "!");
 			}
 		}
+
+		return this.manager.get(type);
 	}
 
 	public JavaPlugin getPluginInstance() {
 		return this.ownerInstance;
 	}
 
-	public String getConsolePrefix() {
-		return consolePrefix;
-	}
-
 	@SuppressWarnings("unchecked")
 	public ClientAdapterManager<T> getClientAdapterManager() {
-		return (ClientAdapterManager<T>) this.manager.get(FrameworkManagerType.CLIENT_ADAPTER);
+		return (ClientAdapterManager<T>) loadManager(FrameworkManagerType.CLIENT_ADAPTER);
 	}
 
 	public HookManager getHookManager() {
-		return (HookManager) this.manager.get(FrameworkManagerType.HOOKING);
+		return (HookManager) loadManager(FrameworkManagerType.HOOKING);
 	}
 
 	public SuperInventoryManager getInventoryManager() {
-		return (SuperInventoryManager) this.manager.get(FrameworkManagerType.INVENTORY);
+		return (SuperInventoryManager) loadManager(FrameworkManagerType.INVENTORY);
 	}
 
 	public LanguageManager getLanguageManager() {
-		return (LanguageManager) this.manager.get(FrameworkManagerType.LANGUAGE);
+		return (LanguageManager) loadManager(FrameworkManagerType.LANGUAGE);
 	}
 
 	public MessagePlaceholderManager getPlaceholderManager() {
-		return (MessagePlaceholderManager) this.manager.get(FrameworkManagerType.PLACEHOLDER);
+		return (MessagePlaceholderManager) loadManager(FrameworkManagerType.PLACEHOLDER);
 	}
 
 	public CFWSerializeManager getSerializeManager() {
-		return (CFWSerializeManager) this.manager.get(FrameworkManagerType.SERIALIZE);
+		return (CFWSerializeManager) loadManager(FrameworkManagerType.SERIALIZE);
 	}
 }
