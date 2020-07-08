@@ -98,9 +98,6 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 
 	@SuppressWarnings("deprecation")
 	private void updateFor(Scoreboard board, CustomNametag<T> nametag) {
-		if (nametag.getName() == null)
-			return;
-
 		Team oldTeam = board.getTeam(nametag.getOldName() != null ? nametag.getOldName() : this.player.getPlayer().getName());
 		if (oldTeam != null)
 			oldTeam.unregister();
