@@ -1,6 +1,7 @@
 package de.cuuky.cfw.clientadapter.board.nametag;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -85,7 +86,7 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 		}
 
 		boolean showNametag = this.player.getUpdateHandler().isNametagVisible();
-		boolean changed = !check.equals(nametagContent) || showNametag != this.nametagShown;
+		boolean changed = !Arrays.equals(this.nametagContent, check) || showNametag != this.nametagShown;
 		if (!changed)
 			return false;
 

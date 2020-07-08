@@ -7,9 +7,9 @@ public abstract class CustomBoard<T extends CustomPlayer> {
 
 	protected ClientAdapterManager<T> manager;
 	protected T player;
-	protected boolean enabled;
 
 	private CustomBoardType boardType;
+	private boolean initalized, enabled;
 
 	public CustomBoard(CustomBoardType boardType, T player) {
 		this.player = player;
@@ -28,23 +28,32 @@ public abstract class CustomBoard<T extends CustomPlayer> {
 	public void setManager(ClientAdapterManager<T> manager) {
 		this.manager = manager;
 
-		if (this.manager.isBoardTypeEnabled(this.boardType)) {
+		if (this.manager.isBoardTypeEnabled(this.boardType) && enabled) {
 			onEnable();
+			initalized = true;
+
 			update();
 		}
 	}
 
 	public void update() {
-		if (!this.manager.isBoardTypeEnabled(this.boardType) || this.player.getPlayer() == null || !enabled)
+		if (this.player.getPlayer() == null || !enabled)
 			return;
+
+		if (!this.manager.isBoardTypeEnabled(this.boardType))
+			return;
+		else if (!initalized) {
+			onEnable();
+			this.initalized = true;
+		}
 
 		onUpdate();
 	}
-
+	
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-
+	
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
