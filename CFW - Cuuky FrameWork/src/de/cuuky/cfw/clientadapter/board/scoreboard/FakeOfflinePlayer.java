@@ -79,8 +79,9 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 	}
 
 	@Override
-	public void setBanned(boolean arg0) {}
+	public void setWhitelisted(boolean arg0) {}
+	
 
 	@Override
-	public void setWhitelisted(boolean arg0) {}
+	public void setBanned(boolean arg0) {}
 }
