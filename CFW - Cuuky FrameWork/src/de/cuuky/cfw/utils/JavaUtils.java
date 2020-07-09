@@ -1,5 +1,6 @@
 package de.cuuky.cfw.utils;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -168,5 +169,16 @@ public final class JavaUtils {
 		Date date = new Date();
 
 		return dateFormat.format(date);
+	}
+
+	public static void deleteDirectory(File file) {
+		for (File listFile : file.listFiles()) {
+			if (listFile.isDirectory())
+				deleteDirectory(listFile);
+
+			listFile.delete();
+		}
+
+		file.delete();
 	}
 }
