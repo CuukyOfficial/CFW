@@ -3,6 +3,7 @@ package de.cuuky.cfw;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.cuuky.cfw.clientadapter.ClientAdapterManager;
@@ -13,9 +14,14 @@ import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.SuperInventoryManager;
 import de.cuuky.cfw.player.CustomPlayer;
+import de.cuuky.cfw.serialization.CompatibleLocation;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
 
 public class CuukyFrameWork<T extends CustomPlayer> {
+	
+	static {
+		ConfigurationSerialization.registerClass(CompatibleLocation.class);
+	}
 
 	/*
 	 * CFW - A Bukkit framework
