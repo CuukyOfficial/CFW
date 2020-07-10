@@ -3,6 +3,7 @@ package de.cuuky.cfw.player.connection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -12,6 +13,8 @@ import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 
 public class NetworkManager {
+	
+	// I know this is made very badly, but hey, it works
 
 	// CHAT TITLE
 	private static Class<?> chatMessageTypeClass;
@@ -32,7 +35,7 @@ public class NetworkManager {
 
 	// ACTIONBAR
 	private static Object title, subtitle;
-	private static Constructor<?> chatByteMethod, chatEnumMethod;
+	private static Constructor<?> chatByteMethod, chatEnumMethod, chatEnumUUIDMethod;
 
 	static {
 		try {
@@ -59,7 +62,11 @@ public class NetworkManager {
 				packetChatClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutChat");
 				try {
 					chatMessageTypeClass = Class.forName(VersionUtils.getNmsClass() + ".ChatMessageType");
-					chatEnumMethod = packetChatClass.getConstructor(ioBase, chatMessageTypeClass);
+					try {
+						chatEnumMethod = packetChatClass.getConstructor(ioBase, chatMessageTypeClass);
+					} catch (Exception e) {
+						chatEnumUUIDMethod = packetChatClass.getConstructor(ioBase, chatMessageTypeClass, UUID.class);
+					}
 				} catch (Exception e) {
 					chatByteMethod = packetChatClass.getConstructor(ioBase, byte.class);
 				}
@@ -180,10 +187,12 @@ public class NetworkManager {
 			Object barchat = ioBaseChatMethod.invoke(ioBaseChat, "{\"text\": \"" + message + "\"}");
 
 			Object packet = null;
-			if (chatEnumMethod == null)
+			if (chatByteMethod != null)
 				packet = chatByteMethod.newInstance(barchat, (byte) 2);
-			else
+			else if (chatEnumMethod != null)
 				packet = chatEnumMethod.newInstance(barchat, chatMessageTypeClass.getDeclaredField("GAME_INFO").get(null));
+			else 
+				packet = chatEnumUUIDMethod.newInstance(barchat, chatMessageTypeClass.getDeclaredField("GAME_INFO").get(null), this.player.getUniqueId());
 
 			sendPacket(packet);
 		} catch (Exception e) {
