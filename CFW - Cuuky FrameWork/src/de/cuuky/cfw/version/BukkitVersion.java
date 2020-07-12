@@ -1,9 +1,5 @@
 package de.cuuky.cfw.version;
 
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.TreeMap;
-
 public enum BukkitVersion {
 
 	ONE_10(10),
@@ -32,24 +28,20 @@ public enum BukkitVersion {
 	}
 
 	public static BukkitVersion getVersion(String versionString) {
-		Map<Integer, BukkitVersion> sorted = new TreeMap<Integer, BukkitVersion>();
 		int versionNumber = Integer.valueOf(versionString.split("1_")[1].split("_")[0]);
+		BukkitVersion nextFound = BukkitVersion.ONE_7;
 		for (BukkitVersion version : values()) {
-			if (versionNumber == version.identifier)
+			if (versionNumber == version.getIdentifier())
 				return version;
 
-			sorted.put(version.getIdentifier(), version);
+			if (versionNumber > version.getIdentifier()) {
+				if (nextFound.getIdentifier() > version.getIdentifier())
+					continue;
+
+				nextFound = version;
+			}
 		}
-
-		ArrayList<BukkitVersion> inOrder = new ArrayList<BukkitVersion>();
-		for (int i : sorted.keySet())
-			inOrder.add(sorted.get(i));
-
-		if (versionNumber < inOrder.get(1).getIdentifier())
-			return inOrder.get(0);
-		else if (versionNumber > inOrder.get(inOrder.size() - 2).getIdentifier())
-			return inOrder.get(inOrder.size() - 1);
-
-		return null;
+		
+		return nextFound;
 	}
 }
