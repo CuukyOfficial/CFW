@@ -42,32 +42,33 @@ public class CFWSerializeManager extends FrameworkManager {
 		this.serializer.add(new CollectionSerializer(this));
 	}
 
-	public ArrayList<CFWSerializeable> loadSerializeables(Class<? extends CFWSerializeable> clazz, File file, Object invokeObject) {
-		ArrayList<CFWSerializeable> serializeables = new ArrayList<CFWSerializeable>();
+	public void saveSerializeable(String key, CFWSerializeable serializeable, YamlConfiguration configuration) {
+		new CFWSerializer(this, configuration.createSection(key), serializeable).serialize();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> ArrayList<T> loadSerializeables(Class<T> clazz, File file, Object invokeObject) {
+		ArrayList<T> serializeables = new ArrayList<T>();
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		for (String s : configuration.getKeys(true)) {
 			if (!configuration.isConfigurationSection(s) || s.contains("."))
 				continue;
 
-			serializeables.add(new CFWDeserializer(this, configuration.getConfigurationSection(s), invokeObject, clazz).deserialize());
+			serializeables.add((T) new CFWDeserializer(this, configuration.getConfigurationSection(s), invokeObject, (Class<? extends CFWSerializeable>) clazz).deserialize());
 		}
 
 		return serializeables;
 	}
 
-	public void saveSerializeable(String key, CFWSerializeable serializeable, YamlConfiguration configuration) {
-		new CFWSerializer(this, configuration.createSection(key), serializeable).serialize();
-	}
-
-	public <T> void saveFiles(Class<? extends CFWSerializeable> clazz, ArrayList<T> list, File file, SaveVisit<T> visit) {
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+	public <T> void saveFiles(Class<T> clazz, ArrayList<T> list, File file, SaveVisit<T> visit) {
+		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		for (T serializeable : list)
-			saveSerializeable(visit.onKeySave(serializeable), (CFWSerializeable) serializeable, config);
+			new CFWSerializer(this, configuration.createSection(visit.onKeySave(serializeable)), (CFWSerializeable) serializeable).serialize();
 
 		try {
-			config.save(file);
+			configuration.save(file);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
