@@ -34,7 +34,7 @@ public class VersionUtils {
 			} catch (ClassNotFoundException e1) {}
 		}
 	}
-	
+
 	public static void setMinecraftServerProperty(String key, Object value) {
 		try {
 			Class<?> serverClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");

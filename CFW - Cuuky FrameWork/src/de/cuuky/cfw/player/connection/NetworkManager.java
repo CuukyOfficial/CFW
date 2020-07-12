@@ -13,7 +13,7 @@ import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 
 public class NetworkManager {
-	
+
 	// I know this is made very badly, but hey, it works
 
 	// CHAT TITLE
@@ -191,7 +191,7 @@ public class NetworkManager {
 				packet = chatByteMethod.newInstance(barchat, (byte) 2);
 			else if (chatEnumMethod != null)
 				packet = chatEnumMethod.newInstance(barchat, chatMessageTypeClass.getDeclaredField("GAME_INFO").get(null));
-			else 
+			else
 				packet = chatEnumUUIDMethod.newInstance(barchat, chatMessageTypeClass.getDeclaredField("GAME_INFO").get(null), this.player.getUniqueId());
 
 			sendPacket(packet);

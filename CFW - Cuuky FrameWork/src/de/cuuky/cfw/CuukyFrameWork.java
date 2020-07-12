@@ -16,7 +16,7 @@ import de.cuuky.cfw.serialization.CompatibleLocation;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
 
 public class CuukyFrameWork {
-	
+
 	static {
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
 	}

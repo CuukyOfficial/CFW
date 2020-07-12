@@ -12,11 +12,11 @@ public class AdapterCuukyFrameWork<T extends CustomPlayer> extends CuukyFrameWor
 	public AdapterCuukyFrameWork(JavaPlugin pluginInstance) {
 		super(pluginInstance);
 	}
-	
+
 	public AdapterCuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
 		super(pluginInstance, manager);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public ClientAdapterManager<T> getClientAdapterManager() {
 		return (ClientAdapterManager<T>) loadManager(FrameworkManagerType.CLIENT_ADAPTER);

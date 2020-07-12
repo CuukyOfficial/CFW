@@ -49,11 +49,11 @@ public abstract class CustomBoard<T extends CustomPlayer> {
 
 		onUpdate();
 	}
-	
+
 	public boolean isEnabled() {
 		return this.enabled;
 	}
-	
+
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
