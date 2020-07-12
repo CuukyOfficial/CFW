@@ -6,18 +6,16 @@ import java.util.HashMap;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.cuuky.cfw.clientadapter.ClientAdapterManager;
 import de.cuuky.cfw.configuration.language.LanguageManager;
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.SuperInventoryManager;
-import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.serialization.CompatibleLocation;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
 
-public class CuukyFrameWork<T extends CustomPlayer> {
+public class CuukyFrameWork {
 	
 	static {
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
@@ -45,7 +43,7 @@ public class CuukyFrameWork<T extends CustomPlayer> {
 			this.manager.put(fm.getType(), fm);
 	}
 
-	private FrameworkManager loadManager(FrameworkManagerType type) {
+	protected FrameworkManager loadManager(FrameworkManagerType type) {
 		if (!this.manager.containsKey(type)) {
 			try {
 				this.manager.put(type, (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
@@ -60,11 +58,6 @@ public class CuukyFrameWork<T extends CustomPlayer> {
 
 	public JavaPlugin getPluginInstance() {
 		return this.ownerInstance;
-	}
-
-	@SuppressWarnings("unchecked")
-	public ClientAdapterManager<T> getClientAdapterManager() {
-		return (ClientAdapterManager<T>) loadManager(FrameworkManagerType.CLIENT_ADAPTER);
 	}
 
 	public HookManager getHookManager() {
