@@ -41,7 +41,7 @@ public enum BukkitVersion {
 				nextFound = version;
 			}
 		}
-		
+
 		return nextFound;
 	}
 }
