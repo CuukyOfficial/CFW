@@ -35,26 +35,26 @@ public enum MinecraftVersion {
 	MINECRAFT_1_7_2(4, "1.7.2-1.7.5"),
 	MINECRAFT_UNKNOWN(-1, "Unknown");
 
-	private int protocolID;
+	private int protocolId;
 	private String name;
 
-	private MinecraftVersion(int ID, String name) {
+	private MinecraftVersion(int id, String name) {
 		this.name = name;
-		this.protocolID = ID;
+		this.protocolId = id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public int getProtocolID() {
-		return protocolID;
+	public int getProtocolId() {
+		return protocolId;
 	}
 
-	public static MinecraftVersion getMinecraftVersion(int ProtocolID) {
+	public static MinecraftVersion getMinecraftVersion(int ProtocolId) {
 		MinecraftVersion version = MINECRAFT_UNKNOWN;
 		for (MinecraftVersion mcver : MinecraftVersion.values())
-			if (mcver.getProtocolID() == ProtocolID)
+			if (mcver.getProtocolId() == ProtocolId)
 				version = mcver;
 		return version;
 	}
