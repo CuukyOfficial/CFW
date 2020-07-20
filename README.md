@@ -46,41 +46,50 @@ but I'm too lazy to log that here.
   - Following applies to CustomScoreboards, CustomNametags and CustomTablists:
     - Efficient replaced - if the nametag string didnt change for example, it won't send any new information to the client
     - Can be completely disabled
+- Serialization
+  - The CFW provides a serialization tool for saving your objects into files
+  - It is compatible with every obfuscator I know (Allatori, ProGuard) without changing the config
+- MySQL
+  - There are mysql classes in the CFW to easily access databases asynchronously while using
+    PreparedStatements
+  - Also qeueing a MySQL-Qeuery returns an objects which you can synchronize and wait on,
+    it will be notified if MySQL has returned the result 
 
 More coming soon!
 
 ## How to use it?
 ### Here's and example of how you intialize the CFW
+The CFW just acts as a launcher for all the manager it provides, you can also
+just use the manager directly - but using the CFW class is recommendet
 ```java
 this.cuukyFrameWork = new CuukyFrameWork(this);
-this.cuukyFrameWork.getClientAdapterManager().setUpdateHandler(new CustomBoardUpdateHandler());
-this.cuukyFrameWork.getClientAdapterManager().setBoardTypeEnabled(CustomBoardType.TABLIST, false);
+this.cuukyFrameWork.getClientAdapterManager().setBoardTypeEnabled(CustomBoardType.TABLIST, true);
 ```
 
 ### A BoardUpdateHandler contains following methods
 ```java
-	public ArrayList<String> getTablistHeader(Player player);
+	public ArrayList<String> getTablistHeader();
 	
-	public ArrayList<String> getTablistFooter(Player player);
+	public ArrayList<String> getTablistFooter();
 
-	public String getScoreboardTitle(Player player);
+	public String getScoreboardTitle();
 	
-	public ArrayList<String> getScoreboardEntries(Player player);
+	public ArrayList<String> getScoreboardEntries();
 	
-	public boolean showHeartsBelowName(Player player);
+	public boolean showHeartsBelowName();
 
-	public String getNametagName(Player player);
+	public String getNametagName();
 	
-	public String getNametagPrefix(Player player);
+	public String getNametagPrefix();
 	
-	public String getNametagSuffix(Player player);
+	public String getNametagSuffix();
 	
-	public boolean isNametagVisible(Player player); 
+	public boolean isNametagVisible(); 
 ```
 
-### How to hook an item to the hotbar
+### How to hook an item to the hotbar (ItemBuilder example included)
 ```java
-Main.getInstance().getCuukyFrameWork().getHookManager().registerHook(new ItemHook(player, new ItemBuilder().displayname("§bWähle dein Kit").material(Material.CHEST).build(), 0, new ItemHookHandler() {
+instance.getCuukyFrameWork().getHookManager().registerHook(new ItemHook(player, new ItemBuilder().displayname("§bWähle dein Kit").material(Material.CHEST).build(), 0, new ItemHookHandler() {
 
 	@Override
 	public void onInteractEntity(PlayerInteractEntityEvent event) {}
@@ -104,12 +113,12 @@ Main.getInstance().getCuukyFrameWork().getHookManager().registerHook(new ItemHoo
 ```java
 public class VoteMainMenu extends SuperInventory {
 
-	public VoteMainMenu(Player opener) {
+	public VoteMainMenu(Main instance, Player opener) {
 		super("§5Vote", opener, 18, true);
 
 		this.setModifier = false;
 		
-		Main.getInstance().getCuukyFrameWork().getInventoryManager().registerInventory(this);
+		instance.getCuukyFrameWork().getInventoryManager().registerInventory(this);
 		open();
 	}
 
