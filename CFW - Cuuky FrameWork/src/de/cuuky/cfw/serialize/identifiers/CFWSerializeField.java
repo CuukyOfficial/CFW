@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface CFWSerializeField {
 
 	Class<? extends CFWSerializeable> keyClass() default NullClass.class;
-	
+
 	Class<? extends CFWSerializeable> valueClass() default NullClass.class;
 
 	String enumValue() default "ENUM";

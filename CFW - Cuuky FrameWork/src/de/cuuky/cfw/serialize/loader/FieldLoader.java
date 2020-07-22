@@ -42,11 +42,11 @@ public class FieldLoader {
 			}
 		}
 	}
-	
+
 	public Class<? extends CFWSerializeable> getKeyType(Field field) {
 		return this.keyTypes.get(field);
 	}
-	
+
 	public Class<? extends CFWSerializeable> getValueType(Field field) {
 		return this.valueTypes.get(field);
 	}

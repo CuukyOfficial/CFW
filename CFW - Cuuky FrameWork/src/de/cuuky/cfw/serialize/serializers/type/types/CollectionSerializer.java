@@ -61,7 +61,7 @@ public class CollectionSerializer extends CFWSerializeType {
 		for (int i = 0; i < list.size(); i++)
 			if (Enum.class.isAssignableFrom(keyClazz))
 				listSection.set(String.valueOf(i), manager.serializeEnum(manager.loadClass(keyClazz), list.get(i)));
-			else 
+			else
 				new CFWSerializer(manager, listSection.createSection(String.valueOf(i)), list.get(i)).serialize();
 
 		return true;

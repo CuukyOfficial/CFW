@@ -24,13 +24,13 @@ public class EnumSerializer extends CFWSerializeType {
 		@SuppressWarnings("unchecked")
 		FieldLoader loader = manager.loadClass((Class<? extends CFWSerializeable>) field.getType());
 		return manager.deserializeEnum(loader, object);
-//		try {
-//			return loader.getFields().get((String) object).get(null);
-//		} catch (IllegalArgumentException | IllegalAccessException e) {
-//			e.printStackTrace();
-//		}
-//
-//		return null;
+		// try {
+		// return loader.getFields().get((String) object).get(null);
+		// } catch (IllegalArgumentException | IllegalAccessException e) {
+		// e.printStackTrace();
+		// }
+		//
+		// return null;
 	}
 
 	@SuppressWarnings("unchecked")
