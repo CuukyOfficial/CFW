@@ -20,7 +20,7 @@ public class LongSerializer extends CFWSerializeType {
 		if (!field.getType().isAssignableFrom(Long.class) || !(object instanceof String))
 			return null;
 
-		return Long.valueOf((String) object);
+		return ((Number) object).longValue();
 	}
 
 	@Override
@@ -28,7 +28,7 @@ public class LongSerializer extends CFWSerializeType {
 		if (!(value instanceof Long))
 			return false;
 
-		section.set(saveUnder, String.valueOf((long) value));
+		section.set(saveUnder, (long) value);
 		return true;
 	}
 }

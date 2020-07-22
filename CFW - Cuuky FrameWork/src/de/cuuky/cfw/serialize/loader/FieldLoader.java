@@ -1,7 +1,6 @@
 package de.cuuky.cfw.serialize.loader;
 
 import java.lang.reflect.Field;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,14 +10,16 @@ import de.cuuky.cfw.serialize.identifiers.NullClass;
 
 public class FieldLoader {
 
-	private Map<Field, Class<? extends CFWSerializeable>> arrayTypes;
+	private Map<Field, Class<? extends CFWSerializeable>> keyTypes;
+	private Map<Field, Class<? extends CFWSerializeable>> valueTypes;
 	private Map<String, Field> fields;
 
 	private Class<?> clazz;
 
 	public FieldLoader(Class<?> clazz) {
 		this.fields = new HashMap<String, Field>();
-		this.arrayTypes = new HashMap<Field, Class<? extends CFWSerializeable>>();
+		this.keyTypes = new HashMap<Field, Class<? extends CFWSerializeable>>();
+		this.valueTypes = new HashMap<Field, Class<? extends CFWSerializeable>>();
 		this.clazz = clazz;
 
 		loadFields();
@@ -33,13 +34,21 @@ public class FieldLoader {
 
 			String path = anno.path();
 			fields.put(path.equals("PATH") ? anno.enumValue() : path, field);
-			if (Collection.class.isAssignableFrom(field.getType()) && anno.arrayClass() != NullClass.class)
-				arrayTypes.put(field, anno.arrayClass());
+			if (anno.keyClass() != NullClass.class)
+				keyTypes.put(field, anno.keyClass());
+
+			if (anno.valueClass() != NullClass.class) {
+				valueTypes.put(field, anno.valueClass());
+			}
 		}
 	}
-
-	public Map<Field, Class<? extends CFWSerializeable>> getArrayTypes() {
-		return arrayTypes;
+	
+	public Class<? extends CFWSerializeable> getKeyType(Field field) {
+		return this.keyTypes.get(field);
+	}
+	
+	public Class<? extends CFWSerializeable> getValueType(Field field) {
+		return this.valueTypes.get(field);
 	}
 
 	public Map<String, Field> getFields() {

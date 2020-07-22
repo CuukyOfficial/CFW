@@ -15,21 +15,22 @@ public class EnumSerializer extends CFWSerializeType {
 		super(manager);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
 		Object object = section.get(key);
 		if (!field.getType().isEnum() || !(object instanceof String) || !CFWSerializeable.class.isAssignableFrom(field.getType()))
 			return null;
 
+		@SuppressWarnings("unchecked")
 		FieldLoader loader = manager.loadClass((Class<? extends CFWSerializeable>) field.getType());
-		try {
-			return loader.getFields().get((String) object).get(null);
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		return manager.deserializeEnum(loader, object);
+//		try {
+//			return loader.getFields().get((String) object).get(null);
+//		} catch (IllegalArgumentException | IllegalAccessException e) {
+//			e.printStackTrace();
+//		}
+//
+//		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -39,20 +40,7 @@ public class EnumSerializer extends CFWSerializeType {
 			return false;
 
 		FieldLoader loader = manager.loadClass((Class<? extends CFWSerializeable>) field.getType());
-		for (String s : loader.getFields().keySet()) {
-			Object enumValue = null;
-			try {
-				enumValue = loader.getFields().get(s).get(null);
-			} catch (IllegalArgumentException | IllegalAccessException e) {
-				e.printStackTrace();
-			}
-
-			if (enumValue.equals(value)) {
-				section.set(saveUnder, s);
-				return true;
-			}
-		}
-
-		return false;
+		section.set(saveUnder, manager.serializeEnum(loader, value));
+		return true;
 	}
 }

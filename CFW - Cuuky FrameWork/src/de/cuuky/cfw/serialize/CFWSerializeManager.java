@@ -83,6 +83,35 @@ public class CFWSerializeManager extends FrameworkManager {
 			return loader;
 		}
 	}
+	
+	/*
+	 * Needs a recode rofl
+	 */
+	public String serializeEnum(FieldLoader loader, Object object) {
+		for (String s : loader.getFields().keySet()) {
+			Object enumValue = null;
+			try {
+				enumValue = loader.getFields().get(s).get(null);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+
+			if (enumValue.equals(object))
+				return s;
+		}
+
+		return null;
+	}
+	
+	public Object deserializeEnum(FieldLoader loader, Object object) {
+		try {
+			return loader.getFields().get((String) object).get(null);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 
 	public ArrayList<CFWSerializeType> getSerializer() {
 		return serializer;
