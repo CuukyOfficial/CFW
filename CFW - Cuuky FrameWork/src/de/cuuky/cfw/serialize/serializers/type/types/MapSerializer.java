@@ -74,6 +74,7 @@ public class MapSerializer extends CFWSerializeType {
 				throw new IllegalClassException("Cannot deserialize CFWSerialize class other than Enums as key");
 
 		Map<Object, Object> list = (Map<Object, Object>) value;
+		ConfigurationSection mapSection = section.createSection(saveUnder);
 		for (Object object : list.keySet()) {
 			String path = object.toString();
 
@@ -83,9 +84,9 @@ public class MapSerializer extends CFWSerializeType {
 			Object listValue = list.get(object);
 			if (valueClazz != null)
 				if (Enum.class.isAssignableFrom(valueClazz))
-					section.createSection(saveUnder).set(String.valueOf(path), manager.serializeEnum(manager.loadClass(valueClazz), listValue));
+					mapSection.set(String.valueOf(path), manager.serializeEnum(manager.loadClass(valueClazz), listValue));
 				else
-					new CFWSerializer(manager, section.createSection(saveUnder).createSection(String.valueOf(path)), (CFWSerializeable) listValue).serialize();
+					new CFWSerializer(manager, mapSection.createSection(String.valueOf(path)), (CFWSerializeable) listValue).serialize();
 		}
 
 		return true;
