@@ -20,6 +20,12 @@ public class SuperInventoryManager extends FrameworkManager {
 		this.ownerInstance.getServer().getPluginManager().registerEvents(new InventoryListener(this), ownerInstance);
 	}
 
+	public void updateInventories(Class<? extends SuperInventory> type) {
+		for (SuperInventory inventory : this.inventories)
+			if (inventory.getClass().equals(type))
+				inventory.updateInventory();
+	}
+
 	public SuperInventory registerInventory(SuperInventory inventory) {
 		inventory.setManager(this);
 		this.inventories.add(inventory);

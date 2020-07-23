@@ -2,6 +2,7 @@ package de.cuuky.cfw.hooking.hooks.chat;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.HookEntity;
@@ -28,6 +29,15 @@ public class ChatHook extends HookEntity {
 	}
 
 	public boolean run(AsyncPlayerChatEvent event) {
+		boolean unregister = listener.onChat(event);
+
+		if (unregister)
+			this.unregister();
+
+		return unregister;
+	}
+	
+	public boolean run(PlayerChatEvent event) {
 		boolean unregister = listener.onChat(event);
 
 		if (unregister)
