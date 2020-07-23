@@ -3,6 +3,8 @@ package de.cuuky.cfw.menu;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,6 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
@@ -21,12 +24,11 @@ import de.cuuky.cfw.version.types.Materials;
 
 public abstract class SuperInventory {
 
-	// AUTHOR: "Cuuky",
-	// VERSION: "0.3.4";
+	// AUTHOR: "Cuuky"
 
 	protected SuperInventoryManager manager;
 	protected String firstTitle, title;
-	protected ArrayList<Integer> modifier;
+	protected List<Integer> modifier;
 	protected Inventory inv;
 	protected Player opener;
 	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier, fillInventory, animations;
@@ -34,7 +36,8 @@ public abstract class SuperInventory {
 
 	protected ItemStack forward, backwards;
 
-	private HashMap<ItemMeta, Runnable> itemlinks;
+	private Map<ItemMeta, Runnable> itemlinks;
+	private Map<ItemMeta, ItemClickHandler> itemClickHandler;
 
 	public SuperInventory(String title, Player opener, int size, boolean homePage) {
 		this.firstTitle = title;
@@ -46,6 +49,7 @@ public abstract class SuperInventory {
 		this.title = getPageUpdate();
 		this.inv = Bukkit.createInventory(null, size != 54 && setModifier ? size + 9 : size, getPageUpdate());
 		this.itemlinks = new HashMap<ItemMeta, Runnable>();
+		this.itemClickHandler = new HashMap<ItemMeta, ItemClickHandler>();
 
 		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
 		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
@@ -53,7 +57,6 @@ public abstract class SuperInventory {
 		this.modifier = new ArrayList<Integer>(Arrays.asList(inv.getSize() - 1, inv.getSize() - 9, inv.getSize() - 5));
 	}
 
-	@SuppressWarnings("deprecation")
 	private void doAnimation() {
 		if (!animations)
 			return;
@@ -164,6 +167,11 @@ public abstract class SuperInventory {
 		this.opener.closeInventory();
 	}
 
+	protected void linkItemTo(int location, ItemStack stack) {
+		inv.setItem(location, stack);
+		itemlinks.put(stack.getItemMeta(), null);
+	}
+
 	/*
 	 * Enter a runnable where which is being executed when this item was clicked
 	 */
@@ -172,13 +180,14 @@ public abstract class SuperInventory {
 		itemlinks.put(stack.getItemMeta(), runnable);
 	}
 
+	protected void linkItemTo(int location, ItemStack stack, ItemClickHandler handler) {
+		inv.setItem(location, stack);
+		itemClickHandler.put(stack.getItemMeta(), handler);
+	}
+
 	public void back() {
-		// close(true);
 		if (!onBackClick())
 			close(true);
-
-		// if(!onBackClick())
-		// new MainMenu(opener);
 	}
 
 	public void clear(boolean all) {
@@ -203,9 +212,16 @@ public abstract class SuperInventory {
 	/*
 	 * Executes itemlinks
 	 */
-	public void executeLink(ItemStack item) {
+	public void executeLink(ItemStack item, InventoryClickEvent event) {
+		for (ItemMeta stack : itemClickHandler.keySet())
+			if (item.getItemMeta().equals(stack)) {
+				if (itemClickHandler.get(stack) != null)
+					itemClickHandler.get(stack).onItemClick(event);
+				break;
+			}
+
 		for (ItemMeta stack : itemlinks.keySet())
-			if (stack.getDisplayName().equals(item.getItemMeta().getDisplayName())) {
+			if (item.getItemMeta().equals(stack)) {
 				if (itemlinks.get(stack) != null)
 					itemlinks.get(stack).run();
 				break;

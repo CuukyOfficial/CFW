@@ -20,7 +20,6 @@ public class InventoryListener implements Listener {
 		this.inventoryManager = inventoryManager;
 	}
 
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onInvClick(InventoryClickEvent event) {
 		Inventory inventory = new InventoryClickUtil(event).getInventory();
@@ -60,7 +59,7 @@ public class InventoryListener implements Listener {
 				break;
 			}
 
-			inv.executeLink(event.getCurrentItem());
+			inv.executeLink(event.getCurrentItem(), event);
 			inv.onClick(event);
 			break;
 		}
