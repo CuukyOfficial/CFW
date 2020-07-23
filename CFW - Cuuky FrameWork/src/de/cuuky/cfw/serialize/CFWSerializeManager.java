@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,8 +48,8 @@ public class CFWSerializeManager extends FrameworkManager {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> ArrayList<T> loadSerializeables(Class<T> clazz, File file, Object invokeObject) {
-		ArrayList<T> serializeables = new ArrayList<T>();
+	public <T> List<T> loadSerializeables(Class<T> clazz, File file, Object invokeObject) {
+		List<T> serializeables = new ArrayList<T>();
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		for (String s : configuration.getKeys(true)) {
@@ -61,7 +62,7 @@ public class CFWSerializeManager extends FrameworkManager {
 		return serializeables;
 	}
 
-	public <T> void saveFiles(Class<T> clazz, ArrayList<T> list, File file, SaveVisit<T> visit) {
+	public <T> void saveFiles(Class<T> clazz, List<T> list, File file, SaveVisit<T> visit) {
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		for (T serializeable : list)
@@ -82,6 +83,35 @@ public class CFWSerializeManager extends FrameworkManager {
 			this.loaded.put(clazz, loader);
 			return loader;
 		}
+	}
+
+	/*
+	 * Needs a recode rofl
+	 */
+	public String serializeEnum(FieldLoader loader, Object object) {
+		for (String s : loader.getFields().keySet()) {
+			Object enumValue = null;
+			try {
+				enumValue = loader.getFields().get(s).get(null);
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+
+			if (enumValue.equals(object))
+				return s;
+		}
+
+		return null;
+	}
+
+	public Object deserializeEnum(FieldLoader loader, Object object) {
+		try {
+			return loader.getFields().get((String) object).get(null);
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 
 	public ArrayList<CFWSerializeType> getSerializer() {

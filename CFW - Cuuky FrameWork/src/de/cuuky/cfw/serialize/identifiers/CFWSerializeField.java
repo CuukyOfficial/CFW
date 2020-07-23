@@ -9,7 +9,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CFWSerializeField {
 
-	Class<? extends CFWSerializeable> arrayClass() default NullClass.class;
+	Class<? extends CFWSerializeable> keyClass() default NullClass.class;
+
+	Class<? extends CFWSerializeable> valueClass() default NullClass.class;
 
 	String enumValue() default "ENUM";
 
