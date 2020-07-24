@@ -21,13 +21,16 @@ public class CuukyFrameWork {
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
 	}
 
+	private static final String NAME = "CuukyFrameWork", VERSION = "0.3.6", AUTHOR = "Cuuky";
+
 	/*
 	 * CFW - A Bukkit framework
 	 * 
-	 * VERSION: 0.3.6 (2020) AUTHOR: Cuuky CONTACT: { website: "varoplugin.de", discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
+	 * CONTACT: { website: "varoplugin.de", discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
 	 */
 
 	private JavaPlugin ownerInstance;
+	private String consolePrefix;
 	private HashMap<FrameworkManagerType, FrameworkManager> manager;
 
 	public CuukyFrameWork(JavaPlugin pluginInstance) {
@@ -35,11 +38,16 @@ public class CuukyFrameWork {
 	}
 
 	public CuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
+		this.consolePrefix = "[CFW - " + pluginInstance.getName() + "] ";
+
+		System.out.println(this.consolePrefix + "Loading " + NAME + " v" + VERSION + " by " + AUTHOR + " for plugin " + pluginInstance.getName() + "...");
 		this.ownerInstance = pluginInstance;
 		this.manager = new HashMap<>();
 
-		for (FrameworkManager fm : manager)
+		for (FrameworkManager fm : manager) {
+			System.out.println(this.consolePrefix + "Added CustomManager " + fm.getClass() + "!");
 			this.manager.put(fm.getType(), fm);
+		}
 	}
 
 	protected FrameworkManager loadManager(FrameworkManagerType type) {
@@ -48,7 +56,7 @@ public class CuukyFrameWork {
 				this.manager.put(type, (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
 			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
-				throw new IllegalStateException("[CFW] Failed to initialize type " + type.toString() + "!");
+				throw new IllegalStateException(this.consolePrefix + "Failed to initialize type " + type.toString() + "!");
 			}
 		}
 
