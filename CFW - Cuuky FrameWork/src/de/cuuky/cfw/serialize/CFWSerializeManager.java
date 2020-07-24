@@ -121,9 +121,9 @@ public class CFWSerializeManager extends FrameworkManager {
 		return serializer;
 	}
 
-	public String getNullReplace() {
-		return "nullReplace";
-	}
+//	public String getNullReplace() {
+//		return "nullReplace";
+//	}
 
 	public static abstract class SaveVisit<T> {
 

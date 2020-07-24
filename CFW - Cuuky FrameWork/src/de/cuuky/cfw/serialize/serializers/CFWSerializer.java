@@ -46,7 +46,8 @@ public class CFWSerializer {
 					if (type.serialize(serializeable, field, value, saveLocation, section))
 						continue fieldLoop;
 
-			section.set(saveLocation, value == null ? manager.getNullReplace() : value);
+			section.set(saveLocation, value);
+			// section.set(saveLocation, value == null ? manager.getNullReplace() : value);
 		}
 	}
 }
