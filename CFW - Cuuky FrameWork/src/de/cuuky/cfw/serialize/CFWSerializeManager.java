@@ -63,6 +63,9 @@ public class CFWSerializeManager extends FrameworkManager {
 	}
 
 	public <T> void saveFiles(Class<T> clazz, List<T> list, File file, SaveVisit<T> visit) {
+		if(file.exists())
+			file.delete();
+		
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		for (T serializeable : list)
