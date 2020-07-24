@@ -28,7 +28,7 @@ public class InventoryItemLink {
 	}
 
 	public boolean isLink(ItemStack stack, int slot) {
-		return this.stack.equals(stack) && this.slot == slot;
+		return (this.stack.getItemMeta().getDisplayName() == null && stack.getItemMeta().getDisplayName() == null || this.stack.getItemMeta().getDisplayName().equals(stack.getItemMeta().getDisplayName())) && stack.getDurability() == this.stack.getDurability() && this.slot == slot;
 	}
 
 	public void execute(InventoryClickEvent event) {
