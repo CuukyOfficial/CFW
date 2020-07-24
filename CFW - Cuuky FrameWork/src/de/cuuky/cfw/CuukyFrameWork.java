@@ -24,7 +24,7 @@ public class CuukyFrameWork {
 	/*
 	 * CFW - A Bukkit framework
 	 * 
-	 * VERSION: 0.3.5 (2020) AUTHOR: Cuuky CONTACT: { website: "varoplugin.de", discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
+	 * VERSION: 0.3.6 (2020) AUTHOR: Cuuky CONTACT: { website: "varoplugin.de", discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
 	 */
 
 	private JavaPlugin ownerInstance;
