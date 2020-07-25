@@ -31,7 +31,6 @@ public class BlockUtils {
 		return isGrass(type) || type == Material.AIR || Materials.POPPY.parseMaterial() == type || type == Materials.SUNFLOWER.parseMaterial() || type == Materials.LILY_PAD.parseMaterial() || type.name().contains("LEAVES") || type.name().contains("WOOD") || type == Materials.SNOW.parseMaterial() || type.name().contains("GLASS") || type == Materials.VINE.parseMaterial();
 	}
 
-	@SuppressWarnings("deprecation")
 	public static boolean isSame(Materials mat, Block block) {
 		if (mat.getData() == block.getData() && mat.parseMaterial().equals(block.getType()))
 			return true;
