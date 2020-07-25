@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -13,9 +12,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.menu.utils.InventoryItemLink;
 import de.cuuky.cfw.menu.utils.ItemClickHandler;
 import de.cuuky.cfw.menu.utils.PageAction;
 import de.cuuky.cfw.version.BukkitVersion;
@@ -36,8 +35,7 @@ public abstract class SuperInventory {
 
 	protected ItemStack forward, backwards;
 
-	private Map<ItemMeta, Runnable> itemlinks;
-	private Map<ItemMeta, ItemClickHandler> itemClickHandler;
+	private List<InventoryItemLink> itemlinks;
 
 	public SuperInventory(String title, Player opener, int size, boolean homePage) {
 		this.firstTitle = title;
@@ -48,8 +46,7 @@ public abstract class SuperInventory {
 		this.fillInventory = true;
 		this.title = getPageUpdate();
 		this.inv = Bukkit.createInventory(null, size != 54 && setModifier ? size + 9 : size, getPageUpdate());
-		this.itemlinks = new HashMap<ItemMeta, Runnable>();
-		this.itemClickHandler = new HashMap<ItemMeta, ItemClickHandler>();
+		this.itemlinks = new ArrayList<InventoryItemLink>();
 
 		forward = new ItemBuilder().displayname("§aForwards").itemstack(new ItemStack(Material.ARROW)).build();
 		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
@@ -169,7 +166,7 @@ public abstract class SuperInventory {
 
 	protected void linkItemTo(int location, ItemStack stack) {
 		inv.setItem(location, stack);
-		itemlinks.put(stack.getItemMeta(), null);
+		itemlinks.add(new InventoryItemLink(stack, location));
 	}
 
 	/*
@@ -177,12 +174,12 @@ public abstract class SuperInventory {
 	 */
 	protected void linkItemTo(int location, ItemStack stack, Runnable runnable) {
 		inv.setItem(location, stack);
-		itemlinks.put(stack.getItemMeta(), runnable);
+		itemlinks.add(new InventoryItemLink(stack, location, runnable));
 	}
 
 	protected void linkItemTo(int location, ItemStack stack, ItemClickHandler handler) {
 		inv.setItem(location, stack);
-		itemClickHandler.put(stack.getItemMeta(), handler);
+		itemlinks.add(new InventoryItemLink(stack, location, handler));
 	}
 
 	public void back() {
@@ -213,19 +210,12 @@ public abstract class SuperInventory {
 	 * Executes itemlinks
 	 */
 	public void executeLink(ItemStack item, InventoryClickEvent event) {
-		for (ItemMeta stack : itemClickHandler.keySet())
-			if (item.getItemMeta().equals(stack)) {
-				if (itemClickHandler.get(stack) != null)
-					itemClickHandler.get(stack).onItemClick(event);
+		for (InventoryItemLink link : this.itemlinks) {
+			if (link.isLink(item, event.getRawSlot())) {
+				link.execute(event);
 				break;
 			}
-
-		for (ItemMeta stack : itemlinks.keySet())
-			if (item.getItemMeta().equals(stack)) {
-				if (itemlinks.get(stack) != null)
-					itemlinks.get(stack).run();
-				break;
-			}
+		}
 	}
 
 	public int getFixedSize(int size) {
@@ -295,7 +285,7 @@ public abstract class SuperInventory {
 			this.title = title;
 		}
 
-		this.itemlinks = new HashMap<ItemMeta, Runnable>();
+		this.itemlinks.clear();
 		clear(true);
 		open();
 	}

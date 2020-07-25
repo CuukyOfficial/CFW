@@ -10,7 +10,7 @@ public class FrameworkManager {
 
 	public FrameworkManager(FrameworkManagerType type, JavaPlugin ownerInstance) {
 		this.type = type;
-		this.consolePrefix = "[" + ownerInstance.getName() + "] ";
+		this.consolePrefix = "[CFW - " + ownerInstance.getName() + "] ";
 		this.ownerInstance = ownerInstance;
 	}
 

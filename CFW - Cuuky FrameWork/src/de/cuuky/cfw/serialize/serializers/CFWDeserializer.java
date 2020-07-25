@@ -46,17 +46,17 @@ public class CFWDeserializer {
 
 			field.setAccessible(true);
 			Object obj = section.get(sections);
-			if (obj instanceof String && ((String) obj).equals(manager.getNullReplace()))
-				obj = null;
-			else
-				for (CFWSerializeType type : manager.getSerializer()) {
-					Object get = type.deserialize(instance, sections, field, section);
-					if (get == null)
-						continue;
+			// if (obj instanceof String && ((String) obj).equals(manager.getNullReplace()))
+			// obj = null;
+			// else
+			for (CFWSerializeType type : manager.getSerializer()) {
+				Object get = type.deserialize(instance, sections, field, section);
+				if (get == null)
+					continue;
 
-					obj = get;
-					break;
-				}
+				obj = get;
+				break;
+			}
 
 			try {
 				field.set(instance, obj);
