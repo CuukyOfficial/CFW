@@ -70,4 +70,12 @@ public enum MinecraftVersion {
 		return getMinecraftVersion(id);
 	}
 
+	public static MinecraftVersion getMinecraftVersionByName(String versionname) {
+		MinecraftVersion version = MINECRAFT_UNKNOWN;
+		for (MinecraftVersion mcver : MinecraftVersion.values())
+			if (mcver.getName().equals(versionname))
+				version = mcver;
+		return version;
+	}
+
 }
