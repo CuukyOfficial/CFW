@@ -3,10 +3,16 @@ package de.cuuky.cfw.version;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
+
+import de.cuuky.cfw.version.minecraft.MinecraftVersion;
+import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
+import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
 
 public class VersionUtils {
 
@@ -16,8 +22,10 @@ public class VersionUtils {
 
 	private static BukkitVersion version;
 	private static ServerSoftware serverSoftware;
+	private static Map<Player, MinecraftVersion> playerVersions;
 
 	static {
+		playerVersions = new HashMap<Player, MinecraftVersion>();
 		nmsClass = "net.minecraft.server." + Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
 		version = BukkitVersion.getVersion(nmsClass);
 		serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
@@ -65,10 +73,27 @@ public class VersionUtils {
 
 	public static ArrayList<Player> getOnlinePlayer() {
 		ArrayList<Player> list = new ArrayList<Player>();
-		for (Player p : Bukkit.getOnlinePlayers())
-			list.add(p);
+		for (Player player : Bukkit.getOnlinePlayers())
+			list.add(player);
 
 		return list;
+	}
+
+	public static MinecraftVersion getMinecraftVersion(Player player) {
+		MinecraftVersion version = playerVersions.get(player);
+		if (version != null)
+			return version;
+
+		int protocolId = -1;
+		if (ViaVersionUtils.isAvailable())
+			protocolId = ViaVersionUtils.getVersion(player);
+		else if (ProtocolSupportUtils.isAvailable())
+			protocolId = ProtocolSupportUtils.getVersion(player);
+		else
+			System.err.println("[CFW] Cannot get version of player without protocolsupport or viaversion installed");
+
+		playerVersions.put(player, version = MinecraftVersion.getMinecraftVersion(protocolId));
+		return version;
 	}
 
 	public static BukkitVersion getVersion() {

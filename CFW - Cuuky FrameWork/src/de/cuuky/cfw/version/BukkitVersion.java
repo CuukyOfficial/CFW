@@ -2,16 +2,16 @@ package de.cuuky.cfw.version;
 
 public enum BukkitVersion {
 
-	ONE_10(10),
-	ONE_11(11),
-	ONE_12(12),
-	ONE_13(13),
-	ONE_14(14),
-	ONE_15(15),
 	ONE_16(16),
-	ONE_7(7),
+	ONE_15(15),
+	ONE_14(14),
+	ONE_13(13),
+	ONE_12(12),
+	ONE_11(11),
+	ONE_10(10),
+	ONE_9(9),
 	ONE_8(8),
-	ONE_9(9);
+	ONE_7(7);
 
 	private int identifier;
 
@@ -20,7 +20,11 @@ public enum BukkitVersion {
 	}
 
 	public boolean isHigherThan(BukkitVersion ver) {
-		return identifier > ver.identifier;
+		return this.identifier > ver.getIdentifier();
+	}
+
+	public boolean isLowerThan(BukkitVersion ver) {
+		return this.identifier < ver.getIdentifier();
 	}
 
 	public int getIdentifier() {

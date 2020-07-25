@@ -1,7 +1,4 @@
-package de.cuuky.cfw.version.minecraftversion;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+package de.cuuky.cfw.version.minecraft;
 
 public enum MinecraftVersion {
 
@@ -33,7 +30,7 @@ public enum MinecraftVersion {
 	MINECRAFT_1_8(47, "1.8-1.8.9"),
 	MINECRAFT_1_7_10(5, "1.7.6-1.7.10"),
 	MINECRAFT_1_7_2(4, "1.7.2-1.7.5"),
-	MINECRAFT_UNKNOWN(-1, "Unknown");
+	UNKNWON(-1, "Unknown");
 
 	private int protocolId;
 	private String name;
@@ -41,6 +38,14 @@ public enum MinecraftVersion {
 	private MinecraftVersion(int id, String name) {
 		this.name = name;
 		this.protocolId = id;
+	}
+
+	public boolean isHigherThan(MinecraftVersion version) {
+		return this.protocolId > version.getProtocolId();
+	}
+
+	public boolean isLowerThan(MinecraftVersion version) {
+		return this.protocolId < version.getProtocolId();
 	}
 
 	public String getName() {
@@ -51,31 +56,20 @@ public enum MinecraftVersion {
 		return protocolId;
 	}
 
-	public static MinecraftVersion getMinecraftVersion(int ProtocolId) {
-		MinecraftVersion version = MINECRAFT_UNKNOWN;
+	public static MinecraftVersion getMinecraftVersion(int protocolId) {
+		MinecraftVersion version = MINECRAFT_1_7_2;
 		for (MinecraftVersion mcver : MinecraftVersion.values())
-			if (mcver.getProtocolId() == ProtocolId)
+			if (protocolId >= mcver.getProtocolId() && mcver.isHigherThan(version))
 				version = mcver;
+
 		return version;
 	}
 
-	public static MinecraftVersion getMinecraftVersion(Player player) {
-		int id = -1;
-		if (Bukkit.getServer().getPluginManager().getPlugin("ViaVersion") != null)
-			id = ViaVersionUtils.getVersion(player);
-		else if (Bukkit.getServer().getPluginManager().getPlugin("ProtocolSupport") != null)
-			id = ProtocolSupportUtils.getVersion(player);
-		else
-			System.out.println("[CFW] You have to install ViaVersion or ProtocolSupport in order to get the version of a player.");
-		return getMinecraftVersion(id);
-	}
-
-	public static MinecraftVersion getMinecraftVersionByName(String versionname) {
-		MinecraftVersion version = MINECRAFT_UNKNOWN;
+	public static MinecraftVersion getMinecraftVersion(String versionname) {
 		for (MinecraftVersion mcver : MinecraftVersion.values())
 			if (mcver.getName().equals(versionname))
-				version = mcver;
-		return version;
-	}
+				return mcver;
 
+		return null;
+	}
 }
