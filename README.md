@@ -164,6 +164,15 @@ if(!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
 	return;
 ```
 
+### How to check a player's version (requires ProtocolSupport or ViaVersion)
+```java
+@EventHandler
+public void onJoin(PlayerJoinEvent event){
+	System.out.println(event.getPlayer().getName() + " joined using " + MinecraftVersion.getMinecraftVersion(event.getPlayer()).getName());
+	}
+	
+```
+
 There is much more to use, but this is the most important stuff
 
 ## Have fun using it and thanks for reading
