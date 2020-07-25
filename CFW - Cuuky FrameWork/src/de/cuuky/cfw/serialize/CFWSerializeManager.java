@@ -63,9 +63,9 @@ public class CFWSerializeManager extends FrameworkManager {
 	}
 
 	public <T> void saveFiles(Class<T> clazz, List<T> list, File file, SaveVisit<T> visit) {
-		if(file.exists())
+		if (file.exists())
 			file.delete();
-		
+
 		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
 
 		for (T serializeable : list)
@@ -121,9 +121,9 @@ public class CFWSerializeManager extends FrameworkManager {
 		return serializer;
 	}
 
-//	public String getNullReplace() {
-//		return "nullReplace";
-//	}
+	// public String getNullReplace() {
+	// return "nullReplace";
+	// }
 
 	public static abstract class SaveVisit<T> {
 

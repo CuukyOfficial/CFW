@@ -28,16 +28,20 @@ public class CFWDeserializer {
 		CFWSerializeable instance = null;
 		FieldLoader loader = manager.loadClass(clazz);
 
-		try {
-			instance = clazz.getConstructor(parent.getClass()).newInstance(parent);
-		} catch (NullPointerException | IllegalArgumentException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+		if (parent != null)
+			try {
+				instance = clazz.getConstructor(parent.getClass()).newInstance(parent);
+			} catch (NullPointerException | IllegalArgumentException | NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
+
+			}
+
+		if (instance == null)
 			try {
 				instance = clazz.newInstance();
 			} catch (InstantiationException | IllegalAccessException e1) {
 				e1.printStackTrace();
 				return null;
 			}
-		}
 
 		for (String sections : this.section.getKeys(true)) {
 			Field field = loader.getFields().get(sections);
