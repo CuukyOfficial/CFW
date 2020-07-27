@@ -50,7 +50,8 @@ public class CFWDeserializer {
 
 			field.setAccessible(true);
 			Object obj = section.get(sections);
-			// if (obj instanceof String && ((String) obj).equals(manager.getNullReplace()))
+			// if (obj instanceof String && ((String)
+			// obj).equals("nullReplace"))
 			// obj = null;
 			// else
 			for (CFWSerializeType type : manager.getSerializer()) {
