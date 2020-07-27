@@ -971,7 +971,6 @@ public enum Materials {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public boolean isSameMaterial(ItemStack comp) {
 		if (isNewVersion())
 			return comp.getType() == this.parseMaterial();

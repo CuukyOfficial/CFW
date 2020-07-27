@@ -27,7 +27,6 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 		replaces = new ArrayList<>();
 	}
 
-	@SuppressWarnings("deprecation")
 	private String prepareScoreboardStatement(int index, String line) {
 		Scoreboard board = player.getPlayer().getScoreboard();
 		String name = getAsTeam(index);
