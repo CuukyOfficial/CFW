@@ -51,16 +51,17 @@ public class CuukyFrameWork {
 	}
 
 	protected FrameworkManager loadManager(FrameworkManagerType type) {
-		if (!this.manager.containsKey(type)) {
+		FrameworkManager manager = this.manager.get(type);
+		if (manager == null) {
 			try {
-				this.manager.put(type, (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
+				this.manager.put(type, manager = (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
 			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
 				throw new IllegalStateException(this.consolePrefix + "Failed to initialize type " + type.toString() + "!");
 			}
 		}
 
-		return this.manager.get(type);
+		return manager;
 	}
 
 	public JavaPlugin getPluginInstance() {
