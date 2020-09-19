@@ -20,7 +20,7 @@ import de.cuuky.cfw.serialize.serializers.type.types.CFWSerializeableSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.CollectionSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.EnumSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.LocationSerializer;
-import de.cuuky.cfw.serialize.serializers.type.types.LongSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.NumberSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.MapSerializer;
 
 public class CFWSerializeManager extends FrameworkManager {
@@ -37,7 +37,7 @@ public class CFWSerializeManager extends FrameworkManager {
 
 		this.serializer.add(new CFWSerializeableSerializer(this));
 		this.serializer.add(new MapSerializer(this));
-		this.serializer.add(new LongSerializer(this));
+		this.serializer.add(new NumberSerializer(this));
 		this.serializer.add(new LocationSerializer(this));
 		this.serializer.add(new EnumSerializer(this));
 		this.serializer.add(new CollectionSerializer(this));
@@ -45,6 +45,10 @@ public class CFWSerializeManager extends FrameworkManager {
 
 	public void saveSerializeable(String key, CFWSerializeable serializeable, YamlConfiguration configuration) {
 		new CFWSerializer(this, configuration.createSection(key), serializeable).serialize();
+	}
+	
+	public <T> List<T> loadSerializeables(Class<T> clazz, File file) {
+		return this.loadSerializeables(clazz, file, null);
 	}
 
 	@SuppressWarnings("unchecked")
