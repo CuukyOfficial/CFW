@@ -10,8 +10,7 @@ import de.cuuky.cfw.serialize.identifiers.NullClass;
 
 public class FieldLoader {
 
-	private Map<Field, Class<? extends CFWSerializeable>> keyTypes;
-	private Map<Field, Class<? extends CFWSerializeable>> valueTypes;
+	private Map<Field, Class<? extends CFWSerializeable>> keyTypes, valueTypes;
 	private Map<String, Field> fields;
 
 	private Class<?> clazz;
