@@ -38,7 +38,7 @@ public class CuukyFrameWork {
 	}
 
 	public CuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
-		this.consolePrefix = "[CFW - " + pluginInstance.getName() + "] ";
+		this.consolePrefix = "[" + pluginInstance.getName() + "] [CFW] ";
 
 		System.out.println(this.consolePrefix + "Loading " + NAME + " v" + VERSION + " by " + AUTHOR + " for plugin " + pluginInstance.getName() + "...");
 		this.ownerInstance = pluginInstance;
