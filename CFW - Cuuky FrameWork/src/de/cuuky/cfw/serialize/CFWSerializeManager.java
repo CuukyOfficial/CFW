@@ -46,7 +46,7 @@ public class CFWSerializeManager extends FrameworkManager {
 	public void saveSerializeable(String key, CFWSerializeable serializeable, YamlConfiguration configuration) {
 		new CFWSerializer(this, configuration.createSection(key), serializeable).serialize();
 	}
-	
+
 	public <T> List<T> loadSerializeables(Class<T> clazz, File file) {
 		return this.loadSerializeables(clazz, file, null);
 	}

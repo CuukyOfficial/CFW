@@ -36,7 +36,7 @@ public class ChatHook extends HookEntity {
 
 		return unregister;
 	}
-	
+
 	public boolean run(PlayerChatEvent event) {
 		boolean unregister = listener.onChat(event);
 

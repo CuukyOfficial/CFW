@@ -35,7 +35,7 @@ public class ProtocolSupportUtils {
 
 		return -1;
 	}
-	
+
 	public static boolean isAvailable() {
 		return getProtocolVersionMethod != null;
 	}

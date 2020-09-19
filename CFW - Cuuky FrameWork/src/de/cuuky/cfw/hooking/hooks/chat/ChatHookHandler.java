@@ -11,7 +11,7 @@ public interface ChatHookHandler {
 	public default boolean onChat(AsyncPlayerChatEvent event) {
 		return false;
 	}
-	
+
 	/*
 	 * @return Return if the hooks should be removed
 	 */

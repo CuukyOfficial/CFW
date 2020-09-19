@@ -102,7 +102,7 @@ public class HookListener implements Listener {
 		hook.run(event);
 		event.setCancelled(true);
 	}
-	
+
 	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onSyncChat(PlayerChatEvent event) {
 		ChatHook hook = (ChatHook) manager.getHook(HookEntityType.CHAT, event.getPlayer());

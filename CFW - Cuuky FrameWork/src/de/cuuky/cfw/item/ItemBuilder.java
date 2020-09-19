@@ -159,7 +159,7 @@ public class ItemBuilder {
 		this.lore = JavaUtils.collectionToArray(new String[] { lore });
 		return this;
 	}
-	
+
 	public ItemBuilder lore(String... lore) {
 		this.lore = JavaUtils.collectionToArray(lore);
 		return this;
