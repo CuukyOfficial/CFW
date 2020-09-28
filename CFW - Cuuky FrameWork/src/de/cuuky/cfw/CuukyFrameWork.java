@@ -2,6 +2,7 @@ package de.cuuky.cfw;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -31,7 +32,7 @@ public class CuukyFrameWork {
 
 	private JavaPlugin ownerInstance;
 	private String consolePrefix;
-	private HashMap<FrameworkManagerType, FrameworkManager> manager;
+	private Map<FrameworkManagerType, FrameworkManager> manager;
 
 	public CuukyFrameWork(JavaPlugin pluginInstance) {
 		this(pluginInstance, new FrameworkManager[0]);

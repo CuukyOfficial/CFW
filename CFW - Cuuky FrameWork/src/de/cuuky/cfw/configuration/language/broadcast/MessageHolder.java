@@ -1,6 +1,7 @@
 package de.cuuky.cfw.configuration.language.broadcast;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
@@ -9,7 +10,7 @@ import de.cuuky.cfw.player.CustomPlayer;
 public class MessageHolder {
 
 	private MessagePlaceholderManager placeholderManager;
-	private HashMap<String, String> replacements;
+	private Map<String, String> replacements;
 
 	public MessageHolder(MessagePlaceholderManager manager) {
 		this.placeholderManager = manager;

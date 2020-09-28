@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,14 +21,14 @@ import de.cuuky.cfw.serialize.serializers.type.types.CFWSerializeableSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.CollectionSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.EnumSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.LocationSerializer;
-import de.cuuky.cfw.serialize.serializers.type.types.NumberSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.MapSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.NumberSerializer;
 
 public class CFWSerializeManager extends FrameworkManager {
 
-	private HashMap<Class<?>, FieldLoader> loaded;
+	private Map<Class<?>, FieldLoader> loaded;
 
-	private ArrayList<CFWSerializeType> serializer;
+	private List<CFWSerializeType> serializer;
 
 	public CFWSerializeManager(JavaPlugin instance) {
 		super(FrameworkManagerType.SERIALIZE, instance);
@@ -121,7 +122,7 @@ public class CFWSerializeManager extends FrameworkManager {
 		return null;
 	}
 
-	public ArrayList<CFWSerializeType> getSerializer() {
+	public List<CFWSerializeType> getSerializer() {
 		return serializer;
 	}
 

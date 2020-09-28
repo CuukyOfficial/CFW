@@ -2,6 +2,8 @@ package de.cuuky.cfw.clientadapter.board.tablist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.entity.Player;
 
@@ -14,8 +16,8 @@ import de.cuuky.cfw.version.VersionUtils;
 
 public class CustomTablist<T extends CustomPlayer> extends CustomBoard<T> {
 
-	private HashMap<Player, ArrayList<String>> headerReplaces;
-	private HashMap<Player, ArrayList<String>> footerReplaces;
+	private Map<Player, List<String>> headerReplaces;
+	private Map<Player, List<String>> footerReplaces;
 
 	private String tabname;
 
@@ -30,7 +32,7 @@ public class CustomTablist<T extends CustomPlayer> extends CustomBoard<T> {
 	}
 
 	private Object[] updateList(T player, boolean header) {
-		ArrayList<String> tablistLines = header ? player.getUpdateHandler().getTablistHeader() : player.getUpdateHandler().getTablistFooter(), oldList = null;
+		List<String> tablistLines = header ? player.getUpdateHandler().getTablistHeader() : player.getUpdateHandler().getTablistFooter(), oldList = null;
 
 		if (tablistLines == null)
 			return new Object[] { false };

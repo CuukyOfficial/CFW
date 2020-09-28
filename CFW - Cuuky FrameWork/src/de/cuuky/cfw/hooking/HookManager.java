@@ -1,6 +1,7 @@
 package de.cuuky.cfw.hooking;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +16,7 @@ import de.cuuky.cfw.manager.FrameworkManagerType;
 
 public class HookManager extends FrameworkManager {
 
-	private ArrayList<HookEntity> hooks;
+	private List<HookEntity> hooks;
 
 	public HookManager(JavaPlugin instance) {
 		super(FrameworkManagerType.HOOKING, instance);
@@ -49,7 +50,7 @@ public class HookManager extends FrameworkManager {
 		}
 	}
 
-	public ArrayList<HookEntity> getHooks(HookEntityType type) {
+	public List<HookEntity> getHooks(HookEntityType type) {
 		ArrayList<HookEntity> rHooks = new ArrayList<>();
 		for (HookEntity ent : hooks)
 			if (ent.getType() == type)
@@ -74,7 +75,7 @@ public class HookManager extends FrameworkManager {
 		return null;
 	}
 
-	public ArrayList<HookEntity> getHooks() {
+	public List<HookEntity> getHooks() {
 		return hooks;
 	}
 }

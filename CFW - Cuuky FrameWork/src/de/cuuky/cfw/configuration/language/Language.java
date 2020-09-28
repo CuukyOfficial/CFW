@@ -2,6 +2,7 @@ package de.cuuky.cfw.configuration.language;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -17,7 +18,7 @@ public class Language {
 	private YamlConfiguration configuration;
 
 	private Class<? extends LoadableMessage> clazz;
-	private HashMap<String, String> messages;
+	private Map<String, String> messages;
 
 	public Language(String name, LanguageManager manager) {
 		this(name, manager, null);
@@ -107,7 +108,7 @@ public class Language {
 		return this.loaded;
 	}
 
-	public HashMap<String, String> getMessages() {
+	public Map<String, String> getMessages() {
 		return this.messages;
 	}
 }

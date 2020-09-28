@@ -2,6 +2,8 @@ package de.cuuky.cfw.clientadapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -13,8 +15,8 @@ import de.cuuky.cfw.player.CustomPlayer;
 
 public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManager {
 
-	private ArrayList<CustomBoard<T>> boards;
-	private HashMap<CustomBoardType, Boolean> boardTypesEnabled;
+	private List<CustomBoard<T>> boards;
+	private Map<CustomBoardType, Boolean> boardTypesEnabled;
 
 	public ClientAdapterManager(JavaPlugin instance) {
 		super(FrameworkManagerType.CLIENT_ADAPTER, instance);

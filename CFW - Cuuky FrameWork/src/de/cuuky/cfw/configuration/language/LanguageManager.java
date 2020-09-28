@@ -4,6 +4,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -19,8 +20,8 @@ public class LanguageManager extends FrameworkManager {
 
 	private String languagePath, fallbackLocale;
 	private Language defaultLanguage;
-	private HashMap<String, Language> languages;
-	private HashMap<String, String> defaultMessages;
+	private Map<String, Language> languages;
+	private Map<String, String> defaultMessages;
 
 	public LanguageManager(JavaPlugin instance) {
 		this("plugins/" + instance.getName() + "/languages/", "en_us", instance);
@@ -133,11 +134,11 @@ public class LanguageManager extends FrameworkManager {
 		return this.defaultLanguage;
 	}
 
-	public HashMap<String, String> getDefaultMessages() {
+	public Map<String, String> getDefaultMessages() {
 		return this.defaultMessages;
 	}
 
-	public HashMap<String, Language> getLanguages() {
+	public Map<String, Language> getLanguages() {
 		return this.languages;
 	}
 }

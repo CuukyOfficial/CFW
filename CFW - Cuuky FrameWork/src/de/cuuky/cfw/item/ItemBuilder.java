@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -34,8 +36,8 @@ public class ItemBuilder {
 
 	private int amount;
 	private String displayName;
-	private ArrayList<String> lore;
-	private HashMap<Enchantment, Integer> enchantments;
+	private List<String> lore;
+	private Map<Enchantment, Integer> enchantments;
 	private String playerName;
 	private ItemStack stack;
 	private Material material;

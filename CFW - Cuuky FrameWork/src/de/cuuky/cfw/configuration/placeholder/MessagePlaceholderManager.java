@@ -2,6 +2,8 @@ package de.cuuky.cfw.configuration.placeholder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,8 +18,8 @@ public class MessagePlaceholderManager extends FrameworkManager {
 
 	private int tickTolerance;
 
-	private HashMap<PlaceholderType, ArrayList<MessagePlaceholder>> placeholders;
-	private HashMap<PlaceholderType, HashMap<String, ArrayList<MessagePlaceholder>>> cachedRequests;
+	private Map<PlaceholderType, List<MessagePlaceholder>> placeholders;
+	private Map<PlaceholderType, Map<String, List<MessagePlaceholder>>> cachedRequests;
 
 	public MessagePlaceholderManager(JavaPlugin instance) {
 		super(FrameworkManagerType.PLACEHOLDER, instance);
@@ -28,7 +30,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 		this.cachedRequests = new HashMap<>();
 	}
 
-	private Object[] replaceByList(String value, CustomPlayer vp, ArrayList<MessagePlaceholder> list) {
+	private Object[] replaceByList(String value, CustomPlayer vp, List<MessagePlaceholder> list) {
 		if (list == null)
 			return new Object[] { value, null };
 
@@ -50,7 +52,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 
 	@SuppressWarnings("unchecked")
 	public String replacePlaceholders(String value, CustomPlayer vp, PlaceholderType type) {
-		HashMap<String, ArrayList<MessagePlaceholder>> reqs = cachedRequests.get(type);
+		Map<String, List<MessagePlaceholder>> reqs = cachedRequests.get(type);
 		if (reqs == null)
 			reqs = new HashMap<>();
 
@@ -59,7 +61,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 		else {
 			Object[] result = replaceByList(value, vp, getPlaceholders(type));
 			if (result[1] != null)
-				reqs.put(value, (ArrayList<MessagePlaceholder>) result[1]);
+				reqs.put(value, (List<MessagePlaceholder>) result[1]);
 			cachedRequests.put(type, reqs);
 			return (String) result[0];
 		}
@@ -105,11 +107,11 @@ public class MessagePlaceholderManager extends FrameworkManager {
 		this.tickTolerance = tickTolerance;
 	}
 
-	public HashMap<PlaceholderType, ArrayList<MessagePlaceholder>> getPlaceholders() {
+	public Map<PlaceholderType, List<MessagePlaceholder>> getPlaceholders() {
 		return this.placeholders;
 	}
 
-	public ArrayList<MessagePlaceholder> getAllPlaceholders() {
+	public List<MessagePlaceholder> getAllPlaceholders() {
 		ArrayList<MessagePlaceholder> msg = new ArrayList<>();
 		for (PlaceholderType type : this.placeholders.keySet())
 			msg.addAll(this.placeholders.get(type));
@@ -117,7 +119,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 		return msg;
 	}
 
-	public ArrayList<MessagePlaceholder> getPlaceholders(PlaceholderType type) {
+	public List<MessagePlaceholder> getPlaceholders(PlaceholderType type) {
 		return placeholders.get(type);
 	}
 }

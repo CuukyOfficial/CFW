@@ -1,6 +1,7 @@
 package de.cuuky.cfw.configuration.placeholder.placeholder;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholder;
 import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
@@ -8,8 +9,8 @@ import de.cuuky.cfw.player.CustomPlayer;
 
 public abstract class PlayerMessagePlaceholder extends MessagePlaceholder {
 
-	private HashMap<CustomPlayer, String> placeholderValues;
-	private HashMap<CustomPlayer, Long> placeholderRefreshes;
+	private Map<CustomPlayer, String> placeholderValues;
+	private Map<CustomPlayer, Long> placeholderRefreshes;
 
 	public PlayerMessagePlaceholder(String identifier, int refreshDelay, String description) {
 		super(MessagePlaceholderType.PLAYER, identifier, refreshDelay, description);

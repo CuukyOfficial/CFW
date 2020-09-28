@@ -2,6 +2,7 @@ package de.cuuky.cfw.version;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public enum ServerSoftware {
 
@@ -15,7 +16,7 @@ public enum ServerSoftware {
 	URANIUM("Uranium", true, "Uranium"),
 	UNKNOWN("Unknown", true);
 
-	private static ArrayList<Character> abc;
+	private static List<Character> abc;
 
 	static {
 		abc = new ArrayList<Character>(Arrays.asList(new Character[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }));

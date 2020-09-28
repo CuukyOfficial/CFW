@@ -2,6 +2,7 @@ package de.cuuky.cfw.clientadapter.board.scoreboard;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -15,7 +16,7 @@ import de.cuuky.cfw.player.CustomPlayer;
 
 public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<T> {
 
-	private ArrayList<String> replaces;
+	private List<String> replaces;
 	private String title;
 
 	public CustomScoreboard(T player) {
