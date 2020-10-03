@@ -47,19 +47,17 @@ public class MySQLClient {
 
 	private void startConnecting() {
 		THREAD_POOL.execute(() -> {
-			while (true) {
-				try {
-					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true", user, password);
+			try {
+				this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true", user, password);
 
-					if (connectWait != null) {
-						synchronized (this.connectWait) {
-							this.connectWait.notifyAll();
-						}
+				if (connectWait != null) {
+					synchronized (this.connectWait) {
+						this.connectWait.notifyAll();
 					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-					System.err.println("[MySQL] Couldn't connect to MySQL-Database!");
 				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				System.err.println("[MySQL] Couldn't connect to MySQL-Database!");
 			}
 		});
 	}
