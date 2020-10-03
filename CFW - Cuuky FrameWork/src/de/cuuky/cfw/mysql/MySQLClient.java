@@ -64,9 +64,10 @@ public class MySQLClient {
 
 		try {
 			PreparedStatement statement = connection.prepareStatement(mqr.getSql());
-			mqr.getHandler().onStatementPrepared(statement);
+			if (mqr.getHandler() != null)
+				mqr.getHandler().onStatementPrepared(statement);
 			mqr.doRequest(statement);
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("[MySQL] Connection to MySQL-Database lost!");
 			disconnect();
@@ -88,7 +89,7 @@ public class MySQLClient {
 				continue;
 
 			MySQLRequest[] loop = queries.toArray(new MySQLRequest[0]);
-			for (int i = loop.length - 1; i != 0; i--) {
+			for (int i = loop.length - 1; i >= 0; i--) {
 				MySQLRequest mqr = loop[i];
 				queries.remove(mqr);
 				THREAD_POOL.execute(() -> {

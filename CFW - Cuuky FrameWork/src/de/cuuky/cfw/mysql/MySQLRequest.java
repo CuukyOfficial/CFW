@@ -18,10 +18,18 @@ public class MySQLRequest {
 
 	public void doRequest(PreparedStatement statement) {
 		try {
+			if (handler == null) {
+				statement.execute();
+				return;
+			}
+
 			if (handler instanceof PreparedStatementExec)
 				((PreparedStatementExec) handler).onStatementExec(statement.execute());
-			else
+			else if (handler instanceof PreparedStatementQuery)
 				((PreparedStatementQuery) handler).onResultRecieve(statement.executeQuery());
+			else
+				statement.execute();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
