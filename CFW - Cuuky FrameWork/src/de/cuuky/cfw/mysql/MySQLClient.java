@@ -22,6 +22,7 @@ public class MySQLClient {
 	protected String host, database, user, password;
 	protected int port;
 	protected Object connectWait;
+	protected boolean autoReconnect;
 
 	private volatile CopyOnWriteArrayList<MySQLRequest> queries;
 
@@ -31,6 +32,7 @@ public class MySQLClient {
 		this.database = database;
 		this.user = user;
 		this.password = password;
+		this.autoReconnect = true;
 		this.queries = new CopyOnWriteArrayList<MySQLRequest>();
 
 		startConnecting();
@@ -46,15 +48,6 @@ public class MySQLClient {
 	private void startConnecting() {
 		THREAD_POOL.execute(() -> {
 			while (true) {
-				if (isConnected()) {
-					try {
-						Thread.sleep(50);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					continue;
-				}
-
 				try {
 					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true", user, password);
 
@@ -66,12 +59,6 @@ public class MySQLClient {
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.err.println("[MySQL] Couldn't connect to MySQL-Database!");
-				}
-
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
 			}
 		});
