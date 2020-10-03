@@ -18,9 +18,10 @@ public class MySQLClient {
 		THREAD_POOL = Executors.newCachedThreadPool();
 	}
 
-	private Connection connection;
-	private String host, database, user, password;
-	private int port;
+	protected Connection connection;
+	protected String host, database, user, password;
+	protected int port;
+	protected Object connectWait;
 
 	private volatile CopyOnWriteArrayList<MySQLRequest> queries;
 
@@ -36,12 +37,18 @@ public class MySQLClient {
 		THREAD_POOL.execute(this::prepareAsyncHandler);
 	}
 
+	public MySQLClient(String host, int port, String database, String user, String password, Object connectWait) {
+		this(host, port, database, user, password);
+
+		this.connectWait = connectWait;
+	}
+
 	private void startConnecting() {
 		THREAD_POOL.execute(() -> {
 			while (true) {
 				if (isConnected()) {
 					try {
-						Thread.sleep(50);
+						Thread.sleep(200);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -49,7 +56,11 @@ public class MySQLClient {
 				}
 
 				try {
-					connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", user, password);
+					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", user, password);
+
+					synchronized (this.connectWait) {
+						this.connectWait.notifyAll();
+					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 					System.err.println("[MySQL] Couldn't connect to MySQL-Database!");
