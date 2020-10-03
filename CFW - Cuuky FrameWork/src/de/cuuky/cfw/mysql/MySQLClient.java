@@ -58,8 +58,10 @@ public class MySQLClient {
 				try {
 					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true", user, password);
 
-					synchronized (this.connectWait) {
-						this.connectWait.notifyAll();
+					if (connectWait != null) {
+						synchronized (this.connectWait) {
+							this.connectWait.notifyAll();
+						}
 					}
 				} catch (SQLException e) {
 					e.printStackTrace();
@@ -135,6 +137,14 @@ public class MySQLClient {
 		}
 
 		this.connection = null;
+	}
+
+	public boolean getQuery(String query, boolean async) {
+		return getQuery(query, null, async);
+	}
+
+	public boolean getQuery(String query, PreparedStatementHandler handler, boolean async) {
+		return async ? this.queries.add(new MySQLRequest(query, handler)) : getQuery(new MySQLRequest(query, handler));
 	}
 
 	public boolean getQuery(String query) {
