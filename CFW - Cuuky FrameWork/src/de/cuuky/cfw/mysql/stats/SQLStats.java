@@ -73,7 +73,7 @@ public class SQLStats<T> extends MySQLClient {
 
 		command.append("PRIMARY KEY (`index`), UNIQUE KEY `uuid_key` (`uuid`));");
 
-		this.connection.createStatement().executeUpdate(command.toString());
+		this.getQuery(command.toString());
 	}
 
 	public T loadStats(UUID uuid) throws SQLException, InstantiationException, IllegalAccessException {
@@ -114,7 +114,7 @@ public class SQLStats<T> extends MySQLClient {
 					break;
 			}
 
-		this.connection.createStatement().executeUpdate(command.toString());
+		this.getQuery(command.toString());
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)

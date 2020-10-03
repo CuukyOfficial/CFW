@@ -48,7 +48,7 @@ public class MySQLClient {
 			while (true) {
 				if (isConnected()) {
 					try {
-						Thread.sleep(200);
+						Thread.sleep(50);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
@@ -56,7 +56,7 @@ public class MySQLClient {
 				}
 
 				try {
-					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?autoReconnect=true", user, password);
+					this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true", user, password);
 
 					synchronized (this.connectWait) {
 						this.connectWait.notifyAll();
@@ -65,13 +65,26 @@ public class MySQLClient {
 					e.printStackTrace();
 					System.err.println("[MySQL] Couldn't connect to MySQL-Database!");
 				}
+
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
 
 	private boolean getQuery(MySQLRequest mqr) {
-		if (!isConnected())
-			return false;
+		if (!isConnected()) {
+			synchronized (this.connectWait) {
+				try {
+					this.connectWait.wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 
 		try {
 			PreparedStatement statement = connection.prepareStatement(mqr.getSql());
@@ -80,8 +93,8 @@ public class MySQLClient {
 			mqr.doRequest(statement);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.err.println("[MySQL] Connection to MySQL-Database lost!");
-			disconnect();
+			System.err.println("[MySQL] An error occured on executing a query!");
+			System.err.println("[MySQL] Query: " + mqr.getSql());
 			return false;
 		}
 
@@ -124,8 +137,16 @@ public class MySQLClient {
 		this.connection = null;
 	}
 
+	public boolean getQuery(String query) {
+		return getQuery(new MySQLRequest(query, null));
+	}
+
 	public boolean getQuery(String query, PreparedStatementHandler handler) {
 		return getQuery(new MySQLRequest(query, handler));
+	}
+
+	public boolean getAsyncPreparedQuery(String query) {
+		return this.queries.add(new MySQLRequest(query, null));
 	}
 
 	public boolean getAsyncPreparedQuery(String query, PreparedStatementHandler dr) {
