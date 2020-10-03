@@ -169,11 +169,11 @@ public class SQLStats<T> extends MySQLClient {
 
 		this.getQuery(command.toString() + "; COMMIT;", async);
 	}
-	
+
 	public void setAsync(boolean async) {
 		this.async = async;
 	}
-
+	
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface StatsInt {
 
