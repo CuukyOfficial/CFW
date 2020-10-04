@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import de.cuuky.cfw.version.minecraft.MinecraftVersion;
 import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
 import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
+import de.cuuky.cfw.version.types.Sounds;
 
 public class VersionUtils {
 
@@ -103,4 +104,12 @@ public class VersionUtils {
 	public static ServerSoftware getServerSoftware() {
 		return serverSoftware;
 	}
+
+	public static boolean isValidSound(String sound) {
+		for (Sounds sounds : Sounds.values())
+			if (sounds.toString().equals(sound))
+				return true;
+		return false;
+	}
+
 }
