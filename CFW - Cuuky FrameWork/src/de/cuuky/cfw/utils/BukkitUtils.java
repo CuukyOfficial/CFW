@@ -1,5 +1,6 @@
 package de.cuuky.cfw.utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -12,5 +13,9 @@ public class BukkitUtils {
 		Location blockunder = location.clone().add(0, -1, 0);
 		player.sendBlockChange(blockunder, blockunder.getBlock().getType(), (byte) 1);
 		player.teleport(location.clone().add(0, 1, 0));
+	}
+
+	public static boolean isPluginEnabled(String plugin) {
+		return Bukkit.getServer().getPluginManager().getPlugin(plugin) != null;
 	}
 }
