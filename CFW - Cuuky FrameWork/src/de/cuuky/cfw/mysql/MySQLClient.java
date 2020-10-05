@@ -82,14 +82,7 @@ public class MySQLClient {
 
 	private Runnable prepareAsyncHandler() {
 		while (true) {
-			try {
-				Thread.sleep(isConnected() ? 10 : 100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-
-			if (!isConnected())
-				continue;
+			waitForConnection();
 
 			MySQLRequest[] loop = queries.toArray(new MySQLRequest[0]);
 			for (int i = loop.length - 1; i >= 0; i--) {
