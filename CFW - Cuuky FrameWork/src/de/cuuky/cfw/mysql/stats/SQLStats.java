@@ -35,19 +35,8 @@ public class SQLStats<T> extends MySQLClient {
 		this.table = table;
 		this.statsClazz = statsClazz;
 
-		loadFields();
-
-		if (async)
-			new Thread(() -> {
-				try {
-					setupDatabase();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			});
-		else
-			setupDatabase();
-
+		this.loadFields();
+		this.setupDatabase();
 	}
 
 	public SQLStats(String host, int port, String database, String table, String user, String password, Class<T> statsClazz, Object connectWait) throws SQLException {
@@ -58,22 +47,9 @@ public class SQLStats<T> extends MySQLClient {
 		super(host, port, database, user, password, async ? null : new Object());
 	}
 
-	private void waitForConnection() {
-		if (this.isConnected())
-			return;
-
-		try {
-			synchronized (this.connectWait) {
-				this.connectWait.wait();
-			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private void setupDatabase() throws SQLException {
-		waitForConnection();
-		createTable();
+		this.waitForConnection();
+		this.createTable();
 	}
 
 	private void loadFields() {
@@ -173,7 +149,7 @@ public class SQLStats<T> extends MySQLClient {
 	public void setAsync(boolean async) {
 		this.async = async;
 	}
-	
+
 	@Retention(RetentionPolicy.RUNTIME)
 	public @interface StatsInt {
 

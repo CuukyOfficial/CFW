@@ -48,7 +48,7 @@ public class MySQLClient {
 	private void startConnecting() {
 		THREAD_POOL.execute(() -> {
 			try {
-				this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true", user, password);
+				this.connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database + "?allowMultiQueries=true&autoReconnect=true&testWhileIdle=true&testOnBorrow=true", user, password);
 
 				if (connectWait != null) {
 					synchronized (this.connectWait) {
@@ -63,15 +63,7 @@ public class MySQLClient {
 	}
 
 	private boolean getQuery(MySQLRequest mqr) {
-		if (!isConnected()) {
-			synchronized (this.connectWait) {
-				try {
-					this.connectWait.wait();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		this.waitForConnection();
 
 		try {
 			PreparedStatement statement = connection.prepareStatement(mqr.getSql());
@@ -107,6 +99,19 @@ public class MySQLClient {
 					if (!getQuery(mqr))
 						queries.add(mqr);
 				});
+			}
+		}
+	}
+
+	protected void waitForConnection() {
+		if (isConnected())
+			return;
+
+		synchronized (this.connectWait) {
+			try {
+				this.connectWait.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 		}
 	}
