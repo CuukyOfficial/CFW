@@ -88,7 +88,7 @@ public class MySQLClient {
 				e.printStackTrace();
 			}
 
-			waitForConnection();
+			this.waitForConnection();
 
 			MySQLRequest[] loop = queries.toArray(new MySQLRequest[0]);
 			for (int i = loop.length - 1; i >= 0; i--) {
