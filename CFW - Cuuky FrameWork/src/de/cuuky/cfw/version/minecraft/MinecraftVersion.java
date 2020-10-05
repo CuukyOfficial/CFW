@@ -4,6 +4,8 @@ public enum MinecraftVersion {
 
 	// Protocol version numbers: https://wiki.vg/Protocol_version_numbers
 
+	MINECRAFT_1_16_3(753, "1.16.3"),
+	MINECRAFT_1_16_2(751, "1.16.2"),
 	MINECRAFT_1_16_1(736, "1.16.1"),
 	MINECRAFT_1_16(735, "1.16"),
 	MINECRAFT_1_15_2(578, "1.15.2"),
