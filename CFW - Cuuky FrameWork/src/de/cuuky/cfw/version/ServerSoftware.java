@@ -6,15 +6,16 @@ import java.util.List;
 
 public enum ServerSoftware {
 
-	BUKKIT("Bukkit", false, "Bukkit"),
-	SPIGOT("Spigot", false, "Spigot"),
-	PAPER("PaperSpigot", false, "PaperSpigot", "Paper"),
-	TACO("TacoSpigot", false, "TacoSpigot"),
-	MAGMA("Magma", true, "Magma"),
-	CAULDRON("Cauldron", true, "Cauldron"),
-	THERMOS("Thermos", true, "Thermos"),
-	URANIUM("Uranium", true, "Uranium"),
-	UNKNOWN("Unknown", true);
+	BUKKIT("Bukkit", false, false, "Bukkit"),
+	SPIGOT("Spigot", false, false, "Spigot"),
+	PAPER("PaperSpigot", false, false, "PaperSpigot", "Paper"),
+	TACO("TacoSpigot", false, false, "TacoSpigot"),
+	MAGMA("Magma", false, true, "Magma"),
+	CAULDRON("Cauldron", false, true, "Cauldron"),
+	THERMOS("Thermos", false, true, "Thermos"),
+	URANIUM("Uranium", false, true, "Uranium"),
+	BUKKITFABRIC("BukkitFabric", true, false, "Bukkit4Fabric", "Fabric"),
+	UNKNOWN("Unknown", false, false);
 
 	private static List<Character> abc;
 
@@ -25,11 +26,15 @@ public enum ServerSoftware {
 	private String name;
 	private String[] versionnames;
 	private boolean modsupport;
+	private boolean forgeSupport;
+	private boolean fabricSupport;
 
-	private ServerSoftware(String name, boolean modsupport, String... versionnames) {
+	private ServerSoftware(String name, boolean fabricSupport, boolean forgeSupport, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
-		this.modsupport = modsupport;
+		this.fabricSupport = fabricSupport;
+		this.forgeSupport = forgeSupport;
+		this.modsupport = (forgeSupport || fabricSupport);
 	}
 
 	public String getName() {
@@ -42,6 +47,14 @@ public enum ServerSoftware {
 
 	public boolean hasModSupport() {
 		return this.modsupport;
+	}
+
+	public boolean hasForgeSupport() {
+		return forgeSupport;
+	}
+
+	public boolean hasFabricSupport() {
+		return fabricSupport;
 	}
 
 	public static ServerSoftware getServerSoftware(String version, String name) {
