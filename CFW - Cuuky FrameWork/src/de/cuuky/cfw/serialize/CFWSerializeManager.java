@@ -3,7 +3,7 @@ package de.cuuky.cfw.serialize;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class CFWSerializeManager extends FrameworkManager {
 	public CFWSerializeManager(JavaPlugin instance) {
 		super(FrameworkManagerType.SERIALIZE, instance);
 
-		this.loaded = new HashMap<Class<?>, FieldLoader>();
+		this.loaded = new LinkedHashMap<Class<?>, FieldLoader>();
 		this.serializer = new ArrayList<CFWSerializeType>();
 
 		this.serializer.add(new CFWSerializeableSerializer(this));

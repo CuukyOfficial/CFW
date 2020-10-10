@@ -1,12 +1,13 @@
 package de.cuuky.cfw.serialize.loader;
 
 import java.lang.reflect.Field;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeField;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.cfw.serialize.identifiers.NullClass;
+import de.cuuky.cfw.utils.JavaUtils;
 
 public class FieldLoader {
 
@@ -16,9 +17,9 @@ public class FieldLoader {
 	private Class<?> clazz;
 
 	public FieldLoader(Class<?> clazz) {
-		this.fields = new HashMap<String, Field>();
-		this.keyTypes = new HashMap<Field, Class<? extends CFWSerializeable>>();
-		this.valueTypes = new HashMap<Field, Class<? extends CFWSerializeable>>();
+		this.fields = new LinkedHashMap<String, Field>();
+		this.keyTypes = new LinkedHashMap<Field, Class<? extends CFWSerializeable>>();
+		this.valueTypes = new LinkedHashMap<Field, Class<? extends CFWSerializeable>>();
 		this.clazz = clazz;
 
 		loadFields();
@@ -36,10 +37,17 @@ public class FieldLoader {
 			if (anno.keyClass() != NullClass.class)
 				keyTypes.put(field, anno.keyClass());
 
-			if (anno.valueClass() != NullClass.class) {
+			if (anno.valueClass() != NullClass.class)
 				valueTypes.put(field, anno.valueClass());
-			}
 		}
+
+		this.reverseMaps();
+	}
+
+	private void reverseMaps() {
+		this.fields = JavaUtils.reverseMap(this.fields);
+		this.keyTypes = JavaUtils.reverseMap(this.keyTypes);
+		this.valueTypes = JavaUtils.reverseMap(this.valueTypes);
 	}
 
 	public Class<? extends CFWSerializeable> getKeyType(Field field) {

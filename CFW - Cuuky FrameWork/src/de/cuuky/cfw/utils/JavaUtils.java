@@ -4,8 +4,11 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 public final class JavaUtils {
@@ -180,5 +183,16 @@ public final class JavaUtils {
 		}
 
 		file.delete();
+	}
+	
+	public static <T, Z> LinkedHashMap<T, Z> reverseMap(Map<T, Z> map) {
+		LinkedHashMap<T, Z> reversed = new LinkedHashMap<>();
+		List<T> keys = new ArrayList<T>(map.keySet());
+		Collections.reverse(keys);
+
+		for (T key : keys)
+			reversed.put(key, map.get(key));
+
+		return reversed;
 	}
 }
