@@ -25,7 +25,7 @@ public class HookManager extends FrameworkManager {
 		this.ownerInstance.getServer().getPluginManager().registerEvents(new HookListener(this), ownerInstance);
 	}
 
-	public HookEntity registerHook(HookEntity hook) {
+	public <B extends HookEntity> B registerHook(B hook) {
 		hook.setManager(this);
 		hooks.add(hook);
 		return hook;

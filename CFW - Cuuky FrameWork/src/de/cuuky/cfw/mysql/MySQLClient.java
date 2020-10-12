@@ -27,6 +27,10 @@ public class MySQLClient {
 	private volatile CopyOnWriteArrayList<MySQLRequest> queries;
 
 	public MySQLClient(String host, int port, String database, String user, String password) {
+		this(host, port, database, user, password, new Object());
+	}
+
+	public MySQLClient(String host, int port, String database, String user, String password, Object connectWait) {
 		this.host = host;
 		this.port = port;
 		this.database = database;
@@ -34,15 +38,10 @@ public class MySQLClient {
 		this.password = password;
 		this.autoReconnect = true;
 		this.queries = new CopyOnWriteArrayList<MySQLRequest>();
+		this.connectWait = connectWait;
 
 		startConnecting();
 		THREAD_POOL.execute(this::prepareAsyncHandler);
-	}
-
-	public MySQLClient(String host, int port, String database, String user, String password, Object connectWait) {
-		this(host, port, database, user, password);
-
-		this.connectWait = connectWait;
 	}
 
 	private void startConnecting() {

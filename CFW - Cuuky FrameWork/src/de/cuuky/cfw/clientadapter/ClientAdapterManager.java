@@ -30,7 +30,7 @@ public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManag
 			this.boardTypesEnabled.put(type, false);
 	}
 
-	public BukkitTask addUpdateTask(CustomBoardType board, long delay, long period) {
+	public BukkitTask addUpdateTask(long delay, long period, CustomBoardType... board) {
 		return new BukkitRunnable() {
 
 			@Override
@@ -40,14 +40,21 @@ public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManag
 		}.runTaskTimerAsynchronously(this.ownerInstance, delay, period);
 	}
 
-	public void updateBoards(CustomBoardType type) {
-		this.boards.stream().filter(board -> board.getBoardType() == type).forEach(board -> board.update());
+	public void updateBoards(CustomBoardType... bType) {
+		for (CustomBoardType type : bType)
+			this.boards.stream().filter(board -> board.getBoardType() == type).forEach(board -> board.update());
 	}
 
 	public void updateBoards() {
 		this.boardTypesEnabled.keySet().forEach(type -> updateBoards(type));
 	}
 
+	public void setBoardTypeEnabled(boolean enabled, CustomBoardType... board) {
+		for (CustomBoardType type : board)
+			boardTypesEnabled.put(type, enabled);
+	}
+
+	@Deprecated
 	public void setBoardTypeEnabled(CustomBoardType type, boolean enabled) {
 		boardTypesEnabled.put(type, enabled);
 	}
@@ -56,13 +63,13 @@ public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManag
 		return boardTypesEnabled.get(type);
 	}
 
-	public CustomBoard<T> registerBoard(CustomBoard<T> board) {
+	public <B extends CustomBoard<T>> B registerBoard(B board) {
 		board.setManager(this);
 		this.boards.add(board);
 		return board;
 	}
 
-	public boolean unregisterBoard(CustomBoard<T> board) {
+	public <B extends CustomBoard<T>> boolean unregisterBoard(B board) {
 		return this.boards.remove(board);
 	}
 
@@ -71,6 +78,16 @@ public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManag
 		for (CustomBoard<T> board : boards)
 			if (board.getBoardType() == type)
 				rBoards.add(board);
+
+		return rBoards;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <B extends CustomBoard<T>> ArrayList<B> getBoards(Class<B> boardClass) {
+		ArrayList<B> rBoards = new ArrayList<>();
+		for (CustomBoard<T> board : boards)
+			if (boardClass.isAssignableFrom(board.getClass()))
+				rBoards.add((B) board);
 
 		return rBoards;
 	}
