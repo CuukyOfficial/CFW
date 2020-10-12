@@ -128,14 +128,6 @@ public class MySQLClient {
 		this.connection = null;
 	}
 
-	public boolean getQuery(String query, boolean async) {
-		return getQuery(query, null, async);
-	}
-
-	public boolean getQuery(String query, PreparedStatementHandler handler, boolean async) {
-		return async ? this.queries.add(new MySQLRequest(query, handler)) : getQuery(new MySQLRequest(query, handler));
-	}
-
 	public boolean getQuery(String query) {
 		return getQuery(new MySQLRequest(query, null));
 	}

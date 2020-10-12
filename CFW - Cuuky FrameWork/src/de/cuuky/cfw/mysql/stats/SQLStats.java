@@ -27,7 +27,6 @@ public class SQLStats<T> extends MySQLClient {
 	private String table;
 	private Class<T> statsClazz;
 	private Map<String, Field> fields;
-	private boolean async;
 
 	public SQLStats(String host, int port, String database, String table, String user, String password, Class<T> statsClazz) throws SQLException {
 		super(host, port, database, user, password, new Object());
@@ -41,10 +40,6 @@ public class SQLStats<T> extends MySQLClient {
 
 	public SQLStats(String host, int port, String database, String table, String user, String password, Class<T> statsClazz, Object connectWait) throws SQLException {
 		super(host, port, database, user, password, connectWait);
-	}
-
-	public SQLStats(String host, int port, String database, String table, String user, String password, Class<T> statsClazz, boolean async) throws SQLException {
-		super(host, port, database, user, password, async ? null : new Object());
 	}
 
 	private void setupDatabase() throws SQLException {
@@ -77,7 +72,7 @@ public class SQLStats<T> extends MySQLClient {
 
 		command.append("PRIMARY KEY (`index`), UNIQUE KEY `uuid_key` (`uuid`));");
 
-		this.getQuery(command.toString(), async);
+		this.getQuery(command.toString());
 	}
 
 	private String getLoadStatsQuery(UUID uuid) {
@@ -93,30 +88,8 @@ public class SQLStats<T> extends MySQLClient {
 
 		return stats;
 	}
-
-	public T loadStats(UUID uuid) throws SQLException, InstantiationException, IllegalAccessException {
-		ResultSet result = this.connection.createStatement().executeQuery(this.getLoadStatsQuery(uuid));
-		return processStats(result);
-	}
-
-	public boolean loadStatsAsync(UUID uuid, Consumer<T> consumer) throws SQLException, InstantiationException, IllegalAccessException {
-		return this.getAsyncPreparedQuery(this.getLoadStatsQuery(uuid), new PreparedStatementQuery() {
-
-			@Override
-			public void onStatementPrepared(PreparedStatement statement) {}
-
-			@Override
-			public void onResultRecieve(ResultSet result) {
-				try {
-					consumer.accept(processStats(result));
-				} catch (InstantiationException | IllegalAccessException | SQLException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	public void saveStats(UUID uuid, T stats) throws SQLException, IllegalArgumentException, IllegalAccessException {
+	
+	private String getSaveQuery(UUID uuid, T stats) throws IllegalArgumentException, IllegalAccessException {
 		Set<Entry<String, Field>> entrys = this.fields.entrySet();
 		int[] values = new int[entrys.size()];
 
@@ -143,11 +116,37 @@ public class SQLStats<T> extends MySQLClient {
 					break;
 			}
 
-		this.getQuery(command.toString() + "; COMMIT;", async);
+		return command.toString() + "; COMMIT;";
 	}
 
-	public void setAsync(boolean async) {
-		this.async = async;
+	public T loadStats(UUID uuid) throws SQLException, InstantiationException, IllegalAccessException {
+		ResultSet result = this.connection.createStatement().executeQuery(this.getLoadStatsQuery(uuid));
+		return processStats(result);
+	}
+
+	public boolean loadStatsAsync(UUID uuid, Consumer<T> consumer) throws SQLException, InstantiationException, IllegalAccessException {
+		return this.getAsyncPreparedQuery(this.getLoadStatsQuery(uuid), new PreparedStatementQuery() {
+
+			@Override
+			public void onStatementPrepared(PreparedStatement statement) {}
+
+			@Override
+			public void onResultRecieve(ResultSet result) {
+				try {
+					consumer.accept(processStats(result));
+				} catch (InstantiationException | IllegalAccessException | SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public boolean saveStats(UUID uuid, T stats) throws SQLException, IllegalArgumentException, IllegalAccessException {
+		return this.getQuery(this.getSaveQuery(uuid, stats));
+	}
+	
+	public boolean saveStatsAsync(UUID uuid, T stats) throws SQLException, IllegalArgumentException, IllegalAccessException {
+		return this.getAsyncPreparedQuery(this.getSaveQuery(uuid, stats));
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
