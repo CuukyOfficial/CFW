@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import de.cuuky.cfw.clientadapter.board.CustomBoard;
 import de.cuuky.cfw.clientadapter.board.CustomBoardType;
@@ -26,6 +28,24 @@ public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManag
 
 		for (CustomBoardType type : CustomBoardType.values())
 			this.boardTypesEnabled.put(type, false);
+	}
+
+	public BukkitTask addUpdateTask(CustomBoardType board, long delay, long period) {
+		return new BukkitRunnable() {
+
+			@Override
+			public void run() {
+				updateBoards(board);
+			}
+		}.runTaskTimerAsynchronously(this.ownerInstance, delay, period);
+	}
+
+	public void updateBoards(CustomBoardType type) {
+		this.boards.stream().filter(board -> board.getBoardType() == type).forEach(board -> board.update());
+	}
+
+	public void updateBoards() {
+		this.boardTypesEnabled.keySet().forEach(type -> updateBoards(type));
 	}
 
 	public void setBoardTypeEnabled(CustomBoardType type, boolean enabled) {

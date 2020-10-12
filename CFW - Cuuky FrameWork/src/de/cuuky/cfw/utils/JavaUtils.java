@@ -184,7 +184,7 @@ public final class JavaUtils {
 
 		file.delete();
 	}
-	
+
 	public static <T, Z> LinkedHashMap<T, Z> reverseMap(Map<T, Z> map) {
 		LinkedHashMap<T, Z> reversed = new LinkedHashMap<>();
 		List<T> keys = new ArrayList<T>(map.keySet());
@@ -194,5 +194,15 @@ public final class JavaUtils {
 			reversed.put(key, map.get(key));
 
 		return reversed;
+	}
+
+	public static String[] countdownToTime(int countdown) {
+		String[] time = new String[] { String.valueOf(countdown / 60), String.valueOf(countdown % 60) };
+
+		for (int i = 0; i < time.length; i++)
+			if (time[i].length() == 1)
+				time[i] = "0" + time[i];
+
+		return time;
 	}
 }
