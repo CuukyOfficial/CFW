@@ -82,7 +82,6 @@ public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManag
 		return rBoards;
 	}
 
-	@SuppressWarnings("unchecked")
 	public <B extends CustomBoard<T>> ArrayList<B> getBoards(Class<B> boardClass) {
 		ArrayList<B> rBoards = new ArrayList<>();
 		for (CustomBoard<T> board : boards)
