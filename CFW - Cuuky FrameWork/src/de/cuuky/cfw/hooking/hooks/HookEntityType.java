@@ -7,13 +7,14 @@ public enum HookEntityType {
 
 	CHAT(ChatHook.class),
 	ITEM(ItemHook.class);
-	
+
 	private Class<? extends HookEntity> clazz;
+
 	private <B extends HookEntity> HookEntityType(Class<B> clazz) {
 		this.clazz = clazz;
 	}
-	
-	public Class<? extends HookEntity>  getTypeClass() {
+
+	public Class<? extends HookEntity> getTypeClass() {
 		return clazz;
 	}
 }

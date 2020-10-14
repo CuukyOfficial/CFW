@@ -88,7 +88,7 @@ public class SQLStats<T> extends MySQLClient {
 
 		return stats;
 	}
-	
+
 	private String getSaveQuery(UUID uuid, T stats) throws IllegalArgumentException, IllegalAccessException {
 		Set<Entry<String, Field>> entrys = this.fields.entrySet();
 		int[] values = new int[entrys.size()];
@@ -144,7 +144,7 @@ public class SQLStats<T> extends MySQLClient {
 	public boolean saveStats(UUID uuid, T stats) throws SQLException, IllegalArgumentException, IllegalAccessException {
 		return this.getQuery(this.getSaveQuery(uuid, stats));
 	}
-	
+
 	public boolean saveStatsAsync(UUID uuid, T stats) throws SQLException, IllegalArgumentException, IllegalAccessException {
 		return this.getAsyncPreparedQuery(this.getSaveQuery(uuid, stats));
 	}
