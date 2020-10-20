@@ -13,6 +13,7 @@ import de.cuuky.cfw.mysql.request.PreparedStatementHandler;
 public class MySQLClient {
 
 	private static final ExecutorService THREAD_POOL;
+	private static final long HEARTBEAT_DELAY = 60 * 60 * 1000;
 
 	static {
 		THREAD_POOL = Executors.newCachedThreadPool();
@@ -22,7 +23,7 @@ public class MySQLClient {
 	protected String host, database, user, password;
 	protected int port;
 	protected Object connectWait;
-	protected boolean autoReconnect;
+	protected boolean autoReconnect, keepAlive;
 
 	private volatile CopyOnWriteArrayList<MySQLRequest> queries;
 
@@ -37,11 +38,29 @@ public class MySQLClient {
 		this.user = user;
 		this.password = password;
 		this.autoReconnect = true;
+		this.keepAlive = true;
 		this.queries = new CopyOnWriteArrayList<MySQLRequest>();
 		this.connectWait = connectWait;
 
 		startConnecting();
+		startKeepingAlive();
 		THREAD_POOL.execute(this::prepareAsyncHandler);
+	}
+
+	private void startKeepingAlive() {
+		THREAD_POOL.execute(() -> {
+			try {
+				Thread.sleep(HEARTBEAT_DELAY);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+			if (!keepAlive)
+				return;
+
+			waitForConnection();
+			getQuery(new MySQLRequest(";", null));
+		});
 	}
 
 	private void startConnecting() {
@@ -141,6 +160,10 @@ public class MySQLClient {
 
 	public boolean getAsyncPreparedQuery(String query, PreparedStatementHandler dr) {
 		return this.queries.add(new MySQLRequest(query, dr));
+	}
+
+	public void setKeepAlive(boolean keepAlive) {
+		this.keepAlive = keepAlive;
 	}
 
 	public boolean isConnected() {
