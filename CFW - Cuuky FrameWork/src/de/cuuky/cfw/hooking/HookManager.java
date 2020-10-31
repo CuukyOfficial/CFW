@@ -54,7 +54,7 @@ public class HookManager extends FrameworkManager {
 		return (List<HookEntity>) getHooks(type.getTypeClass());
 	}
 
-	public <B> List<B> getHooks(Class<B> clazz) {
+	public <B extends HookEntity> List<B> getHooks(Class<B> clazz) {
 		ArrayList<B> rHooks = new ArrayList<>();
 		for (HookEntity ent : hooks)
 			if (ent.getType().getTypeClass().equals(clazz))
@@ -67,9 +67,9 @@ public class HookManager extends FrameworkManager {
 		return getHook(type.getTypeClass(), player);
 	}
 
-	public <B> B getHook(Class<B> clazz, Player player) {
-		for (HookEntity ent : hooks)
-			if (ent.getType().getClass().equals(clazz) && ent.getPlayer().equals(player))
+	public <B extends HookEntity> B getHook(Class<B> clazz, Player player) {
+		for (B ent : getHooks(clazz))
+			if (ent.getPlayer().equals(player))
 				return (B) ent;
 
 		return null;
