@@ -59,7 +59,7 @@ public class MySQLClient {
 				return;
 
 			waitForConnection();
-			getQuery(new MySQLRequest(";", null));
+			getQuery(new MySQLRequest("SHOW TABLES;", null));
 		});
 	}
 
