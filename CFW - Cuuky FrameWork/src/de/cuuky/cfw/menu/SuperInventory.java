@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.menu.utils.InventoryItemLink;
@@ -232,17 +233,23 @@ public abstract class SuperInventory {
 		if (manager == null)
 			throw new IllegalStateException("Cannot open inventory without manager defined");
 
-		isLastPage = this.onOpen();
-		if (!isLastPage)
-			hasMorePages = true;
+		new BukkitRunnable() {
 
-		setSwitcher();
-		fillSpace();
+			@Override
+			public void run() {
+				isLastPage = onOpen();
+				if (!isLastPage)
+					hasMorePages = true;
 
-		if (this.opener.getOpenInventory() == null || !this.opener.getOpenInventory().getTopInventory().equals(this.inv))
-			this.opener.openInventory(inv);
+				setSwitcher();
+				fillSpace();
 
-		doAnimation();
+				if (opener.getOpenInventory() == null || !opener.getOpenInventory().getTopInventory().equals(inv))
+					opener.openInventory(inv);
+
+				doAnimation();
+			}
+		}.runTask(this.manager.getOwnerInstance());
 	}
 
 	public void pageActionChanged(PageAction action) {
