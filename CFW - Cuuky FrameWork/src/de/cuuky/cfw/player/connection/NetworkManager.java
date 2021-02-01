@@ -3,6 +3,7 @@ package de.cuuky.cfw.player.connection;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -202,9 +203,23 @@ public class NetworkManager {
 
 	public void sendLinkedMessage(String message, String link) {
 		try {
-			Constructor<?> constructor = packetChatClass.getConstructor(ioBase);
+			for (Constructor<?> c : packetChatClass.getConstructors()) {
+				System.out.println(c.getName() + ":" + c.getParameterCount());
+				for (Parameter p : c.getParameters()) {
+					System.out.println(p.getName() + ": " + p.getType().toString());
+				}
+			}
+
 			Object text = ioBaseChatMethod.invoke(ioBaseChat, "{\"text\": \"" + message + "\", \"color\": \"white\", \"clickEvent\": {\"action\": \"open_url\" , \"value\": \"" + link + "\"}}");
-			Object packetFinal = constructor.newInstance(text);
+			Object packetFinal = null;
+			try {
+				Constructor<?> constructor = packetChatClass.getConstructor(ioBase);
+				packetFinal = constructor.newInstance(text);
+			} catch (Exception e) {
+				Constructor<?> constructor = packetChatClass.getConstructor(ioBase, chatMessageTypeClass, UUID.class);
+				packetFinal = constructor.newInstance(text, chatMessageTypeClass.getDeclaredField("CHAT").get(null), this.player.getUniqueId());
+			}
+
 			Field field = packetFinal.getClass().getDeclaredField("a");
 			field.setAccessible(true);
 			field.set(packetFinal, text);
