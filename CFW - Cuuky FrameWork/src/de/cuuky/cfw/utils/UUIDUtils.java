@@ -1,5 +1,6 @@
 package de.cuuky.cfw.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.Date;
 import java.util.Scanner;
@@ -45,6 +46,10 @@ public final class UUIDUtils {
 		JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
 		String newName = nameObject.get("name").toString();
 		return newName;
+	}
+	
+	public static UUID getCrackedUUID(String name) throws UnsupportedEncodingException {
+		return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes("UTF_8"));
 	}
 
 	public static UUID getUUID(String name) throws Exception {
