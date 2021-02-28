@@ -31,20 +31,21 @@ public abstract class SuperInventory {
 	protected List<Integer> modifier;
 	protected Inventory inv;
 	protected Player opener;
-	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier, fillInventory, animations;
+	protected boolean hasMorePages, isLastPage, homePage, ignoreNextClose, setModifier, fillInventory, animations, clickSound;
 	protected int page, size;
 
 	protected ItemStack forward, backwards;
 
 	private List<InventoryItemLink> itemlinks;
 
-	public SuperInventory(String title, Player opener, int size, boolean homePage) {
+	public SuperInventory(String title, Player opener, int size, boolean homePage, boolean fillInventory, boolean clickSound) {
 		this.firstTitle = title;
 		this.opener = opener;
 		this.page = 1;
 		this.homePage = homePage;
 		this.size = size;
-		this.fillInventory = true;
+		this.fillInventory = fillInventory;
+		this.clickSound = clickSound;
 		this.title = getPageUpdate();
 		this.inv = Bukkit.createInventory(null, size != 54 && setModifier ? size + 9 : size, getPageUpdate());
 		this.itemlinks = new ArrayList<InventoryItemLink>();
@@ -53,6 +54,10 @@ public abstract class SuperInventory {
 		backwards = new ItemBuilder().displayname("§cBackwards").itemstack(new ItemStack(Material.ARROW)).build();
 
 		this.modifier = new ArrayList<Integer>(Arrays.asList(inv.getSize() - 1, inv.getSize() - 9, inv.getSize() - 5));
+	}
+	
+	public SuperInventory(String title, Player opener, int size, boolean homePage) {
+		this(title, opener, size, homePage, true, true);
 	}
 
 	private void doAnimation() {
