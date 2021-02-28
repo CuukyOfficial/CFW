@@ -33,8 +33,8 @@ public class InventoryListener implements Listener {
 			SuperInventory inv = this.inventoryManager.getInventories().get(i);
 			if (!inv.getInventory().equals(inventory))
 				continue;
-
-			player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
+			if (inv.playClickSound())
+				player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
 			event.setCancelled(true);
 			if (itemName.equals("§c"))
 				return;

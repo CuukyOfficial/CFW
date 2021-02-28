@@ -358,6 +358,10 @@ public abstract class SuperInventory {
 	public boolean isOpen() {
 		return this.manager.getInventories().contains(this);
 	}
+	
+	public boolean playClickSound() {
+		return this.clickSound;
+	}
 
 	/*
 	 * Calculates based on the list size you enter, how many pages you need
