@@ -17,10 +17,12 @@ public class BlockUtils {
 		if (!type.toString().contains("GRASS"))
 			return false;
 
-		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11))
-			return !type.toString().equals("GRASS");
-		else
-			return !type.toString().contains("BLOCK");
+		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_12)) {
+			return type.toString().contains("GRASS") && !type.toString().contains("BLOCK");
+		}
+		else {
+			return type.toString().equals("LONG_GRASS");
+		}
 	}
 
 	public static boolean isAir(Block block) {
