@@ -1,40 +1,42 @@
 package de.cuuky.cfw.utils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import de.cuuky.cfw.version.VersionUtils;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
-import java.util.Scanner;
+import java.util.Properties;
 
 public class ServerPropertiesReader {
 
-	private HashMap<String, String> configuration;
+    private HashMap<String, String> configuration;
 
-	public ServerPropertiesReader() {
-		this.configuration = new HashMap<>();
+    public ServerPropertiesReader() {
+        this.configuration = new HashMap<>();
 
-		readProperties();
-	}
+        readProperties();
+    }
 
-	private void readProperties() {
-		Scanner scanner = null;
-		try {
-			scanner = new Scanner(new File("server.properties"));
-			while (scanner.hasNextLine()) {
-				String[] line = scanner.nextLine().split("=");
-				if (line.length != 2)
-					continue;
+    private Properties getProperties() {
+        try {
+            Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
+            Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
+            Object propertyM = mcServer.getClass().getMethod("getPropertyManager").invoke(mcServer);
+            Object properties = propertyM.getClass().getField("properties").get(propertyM);
+            return (Properties) properties;
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+            e.printStackTrace();
+        }
 
-				configuration.put(line[0], line[1]);
-			}
+        return null;
+    }
 
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			scanner.close();
-		}
-	}
+    private void readProperties() {
+        Properties properties = this.getProperties();
+        for (String key : properties.stringPropertyNames())
+            this.configuration.put(key, properties.getProperty(key));
+    }
 
-	public HashMap<String, String> getConfiguration() {
-		return this.configuration;
-	}
+    public HashMap<String, String> getConfiguration() {
+        return this.configuration;
+    }
 }
