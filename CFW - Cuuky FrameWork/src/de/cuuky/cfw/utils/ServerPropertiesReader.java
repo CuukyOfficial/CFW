@@ -27,7 +27,11 @@ public class ServerPropertiesReader {
             Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
             Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
             Object propertyM = getFieldValue(mcServer.getClass().getField("propertyManager"), mcServer);
-            Object properties = getFieldValue(propertyM.getClass().getField("properties"), propertyM);
+            Object properties = getFieldValue(propertyM.getClass().getDeclaredField("properties"), propertyM);
+            if (!(properties instanceof Properties)) {
+                properties = getFieldValue(properties.getClass().getField("properties"), properties);
+            }
+
             return (Properties) properties;
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
             e.printStackTrace();
