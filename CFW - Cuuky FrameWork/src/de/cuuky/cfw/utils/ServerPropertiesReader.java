@@ -2,6 +2,7 @@ package de.cuuky.cfw.utils;
 
 import de.cuuky.cfw.version.VersionUtils;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Properties;
@@ -13,15 +14,20 @@ public class ServerPropertiesReader {
     public ServerPropertiesReader() {
         this.configuration = new HashMap<>();
 
-        readProperties();
+        this.readProperties();
+    }
+
+    private Object getFieldValue(Field field, Object object) throws IllegalAccessException {
+        field.setAccessible(true);
+        return field.get(object);
     }
 
     private Properties getProperties() {
         try {
             Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
             Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
-            Object propertyM = mcServer.getClass().getMethod("getPropertyManager").invoke(mcServer);
-            Object properties = propertyM.getClass().getField("properties").get(propertyM);
+            Object propertyM = getFieldValue(mcServer.getClass().getField("propertyManager"), mcServer);
+            Object properties = getFieldValue(propertyM.getClass().getField("properties"), propertyM);
             return (Properties) properties;
         } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
             e.printStackTrace();
