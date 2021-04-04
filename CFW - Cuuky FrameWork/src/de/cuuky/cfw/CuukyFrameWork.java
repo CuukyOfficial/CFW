@@ -30,9 +30,9 @@ public class CuukyFrameWork {
 	 * CONTACT: { website: "varoplugin.de", discord: 'Cuuky#2783', mail: 'just.cookie.jc@gmail.com' }
 	 */
 
-	private JavaPlugin ownerInstance;
-	private String consolePrefix;
-	private Map<FrameworkManagerType, FrameworkManager> manager;
+	private final JavaPlugin ownerInstance;
+	private final String consolePrefix;
+	private final Map<FrameworkManagerType, FrameworkManager> manager;
 
 	public CuukyFrameWork(JavaPlugin pluginInstance) {
 		this(pluginInstance, new FrameworkManager[0]);
@@ -55,7 +55,7 @@ public class CuukyFrameWork {
 		FrameworkManager manager = this.manager.get(type);
 		if (manager == null) {
 			try {
-				this.manager.put(type, manager = (FrameworkManager) type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
+				this.manager.put(type, manager = type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
 			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
 				throw new IllegalStateException(this.consolePrefix + "Failed to initialize type " + type.toString() + "!");
