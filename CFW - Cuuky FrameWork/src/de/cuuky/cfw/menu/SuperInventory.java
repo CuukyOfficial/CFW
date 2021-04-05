@@ -70,8 +70,7 @@ public abstract class SuperInventory {
 
 		int delay = (int) (600) / (getSize());
 
-		this.manager.getOwnerInstance().getServer().getScheduler().scheduleAsyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
-
+		new BukkitRunnable() {
 			@Override
 			public void run() {
 				int middle = (int) Math.ceil(itemlist.size() / 2);
@@ -108,7 +107,7 @@ public abstract class SuperInventory {
 					opener.updateInventory();
 				}
 			}
-		}, 0);
+		}.runTaskAsynchronously(this.manager.getOwnerInstance());
 	}
 
 	private void fillSpace() {
@@ -270,13 +269,12 @@ public abstract class SuperInventory {
 	 * A little method to reopen the gui, for example if you used a AnvilGUI
 	 */
 	public void reopenSoon() {
-		this.manager.getOwnerInstance().getServer().getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
-
+		new BukkitRunnable() {
 			@Override
 			public void run() {
 				updateInventory();
 			}
-		}, 1);
+		}.runTaskLater(this.manager.getOwnerInstance(), 1L);
 	}
 
 	/*

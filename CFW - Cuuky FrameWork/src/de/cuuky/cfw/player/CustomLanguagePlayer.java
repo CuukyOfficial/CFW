@@ -4,13 +4,14 @@ import de.cuuky.cfw.configuration.language.LanguageManager;
 import de.cuuky.cfw.configuration.language.broadcast.MessageHolder;
 import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 public abstract class CustomLanguagePlayer implements CustomPlayer {
 
 	public MessageHolder sendTranslatedMessage(LoadableMessage message, CustomPlayer replace, MessagePlaceholderManager placeholder, LanguageManager languageManager) {
 		MessageHolder holder = new MessageHolder(placeholder);
-		placeholder.getOwnerInstance().getServer().getScheduler().scheduleSyncDelayedTask(placeholder.getOwnerInstance(), new Runnable() {
-
+		new BukkitRunnable() {
 			@Override
 			public void run() {
 				if (getPlayer() == null)
@@ -18,7 +19,7 @@ public abstract class CustomLanguagePlayer implements CustomPlayer {
 
 				getPlayer().sendMessage(holder.getReplaced(languageManager.getMessage(message.getPath(), getLocale()), (replace != null ? replace : CustomLanguagePlayer.this)));
 			}
-		}, 1);
+		}.runTaskLater(placeholder.getOwnerInstance(), 1L);
 
 		return holder;
 	}

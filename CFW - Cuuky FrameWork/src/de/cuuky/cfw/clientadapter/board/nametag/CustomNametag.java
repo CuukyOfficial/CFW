@@ -1,17 +1,17 @@
 package de.cuuky.cfw.clientadapter.board.nametag;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
-
-import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
-
 import de.cuuky.cfw.clientadapter.board.CustomBoard;
 import de.cuuky.cfw.clientadapter.board.CustomBoardType;
 import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 
@@ -61,13 +61,12 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 	}
 
 	public void startDelayedRefresh() {
-		this.manager.getOwnerInstance().getServer().getScheduler().scheduleSyncDelayedTask(this.manager.getOwnerInstance(), new Runnable() {
-
+		new BukkitRunnable() {
 			@Override
 			public void run() {
 				update();
 			}
-		}, 1);
+		}.runTaskLater(this.manager.getOwnerInstance(), 1L);
 	}
 
 	private boolean refreshPrefix() {
