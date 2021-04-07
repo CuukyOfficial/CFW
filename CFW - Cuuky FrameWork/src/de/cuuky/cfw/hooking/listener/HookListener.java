@@ -10,9 +10,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class HookListener implements Listener {
 
@@ -59,22 +62,47 @@ public class HookListener implements Listener {
         hook.getHookListener().onEntityHit(event);
     }
 
-    @EventHandler
-    public void onItemMove(InventoryMoveItemEvent event) {
-        InventoryHolder holder = event.getInitiator().getHolder();
-        if (!(holder instanceof Player))
-            return;
-
-        ItemHook hook = manager.getItemHook(event.getItem(), (Player) holder);
-        if (hook != null && !hook.isDragable())
-            event.setCancelled(true);
+    private boolean checkDragHook(ItemStack stack, InventoryHolder holder) {
+        ItemHook hook = manager.getItemHook(stack, (Player) holder);
+        return hook != null && !hook.isDragable();
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onItemMove(InventoryClickEvent event) {
-        ItemHook hook = manager.getItemHook(event.getCurrentItem(), (Player) event.getWhoClicked());
-        if (hook != null && !hook.isDragable())
+        if (event.getCurrentItem() == null)
+            return;
+
+        if (this.checkDragHook(event.getCurrentItem(), event.getWhoClicked())) {
             event.setCancelled(true);
+            ((Player) event.getWhoClicked()).updateInventory();
+        } else {
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    for (ItemHook hook : manager.getHooks(ItemHook.class)) {
+                        if (!hook.getPlayer().equals(event.getWhoClicked()))
+                            continue;
+
+                        Inventory inv = event.getWhoClicked().getInventory();
+                        ItemStack check = inv.getItem(hook.getSlot());
+                        if (check != null && check.equals(hook.getItemStack()))
+                            continue;
+
+                        event.getClickedInventory().remove(hook.getItemStack());
+                        inv.setItem(hook.getSlot(), hook.getItemStack());
+                        ((Player) event.getWhoClicked()).updateInventory();
+                    }
+                }
+            }.runTaskLater(manager.getOwnerInstance(), 0L);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onItemMove(InventoryDragEvent event) {
+        if (this.checkDragHook(event.getOldCursor(), event.getWhoClicked())) {
+            event.setCancelled(true);
+            ((Player) event.getWhoClicked()).updateInventory();
+        }
     }
 
     @EventHandler

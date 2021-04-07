@@ -10,6 +10,7 @@ import de.cuuky.cfw.hooking.hooks.HookEntityType;
 public class ItemHook extends HookEntity {
 
 	private ItemHookHandler hookListener;
+	private int slot;
 	private boolean dropable, dragable;
 	private ItemStack stack;
 
@@ -17,6 +18,7 @@ public class ItemHook extends HookEntity {
 		super(HookEntityType.ITEM, player);
 
 		this.hookListener = listener;
+		this.slot = slot;
 		this.stack = stack;
 		this.dropable = false;
 		this.dragable = false;
@@ -56,5 +58,9 @@ public class ItemHook extends HookEntity {
 
 	public ItemHookHandler getHookListener() {
 		return hookListener;
+	}
+
+	public int getSlot() {
+		return slot;
 	}
 }
