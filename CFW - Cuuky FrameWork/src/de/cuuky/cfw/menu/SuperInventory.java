@@ -68,7 +68,7 @@ public abstract class SuperInventory {
 			inv.setItem(i, null);
 		opener.updateInventory();
 
-		int delay = (int) (600) / (getSize());
+		int delay = 600 / (getSize());
 
 		new BukkitRunnable() {
 			@Override
@@ -247,8 +247,9 @@ public abstract class SuperInventory {
 					opener.openInventory(inv);
 
 				doAnimation();
+				opener.updateInventory();
 			}
-		}.runTask(this.manager.getOwnerInstance());
+		}.runTaskLater(this.manager.getOwnerInstance(), 0L);
 	}
 
 	public void pageActionChanged(PageAction action) {
@@ -285,8 +286,7 @@ public abstract class SuperInventory {
 		if (opener.getOpenInventory() != null && !this.title.equals(title)) {
 			ignoreNextClose = true;
 			opener.closeInventory();
-			Inventory newInv = Bukkit.createInventory(null, size != 54 ? size + 9 : size, title);
-			this.inv = newInv;
+			this.inv = Bukkit.createInventory(null, size != 54 ? size + 9 : size, title);
 			this.title = title;
 		}
 
