@@ -3,6 +3,7 @@ package de.cuuky.cfw.menu.utils;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+@Deprecated
 public class InventoryItemLink {
 
 	private ItemStack stack;

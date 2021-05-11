@@ -16,6 +16,7 @@ import de.cuuky.cfw.utils.listener.InventoryClickUtil;
 import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.cfw.version.types.Materials;
 
+@Deprecated
 public class PlayerChooseInventory {
 
 	/**

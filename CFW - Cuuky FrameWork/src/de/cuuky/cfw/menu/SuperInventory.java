@@ -22,6 +22,7 @@ import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.cfw.version.types.Materials;
 
+@Deprecated
 public abstract class SuperInventory {
 
 	// AUTHOR: "Cuuky"

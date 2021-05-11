@@ -12,6 +12,7 @@ import de.cuuky.cfw.menu.SuperInventoryManager;
 import de.cuuky.cfw.utils.listener.InventoryClickUtil;
 import de.cuuky.cfw.version.types.Sounds;
 
+@Deprecated
 public class InventoryListener implements Listener {
 
 	private SuperInventoryManager inventoryManager;

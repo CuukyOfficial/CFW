@@ -10,6 +10,7 @@ import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.utils.InventoryListener;
 
+@Deprecated
 public class SuperInventoryManager extends FrameworkManager {
 
 	private List<SuperInventory> inventories;
