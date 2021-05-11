@@ -139,9 +139,11 @@ public abstract class AdvancedInventory implements ItemOverrideable {
 
     protected abstract String getTitle();
 
-    protected abstract int getMaxPage();
-
     protected abstract void refreshContent();
+
+    protected int getMaxPage() {
+        return 1;
+    }
 
     protected void playSound() {
         this.player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
