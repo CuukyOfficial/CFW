@@ -10,12 +10,19 @@ import java.util.List;
 
 public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
+    private final int size;
     private final List<T> list;
 
-    public AdvancedListInventory(AdvancedInventoryManager manager, int size, Player player, List<T> list) {
-        super(manager, size, player);
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, List<T> list) {
+        super(manager, player);
 
+        this.size = size;
         this.list = list;
+    }
+
+    @Override
+    public int getSize() {
+        return this.size;
     }
 
     protected void addListItem(int start, int index) {

@@ -18,15 +18,15 @@ import java.util.List;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 
-    public PlayerListInventory(AdvancedInventoryManager manager, int size, Player player, List<Player> players) {
-        super(manager, size, player, players);
+    public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size, List<Player> players) {
+        super(manager, player, size, players);
 
         JavaPlugin plugin = this.getManager().getOwnerInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    public PlayerListInventory(AdvancedInventoryManager manager, int size, Player player) {
-        this(manager, size, player, new ArrayList<>(manager.getOwnerInstance().getServer().getOnlinePlayers()));
+    public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size) {
+        this(manager, player, size, new ArrayList<>(manager.getOwnerInstance().getServer().getOnlinePlayers()));
     }
 
     @Override

@@ -1,7 +1,10 @@
 package de.cuuky.cfw.inventory;
 
 import de.cuuky.cfw.inventory.inserter.DirectInserter;
+import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.cfw.version.types.Sounds;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -13,20 +16,22 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public abstract class AdvancedInventory implements ItemOverrideable {
+public abstract class AdvancedInventory {
 
-    private final Map<Integer, Supplier<AdvancedItemLink>> selectors = new HashMap<Integer, Supplier<AdvancedItemLink>>() {{
-        put(0, AdvancedInventory.this::getBackwardsItem);
-        put(3, AdvancedInventory.this::getBackItem);
-        put(4, AdvancedInventory.this::getCloseItem);
-        put(8, AdvancedInventory.this::getForwardItem);
+    private final Map<Supplier<ItemInfo>, Supplier<ItemClick>> selectors = new HashMap<Supplier<ItemInfo>, Supplier<ItemClick>>() {{
+        put(AdvancedInventory.this::getBackwardsInfo, () -> generateNavigator(() -> 1, -1));
+        put(AdvancedInventory.this::getForwardsInfo, () -> generateNavigator(AdvancedInventory.this::getMaxPage, 1));
+        put(AdvancedInventory.this::getBackInfo, () -> event -> {
+            close(false);
+            previous.open();
+        });
+        put(AdvancedInventory.this::getCloseInfo, () -> event -> close());
     }};
 
     private AdvancedInventory previous;
 
     private final AdvancedInventoryManager manager;
     private final Player player;
-    private final int size;
     private int page = 1;
     private Inventory inventory;
     private ItemInserter inserter;
@@ -34,9 +39,8 @@ public abstract class AdvancedInventory implements ItemOverrideable {
 
     private final Map<Integer, AdvancedItemLink> items = new HashMap<>();
 
-    public AdvancedInventory(AdvancedInventoryManager manager, int size, Player player) {
+    public AdvancedInventory(AdvancedInventoryManager manager, Player player) {
         this.manager = manager;
-        this.size = size;
         this.player = player;
         this.inserter = this.getInserter();
 
@@ -44,7 +48,7 @@ public abstract class AdvancedInventory implements ItemOverrideable {
     }
 
     private void createInventory() {
-        this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.size, this.getTitle());
+        this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.getSize(), this.getTitle());
     }
 
     private int convertPage(int toGo) {
@@ -52,21 +56,17 @@ public abstract class AdvancedInventory implements ItemOverrideable {
         return Math.min(toGo, max);
     }
 
-    private AdvancedItemLink getCheckedLink(Supplier<ItemStack> sup, ItemClick click) {
-        ItemStack stack = sup.get();
-        return stack == null ? null : new AdvancedItemLink(stack, click);
-    }
-
-    private AdvancedItemLink generateNavigator(Supplier<ItemStack> sup, int noAdd, int add) {
-        if (noAdd == this.page)
+    private ItemClick generateNavigator(Supplier<Integer> maxSup, int add) {
+        int max = maxSup.get();
+        if (max == this.page)
             return null;
 
-        return this.getCheckedLink(sup, event -> this.page = this.convertPage(this.page + add));
+        return event -> this.page = this.convertPage(this.page + add);
     }
 
     private Map<Integer, ItemStack> getContent(int size) {
         Map<Integer, ItemStack> stacks = new HashMap<>();
-        ItemStack filler = this.getFillerStack(this);
+        ItemStack filler = this.getFillerStack();
         for (int i = 0; i < size; i++) {
             AdvancedItemLink link = this.items.get(i);
             if (link == null) {
@@ -80,14 +80,15 @@ public abstract class AdvancedInventory implements ItemOverrideable {
     }
 
     private void setSelector() {
-        for (Integer index : this.selectors.keySet()) {
-            AdvancedItemLink link = this.selectors.get(index).get();
-            if (link == null)
+        for (Supplier<ItemInfo> infoSupplier : this.selectors.keySet()) {
+            ItemInfo info = infoSupplier.get();
+            ItemClick click = this.selectors.get(infoSupplier).get();
+            if (info == null || click == null)
                 continue;
 
-            int realIndex = this.getUsableSize() + index;
-            this.items.put(realIndex, link);
-            this.inventory.setItem(realIndex, link.getStack());
+            int realIndex = info.getIndex();
+            this.items.put(realIndex, new AdvancedItemLink(info.getStack(), click));
+            this.addToInventory(realIndex, info.getStack(), false);
         }
     }
 
@@ -150,26 +151,34 @@ public abstract class AdvancedInventory implements ItemOverrideable {
     }
 
     protected boolean hasSelectors() {
-        return (selectorsEnabled = this.selectors.keySet().stream().anyMatch(i -> this.selectors.get(i).get() != null));
+        return (selectorsEnabled = this.selectors.keySet().stream().anyMatch(i -> i.get() != null && selectors.get(i) != null));
     }
 
-    protected final AdvancedItemLink getBackwardsItem() {
-        return this.generateNavigator(() -> this.getBackwardsStack(this), 1, -1);
+    private String getPageViewer() {
+        return "§7" + this.getPage() + "§8/§7" + this.getMaxPage();
     }
 
-    protected final AdvancedItemLink getForwardItem() {
-        return this.generateNavigator(() -> this.getForwardStack(this), this.getMaxPage(), 1);
+    protected ItemInfo getBackwardsInfo() {
+        return new ItemInfo(this.getUsableSize(), new ItemBuilder().material(Material.ARROW).displayname("§cBackwards " + getPageViewer()).build());
     }
 
-    protected final AdvancedItemLink getCloseItem() {
-        return this.getCheckedLink(() -> this.getCloseStack(this), event -> this.close());
+    protected ItemInfo getForwardsInfo() {
+        return new ItemInfo(this.getUsableSize() + 8, new ItemBuilder().material(Material.ARROW).displayname("§aForwards " + getPageViewer()).build());
     }
 
-    protected final AdvancedItemLink getBackItem() {
-        return this.previous == null ? null : this.getCheckedLink(() -> this.getBackStack(this), event -> {
-            this.close(false);
-            previous.open();
-        });
+    protected ItemInfo getCloseInfo() {
+        return new ItemInfo(this.getUsableSize() + 4, new ItemBuilder().material(Materials.REDSTONE.parseMaterial()).displayname("§4Close").build());
+    }
+
+    protected ItemInfo getBackInfo() {
+        if (this.previous == null)
+            return null;
+
+        return new ItemInfo(this.getUsableSize() + 3, new ItemBuilder().material(Material.STONE_BUTTON).displayname("§fBack to '" + this.previous.getTitle() + "§f'").build());
+    }
+
+    protected ItemStack getFillerStack() {
+        return new ItemBuilder().displayname("§c").itemstack(new ItemStack(Materials.BLACK_STAINED_GLASS_PANE.parseMaterial(), 1, (short) 15)).build();
     }
 
     protected void addItem(int index, ItemStack stack, ItemClick click) {
@@ -213,12 +222,10 @@ public abstract class AdvancedInventory implements ItemOverrideable {
     }
 
     protected int getUsableSize() {
-        return this.size - (this.selectorsEnabled ? 9 : 0);
+        return this.getSize() - (this.selectorsEnabled ? 9 : 0);
     }
 
-    protected AdvancedInventory getPrevious() {
-        return previous;
-    }
+    public abstract int getSize();
 
     public void open() {
         manager.registerInventory(this);
@@ -253,6 +260,7 @@ public abstract class AdvancedInventory implements ItemOverrideable {
 
         this.inserter = this.getInserter();
         this.refreshContent();
+
         int size = this.getUsableSize();
         this.inserter.setItems(manager.getOwnerInstance(), this, this.getContent(size), player, size);
 
@@ -262,9 +270,5 @@ public abstract class AdvancedInventory implements ItemOverrideable {
             this.player.openInventory(this.inventory);
 
         this.open = true;
-    }
-
-    public int getSize() {
-        return size;
     }
 }
