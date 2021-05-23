@@ -3,6 +3,7 @@ package de.cuuky.cfw.configuration;
 import java.io.File;
 import java.io.IOException;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class BasicConfigurationHandler {
@@ -49,6 +50,10 @@ public class BasicConfigurationHandler {
 
 	public String getString(String name, String defaultValue) {
 		return (String) getValue(name, defaultValue);
+	}
+	
+	public String getColoredString(String name, String defaultValue) {
+		return ChatColor.translateAlternateColorCodes('&', getString(name, defaultValue));
 	}
 
 	public int getInt(String name, int defaultValue) {
