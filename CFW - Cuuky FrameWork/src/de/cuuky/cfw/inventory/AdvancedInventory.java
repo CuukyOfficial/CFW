@@ -66,10 +66,10 @@ public abstract class AdvancedInventory {
 
     private Map<Integer, ItemStack> getContent(int size) {
         Map<Integer, ItemStack> stacks = new HashMap<>();
-        ItemStack filler = this.getFillerStack();
         for (int i = 0; i < size; i++) {
             AdvancedItemLink link = this.items.get(i);
             if (link == null) {
+                ItemStack filler = this.getFillerStack();
                 if (filler != null)
                     stacks.put(i, filler);
             } else
@@ -81,9 +81,9 @@ public abstract class AdvancedInventory {
 
     private void setSelector() {
         for (Supplier<ItemInfo> infoSupplier : this.selectors.keySet()) {
-            ItemInfo info = infoSupplier.get();
-            ItemClick click = this.selectors.get(infoSupplier).get();
-            if (info == null || click == null)
+            ItemInfo info;
+            ItemClick click;
+            if ((click = this.selectors.get(infoSupplier).get()) == null || (info = infoSupplier.get()) == null)
                 continue;
 
             int realIndex = info.getIndex();
@@ -261,7 +261,7 @@ public abstract class AdvancedInventory {
         this.inserter = this.getInserter();
         this.refreshContent();
 
-        int size = this.getUsableSize();
+        int size = this.getSize();
         this.inserter.setItems(manager.getOwnerInstance(), this, this.getContent(size), player, size);
 
         if (!needsOpen)
