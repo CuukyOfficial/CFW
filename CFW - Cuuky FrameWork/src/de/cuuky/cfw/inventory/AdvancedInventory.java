@@ -11,9 +11,11 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public abstract class AdvancedInventory {
@@ -21,10 +23,7 @@ public abstract class AdvancedInventory {
     private final Map<Supplier<ItemInfo>, Supplier<ItemClick>> selectors = new HashMap<Supplier<ItemInfo>, Supplier<ItemClick>>() {{
         put(AdvancedInventory.this::getBackwardsInfo, () -> generateNavigator(() -> 1, -1));
         put(AdvancedInventory.this::getForwardsInfo, () -> generateNavigator(AdvancedInventory.this::getMaxPage, 1));
-        put(AdvancedInventory.this::getBackInfo, () -> event -> {
-            close(false);
-            previous.open();
-        });
+        put(AdvancedInventory.this::getBackInfo, () -> event -> AdvancedInventory.this.back());
         put(AdvancedInventory.this::getCloseInfo, () -> event -> close());
     }};
 
@@ -32,10 +31,11 @@ public abstract class AdvancedInventory {
 
     private final AdvancedInventoryManager manager;
     private final Player player;
-    private int page = 1;
+    private int page = 1, interval = -1;
     private Inventory inventory;
     private ItemInserter inserter;
     private boolean selectorsEnabled, open;
+    private BukkitTask autoTask;
 
     private final Map<Integer, AdvancedItemLink> items = new HashMap<>();
 
@@ -103,6 +103,18 @@ public abstract class AdvancedInventory {
         return false;
     }
 
+    private void startTask() {
+        if (interval == -1)
+            return;
+
+        this.autoTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                update();
+            }
+        }.runTaskTimerAsynchronously(this.getManager().getOwnerInstance(), interval, interval);
+    }
+
     void slotClicked(int slot, InventoryClickEvent event) {
         AdvancedItemLink link = this.items.get(slot);
         if (link == null)
@@ -150,6 +162,15 @@ public abstract class AdvancedInventory {
         this.player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
     }
 
+    protected void updateOthers(Function<AdvancedInventory, Boolean> filter) {
+        this.manager.updateInventories(this, filter);
+    }
+
+    protected void back() {
+        close(false);
+        previous.open();
+    }
+
     protected boolean hasSelectors() {
         return (selectorsEnabled = this.selectors.keySet().stream().anyMatch(i -> i.get() != null && selectors.get(i) != null));
     }
@@ -189,6 +210,10 @@ public abstract class AdvancedInventory {
 
     protected void addItem(int index, ItemStack stack) {
         this.addItem(index, stack, null);
+    }
+
+    protected void setAutoRefresh(int interval) {
+        this.interval = interval;
     }
 
     protected void openNext(AdvancedInventory inventory) {
@@ -233,12 +258,18 @@ public abstract class AdvancedInventory {
 
             @Override
             public void run() {
+                startTask();
                 update();
             }
         }.runTaskLater(manager.getOwnerInstance(), 0L);
     }
 
     public void close(boolean close) {
+        if (autoTask != null) {
+            this.autoTask.cancel();
+            autoTask = null;
+        }
+
         this.inserter.stopInserting();
         if (close)
             player.closeInventory();

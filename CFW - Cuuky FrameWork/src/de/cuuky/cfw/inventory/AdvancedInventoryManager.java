@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
 public class AdvancedInventoryManager extends FrameworkManager {
 
@@ -17,9 +18,9 @@ public class AdvancedInventoryManager extends FrameworkManager {
         this.ownerInstance.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), ownerInstance);
     }
 
-    public void updateInventories(Class<? extends AdvancedInventory> type) {
+    public void updateInventories(AdvancedInventory self, Function<AdvancedInventory, Boolean> filter) {
         for (AdvancedInventory inventory : this.inventories)
-            if (inventory.getClass().equals(type))
+            if (!inventory.equals(self) && filter.apply(inventory))
                 inventory.update();
     }
 
