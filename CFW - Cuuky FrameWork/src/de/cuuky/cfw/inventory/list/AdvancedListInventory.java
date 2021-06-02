@@ -52,6 +52,9 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         for(T item : list) {
             if (index >= this.getUsableSize())
                 break;
+            
+            if (item == null)
+                continue;
 
             this.addListItem(index, item);
             index++;
