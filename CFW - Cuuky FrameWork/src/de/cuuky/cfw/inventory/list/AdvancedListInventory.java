@@ -31,8 +31,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         return this.size;
     }
 
-    protected void addListItem(int start, int index) {
-        T item = this.getList().get(start + index);
+    protected void addListItem(int index, T item) {
         this.addItem(index, this.getItemStack(item), this.getClick(item));
     }
 
@@ -49,8 +48,14 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     protected void refreshContent() {
         int start = this.getUsableSize() * (this.getPage() - 1);
         List<T> list = new ArrayList<>(this.getList());
-        for (int index = 0; index < this.getUsableSize() && start + index < list.size(); index++)
-            this.addListItem(start, index);
+        int index = 0;
+        for(T item : list) {
+            if (index >= this.getUsableSize())
+                break;
+
+            this.addListItem(index, item);
+            index++;
+        }
     }
 
     protected List<T> getList() {

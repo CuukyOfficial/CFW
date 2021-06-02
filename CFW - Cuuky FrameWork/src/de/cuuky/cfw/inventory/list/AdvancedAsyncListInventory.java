@@ -13,11 +13,11 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
     }
 
     @Override
-    protected void addListItem(int start, int index) {
+    protected void addListItem(int index, T item) {
         new BukkitRunnable() {
             @Override
             public void run() {
-                AdvancedAsyncListInventory.super.addListItem(start, index);
+                AdvancedAsyncListInventory.super.addListItem(index, item);
             }
         }.runTaskLaterAsynchronously(this.getManager().getOwnerInstance(), 0L);
     }
