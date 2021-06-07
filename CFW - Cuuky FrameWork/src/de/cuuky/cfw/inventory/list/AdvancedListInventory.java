@@ -42,7 +42,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     @Override
     public int getMaxPage() {
         List<T> original = this.getList();
-        if (original.size() == 0)
+        if (original == null || original.size() == 0)
             return 0;
 
         return (int) Math.ceil((float) this.getList().size() / (float) this.getUsableSize());
