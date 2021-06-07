@@ -255,6 +255,9 @@ public abstract class AdvancedInventory {
     public abstract int getSize();
 
     public void open() {
+        if (this.open)
+            throw new IllegalStateException("Cannot reopen already opened inventory");
+
         manager.registerInventory(this);
         new BukkitRunnable() {
 
