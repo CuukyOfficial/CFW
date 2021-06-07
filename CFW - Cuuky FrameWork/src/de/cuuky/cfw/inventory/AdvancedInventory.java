@@ -63,7 +63,7 @@ public abstract class AdvancedInventory {
 
     private ItemClick generateNavigator(Supplier<Integer> maxSup, int add) {
         int max = maxSup.get();
-        if (max == this.page)
+        if ((add < 0 && this.page <= max) || (add > 0 && this.page >= max))
             return null;
 
         return event -> this.page = this.convertPage(this.page + add);

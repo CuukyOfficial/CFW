@@ -35,6 +35,10 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         this.addItem(index, this.getItemStack(item), this.getClick(item));
     }
 
+    protected boolean copyList() {
+        return true;
+    }
+
     protected abstract ItemStack getItemStack(T item);
 
     protected abstract ItemClick getClick(T item);
@@ -42,10 +46,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     @Override
     public int getMaxPage() {
         List<T> original = this.getList();
-        if (original == null || original.size() == 0)
-            return 0;
-
-        return (int) Math.ceil((float) this.getList().size() / (float) this.getUsableSize());
+        return (int) Math.ceil((float) original.size() / (float) this.getUsableSize()) + 1;
     }
 
     @Override
@@ -55,12 +56,9 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
             return;
 
         int start = this.getUsableSize() * (this.getPage() - 1);
-        List<T> list = new ArrayList<>(original);
+        List<T> list = this.copyList() ? new ArrayList<>(original) : original;
         for (int i = 0; (start + i) < list.size() && i < this.getUsableSize(); i++) {
             T item = list.get(i + start);
-            if (item == null)
-                continue;
-
             this.addListItem(i, item);
         }
     }
