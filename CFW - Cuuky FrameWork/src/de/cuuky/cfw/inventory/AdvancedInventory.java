@@ -252,6 +252,10 @@ public abstract class AdvancedInventory {
         return this.getSize() - (this.selectorsEnabled ? 9 : 0);
     }
 
+    protected AdvancedInventory getPrevious() {
+        return previous;
+    }
+
     public abstract int getSize();
 
     public void open() {
@@ -294,7 +298,7 @@ public abstract class AdvancedInventory {
         if (this.hasSelectors())
             this.setSelector();
 
-        this.inserter = this.getInserter();
+        this.inserter = !this.open ? this.getInserter() : new DirectInserter();
         this.refreshContent();
 
         int size = this.getSize();
