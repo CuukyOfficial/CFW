@@ -13,17 +13,22 @@ import java.util.function.Supplier;
 public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     private final int size;
-    private final Supplier<List<T>> list;
+    private final List<T> list;
 
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, Supplier<List<T>> list) {
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, List<T> list) {
         super(manager, player);
 
         this.size = size;
         this.list = list;
     }
 
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, List<T> list) {
-        this(manager, player, size, () -> list);
+    @Deprecated
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, Supplier<List<T>> list) {
+        this(manager, player, size, list.get());
+    }
+
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size) {
+        this(manager, player, size, (List<T>) null);
     }
 
     @Override
@@ -46,6 +51,9 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     @Override
     public int getMaxPage() {
         List<T> original = this.getList();
+        if (original == null)
+            return 1;
+
         return (int) Math.ceil((float) original.size() / (float) this.getUsableSize()) + 1;
     }
 
@@ -64,6 +72,6 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     }
 
     protected List<T> getList() {
-        return list.get();
+        return list;
     }
 }
