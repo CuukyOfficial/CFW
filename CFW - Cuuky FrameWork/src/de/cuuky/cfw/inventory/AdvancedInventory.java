@@ -23,7 +23,12 @@ public abstract class AdvancedInventory {
     private final Map<Supplier<ItemInfo>, Supplier<ItemClick>> selectors = new HashMap<Supplier<ItemInfo>, Supplier<ItemClick>>() {{
         put(AdvancedInventory.this::getBackwardsInfo, () -> generateNavigator(() -> 1, -1));
         put(AdvancedInventory.this::getForwardsInfo, () -> generateNavigator(AdvancedInventory.this::getMaxPage, 1));
-        put(AdvancedInventory.this::getBackInfo, () -> event -> AdvancedInventory.this.back());
+        put(() -> {
+            if (AdvancedInventory.this.previous == null)
+                return null;
+
+            return AdvancedInventory.this.getBackInfo();
+        }, () -> event -> AdvancedInventory.this.back());
         put(AdvancedInventory.this::getCloseInfo, () -> event -> close());
     }};
 
@@ -192,9 +197,6 @@ public abstract class AdvancedInventory {
     }
 
     protected ItemInfo getBackInfo() {
-        if (this.previous == null)
-            return null;
-
         return new ItemInfo(this.getUsableSize() + 3, new ItemBuilder().material(Material.STONE_BUTTON).displayname("§fBack to '" + this.previous.getTitle() + "§f'").build());
     }
 

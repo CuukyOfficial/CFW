@@ -41,23 +41,27 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     @Override
     public int getMaxPage() {
+        List<T> original = this.getList();
+        if (original.size() == 0)
+            return 0;
+
         return (int) Math.ceil((float) this.getList().size() / (float) this.getUsableSize());
     }
 
     @Override
     protected void refreshContent() {
+        List<T> original = this.getList();
+        if (original == null)
+            return;
+
         int start = this.getUsableSize() * (this.getPage() - 1);
-        List<T> list = new ArrayList<>(this.getList());
-        int index = 0;
-        for(T item : list) {
-            if (index >= this.getUsableSize())
-                break;
-            
+        List<T> list = new ArrayList<>(original);
+        for (int i = 0; (start + i) < list.size() && i < this.getUsableSize(); i++) {
+            T item = list.get(i + start);
             if (item == null)
                 continue;
 
-            this.addListItem(index, item);
-            index++;
+            this.addListItem(i, item);
         }
     }
 
