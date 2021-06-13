@@ -99,7 +99,8 @@ public abstract class AdvancedInventory {
 
     private boolean needsOpen() {
         Inventory inv = player.getOpenInventory().getTopInventory();
-        if (inv == null || !(this.getTitle().equals(inv.getTitle()) && this.getSize() == inv.getSize())) {
+        AdvancedInventory ai = this.manager.getInventory(inv);
+        if (inv == null || !(this.getTitle().equals(ai.getTitle()) && this.getSize() == inv.getSize())) {
             this.createInventory();
             return true;
         } else this.inventory = inv;

@@ -3,6 +3,7 @@ package de.cuuky.cfw.inventory;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
@@ -53,10 +54,10 @@ public class AdvancedInventoryManager extends FrameworkManager {
     }
 
     public AdvancedInventory getInventory(Player player) {
-        for (AdvancedInventory inventory : inventories)
-            if (inventory.getPlayer().equals(player))
-                return inventory;
+        return inventories.stream().filter(inv -> inv.getPlayer().equals(player)).findFirst().orElse(null);
+    }
 
-        return null;
+    public AdvancedInventory getInventory(Inventory inventory) {
+        return inventories.stream().filter(inv -> inv.getInventory().equals(inventory)).findFirst().orElse(null);
     }
 }
