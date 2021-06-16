@@ -1,5 +1,6 @@
 package de.cuuky.cfw.utils;
 
+import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 import org.bukkit.Bukkit;
 
@@ -26,16 +27,16 @@ public class ServerPropertiesReader {
 
     private Properties getProperties() {
         try {
-            Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
-            Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
             Object properties = null;
-            try {
+            if(VersionUtils.getVersion().isLowerThan(BukkitVersion.ONE_17)) {
+            	Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
+                Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
                 Object propertyM = getFieldValue(mcServer.getClass().getField("propertyManager"), mcServer);
                 properties = getFieldValue(propertyM.getClass().getDeclaredField("properties"), propertyM);
                 if (!(properties instanceof Properties)) {
                     properties = getFieldValue(properties.getClass().getField("properties"), properties);
                 }
-            } catch (NoSuchFieldException e) {
+            } else {
                 Method dedicatedServerPropMethod = Bukkit.getServer().getClass().getDeclaredMethod("getProperties");
                 dedicatedServerPropMethod.setAccessible(true);
                 Object dedicatedServerProp = dedicatedServerPropMethod.invoke(Bukkit.getServer());
@@ -51,7 +52,7 @@ public class ServerPropertiesReader {
             }
 
             return (Properties) properties;
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException | SecurityException e) {
             e.printStackTrace();
         }
 
