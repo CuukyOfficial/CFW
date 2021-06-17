@@ -13,7 +13,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	protected Class<?> playerClass;
 	protected Method playerHandleMethod, sendPacketMethod;
 
-	protected Field connectionField, networkManagerField, pingField, localeField;
+	protected Field connectionField, networkManagerField, pingField, localeField, xpCooldownField;
 
 	OneSevenVersionAdapter() {
 		try {
@@ -27,6 +27,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		this.initPlayer();
 		this.initNetworkManager();
 		this.initLocale();
+		this.initXp();
 	}
 	
 	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
@@ -49,6 +50,35 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		this.localeField = this.playerHandleMethod.getReturnType().getDeclaredField("locale");
 		this.localeField.setAccessible(true);
+	}
+	
+	protected void initXp() {
+		this.initXp(VersionUtils.getNmsClass() + ".EntityHuman",VersionUtils.getNmsClass() + ".FoodMetaData");
+	}
+	
+	protected void initXp(String entityHumanName, String foodMetaName) {
+		//this is EXTREMELY unsafe
+		try {
+			int fieldNum = 0;
+			for(Field field : Class.forName(entityHumanName).getDeclaredFields())
+				if(fieldNum == 0 && field.getType() == Class.forName(foodMetaName))
+					fieldNum = 1;
+				else if(fieldNum == 1 && field.getType() == int.class)
+					fieldNum = 2;
+				else if(fieldNum == 2 && field.getType() == float.class)
+					fieldNum = 3;
+				else if(fieldNum == 3 && field.getType() == float.class)
+					fieldNum = 4;
+				else if(fieldNum == 4 && field.getType() == int.class) {
+					this.xpCooldownField = field;
+					return;
+				}else
+					fieldNum = 0;
+			
+			throw new Error("Unable to find xp cooldown field");
+		} catch (SecurityException | ClassNotFoundException e) {
+			throw new Error(e);
+		}
 	}
 	
 	private Object getHandle(Player player) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -111,7 +141,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	@Override
 	public void sendPacket(Player player, Object packet) {
 		try {
-			sendPacketMethod.invoke(this.getConnection(player), packet);
+			this.sendPacketMethod.invoke(this.getConnection(player), packet);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -130,6 +160,15 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	@Override
 	public void setAttributeSpeed(Player player, double value) {
 		//1.9+
+	}
+	
+	@Override
+	public void setXpCooldown(Player player, int cooldown) {
+		try {
+			this.xpCooldownField.set(this.getHandle(player), cooldown);
+		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

@@ -24,6 +24,8 @@ public interface VersionAdapter {
 	void sendTitle(Player player, String header, String footer);
 
 	void setAttributeSpeed(Player player, double value);
+	
+	void setXpCooldown(Player player, int cooldown);
 
 	Object getNetworkManager(Player player);
 
