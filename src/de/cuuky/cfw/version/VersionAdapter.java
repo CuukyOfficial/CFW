@@ -1,7 +1,10 @@
 package de.cuuky.cfw.version;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scoreboard.Team;
 
 public interface VersionAdapter {
 
@@ -25,7 +28,13 @@ public interface VersionAdapter {
 
 	void setAttributeSpeed(Player player, double value);
 	
+	void setNametagVisibility(Team team, boolean shown);
+	
+	void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
+	
 	void setXpCooldown(Player player, int cooldown);
+	
+	void deleteItemAnnotations(ItemStack item);
 
 	Object getNetworkManager(Player player);
 

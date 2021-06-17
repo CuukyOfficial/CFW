@@ -5,8 +5,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scoreboard.Team;
 
 class OneSevenVersionAdapter implements VersionAdapter {
 
@@ -163,12 +166,27 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 	
 	@Override
+	public void setNametagVisibility(Team team, boolean shown) {
+		//1.8+
+	}
+	
+	@Override
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+		//1.8+
+	}
+	
+	@Override
 	public void setXpCooldown(Player player, int cooldown) {
 		try {
 			this.xpCooldownField.set(this.getHandle(player), cooldown);
 		} catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public void deleteItemAnnotations(ItemStack item) {
+		//1.8+ (?)
 	}
 
 	@Override

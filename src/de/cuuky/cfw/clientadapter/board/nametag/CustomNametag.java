@@ -1,36 +1,18 @@
 package de.cuuky.cfw.clientadapter.board.nametag;
 
-import de.cuuky.cfw.clientadapter.board.CustomBoard;
-import de.cuuky.cfw.clientadapter.board.CustomBoardType;
-import de.cuuky.cfw.player.CustomPlayer;
-import de.cuuky.cfw.version.BukkitVersion;
-import de.cuuky.cfw.version.VersionUtils;
+import java.util.Arrays;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
+import de.cuuky.cfw.clientadapter.board.CustomBoard;
+import de.cuuky.cfw.clientadapter.board.CustomBoardType;
+import de.cuuky.cfw.player.CustomPlayer;
+import de.cuuky.cfw.version.VersionUtils;
 
 public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
-
-	private static Class<?> visibilityClass;
-	private static Method setVisibilityMethod;
-	private static Object visibilityNever, visibilityAlways;
-
-	static {
-		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
-			try {
-				visibilityClass = Class.forName("org.bukkit.scoreboard.NameTagVisibility");
-				visibilityNever = visibilityClass.getDeclaredField("NEVER").get(null);
-				visibilityAlways = visibilityClass.getDeclaredField("ALWAYS").get(null);
-				setVisibilityMethod = Team.class.getDeclaredMethod("setNameTagVisibility", visibilityClass);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	// 0 = name, 1 = prefix, 2 = suffix
 	private String[] nametagContent;
@@ -170,13 +152,6 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 	}
 
 	private static void setVisibility(Team team, boolean shown) {
-		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7))
-			return;
-
-		try {
-			setVisibilityMethod.invoke(team, shown ? visibilityAlways : visibilityNever);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		VersionUtils.getVersionAdapter().setNametagVisibility(team, shown);
 	}
 }

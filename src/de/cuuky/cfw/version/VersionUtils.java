@@ -101,6 +101,10 @@ public class VersionUtils {
 	public static BukkitVersion getVersion() {
 		return version;
 	}
+	
+	public static VersionAdapter getVersionAdapter() {
+		return getVersion().getAdapter();
+	}
 
 	public static ServerSoftware getServerSoftware() {
 		return serverSoftware;

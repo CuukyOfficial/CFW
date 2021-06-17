@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import de.cuuky.cfw.version.VersionAdapter;
 import de.cuuky.cfw.version.VersionUtils;
 
+@Deprecated
 public class NetworkManager {
 
 	private Player player;

@@ -5,22 +5,30 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scoreboard.NameTagVisibility;
+import org.bukkit.scoreboard.Team;
 
+@SuppressWarnings("deprecation")
 class OneEightVersionAdapter extends OneSevenVersionAdapter {
 
 	protected Class<?> chatBaseComponentInterface;
 	protected Method chatSerializerMethod;
-	
+
 	//chat
 	protected Class<?> packetChatClass;
 	protected Constructor<?> packetChatConstructor;
 	private Constructor<?> packetChatByteConstructor;
 	private Constructor<?> titleConstructor;
 	private Object title, subtitle;
-	
+
 	//tablist
 	private Class<?> tablistPacketClass;
 	private Field footerField, headerField;
@@ -32,27 +40,27 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.initChat();
 		this.initTitle();
 	}
-	
+
 	protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
 		this.tablistPacketClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutPlayerListHeaderFooter");
-		
+
 		this.headerField = this.tablistPacketClass.getDeclaredField("a");
 		this.headerField.setAccessible(true);
 
 		this.footerField = this.tablistPacketClass.getDeclaredField("b");
 		this.footerField.setAccessible(true);
 	}
-	
+
 	protected void initChat() throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		this.chatBaseComponentInterface = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent");
 		Class<?> chatSerializer = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent$ChatSerializer"); //.ChatSerializer //.network.chat.IChatBaseComponent$ChatSerializer
 		this.chatSerializerMethod = chatSerializer.getDeclaredMethod("a", String.class);
-		
+
 		this.packetChatClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutChat");
 		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface);
 		this.packetChatByteConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, byte.class);
 	}
-	
+
 	protected void initTitle() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, NoSuchMethodException {
 		Class<?> titleClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutTitle");
 		Class<?> enumTitleClass = titleClass.getDeclaredClasses()[0]; //Class.forName(path + ".EnumTitleAction");
@@ -88,7 +96,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected Object getActionbarPacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.packetChatByteConstructor.newInstance(text, (byte) 2);
 	}
@@ -102,7 +110,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.packetChatConstructor.newInstance(text);
 	}
@@ -137,5 +145,32 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void setNametagVisibility(Team team, boolean shown) {
+		team.setNameTagVisibility(shown ? NameTagVisibility.ALWAYS : NameTagVisibility.NEVER);
+	}
+	
+	@Override
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+		ArmorStand stand = (ArmorStand) armorstand;
+		stand.setVisible(visible);
+		stand.setCustomNameVisible(customNameVisible);
+		stand.setGravity(gravity);
+		
+		if(stand.getCustomName() == null) {
+			if(customName != null)
+				stand.setCustomName(customName);
+		} else
+			if(!stand.getCustomName().equals(customName))
+				stand.setCustomName(customName);
+	}
+	
+	@Override
+	public void deleteItemAnnotations(ItemStack item) {
+		ItemMeta meta = item.getItemMeta();
+		meta.addItemFlags(ItemFlag.values());
+		item.setItemMeta(meta);
 	}
 }

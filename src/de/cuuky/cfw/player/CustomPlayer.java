@@ -13,6 +13,7 @@ public interface CustomPlayer {
 
 	public Player getPlayer();
 
+	@Deprecated
 	public NetworkManager getNetworkManager();
 
 	public String getLocale();
