@@ -1,23 +1,28 @@
 package de.cuuky.cfw.version;
 
+import java.util.function.Supplier;
+
 public enum BukkitVersion {
 
-	ONE_17(17),
-	ONE_16(16),
-	ONE_15(15),
-	ONE_14(14),
-	ONE_13(13),
-	ONE_12(12),
-	ONE_11(11),
-	ONE_10(10),
-	ONE_9(9),
-	ONE_8(8),
-	ONE_7(7);
+	ONE_17(17, OneSeventeenVersionAdapter::new),
+	ONE_16(16, OneTwelveVersionAdapter::new),
+	ONE_15(15, OneTwelveVersionAdapter::new),
+	ONE_14(14, OneTwelveVersionAdapter::new),
+	ONE_13(13, OneTwelveVersionAdapter::new),
+	ONE_12(12, OneTwelveVersionAdapter::new),
+	ONE_11(11, OneNineVersionAdapter::new),
+	ONE_10(10, OneNineVersionAdapter::new),
+	ONE_9(9, OneNineVersionAdapter::new),
+	ONE_8(8, OneEightVersionAdapter::new),
+	ONE_7(7, OneSevenVersionAdapter::new);
 
-	private int identifier;
+	private final int identifier;
+	private final Supplier<VersionAdapter> adapterSupplier;
+	private VersionAdapter adapter;
 
-	BukkitVersion(int identifier) {
+	BukkitVersion(int identifier, Supplier<VersionAdapter> adapterSupplier) {
 		this.identifier = identifier;
+		this.adapterSupplier = adapterSupplier;
 	}
 
 	public boolean isHigherThan(BukkitVersion ver) {
@@ -30,6 +35,13 @@ public enum BukkitVersion {
 
 	public int getIdentifier() {
 		return this.identifier;
+	}
+	
+	public VersionAdapter getAdapter() {
+		if(this.adapter == null)
+			return this.adapter = this.adapterSupplier.get();
+		else
+			return this.adapter;
 	}
 
 	public static BukkitVersion getVersion(String versionString) {

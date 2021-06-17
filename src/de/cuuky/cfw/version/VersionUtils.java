@@ -16,8 +16,8 @@ import java.util.Map;
 public class VersionUtils {
 
 	private static String nmsClass;
+	private static String nmsVersion;
 	private static Object spigot;
-	private static Class<?> chatSerializer;
 
 	private static BukkitVersion version;
 	private static ServerSoftware serverSoftware;
@@ -27,34 +27,21 @@ public class VersionUtils {
 		playerVersions = new HashMap<>();
 
 		String base = "net.minecraft";
-		String server = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+		nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 		try {
 			//1.7 - 1.16
-			nmsClass = base + ".server." + server;
+			nmsClass = base + ".server." + nmsVersion;
 			Class.forName(nmsClass + ".MinecraftServer");
 		} catch (ClassNotFoundException e) {
 			//1.17+
 			nmsClass = base;
 		}
-		version = BukkitVersion.getVersion(server);
+		version = BukkitVersion.getVersion(nmsVersion);
 		serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
 
 		try {
 			spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
 		} catch (Exception e) {
-		}
-
-		try {
-			chatSerializer = Class.forName(nmsClass + ".IChatBaseComponent$ChatSerializer");
-		} catch (ClassNotFoundException | NullPointerException e) {
-			try {
-				chatSerializer = Class.forName(nmsClass + ".ChatSerializer");
-			} catch (ClassNotFoundException e1) {
-				try {
-					chatSerializer = Class.forName(nmsClass + ".network.chat.IChatBaseComponent$ChatSerializer");
-				} catch (ClassNotFoundException e2) {
-				}
-			}
 		}
 	}
 
@@ -70,10 +57,6 @@ public class VersionUtils {
 		}
 	}
 
-	public static Class<?> getChatSerializer() {
-		return chatSerializer;
-	}
-
 	public static double getHearts(Player player) {
 		return ((Damageable) player).getHealth();
 	}
@@ -82,6 +65,10 @@ public class VersionUtils {
 		return nmsClass;
 	}
 
+	public static String getNmsVersion() {
+		return nmsVersion;
+	}
+	
 	public static Object getSpigot() {
 		return spigot;
 	}
