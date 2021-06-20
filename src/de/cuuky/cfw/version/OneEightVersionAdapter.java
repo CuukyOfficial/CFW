@@ -33,7 +33,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	//tablist
 	private Class<?> tablistPacketClass;
 	private Field footerField, headerField;
-	
+
 	//nbt
 	private Class<?> netTagClass;
 	private Method nbtSetByteMethod, initNbtMethod, loadNbtMethod;
@@ -64,6 +64,10 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 
 		this.packetChatClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutChat");
 		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface);
+		this.initPacketChatArgConstructor();
+	}
+
+	protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		this.packetChatByteConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, byte.class);
 	}
 
@@ -74,11 +78,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.title = enumTitleClass.getDeclaredField("TITLE").get(null);
 		this.subtitle = enumTitleClass.getDeclaredField("SUBTITLE").get(null);
 	}
-	
+
 	protected void initNbt() throws ClassNotFoundException, NoSuchMethodException, SecurityException {
 		this.netTagClass = Class.forName(VersionUtils.getNmsClass() + ".NBTTagCompound");
 		this.nbtSetByteMethod = this.netTagClass.getDeclaredMethod("setByte", String.class, byte.class);
-		
+
 		Class<?> entityClass = Class.forName(VersionUtils.getNmsClass() + ".Entity");
 		this.initNbtMethod = entityClass.getMethod("c", this.netTagClass);
 		this.loadNbtMethod = entityClass.getMethod("f", this.netTagClass);
@@ -166,14 +170,14 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	public void setNametagVisibility(Team team, boolean shown) {
 		team.setNameTagVisibility(shown ? NameTagVisibility.ALWAYS : NameTagVisibility.NEVER);
 	}
-	
+
 	@Override
 	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
 		ArmorStand stand = (ArmorStand) armorstand;
 		stand.setVisible(visible);
 		stand.setCustomNameVisible(customNameVisible);
 		stand.setGravity(gravity);
-		
+
 		if(stand.getCustomName() == null) {
 			if(customName != null)
 				stand.setCustomName(customName);
@@ -181,7 +185,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 			if(!stand.getCustomName().equals(customName))
 				stand.setCustomName(customName);
 	}
-	
+
 	@Override
 	public void removeAi(LivingEntity entity) {
 		try {
@@ -195,7 +199,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 			throw new Error(e);
 		}
 	}
-	
+
 	@Override
 	public void deleteItemAnnotations(ItemStack item) {
 		ItemMeta meta = item.getItemMeta();
