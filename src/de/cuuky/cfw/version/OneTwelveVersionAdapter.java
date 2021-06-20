@@ -1,6 +1,5 @@
 package de.cuuky.cfw.version;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -9,8 +8,8 @@ import org.bukkit.entity.Player;
 class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 
 	private Method localeMethod;
-	private Constructor<?> packetChatMessageTypeConstructor;
-	private Object messageTypeGameInfo;
+	protected Object messageTypeSystem;
+	protected Object messageTypeGameInfo;
 
 	@Override
 	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
@@ -24,8 +23,9 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 	@Override
 	protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		Class<?> messageTypeClass = Class.forName(VersionUtils.getNmsClass() + ".ChatMessageType");
+		this.messageTypeSystem = messageTypeClass.getDeclaredField("SYSTEM").get(null);
 		this.messageTypeGameInfo = messageTypeClass.getDeclaredField("GAME_INFO").get(null);
-		this.packetChatMessageTypeConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, messageTypeClass);
+		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, messageTypeClass);
 	}
 
 	@Override
@@ -34,7 +34,12 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 
 	@Override
 	protected Object getActionbarPacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return this.packetChatMessageTypeConstructor.newInstance(text, this.messageTypeGameInfo);
+		return this.packetChatConstructor.newInstance(text, this.messageTypeGameInfo);
+	}
+
+	@Override
+	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return this.packetChatConstructor.newInstance(text, this.messageTypeSystem);
 	}
 
 	@Override

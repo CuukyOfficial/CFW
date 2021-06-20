@@ -9,10 +9,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-class OneSeventeenVersionAdapter extends OneThirteenVersionAdapter {
-
-	private Object messageTypeChat;
-	private Object messageTypeGameInfo;
+class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
 	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.nmsPlayerClass = Class.forName("net.minecraft.server.level.EntityPlayer");
@@ -40,7 +37,7 @@ class OneSeventeenVersionAdapter extends OneThirteenVersionAdapter {
 		this.packetChatClass = Class.forName("net.minecraft.network.protocol.game.PacketPlayOutChat");
 
 		Class<?> chatEnumTypeClass = Class.forName("net.minecraft.network.chat.ChatMessageType");
-		this.messageTypeChat = chatEnumTypeClass.getDeclaredField("b").get(null); //CHAT
+		this.messageTypeSystem = chatEnumTypeClass.getDeclaredField("b").get(null); //SYSTEM
 		this.messageTypeGameInfo = chatEnumTypeClass.getDeclaredField("c").get(null); //GAME_INFO
 
 		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, chatEnumTypeClass, UUID.class);
@@ -53,16 +50,6 @@ class OneSeventeenVersionAdapter extends OneThirteenVersionAdapter {
 	@Override
 	public void respawnPlayer(Player player) {
 		throw new Error("No implemented yet");
-	}
-
-	@Override
-	protected Object getActionbarPacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return this.packetChatConstructor.newInstance(text, this.messageTypeGameInfo, player.getUniqueId());
-	}
-
-	@Override
-	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return this.packetChatConstructor.newInstance(text, this.messageTypeChat, player.getUniqueId());
 	}
 
 	@Override

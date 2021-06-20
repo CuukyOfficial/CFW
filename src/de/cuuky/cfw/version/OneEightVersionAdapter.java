@@ -26,7 +26,6 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	//chat
 	protected Class<?> packetChatClass;
 	protected Constructor<?> packetChatConstructor;
-	private Constructor<?> packetChatByteConstructor;
 	private Constructor<?> titleConstructor;
 	private Object title, subtitle;
 
@@ -63,12 +62,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.chatSerializerMethod = chatSerializer.getDeclaredMethod("a", String.class);
 
 		this.packetChatClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutChat");
-		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface);
 		this.initPacketChatArgConstructor();
 	}
 
 	protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
-		this.packetChatByteConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, byte.class);
+		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, byte.class);
 	}
 
 	protected void initTitle() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, NoSuchMethodException {
@@ -117,7 +115,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	protected Object getActionbarPacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return this.packetChatByteConstructor.newInstance(text, (byte) 2);
+		return this.packetChatConstructor.newInstance(text, (byte) 2);
 	}
 
 	@Override
@@ -131,7 +129,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return this.packetChatConstructor.newInstance(text);
+		return this.packetChatConstructor.newInstance(text, (byte) 1);
 	}
 
 	@Override
