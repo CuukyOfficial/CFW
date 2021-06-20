@@ -6,8 +6,8 @@ public enum BukkitVersion {
 
 	ONE_17(17, OneSeventeenVersionAdapter::new),
 	ONE_16(16, OneSixteenVersionAdapter::new),
-	ONE_15(15, OneThirteenVersionAdapter::new),
-	ONE_14(14, OneThirteenVersionAdapter::new),
+	ONE_15(15, OneFourteenVersionAdapter::new),
+	ONE_14(14, OneFourteenVersionAdapter::new),
 	ONE_13(13, OneThirteenVersionAdapter::new),
 	ONE_12(12, OneTwelveVersionAdapter::new),
 	ONE_11(11, OneNineVersionAdapter::new),

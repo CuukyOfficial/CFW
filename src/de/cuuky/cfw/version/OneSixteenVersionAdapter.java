@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
-public class OneSixteenVersionAdapter extends OneThirteenVersionAdapter {
+public class OneSixteenVersionAdapter extends OneFourteenVersionAdapter {
 
 	@Override
 	protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
