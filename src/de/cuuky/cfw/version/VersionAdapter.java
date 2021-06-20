@@ -1,5 +1,7 @@
 package de.cuuky.cfw.version;
 
+import java.util.Properties;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,4 +41,6 @@ public interface VersionAdapter {
 	Object getNetworkManager(Player player);
 
 	String getLocale(Player player);
+	
+	Properties getServerProperties();
 }

@@ -4,6 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Properties;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		this.initLocale();
 		this.initXp();
 	}
-	
+
 	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.playerClass = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer");
 		this.playerHandleMethod = this.playerClass.getMethod("getHandle");
@@ -54,11 +55,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		this.localeField = this.playerHandleMethod.getReturnType().getDeclaredField("locale");
 		this.localeField.setAccessible(true);
 	}
-	
+
 	protected void initXp() {
 		this.initXp(VersionUtils.getNmsClass() + ".EntityHuman",VersionUtils.getNmsClass() + ".FoodMetaData");
 	}
-	
+
 	protected void initXp(String entityHumanName, String foodMetaName) {
 		//this is EXTREMELY unsafe
 		try {
@@ -77,13 +78,13 @@ class OneSevenVersionAdapter implements VersionAdapter {
 					return;
 				}else
 					fieldNum = 0;
-			
+
 			throw new Error("Unable to find xp cooldown field");
 		} catch (SecurityException | ClassNotFoundException e) {
 			throw new Error(e);
 		}
 	}
-	
+
 	private Object getHandle(Player player) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.playerHandleMethod.invoke(player);
 	}
@@ -164,17 +165,17 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	public void setAttributeSpeed(Player player, double value) {
 		//1.9+
 	}
-	
+
 	@Override
 	public void setNametagVisibility(Team team, boolean shown) {
 		//1.8+
 	}
-	
+
 	@Override
 	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
 		//1.8+
 	}
-	
+
 	@Override
 	public void setXpCooldown(Player player, int cooldown) {
 		try {
@@ -183,7 +184,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void deleteItemAnnotations(ItemStack item) {
 		//1.8+ (?)
@@ -207,4 +208,18 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		}
 	}
 
+	@Override
+	public Properties getServerProperties() {
+		try {
+			Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
+			Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
+			Field propertyManagerField = mcServer.getClass().getField("propertyManager");
+			propertyManagerField.setAccessible(true);
+			Object propertyManager = propertyManagerField.get(mcServer);
+			
+			return (Properties) propertyManager.getClass().getDeclaredField("properties").get(propertyManager);
+		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
+			throw new Error(e);
+		}
+	}
 }

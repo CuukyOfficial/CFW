@@ -3,8 +3,10 @@ package de.cuuky.cfw.version;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Properties;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 class OneSeventeenVersionAdapter extends OneTwelveVersionAdapter {
@@ -78,6 +80,26 @@ class OneSeventeenVersionAdapter extends OneTwelveVersionAdapter {
 			this.tablistMethod.invoke(player, header, footer);
 		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public Properties getServerProperties() {
+		try {
+			Method dedicatedServerPropMethod = Bukkit.getServer().getClass().getDeclaredMethod("getProperties");
+			dedicatedServerPropMethod.setAccessible(true);
+			Object dedicatedServerProp = dedicatedServerPropMethod.invoke(Bukkit.getServer());
+			Field[] fields = dedicatedServerProp.getClass().getFields();
+			for (Field field : fields) {
+				if (!field.getType().equals(Properties.class))
+					continue;
+
+				field.setAccessible(true);
+				return (Properties) field.get(dedicatedServerProp);
+			}
+			throw new Error("missing propertys field");
+		}catch(NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+			throw new Error(e);
 		}
 	}
 }
