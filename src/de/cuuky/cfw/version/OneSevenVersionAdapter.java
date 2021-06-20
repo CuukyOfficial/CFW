@@ -228,8 +228,10 @@ class OneSevenVersionAdapter implements VersionAdapter {
 			Field propertyManagerField = mcServer.getClass().getField("propertyManager");
 			propertyManagerField.setAccessible(true);
 			Object propertyManager = propertyManagerField.get(mcServer);
+			Field propertyField = propertyManager.getClass().getDeclaredField("properties");
+			propertyField.setAccessible(true);
 
-			return (Properties) propertyManager.getClass().getDeclaredField("properties").get(propertyManager);
+			return (Properties) propertyField.get(propertyManager);
 		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
 			throw new Error(e);
 		}
