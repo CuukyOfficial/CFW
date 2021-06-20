@@ -12,8 +12,8 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 	@Override
 	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		try {
-			this.localeMethod = this.playerClass.getDeclaredMethod("getLocale");
-		} catch (NoSuchMethodException | SecurityException e) {
+			this.localeMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer").getDeclaredMethod("getLocale");
+		} catch (NoSuchMethodException | SecurityException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 	}

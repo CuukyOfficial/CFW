@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +33,10 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	//tablist
 	private Class<?> tablistPacketClass;
 	private Field footerField, headerField;
+	
+	//nbt
+	private Class<?> netTagClass;
+	private Method nbtSetByteMethod, initNbtMethod, loadNbtMethod;
 
 	@Override
 	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
@@ -39,6 +44,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.initTablist();
 		this.initChat();
 		this.initTitle();
+		this.initNbt();
 	}
 
 	protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
@@ -67,6 +73,15 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.titleConstructor = titleClass.getConstructor(enumTitleClass, chatBaseComponentInterface, int.class, int.class, int.class);
 		this.title = enumTitleClass.getDeclaredField("TITLE").get(null);
 		this.subtitle = enumTitleClass.getDeclaredField("SUBTITLE").get(null);
+	}
+	
+	protected void initNbt() throws ClassNotFoundException, NoSuchMethodException, SecurityException {
+		this.netTagClass = Class.forName(VersionUtils.getNmsClass() + ".NBTTagCompound");
+		this.nbtSetByteMethod = this.netTagClass.getDeclaredMethod("setByte", String.class, byte.class);
+		
+		Class<?> entityClass = Class.forName(VersionUtils.getNmsClass() + ".Entity");
+		this.initNbtMethod = entityClass.getMethod("c", this.netTagClass);
+		this.loadNbtMethod = entityClass.getMethod("f", this.netTagClass);
 	}
 
 	@Override
@@ -165,6 +180,20 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		} else
 			if(!stand.getCustomName().equals(customName))
 				stand.setCustomName(customName);
+	}
+	
+	@Override
+	public void removeAi(LivingEntity entity) {
+		try {
+			Object handle = this.getHandle(entity);
+			Object compound = this.netTagClass.newInstance();
+
+			this.initNbtMethod.invoke(handle, compound); //nms.Entity#c
+			this.nbtSetByteMethod.invoke(compound, "NoAI", (byte) 1);
+			this.loadNbtMethod.invoke(handle, compound); //nms.Entity#load
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
+			throw new Error(e);
+		}
 	}
 	
 	@Override

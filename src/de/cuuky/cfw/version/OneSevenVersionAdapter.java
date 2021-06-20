@@ -7,16 +7,19 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
 class OneSevenVersionAdapter implements VersionAdapter {
 
-	protected Class<?> playerClass;
-	protected Method playerHandleMethod, sendPacketMethod;
-
+	protected Class<?> nmsPlayerClass;
+	private Method entityHandleMethod;
+	protected Method sendPacketMethod;
 	protected Field connectionField, networkManagerField, pingField, localeField, xpCooldownField;
 
 	OneSevenVersionAdapter() {
@@ -28,17 +31,21 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+		this.initEntity();
 		this.initPlayer();
 		this.initNetworkManager();
 		this.initLocale();
 		this.initXp();
 	}
 
+	protected void initEntity() throws NoSuchMethodException, SecurityException, ClassNotFoundException {
+		this.entityHandleMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftEntity").getMethod("getHandle");
+	}
+
 	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-		this.playerClass = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer");
-		this.playerHandleMethod = this.playerClass.getMethod("getHandle");
-		this.pingField = this.playerHandleMethod.getReturnType().getField("ping");
-		this.connectionField = this.playerHandleMethod.getReturnType().getField("playerConnection");
+		this.nmsPlayerClass = Class.forName(VersionUtils.getNmsClass() + ".EntityPlayer");
+		this.pingField = this.nmsPlayerClass.getField("ping");
+		this.connectionField = this.nmsPlayerClass.getField("playerConnection");
 		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket", Class.forName(VersionUtils.getNmsClass() + ".Packet"));
 	}
 
@@ -52,7 +59,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
-		this.localeField = this.playerHandleMethod.getReturnType().getDeclaredField("locale");
+		this.localeField = this.nmsPlayerClass.getDeclaredField("locale");
 		this.localeField.setAccessible(true);
 	}
 
@@ -85,8 +92,8 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		}
 	}
 
-	private Object getHandle(Player player) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return this.playerHandleMethod.invoke(player);
+	protected Object getHandle(Entity entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return this.entityHandleMethod.invoke(entity);
 	}
 
 	@Override
@@ -177,6 +184,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
+	public void removeAi(LivingEntity entity) {
+		entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255));
+	}
+
+	@Override
 	public void setXpCooldown(Player player, int cooldown) {
 		try {
 			this.xpCooldownField.set(this.getHandle(player), cooldown);
@@ -216,7 +228,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 			Field propertyManagerField = mcServer.getClass().getField("propertyManager");
 			propertyManagerField.setAccessible(true);
 			Object propertyManager = propertyManagerField.get(mcServer);
-			
+
 			return (Properties) propertyManager.getClass().getDeclaredField("properties").get(propertyManager);
 		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
 			throw new Error(e);

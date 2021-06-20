@@ -3,6 +3,7 @@ package de.cuuky.cfw.version;
 import java.util.Properties;
 
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -33,6 +34,8 @@ public interface VersionAdapter {
 	void setNametagVisibility(Team team, boolean shown);
 	
 	void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
+	
+	void removeAi(LivingEntity entity);
 	
 	void setXpCooldown(Player player, int cooldown);
 	

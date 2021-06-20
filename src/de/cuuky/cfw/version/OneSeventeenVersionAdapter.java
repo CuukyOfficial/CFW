@@ -17,11 +17,9 @@ class OneSeventeenVersionAdapter extends OneTwelveVersionAdapter {
 	private Object messageTypeGameInfo;
 
 	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-		this.playerClass = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer");
-		this.playerHandleMethod = this.playerClass.getMethod("getHandle");
-
-		this.pingField = this.playerHandleMethod.getReturnType().getField("e");
-		this.connectionField = this.playerHandleMethod.getReturnType().getField("b");
+		this.nmsPlayerClass = Class.forName("net.minecraft.server.level.EntityPlayer");
+		this.pingField = this.nmsPlayerClass.getField("e");
+		this.connectionField = this.nmsPlayerClass.getField("b");
 		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket", Class.forName("net.minecraft.network.protocol.Packet"));
 	}
 
