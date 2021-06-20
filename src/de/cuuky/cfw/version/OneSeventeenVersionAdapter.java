@@ -9,9 +9,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-class OneSeventeenVersionAdapter extends OneTwelveVersionAdapter {
-
-	private Method tablistMethod;
+class OneSeventeenVersionAdapter extends OneThirteenVersionAdapter {
 
 	private Object messageTypeChat;
 	private Object messageTypeGameInfo;
@@ -31,11 +29,6 @@ class OneSeventeenVersionAdapter extends OneTwelveVersionAdapter {
 				return;
 			}
 		throw new Error("[CFW] Failed to initalize 1.17 networkManager! Are you using a modified version of Spigot/Bukkit?");
-	}
-
-	@Override
-	protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
-		this.tablistMethod = Player.class.getDeclaredMethod("setPlayerListHeaderFooter", String.class, String.class);
 	}
 
 	@Override
@@ -70,15 +63,6 @@ class OneSeventeenVersionAdapter extends OneTwelveVersionAdapter {
 	@Override
 	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.packetChatConstructor.newInstance(text, this.messageTypeChat, player.getUniqueId());
-	}
-
-	@Override
-	public void sendTablist(Player player, String header, String footer) {
-		try {
-			this.tablistMethod.invoke(player, header, footer);
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override

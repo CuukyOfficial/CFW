@@ -5,10 +5,10 @@ import java.util.function.Supplier;
 public enum BukkitVersion {
 
 	ONE_17(17, OneSeventeenVersionAdapter::new),
-	ONE_16(16, OneTwelveVersionAdapter::new),
-	ONE_15(15, OneTwelveVersionAdapter::new),
-	ONE_14(14, OneTwelveVersionAdapter::new),
-	ONE_13(13, OneTwelveVersionAdapter::new),
+	ONE_16(16, OneThirteenVersionAdapter::new),
+	ONE_15(15, OneThirteenVersionAdapter::new),
+	ONE_14(14, OneThirteenVersionAdapter::new),
+	ONE_13(13, OneThirteenVersionAdapter::new),
 	ONE_12(12, OneTwelveVersionAdapter::new),
 	ONE_11(11, OneNineVersionAdapter::new),
 	ONE_10(10, OneNineVersionAdapter::new),

@@ -39,7 +39,7 @@ repositories {
 }
 	
 dependencies {
-	this.addModularCompile('org.spigotmc:spigot-api:1.11.2-R0.1-SNAPSHOT', 'spigot', false)
+	this.addModularCompile('org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT', 'spigot', false)
 }
 
 boolean checkLib(String filePath) {
