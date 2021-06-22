@@ -1,8 +1,11 @@
 package de.cuuky.cfw.version;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class OneSixteenVersionAdapter extends OneFourteenVersionAdapter {
@@ -23,5 +26,22 @@ public class OneSixteenVersionAdapter extends OneFourteenVersionAdapter {
 	@Override
 	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.packetChatConstructor.newInstance(text, this.messageTypeSystem, player.getUniqueId());
+	}
+
+	@Override
+	public void forceClearWorlds() {
+		try {
+			Field dedicatedServerField = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".CraftServer").getDeclaredField("console");
+			dedicatedServerField.setAccessible(true);
+			Object dedicatedServer = dedicatedServerField.get(Bukkit.getServer());
+			Map<?, ?> worldServer = (Map<?, ?>) dedicatedServer.getClass().getField(this.getWorldServerFieldName()).get(dedicatedServer);
+			worldServer.clear();
+		}catch(ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			throw new Error(e);
+		}
+	}
+	
+	protected String getWorldServerFieldName() {
+		return "worldServer";
 	}
 }

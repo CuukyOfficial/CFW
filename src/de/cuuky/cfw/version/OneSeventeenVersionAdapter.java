@@ -53,6 +53,11 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 	}
 
 	@Override
+	protected String getWorldServerFieldName() {
+		return "R";
+	}
+
+	@Override
 	public Properties getServerProperties() {
 		try {
 			Method dedicatedServerPropMethod = Bukkit.getServer().getClass().getDeclaredMethod("getProperties");

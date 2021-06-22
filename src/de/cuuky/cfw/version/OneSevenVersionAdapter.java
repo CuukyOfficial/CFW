@@ -221,6 +221,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
+	public void forceClearWorlds() {
+		//1.16+
+	}
+
+	@Override
 	public Properties getServerProperties() {
 		try {
 			Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");

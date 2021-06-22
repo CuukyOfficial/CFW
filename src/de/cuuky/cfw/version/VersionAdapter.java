@@ -30,20 +30,22 @@ public interface VersionAdapter {
 	void sendTitle(Player player, String header, String footer);
 
 	void setAttributeSpeed(Player player, double value);
-	
+
 	void setNametagVisibility(Team team, boolean shown);
-	
+
 	void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
-	
+
 	void removeAi(LivingEntity entity);
-	
+
 	void setXpCooldown(Player player, int cooldown);
-	
+
 	void deleteItemAnnotations(ItemStack item);
 
 	Object getNetworkManager(Player player);
 
 	String getLocale(Player player);
-	
+
+	void forceClearWorlds();
+
 	Properties getServerProperties();
 }
