@@ -1,14 +1,15 @@
 package de.cuuky.cfw.inventory.list;
 
-import de.cuuky.cfw.inventory.AdvancedInventory;
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.inventory.ItemClick;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import de.cuuky.cfw.inventory.AdvancedInventory;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.ItemClick;
 
 public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 

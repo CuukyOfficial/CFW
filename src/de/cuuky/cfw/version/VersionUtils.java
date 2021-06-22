@@ -1,17 +1,18 @@
 package de.cuuky.cfw.version;
 
-import de.cuuky.cfw.version.minecraft.MinecraftVersion;
-import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
-import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Player;
-
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Damageable;
+import org.bukkit.entity.Player;
+
+import de.cuuky.cfw.version.minecraft.MinecraftVersion;
+import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
+import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
 
 public class VersionUtils {
 

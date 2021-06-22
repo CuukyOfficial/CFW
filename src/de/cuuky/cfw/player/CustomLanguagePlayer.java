@@ -1,11 +1,11 @@
 package de.cuuky.cfw.player;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import de.cuuky.cfw.configuration.language.LanguageManager;
 import de.cuuky.cfw.configuration.language.broadcast.MessageHolder;
 import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 public abstract class CustomLanguagePlayer implements CustomPlayer {
 

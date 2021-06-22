@@ -1,9 +1,5 @@
 package de.cuuky.cfw.hooking.listener;
 
-import de.cuuky.cfw.hooking.HookManager;
-import de.cuuky.cfw.hooking.hooks.HookEntityType;
-import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
-import de.cuuky.cfw.hooking.hooks.item.ItemHook;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,11 +7,21 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import de.cuuky.cfw.hooking.HookManager;
+import de.cuuky.cfw.hooking.hooks.HookEntityType;
+import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
+import de.cuuky.cfw.hooking.hooks.item.ItemHook;
 
 public class HookListener implements Listener {
 

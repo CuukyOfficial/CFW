@@ -1,9 +1,10 @@
 package de.cuuky.cfw.inventory;
 
-import de.cuuky.cfw.inventory.inserter.DirectInserter;
-import de.cuuky.cfw.item.ItemBuilder;
-import de.cuuky.cfw.version.types.Materials;
-import de.cuuky.cfw.version.types.Sounds;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,10 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.function.Supplier;
+import de.cuuky.cfw.inventory.inserter.DirectInserter;
+import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.version.types.Materials;
+import de.cuuky.cfw.version.types.Sounds;
 
 public abstract class AdvancedInventory {
 
