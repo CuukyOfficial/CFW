@@ -18,17 +18,6 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
 
     public AdvancedPageInventory(AdvancedInventoryManager manager, Player player) {
         super(manager, player);
-
-        this.registerPage(1, this::page1, 9, "Test1");
-        this.registerPage(2, this::page2, 18, "Test2");
-    }
-
-    private void page1() {
-        this.addItem(0, new ItemBuilder().material(Material.ARROW).build());
-    }
-
-    private void page2() {
-        this.addItem(0, new ItemBuilder().material(Material.APPLE).build());
     }
 
     private <T> T getInfo(Function<InventoryInfoProvider, T> getter, Function<AdvancedPageInventory, T> fallback) {
