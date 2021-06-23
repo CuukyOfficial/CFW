@@ -19,6 +19,10 @@ sourceSets {
 }
 
 repositories {
+	flatDir {
+		dirs 'libs'
+	}
+
 	maven {
 		url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
 	}
@@ -35,7 +39,18 @@ repositories {
 }
 	
 dependencies {
-	compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
+	this.addModularCompile('org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT', 'spigot', false)
+}
+
+boolean checkLib(String filePath) {
+	return file('libs/' + filePath + '.jar').exists();
+}
+
+void addModularCompile(String repoName, String fileName, boolean changingB) {
+	if (this.checkLib(fileName))
+		this.dependencies.compileOnly name: fileName
+	else
+		this.dependencies.compileOnly (repoName) { changing = changingB }
 }
 
 processResources {

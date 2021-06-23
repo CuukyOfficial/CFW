@@ -49,6 +49,16 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     protected abstract ItemClick getClick(T item);
 
     @Override
+    protected final int getStartPage() {
+        return 1;
+    }
+
+    @Override
+    protected final int getMinPage() {
+        return 1;
+    }
+
+    @Override
     public int getMaxPage() {
         List<T> original = this.getList();
         if (original == null || original.size() == 0)
@@ -58,7 +68,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     }
 
     @Override
-    protected void refreshContent() {
+    public void refreshContent() {
         List<T> original = this.getList();
         if (original == null)
             return;
@@ -71,7 +81,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         }
     }
 
-    protected List<T> getList() {
+    public List<T> getList() {
         return list;
     }
 }

@@ -31,7 +31,8 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     @Override
     protected void addListItem(int index, Player player) {
-        super.addItem(index, new ItemBuilder().material(Materials.SKELETON_SKULL.parseMaterial()).displayname(player.getName()).build());
+        super.addItem(index, new ItemBuilder().material(Materials.SKELETON_SKULL.parseMaterial())
+                .displayname(player.getName()).build());
         super.addListItem(index, player);
     }
 
@@ -48,7 +49,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     }
 
     @Override
-    protected String getTitle() {
+    public String getTitle() {
         return "Online players";
     }
 

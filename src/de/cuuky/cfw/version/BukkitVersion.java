@@ -2,6 +2,7 @@ package de.cuuky.cfw.version;
 
 public enum BukkitVersion {
 
+	ONE_17(17),
 	ONE_16(16),
 	ONE_15(15),
 	ONE_14(14),
@@ -15,7 +16,7 @@ public enum BukkitVersion {
 
 	private int identifier;
 
-	private BukkitVersion(int identifier) {
+	BukkitVersion(int identifier) {
 		this.identifier = identifier;
 	}
 

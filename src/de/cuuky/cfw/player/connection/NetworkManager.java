@@ -42,9 +42,14 @@ public class NetworkManager {
 		try {
 			ioBaseChat = VersionUtils.getChatSerializer();
 
-			ioBase = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent");
+			try {
+				ioBase = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent");
+			} catch (ClassNotFoundException e) {
+				ioBase = Class.forName("net.minecraft.network.chat.IChatBaseComponent");
+			}
 			ioBaseChatMethod = ioBaseChat.getDeclaredMethod("a", String.class);
 
+			String path = VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_16) ? "net.minecraft.network.protocol.game" : VersionUtils.getNmsClass();
 			if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7)) {
 				Class<?> titleClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutTitle");
 
