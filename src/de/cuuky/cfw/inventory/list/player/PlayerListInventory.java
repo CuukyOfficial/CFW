@@ -4,6 +4,7 @@ import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemClick;
 import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
 import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +14,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
@@ -29,7 +29,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     }
 
     public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size) {
-        this(manager, player, size, new ArrayList<>(manager.getOwnerInstance().getServer().getOnlinePlayers()));
+        this(manager, player, size, VersionUtils.getOnlinePlayer());
     }
 
     @Override
