@@ -8,8 +8,8 @@ import java.util.List;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 
-    public AdvancedAsyncListInventory(AdvancedInventoryManager manager, Player player, int size, List<T> list) {
-        super(manager, player, size, list);
+    public AdvancedAsyncListInventory(AdvancedInventoryManager manager, Player player, List<T> list) {
+        super(manager, player, list);
     }
 
     @Override

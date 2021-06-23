@@ -18,9 +18,12 @@ import java.util.List;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 
-    public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size, List<Player> players) {
-        super(manager, player, size, players);
+    private final int size;
 
+    public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size, List<Player> players) {
+        super(manager, player, players);
+
+        this.size = size;
         JavaPlugin plugin = this.getManager().getOwnerInstance();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
@@ -36,6 +39,19 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
         super.addListItem(index, player);
     }
 
+    @Override
+    protected ItemStack getItemStack(Player item) {
+        return new ItemBuilder().player(item).buildSkull();
+    }
+
+    @Override
+    protected ItemClick getClick(Player item) {
+        return event -> {
+            this.getPlayer().teleport(item);
+            this.close();
+        };
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         this.getList().add(event.getPlayer());
@@ -49,20 +65,12 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     }
 
     @Override
+    public int getSize() {
+        return this.size;
+    }
+
+    @Override
     public String getTitle() {
         return "Online players";
-    }
-
-    @Override
-    protected ItemStack getItemStack(Player item) {
-        return new ItemBuilder().player(item).buildSkull();
-    }
-
-    @Override
-    protected ItemClick getClick(Player item) {
-        return event -> {
-            this.getPlayer().teleport(item);
-            this.close();
-        };
     }
 }
