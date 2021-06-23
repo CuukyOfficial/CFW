@@ -1,10 +1,8 @@
 package de.cuuky.cfw.inventory.list.player;
 
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.inventory.ItemClick;
-import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
-import de.cuuky.cfw.item.ItemBuilder;
-import de.cuuky.cfw.version.types.Materials;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,8 +11,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
+import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.version.types.Materials;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 
@@ -31,8 +32,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     @Override
     protected void addListItem(int index, Player player) {
-        super.addItem(index, new ItemBuilder().material(Materials.SKELETON_SKULL.parseMaterial())
-                .displayname(player.getName()).build());
+        super.addItem(index, new ItemBuilder().material(Materials.SKELETON_SKULL.parseMaterial()).displayname(player.getName()).build());
         super.addListItem(index, player);
     }
 
@@ -49,7 +49,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     }
 
     @Override
-    public String getTitle() {
+    protected String getTitle() {
         return "Online players";
     }
 

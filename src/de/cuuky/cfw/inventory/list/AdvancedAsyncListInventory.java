@@ -1,10 +1,11 @@
 package de.cuuky.cfw.inventory.list;
 
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 

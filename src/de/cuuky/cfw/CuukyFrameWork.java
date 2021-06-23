@@ -4,14 +4,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.cuuky.cfw.inventory.AdvancedInventory;
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.cuuky.cfw.configuration.language.LanguageManager;
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.hooking.HookManager;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.SuperInventoryManager;
@@ -24,7 +23,7 @@ public class CuukyFrameWork {
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
 	}
 
-	private static final String NAME = "CuukyFrameWork", VERSION = "0.5.2", AUTHOR = "Cuuky";
+	private static final String NAME = "CuukyFrameWork", VERSION = "0.6.0-BETA", AUTHOR = "Cuuky";
 
 	/*
 	 * CFW - A Bukkit framework

@@ -3,7 +3,6 @@ package de.cuuky.cfw.player;
 import org.bukkit.entity.Player;
 
 import de.cuuky.cfw.player.clientadapter.BoardUpdateHandler;
-import de.cuuky.cfw.player.connection.NetworkManager;
 
 public interface CustomPlayer {
 
@@ -12,8 +11,6 @@ public interface CustomPlayer {
 	public String getName();
 
 	public Player getPlayer();
-
-	public NetworkManager getNetworkManager();
 
 	public String getLocale();
 

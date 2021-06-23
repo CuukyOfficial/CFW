@@ -10,11 +10,14 @@ import org.bukkit.entity.Player;
 import de.cuuky.cfw.clientadapter.board.CustomBoard;
 import de.cuuky.cfw.clientadapter.board.CustomBoardType;
 import de.cuuky.cfw.player.CustomPlayer;
+import de.cuuky.cfw.player.PlayerVersionAdapter;
 import de.cuuky.cfw.utils.JavaUtils;
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
 
 public class CustomTablist<T extends CustomPlayer> extends CustomBoard<T> {
+
+	private final PlayerVersionAdapter adapter;
 
 	private Map<Player, List<String>> headerReplaces;
 	private Map<Player, List<String>> footerReplaces;
@@ -23,6 +26,7 @@ public class CustomTablist<T extends CustomPlayer> extends CustomBoard<T> {
 
 	public CustomTablist(T player) {
 		super(CustomBoardType.TABLIST, player);
+		this.adapter = new PlayerVersionAdapter(player.getPlayer());
 	}
 
 	@Override
@@ -82,6 +86,6 @@ public class CustomTablist<T extends CustomPlayer> extends CustomBoard<T> {
 		Object[] footerUpdate = updateList(player, false);
 
 		if ((boolean) headerUpdate[0] || (boolean) footerUpdate[0])
-			player.getNetworkManager().sendTablist(JavaUtils.getArgsToString((ArrayList<String>) headerUpdate[1], "\n"), JavaUtils.getArgsToString((ArrayList<String>) footerUpdate[1], "\n"));
+			this.adapter.sendTablist(JavaUtils.getArgsToString((ArrayList<String>) headerUpdate[1], "\n"), JavaUtils.getArgsToString((ArrayList<String>) footerUpdate[1], "\n"));
 	}
 }

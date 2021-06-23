@@ -10,9 +10,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.function.Consumer;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 import de.cuuky.cfw.mysql.MySQLClient;
 import de.cuuky.cfw.mysql.request.PreparedStatementQuery;
