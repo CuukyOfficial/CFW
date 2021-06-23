@@ -36,7 +36,6 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
         return (info = this.pages.get(this.getPage())) == null ? fallback.apply(this) : getter.apply(info);
     }
 
-
     private int getPageMax(int add) {
         int page;
         for (page = this.getStartPage(); pages.get(page) != null; page += add)
