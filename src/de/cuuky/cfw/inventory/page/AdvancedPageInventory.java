@@ -20,15 +20,7 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
         super(manager, player);
     }
 
-//    private void checkLoaded() {
-//        if (!initialized) {
-//            this.initialized = true;
-//            this.initPages();
-//        }
-//    }
-
     private InventoryInfoProvider getLoadedPage(int page) {
-//        this.checkLoaded();
         Supplier<InventoryInfoProvider> info;
         InventoryInfoProvider loaded = this.loaded.get(page);
         if (loaded == null && (info = this.pages.get(this.getPage())) != null)
@@ -43,23 +35,17 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
     }
 
     private int getPageMax(int add) {
-//        this.checkLoaded();
         int page;
         for (page = this.getStartPage(); pages.get(page) != null; page += add)
             continue;
         return page + (add * -1);
     }
 
-//    protected abstract void initPages();
-
     protected abstract int getDefaultSize();
 
     protected abstract String getDefaultTitle();
 
     protected void registerPage(int page, Supplier<InventoryInfoProvider> info) {
-//        if (!this.initialized)
-//            throw new IllegalStateException("Cannot set page yet");
-
         this.pages.put(page, info);
         if (this.loaded.get(page) != null)
             this.loaded.put(page, info.get());

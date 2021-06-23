@@ -20,24 +20,22 @@ class AdvancedInventoryListener implements Listener {
         if (clicked == null || event.getCurrentItem() == null)
             return;
 
-        for (AdvancedInventory inv : this.manager.getInventories()) {
-            if (!inv.getInventory().equals(clicked))
-                continue;
+        AdvancedInventory inv = this.manager.getInventory(clicked);
+        if (inv == null)
+            return;
 
-            if (inv.cancelClick())
-                event.setCancelled(true);
-            inv.slotClicked(event.getSlot(), event);
-        }
+        if (inv.cancelClick())
+            event.setCancelled(true);
+        inv.slotClicked(event.getSlot(), event);
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Inventory clicked = event.getInventory();
-        for (AdvancedInventory inv : this.manager.getInventories()) {
-            if (inv.getInventory() != clicked)
-                continue;
+        AdvancedInventory inv = this.manager.getInventory(clicked);
+        if (inv == null)
+            return;
 
-            inv.inventoryClosed(event);
-        }
+        inv.inventoryClosed(event);
     }
 }

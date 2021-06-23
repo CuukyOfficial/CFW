@@ -177,7 +177,7 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
     }
 
     protected void back() {
-        close(false);
+        this.close(false);
         if (previous != null)
             previous.open();
     }
