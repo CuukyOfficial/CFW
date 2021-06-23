@@ -1,10 +1,8 @@
 package de.cuuky.cfw.item;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import de.cuuky.cfw.utils.JavaUtils;
+import de.cuuky.cfw.version.VersionUtils;
+import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -12,9 +10,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import de.cuuky.cfw.utils.JavaUtils;
-import de.cuuky.cfw.version.VersionUtils;
-import de.cuuky.cfw.version.types.Materials;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class ItemBuilder {
 
@@ -102,7 +100,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder lore(ArrayList<String> lore) {
+    public ItemBuilder lore(List<String> lore) {
         this.lore = lore;
         return this;
     }
