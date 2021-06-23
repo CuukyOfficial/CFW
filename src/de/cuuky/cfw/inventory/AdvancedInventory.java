@@ -152,10 +152,6 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
         this.previous = previous;
     }
 
-    Inventory getInventory() {
-        return inventory;
-    }
-
     protected int getMaxPage() {
         return 1;
     }
@@ -182,7 +178,8 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
 
     protected void back() {
         close(false);
-        previous.open();
+        if (previous != null)
+            previous.open();
     }
 
     protected boolean hasSelectors() {
@@ -206,7 +203,7 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
     }
 
     protected ItemInfo getBackInfo() {
-        return new ItemInfo(this.getUsableSize() + 3, new ItemBuilder().material(Material.STONE_BUTTON).displayname("§fBack to '" + this.previous.getTitle() + "§f'").build());
+        return new ItemInfo(this.getUsableSize() + 3, new ItemBuilder().material(Material.STONE_BUTTON).displayname("§cBack").build());
     }
 
     protected ItemStack getFillerStack() {
@@ -243,6 +240,10 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
         return player;
     }
 
+    protected Inventory getInventory() {
+        return inventory;
+    }
+
     protected AdvancedInventoryManager getManager() {
         return this.manager;
     }
@@ -253,6 +254,10 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
 
     protected AdvancedInventory getPrevious() {
         return previous;
+    }
+
+    protected boolean isOpen() {
+        return open;
     }
 
     public void open() {
