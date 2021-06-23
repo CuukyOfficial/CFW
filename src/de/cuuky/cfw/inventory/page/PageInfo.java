@@ -23,11 +23,11 @@ public class PageInfo implements InventoryInfoProvider {
 
     @Override
     public int getSize() {
-        return this.size.get();
+        return this.size == null ? 0 : this.size.get();
     }
 
     @Override
     public String getTitle() {
-        return this.title.get();
+        return this.title == null ? null : this.title.get();
     }
 }
