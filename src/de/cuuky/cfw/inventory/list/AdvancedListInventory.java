@@ -12,28 +12,21 @@ import java.util.function.Supplier;
 
 public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
-    private final int size;
     private final List<T> list;
 
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, List<T> list) {
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, List<T> list) {
         super(manager, player);
 
-        this.size = size;
         this.list = list;
     }
 
     @Deprecated
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size, Supplier<List<T>> list) {
-        this(manager, player, size, list.get());
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, Supplier<List<T>> list) {
+        this(manager, player, list.get());
     }
 
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, int size) {
-        this(manager, player, size, (List<T>) null);
-    }
-
-    @Override
-    public int getSize() {
-        return this.size;
+    public AdvancedListInventory(AdvancedInventoryManager manager, Player player) {
+        this(manager, player, (List<T>) null);
     }
 
     protected void addListItem(int index, T item) {
