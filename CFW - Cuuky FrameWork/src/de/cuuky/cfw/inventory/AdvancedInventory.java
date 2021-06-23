@@ -18,10 +18,10 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public abstract class AdvancedInventory {
+public abstract class AdvancedInventory implements InventoryInfoProvider {
 
     private final Map<Supplier<ItemInfo>, Supplier<ItemClick>> selectors = new HashMap<Supplier<ItemInfo>, Supplier<ItemClick>>() {{
-        put(AdvancedInventory.this::getBackwardsInfo, () -> generateNavigator(() -> 1, -1));
+        put(AdvancedInventory.this::getBackwardsInfo, () -> generateNavigator(AdvancedInventory.this::getMinPage, -1));
         put(AdvancedInventory.this::getForwardsInfo, () -> generateNavigator(AdvancedInventory.this::getMaxPage, 1));
         put(() -> {
             if (AdvancedInventory.this.previous == null)
@@ -36,7 +36,7 @@ public abstract class AdvancedInventory {
 
     private final AdvancedInventoryManager manager;
     private final Player player;
-    private int page = 1, interval = -1;
+    private int page = this.getStartPage(), interval = -1;
     private Inventory inventory;
     private ItemInserter inserter;
     private boolean selectorsEnabled, open;
@@ -56,9 +56,9 @@ public abstract class AdvancedInventory {
         this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.getSize(), this.getTitle());
     }
 
-    private int convertPage(int toGo) {
-        int max = this.getMaxPage();
-        return Math.min(toGo, max);
+    private int convertPage(int max, int add) {
+        int go = this.page + add;
+        return add > 0 ? Math.min(go, max) : Math.max(go, max);
     }
 
     private ItemClick generateNavigator(Supplier<Integer> maxSup, int add) {
@@ -66,7 +66,7 @@ public abstract class AdvancedInventory {
         if ((add < 0 && this.page <= max) || (add > 0 && this.page >= max))
             return null;
 
-        return event -> this.page = this.convertPage(this.page + add);
+        return event -> this.page = this.convertPage(max, add);
     }
 
     private Map<Integer, ItemStack> getContent(int size) {
@@ -100,7 +100,7 @@ public abstract class AdvancedInventory {
     private boolean needsOpen() {
         Inventory inv = player.getOpenInventory().getTopInventory();
         AdvancedInventory ai = this.manager.getInventory(inv);
-        if (inv == null || !(this.getTitle().equals(ai.getTitle()) && this.getSize() == inv.getSize())) {
+        if (ai == null || !(this.getTitle().equals(ai.getTitle()) && this.getSize() == inv.getSize())) {
             this.createInventory();
             return true;
         } else this.inventory = inv;
@@ -110,7 +110,7 @@ public abstract class AdvancedInventory {
     }
 
     private void startTask() {
-        if (interval == -1)
+        if (this.interval == -1)
             return;
 
         this.autoTask = new BukkitRunnable() {
@@ -156,12 +156,20 @@ public abstract class AdvancedInventory {
         return inventory;
     }
 
-    protected abstract String getTitle();
-
-    protected abstract void refreshContent();
-
     protected int getMaxPage() {
         return 1;
+    }
+
+    protected int getMinPage() {
+        return 1;
+    }
+
+    protected int getStartPage() {
+        return 1;
+    }
+
+    protected boolean doAnimation() {
+        return !this.open;
     }
 
     protected void playSound() {
@@ -203,16 +211,6 @@ public abstract class AdvancedInventory {
 
     protected ItemStack getFillerStack() {
         return new ItemBuilder().displayname("§c").itemstack(new ItemStack(Materials.BLACK_STAINED_GLASS_PANE.parseMaterial(), 1, (short) 15)).build();
-    }
-
-    protected void addItem(int index, ItemStack stack, ItemClick click) {
-        this.items.put(index, new AdvancedItemLink(stack, click));
-        if (this.inserter.hasStarted())
-            this.addToInventory(index, stack, true);
-    }
-
-    protected void addItem(int index, ItemStack stack) {
-        this.addItem(index, stack, null);
     }
 
     protected void setAutoRefresh(int interval) {
@@ -257,8 +255,6 @@ public abstract class AdvancedInventory {
         return previous;
     }
 
-    public abstract int getSize();
-
     public void open() {
         if (this.open)
             throw new IllegalStateException("Cannot reopen already opened inventory");
@@ -299,7 +295,7 @@ public abstract class AdvancedInventory {
         if (this.hasSelectors())
             this.setSelector();
 
-        this.inserter = !this.open ? this.getInserter() : new DirectInserter();
+        this.inserter = this.doAnimation() ? this.getInserter() : new DirectInserter();
         this.refreshContent();
 
         int size = this.getSize();
@@ -311,5 +307,15 @@ public abstract class AdvancedInventory {
             this.player.openInventory(this.inventory);
 
         this.open = true;
+    }
+
+    public void addItem(int index, ItemStack stack, ItemClick click) {
+        this.items.put(index, new AdvancedItemLink(stack, click));
+        if (this.inserter.hasStarted())
+            this.addToInventory(index, stack, true);
+    }
+
+    public void addItem(int index, ItemStack stack) {
+        this.addItem(index, stack, null);
     }
 }
