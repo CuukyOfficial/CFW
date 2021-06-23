@@ -1,16 +1,15 @@
 package de.cuuky.cfw.inventory;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Function;
-
+import de.cuuky.cfw.manager.FrameworkManager;
+import de.cuuky.cfw.manager.FrameworkManagerType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.cuuky.cfw.manager.FrameworkManager;
-import de.cuuky.cfw.manager.FrameworkManagerType;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Function;
 
 public class AdvancedInventoryManager extends FrameworkManager {
 
@@ -31,7 +30,8 @@ public class AdvancedInventoryManager extends FrameworkManager {
         this.updateInventories(null, filter);
     }
 
-    public void updateInventories(Class<? extends AdvancedInventory>... clazzes) {
+    @SafeVarargs
+    public final void updateInventories(Class<? extends AdvancedInventory>... clazzes) {
         List<Class<? extends AdvancedInventory>> clazzList = Arrays.asList(clazzes);
         this.updateInventories(inv -> clazzList.contains(inv.getClass()));
     }

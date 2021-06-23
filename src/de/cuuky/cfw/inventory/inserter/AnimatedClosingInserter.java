@@ -1,14 +1,13 @@
 package de.cuuky.cfw.inventory.inserter;
 
-import java.util.Map;
-
+import de.cuuky.cfw.inventory.AdvancedInventory;
+import de.cuuky.cfw.inventory.ItemInserter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import de.cuuky.cfw.inventory.AdvancedInventory;
-import de.cuuky.cfw.inventory.ItemInserter;
+import java.util.Map;
 
 public class AnimatedClosingInserter implements ItemInserter {
 
