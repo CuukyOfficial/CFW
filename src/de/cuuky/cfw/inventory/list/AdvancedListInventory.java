@@ -44,7 +44,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         else if (emptyClicked < 100) return "§c§k§4Injecting virus...§c§k";
         else if (emptyClicked < 120) return "§2Not impressed?";
         else if (emptyClicked < 130) return "§2Yeah that's it now... I give up";
-        else if (emptyClicked < 1000) return "§24 real now, bye";
+        else if (emptyClicked < 200) return "§24 real now, bye";
         else if (emptyClicked < 21474) return "§fok";
         else return "get a life, nerd";
     }
@@ -77,7 +77,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     protected int getRecommendedSize(int min, int max) {
         int size = this.calculateInvSize(this.getList().size());
-        return (size < min ? min : Math.min(size, max)) + this.getHotbarSize();
+        return Math.min(Math.max(Math.min(size, max), min) + this.getHotbarSize(), 54);
     }
 
     protected int getRecommendedSize(int min) {

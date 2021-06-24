@@ -12,6 +12,10 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
         super(manager, player, list);
     }
 
+    public AdvancedAsyncListInventory(AdvancedInventoryManager manager, Player player) {
+        super(manager, player);
+    }
+
     @Override
     protected void addListItem(int index, T item) {
         new BukkitRunnable() {
