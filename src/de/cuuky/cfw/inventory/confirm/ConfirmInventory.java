@@ -46,7 +46,7 @@ public class ConfirmInventory extends AdvancedInventory {
     private void addDecisionItem(ItemInfo decision, boolean accept) {
         this.addItem(decision.getIndex(), decision.getStack(), (event) -> {
             this.resultReceiver.accept(accept);
-            this.close();
+            this.close(this.getPrevious() == null);
         });
     }
 
