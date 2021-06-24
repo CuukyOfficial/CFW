@@ -3,6 +3,9 @@ package de.cuuky.cfw.inventory.list;
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.inventory.ItemInfo;
+import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -37,9 +40,32 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         return true;
     }
 
+    protected ItemInfo getEmptyInfoStack() {
+        return new ItemInfo(this.getCenter(), new ItemBuilder()
+                .displayname("§cNothing here")
+                .itemstack(Materials.POPPY.parseItem()).lore("§f:(").build());
+    }
+
+    protected ItemClick getEmptyInfoClick() {
+        return null;
+    }
+
     protected abstract ItemStack getItemStack(T item);
 
     protected abstract ItemClick getClick(T item);
+
+    protected int getRecommendedSize(int min, int max) {
+        int size = this.calculateInvSize(this.getList().size());
+        return (size < min ? min : (size > max ? max : size)) + this.getHotbarSize();
+    }
+
+    protected int getRecommendedSize(int min) {
+        return this.getRecommendedSize(min, 54);
+    }
+
+    protected int getRecommendedSize() {
+        return this.getRecommendedSize(27);
+    }
 
     @Override
     protected final int getStartPage() {
@@ -63,8 +89,12 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     @Override
     public void refreshContent() {
         List<T> original = this.getList();
-        if (original == null)
+        if (original == null || original.isEmpty()) {
+            ItemInfo info = this.getEmptyInfoStack();
+            if (info != null)
+                this.addItem(info.getIndex(), info.getStack(), this.getEmptyInfoClick());
             return;
+        }
 
         int start = this.getUsableSize() * (this.getPage() - 1);
         List<T> list = this.copyList() ? new ArrayList<>(original) : original;

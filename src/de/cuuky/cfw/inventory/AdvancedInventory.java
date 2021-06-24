@@ -39,7 +39,7 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
     private int page = this.getStartPage(), interval = -1;
     private Inventory inventory;
     private ItemInserter inserter;
-    private boolean selectorsEnabled, open;
+    private boolean open;
     private BukkitTask autoTask;
 
     private final Map<Integer, AdvancedItemLink> items = new HashMap<>();
@@ -53,7 +53,9 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
     }
 
     private void createInventory() {
-        this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.getSize(), this.getTitle());
+        String title = this.getTitle();
+        title = title.length() > 32 ? title.substring(0, 32) : title;
+        this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.getSize(), title);
     }
 
     private int convertPage(int max, int add) {
@@ -85,6 +87,9 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
     }
 
     private void setSelector() {
+        if (this.getHotbarSize() == 0)
+            return;
+
         for (Supplier<ItemInfo> infoSupplier : this.selectors.keySet()) {
             ItemInfo info;
             ItemClick click;
@@ -168,8 +173,18 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
         return !this.open;
     }
 
+    protected int getHotbarSize() {
+        return 9;
+    }
+
     protected void playSound() {
         this.player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
+    }
+
+    protected int calculateInvSize(int entries) {
+        int mod = entries % 9;
+        int result = (mod != 0 ? (9 - mod) : mod) + entries;
+        return Math.min(result, 54);
     }
 
     protected void updateOthers(Function<AdvancedInventory, Boolean> filter) {
@@ -182,20 +197,16 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
             previous.open();
     }
 
-    protected boolean hasSelectors() {
-        return (selectorsEnabled = this.selectors.keySet().stream().anyMatch(i -> i.get() != null && selectors.get(i) != null));
-    }
-
-    private String getPageViewer() {
+    protected String getPageViewer() {
         return "§7" + this.getPage() + "§8/§7" + this.getMaxPage();
     }
 
     protected ItemInfo getBackwardsInfo() {
-        return new ItemInfo(this.getUsableSize(), new ItemBuilder().material(Material.ARROW).displayname("§cBackwards " + getPageViewer()).build());
+        return new ItemInfo(this.getUsableSize(), new ItemBuilder().material(Material.ARROW).displayname("§cBackwards " + this.getPageViewer()).build());
     }
 
     protected ItemInfo getForwardsInfo() {
-        return new ItemInfo(this.getUsableSize() + 8, new ItemBuilder().material(Material.ARROW).displayname("§aForwards " + getPageViewer()).build());
+        return new ItemInfo(this.getUsableSize() + 8, new ItemBuilder().material(Material.ARROW).displayname("§aForwards " + this.getPageViewer()).build());
     }
 
     protected ItemInfo getCloseInfo() {
@@ -207,24 +218,18 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
     }
 
     protected ItemStack getFillerStack() {
-        return new ItemBuilder().displayname("§c").itemstack(new ItemStack(Materials.BLACK_STAINED_GLASS_PANE.parseMaterial(), 1, (short) 15)).build();
+        return new ItemBuilder().displayname("§c").itemstack(Materials.BLACK_STAINED_GLASS_PANE.parseItem()).build();
     }
 
     protected void setAutoRefresh(int interval) {
         this.interval = interval;
     }
 
-    protected void openNext(AdvancedInventory inventory) {
-        if (this.previous != inventory)
-            inventory.setPrevious(this);
-        this.close(false);
-    }
-
     protected ItemInserter getInserter() {
         return new DirectInserter();
     }
 
-    protected boolean cancelClick() {
+    protected boolean cancelClick(int index) {
         return true;
     }
 
@@ -236,20 +241,12 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
         this.page = page;
     }
 
-    protected Player getPlayer() {
-        return player;
-    }
-
-    protected Inventory getInventory() {
-        return inventory;
-    }
-
-    protected AdvancedInventoryManager getManager() {
-        return this.manager;
+    protected int getCenter() {
+        return (int) Math.floor(this.getUsableSize() / 2);
     }
 
     protected int getUsableSize() {
-        return this.getSize() - (this.selectorsEnabled ? 9 : 0);
+        return this.getSize() - this.getHotbarSize();
     }
 
     protected AdvancedInventory getPrevious() {
@@ -297,8 +294,7 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
         boolean needsOpen = this.needsOpen();
         this.inserter.stopInserting();
         this.items.clear();
-        if (this.hasSelectors())
-            this.setSelector();
+        this.setSelector();
 
         this.inserter = this.doAnimation() ? this.getInserter() : new DirectInserter();
         this.refreshContent();
@@ -322,5 +318,23 @@ public abstract class AdvancedInventory implements InventoryInfoProvider {
 
     public void addItem(int index, ItemStack stack) {
         this.addItem(index, stack, null);
+    }
+
+    public void openNext(AdvancedInventory inventory) {
+        if (this.previous != inventory)
+            inventory.setPrevious(this);
+        this.close(false);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public AdvancedInventoryManager getManager() {
+        return this.manager;
     }
 }

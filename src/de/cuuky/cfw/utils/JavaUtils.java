@@ -93,8 +93,9 @@ public final class JavaUtils {
 	}
 
 	public static int getNextToNine(int to) {
-		int result = (9 - to % 9) + to;
-		return result > 54 ? 54 : result;
+		int mod = to % 9;
+		int result = (mod != 0 ? (9 - mod) : mod) + to;
+		return Math.min(result, 54);
 	}
 
 	public static Object getStringObject(String obj) {

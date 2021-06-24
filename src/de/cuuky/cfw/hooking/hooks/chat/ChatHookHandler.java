@@ -8,14 +8,15 @@ public interface ChatHookHandler {
 	/*
 	 * @return Return if the hooks should be removed
 	 */
-	public default boolean onChat(AsyncPlayerChatEvent event) {
+	default boolean onChat(AsyncPlayerChatEvent event) {
 		return false;
 	}
 
+	@Deprecated
 	/*
 	 * @return Return if the hooks should be removed
 	 */
-	public default boolean onChat(PlayerChatEvent event) {
+	default boolean onChat(PlayerChatEvent event) {
 		return false;
 	}
 }
