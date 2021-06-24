@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Build and release
+name: Build + Artifact + Discord
 
 on: [workflow_dispatch] # Manual trigger
 
@@ -25,3 +25,8 @@ jobs:
       with:
         name: CFW
         path: build/libs/CFW.jar
+    - uses: sarisia/actions-status-discord@v1
+      if: always()
+      with:
+        webhook: ${{ secrets.DISCORD_WEBHOOK }}
+
