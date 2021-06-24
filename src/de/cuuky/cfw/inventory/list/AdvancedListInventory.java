@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     private final List<T> list;
+    private int emptyClicked = 0;
 
     public AdvancedListInventory(AdvancedInventoryManager manager, Player player, List<T> list) {
         super(manager, player);
@@ -32,8 +33,28 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         this(manager, player, (List<T>) null);
     }
 
+    protected String getEmptyName() {
+        if (emptyClicked < 10) return "§cNothing here";
+        else if (emptyClicked < 20) return "§csrsly, nothing here";
+        else if (emptyClicked < 30) return "§4stop?";
+        else if (emptyClicked < 35) return "§4I SAID STOP";
+        else if (emptyClicked < 40) return  "§4WTF MEN";
+        else if (emptyClicked < 45) return "§4REEEEEEEEEEEEEE";
+        else if (emptyClicked < 60) return "§fone last warning...";
+        else if (emptyClicked < 100) return "§c§k§4Injecting virus...§c§k";
+        else if (emptyClicked < 120) return "§2Not impressed?";
+        else if (emptyClicked < 130) return "§2Yeah that's it now... I give up";
+        else if (emptyClicked < 1000) return "§24 real now, bye";
+        else if (emptyClicked < 21474) return "§fok";
+        else return "get a life, nerd";
+    }
+
     protected void addListItem(int index, T item) {
         this.addItem(index, this.getItemStack(item), this.getClick(item));
+    }
+
+    protected int getEmptyClicked() {
+        return this.emptyClicked;
     }
 
     protected boolean copyList() {
@@ -42,12 +63,12 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     protected ItemInfo getEmptyInfoStack() {
         return new ItemInfo(this.getCenter(), new ItemBuilder()
-                .displayname("§cNothing here")
-                .itemstack(Materials.POPPY.parseItem()).lore("§f:(").build());
+                .displayname(this.getEmptyName())
+                .itemstack(Materials.POPPY.parseItem()).lore(emptyClicked < 30 ? "§f:(" : "§f>:(").build());
     }
 
     protected ItemClick getEmptyInfoClick() {
-        return null;
+        return (event) -> emptyClicked++;
     }
 
     protected abstract ItemStack getItemStack(T item);
@@ -56,7 +77,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     protected int getRecommendedSize(int min, int max) {
         int size = this.calculateInvSize(this.getList().size());
-        return (size < min ? min : (size > max ? max : size)) + this.getHotbarSize();
+        return (size < min ? min : Math.min(size, max)) + this.getHotbarSize();
     }
 
     protected int getRecommendedSize(int min) {
