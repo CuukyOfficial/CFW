@@ -1,22 +1,23 @@
 package de.cuuky.cfw.inventory;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 abstract class InfoProviderHolder extends DefaultInfoProvider {
 
+    private final List<InfoProvider> savedProvider = new ArrayList<>();
     private final Map<InfoProvider, List<Info<?>>> provider = new LinkedHashMap<>();
 
-    protected List<InfoProvider> getInfoProvider() {
+    InfoProviderHolder() {
+        this.savedProvider.add(this);
+    }
+
+    protected List<InfoProvider> getCurrentProvider() {
         return null;
     }
 
     private List<InfoProvider> getSortedProvider() {
-        List<InfoProvider> providerList = this.getInfoProvider();
-        providerList = providerList != null ? new LinkedList<>(providerList) : new LinkedList<>();
-        providerList.add(this);
+        List<InfoProvider> providerList = new ArrayList<>(this.savedProvider), current = this.getCurrentProvider();
+        if (current != null) providerList.addAll(current);
         providerList.sort((o1, o2) -> Integer.compare(o1.getPriority(), o2.getPriority()) * -1);
         return providerList;
     }
@@ -28,6 +29,14 @@ abstract class InfoProviderHolder extends DefaultInfoProvider {
             if (infos != null && !infos.isEmpty())
                 this.provider.put(provider, provider.getProvidedInfos());
         }
+    }
+
+    protected boolean addProvider(InfoProvider provider) {
+        return this.savedProvider.add(provider);
+    }
+
+    protected boolean removeProvider(InfoProvider provider) {
+        return this.savedProvider.remove(provider);
     }
 
     public <T> T getInfo(Info<T> type) {

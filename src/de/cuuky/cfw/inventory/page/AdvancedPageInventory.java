@@ -56,7 +56,7 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
     }
 
     @Override
-    protected List<InfoProvider> getInfoProvider() {
+    protected final List<InfoProvider> getCurrentProvider() {
         InfoProvider page = this.getLoadedPage(this.getPage());
         return page != null ? Arrays.asList(page) : null;
     }
