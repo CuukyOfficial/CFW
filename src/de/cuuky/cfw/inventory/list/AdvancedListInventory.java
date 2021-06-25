@@ -1,9 +1,13 @@
 package de.cuuky.cfw.inventory.list;
 
+import de.cuuky.cfw.hooking.HookManager;
+import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
+import de.cuuky.cfw.hooking.hooks.chat.ChatHookHandler;
 import de.cuuky.cfw.inventory.*;
 import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
@@ -35,7 +39,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         else if (emptyClicked < 20) return "§csrsly, nothing here";
         else if (emptyClicked < 30) return "§4stop?";
         else if (emptyClicked < 35) return "§4I SAID STOP";
-        else if (emptyClicked < 40) return  "§4WTF MEN";
+        else if (emptyClicked < 40) return "§4WTF MEN";
         else if (emptyClicked < 45) return "§4REEEEEEEEEEEEEE";
         else if (emptyClicked < 60) return "§fone last warning...";
         else if (emptyClicked < 100) return "§c§k§4Injecting virus...§c§k";
@@ -72,6 +76,8 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     protected abstract ItemClick getClick(T item);
 
+    protected abstract HookManager getHookManager();
+
     protected int getRecommendedSize(int min, int max) {
         int size = this.calculateInvSize(this.getList().size());
         return Math.min(Math.max(Math.min(size, max), min) + this.getInfo(Info.HOTBAR_SIZE), 54);
@@ -83,6 +89,39 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     protected int getRecommendedSize() {
         return this.getRecommendedSize(27);
+    }
+
+    protected ItemInfo getJumpToItemInfo() {
+        if (this.getHookManager() == null || this.getInfo(Info.HOTBAR_SIZE) == 0) return null;
+        return new ItemInfo(this.getUsableSize() + 5,
+                new ItemBuilder().displayname("§2Jump to...").itemstack(Materials.MAP.parseItem()).build());
+    }
+
+    protected ItemClick getJumpToClick() {
+        return (event) -> {
+            this.getHookManager().registerHook(new ChatHook(getPlayer(), "§7Enter page:", new ChatHookHandler() {
+                @Override
+                public boolean onChat(AsyncPlayerChatEvent event) {
+                    int page;
+                    try {
+                        page = Integer.valueOf(event.getMessage());
+                    } catch (NumberFormatException e) {
+                        getPlayer().sendMessage("§cPlease enter a valid number!");
+                        return false;
+                    }
+
+                    setPage(page);
+                    open();
+                    return true;
+                }
+            }));
+            this.close();
+        };
+    }
+
+    @Override
+    public int getSize() {
+        return this.getRecommendedSize();
     }
 
     @Override
@@ -120,6 +159,10 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
             T item = list.get(i + start);
             this.addListItem(i, item);
         }
+
+        ItemInfo info = this.getJumpToItemInfo();
+        if (info != null && this.getMinPage() != this.getMaxPage())
+            this.addItem(info.getIndex(), info.getStack(), this.getJumpToClick());
     }
 
     public List<T> getList() {

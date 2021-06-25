@@ -1,5 +1,6 @@
 package de.cuuky.cfw.inventory.list.player;
 
+import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemClick;
 import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
@@ -30,6 +31,11 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size) {
         this(manager, player, size, VersionUtils.getOnlinePlayer());
+    }
+
+    @Override
+    protected HookManager getHookManager() {
+        return null;
     }
 
     @Override

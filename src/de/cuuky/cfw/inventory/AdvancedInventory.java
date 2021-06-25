@@ -54,9 +54,8 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.getInfo(Info.SIZE), title);
     }
 
-    private int convertPage(int max, int add) {
-        int go = this.page + add;
-        return add > 0 ? Math.min(go, max) : Math.max(go, max);
+    private void validatePage() {
+        this.page = Math.min(Math.max(this.page, this.getMinPage()), this.getMaxPage());
     }
 
     private ItemClick generateNavigator(Supplier<Integer> maxSup, int add) {
@@ -64,7 +63,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         if ((add < 0 && this.page <= max) || (add > 0 && this.page >= max))
             return null;
 
-        return event -> this.page = this.convertPage(max, add);
+        return event -> this.setPage(this.page + add);
     }
 
     private Map<Integer, ItemStack> getContent(int size) {
@@ -89,12 +88,13 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         for (Supplier<ItemInfo> infoSupplier : this.selectors.keySet()) {
             ItemInfo info;
             ItemClick click;
-            if ((click = this.selectors.get(infoSupplier).get()) == null || (info = infoSupplier.get()) == null)
+            if ((click = this.selectors.get(infoSupplier).get()) == null
+                    || (info = infoSupplier.get()) == null)
                 continue;
 
             int realIndex = info.getIndex();
             this.items.put(realIndex, new AdvancedItemLink(info.getStack(), click));
-            this.addToInventory(realIndex, info.getStack(), false);
+            this.addToInventory(realIndex, info.getStack(), true);
         }
     }
 
@@ -262,6 +262,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
 
     public void update() {
         this.updateProvider();
+        this.validatePage();
         boolean needsOpen = this.needsOpen();
         this.inserter.stopInserting();
         this.items.clear();

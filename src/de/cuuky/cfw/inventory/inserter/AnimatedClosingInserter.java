@@ -32,7 +32,7 @@ public class AnimatedClosingInserter implements ItemInserter {
     @Override
     public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
         started = true;
-        int delay = 900 / (inventory.getInfo(Info.SIZE));
+        int delay = 300 / (inventory.getInfo(Info.SIZE));
         int middle = (size - 1) / 2;
 
         new BukkitRunnable() {
