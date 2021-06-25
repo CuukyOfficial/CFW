@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -98,13 +99,13 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     }
 
     private boolean needsOpen() {
-        Inventory inv = player.getOpenInventory().getTopInventory();
-        AdvancedInventory ai = this.manager.getInventory(inv);
-        if (ai == null || !(this.getInfo(Info.TITLE).equals(ai.getInfo(Info.TITLE))
-                && this.getInfo(Info.SIZE).equals(ai.getInfo(Info.SIZE)))) {
+        InventoryView view = player.getOpenInventory();
+        AdvancedInventory ai = this.manager.getInventory(view.getTopInventory());
+        if (ai == null || !(view.getTitle().equals(ai.getInfo(Info.TITLE))
+                && view.getTopInventory().getSize() == ai.getInfo(Info.SIZE))) {
             this.createInventory();
             return true;
-        } else this.inventory = inv;
+        } else this.inventory = view.getTopInventory();
 
         this.inventory.clear();
         return false;
