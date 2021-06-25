@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class PageInfo implements Contentable {
+class VirtualPage implements Page<AdvancedPageInventory> {
 
     private final Runnable runnable;
     private final Supplier<Integer> size;
     private final Supplier<String> title;
     private final List<Info<?>> infos = new ArrayList<>();
 
-    public PageInfo(Runnable runnable, Supplier<Integer> size, Supplier<String> title) {
+    public VirtualPage(Runnable runnable, Supplier<Integer> size, Supplier<String> title) {
         this.runnable = runnable;
         this.size = size;
         this.title = title;
@@ -25,6 +25,11 @@ public class PageInfo implements Contentable {
             infos.add(Info.SIZE);
         if (this.title != null)
             infos.add(Info.TITLE);
+    }
+
+    @Override
+    public AdvancedPageInventory getInventory() {
+        return null;
     }
 
     @Override
