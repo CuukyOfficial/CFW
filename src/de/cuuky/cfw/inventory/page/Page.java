@@ -12,6 +12,11 @@ public interface Page<Inventory extends AdvancedInventory> extends InfoProvider,
 
     void refreshContent();
 
+    @Override
+    default int getPriority() {
+        return 1;
+    }
+
     default void addItem(int index, ItemStack stack, ItemClick click) {
         this.getInventory().addItem(index, stack, click);
     }
