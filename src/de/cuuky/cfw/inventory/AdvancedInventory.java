@@ -134,9 +134,9 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         AdvancedItemLink link = this.items.get(slot);
         if (link == null) return;
 
-        this.playSound();
         if (link.run(event) && this.open)
             this.update();
+        this.playSound();
     }
 
     void inventoryClosed(InventoryCloseEvent event) {
