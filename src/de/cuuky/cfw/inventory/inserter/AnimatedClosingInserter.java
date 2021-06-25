@@ -1,6 +1,7 @@
 package de.cuuky.cfw.inventory.inserter;
 
 import de.cuuky.cfw.inventory.AdvancedInventory;
+import de.cuuky.cfw.inventory.Info;
 import de.cuuky.cfw.inventory.ItemInserter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +32,7 @@ public class AnimatedClosingInserter implements ItemInserter {
     @Override
     public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
         started = true;
-        int delay = 900 / (inventory.getSize());
+        int delay = 900 / (inventory.getInfo(Info.SIZE));
         int middle = (size - 1) / 2;
 
         new BukkitRunnable() {

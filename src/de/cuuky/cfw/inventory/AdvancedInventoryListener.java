@@ -24,8 +24,6 @@ class AdvancedInventoryListener implements Listener {
         if (inv == null)
             return;
 
-        if (inv.cancelClick(event.getSlot()))
-            event.setCancelled(true);
         inv.slotClicked(event.getSlot(), event);
     }
 

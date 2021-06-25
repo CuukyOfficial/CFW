@@ -1,9 +1,6 @@
 package de.cuuky.cfw.inventory.list;
 
-import de.cuuky.cfw.inventory.AdvancedInventory;
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.inventory.ItemClick;
-import de.cuuky.cfw.inventory.ItemInfo;
+import de.cuuky.cfw.inventory.*;
 import de.cuuky.cfw.item.ItemBuilder;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
@@ -77,7 +74,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
 
     protected int getRecommendedSize(int min, int max) {
         int size = this.calculateInvSize(this.getList().size());
-        return Math.min(Math.max(Math.min(size, max), min) + this.getHotbarSize(), 54);
+        return Math.min(Math.max(Math.min(size, max), min) + this.getInfo(Info.HOTBAR_SIZE), 54);
     }
 
     protected int getRecommendedSize(int min) {
