@@ -41,7 +41,7 @@ public class AnimatedClosingInserter implements ItemInserter {
 
             @Override
             public void run() {
-                for (int index = 0; index <= middle * 2; index++) {
+                for (int index = 0; index <= middle * 2 + 1; index++) {
                     int tempIndex = (int) Math.floor((float) index / 2);
                     if (!setItem(inventory, items, player, (end ? size - tempIndex - 1 : tempIndex), delay))
                         return;
