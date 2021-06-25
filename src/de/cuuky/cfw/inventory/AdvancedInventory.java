@@ -125,17 +125,11 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
 
     void slotClicked(int slot, InventoryClickEvent event) {
         this.lastClickedSlot = slot;
-        if (this.getInfo(Info.CANCEL_CLICK))
-            event.setCancelled(true);
-
-        if (this instanceof EventNotifiable)
-            ((EventNotifiable) this).onInventoryClick(event);
-
+        if (this.getInfo(Info.CANCEL_CLICK)) event.setCancelled(true);
+        if (this instanceof EventNotifiable) ((EventNotifiable) this).onInventoryClick(event);
         AdvancedItemLink link = this.items.get(slot);
         if (link == null) return;
-
-        if (link.run(event) && this.open)
-            this.update();
+        if (link.run(event) && this.open) this.update();
         this.playSound();
     }
 
