@@ -15,7 +15,6 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
 
     private final Map<Integer, Supplier<Page<?>>> pages = new HashMap<>();
     private final Map<Integer, Page<?>> loaded = new HashMap<>();
-    private int min, max;
 
     public AdvancedPageInventory(AdvancedInventoryManager manager, Player player) {
         super(manager, player);
@@ -36,13 +35,6 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
         return page + (add * -1);
     }
 
-    @Override
-    public void update() {
-        this.min = this.getPageMax(-1);
-        this.max = this.getPageMax(1);
-        super.update();
-    }
-
     protected void registerPage(int page, Supplier<Page<?>> info) {
         this.pages.put(page, info);
         if (this.loaded.get(page) != null) this.loaded.put(page, info.get());
@@ -58,7 +50,7 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
     }
 
     @Override
-    protected final List<InfoProvider> getCurrentProvider() {
+    protected final List<InfoProvider> getTemporaryProvider() {
         InfoProvider page = this.getLoadedPage(this.getPage());
         return page != null ? Arrays.asList(page) : null;
     }
@@ -71,11 +63,11 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
 
     @Override
     protected int getMaxPage() {
-        return this.max;
+        return this.getPageMax(1);
     }
 
     @Override
     protected int getMinPage() {
-        return this.min;
+        return this.getPageMax(-1);
     }
 }

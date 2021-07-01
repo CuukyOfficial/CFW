@@ -48,11 +48,6 @@ class VirtualPage implements Page<AdvancedPageInventory> {
     }
 
     @Override
-    public int getPriority() {
-        return 1;
-    }
-
-    @Override
     public List<Info<?>> getProvidedInfos() {
         return this.infos;
     }

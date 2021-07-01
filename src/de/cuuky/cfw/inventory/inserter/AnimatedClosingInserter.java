@@ -25,7 +25,8 @@ public class AnimatedClosingInserter implements ItemInserter {
             return false;
 
         this.setItem(inventory, index, items.get(index), false);
-        player.updateInventory();
+        if (!inventory.isUpdating())
+            player.updateInventory();
         return true;
     }
 

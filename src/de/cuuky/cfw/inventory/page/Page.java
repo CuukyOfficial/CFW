@@ -10,8 +10,6 @@ public interface Page<Inventory extends AdvancedInventory> extends InfoProvider,
 
     Inventory getInventory();
 
-    void refreshContent();
-
     @Override
     default int getPriority() {
         return 1;
