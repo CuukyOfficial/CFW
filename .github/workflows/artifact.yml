@@ -30,9 +30,10 @@ jobs:
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
         nodetail: true
+        color: 00BCFF
+        username: CFW | Github
+        avatar_url: https://i.imgur.com/nwvqH0E.png
         title: A new artifact for `CFW` has been created!
-        color: fc4103
-        username: CFW Github
         description: Click [here](https://github.com/UeberallGebannt/CFW/actions/workflows/artifact.yml) to see all artifacts.
         
 
