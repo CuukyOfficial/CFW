@@ -29,4 +29,10 @@ jobs:
       if: always()
       with:
         webhook: ${{ secrets.DISCORD_WEBHOOK }}
+        nodetail: true
+        title: A new artifact for `CFW` has been created!
+        color: fc4103
+        username: CFW Github
+        description: Click [here](https://github.com/UeberallGebannt/CFW/actions) to see all artifacts.
+        
 
