@@ -3,18 +3,20 @@ package de.cuuky.cfw.version;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-	BUKKIT("Bukkit", false, "Bukkit"),
-	SPIGOT("Spigot", false, "Spigot"),
-	PAPER("PaperSpigot", false, "PaperSpigot", "Paper"),
-	TACO("TacoSpigot", false, "TacoSpigot"),
-	MAGMA("Magma", true, "Magma"),
-	CAULDRON("Cauldron", true, "Cauldron"),
-	THERMOS("Thermos", true, "Thermos"),
-	URANIUM("Uranium", true, "Uranium"),
-	UNKNOWN("Unknown", true);
+	BUKKIT("Bukkit", false, null, "Bukkit"),
+	SPIGOT("Spigot", false, null, "Spigot"),
+	PAPER("PaperSpigot", false, null, "PaperSpigot", "Paper"),
+	TACO("TacoSpigot", false, null, "TacoSpigot"),
+	MAGMA("Magma", true, bukkitVersionSupplier -> new MagmaVersionAdapter(), "Magma"),
+	CAULDRON("Cauldron", true, null, "Cauldron"),
+	THERMOS("Thermos", true, null, "Thermos"),
+	URANIUM("Uranium", true, null, "Uranium"),
+	UNKNOWN("Unknown", true, null);
 
 	private static List<Character> abc;
 
@@ -25,11 +27,14 @@ public enum ServerSoftware {
 	private String name;
 	private String[] versionnames;
 	private boolean modsupport;
+	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
+	private VersionAdapter adapter;
 
-	private ServerSoftware(String name, boolean modsupport, String... versionnames) {
+	private ServerSoftware(String name, boolean modsupport, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
 		this.modsupport = modsupport;
+		this.adapterFunction = adapterFunction == null ? version -> version.get() : adapterFunction;
 	}
 
 	public String getName() {
@@ -42,6 +47,13 @@ public enum ServerSoftware {
 
 	public boolean hasModSupport() {
 		return this.modsupport;
+	}
+	
+	VersionAdapter getVersionAdapter(Supplier<VersionAdapter> bukkitVersionSupplier) {
+		if(this.adapter == null)
+			return this.adapter = this.adapterFunction.apply(bukkitVersionSupplier);
+		else
+			return this.adapter;
 	}
 
 	public static ServerSoftware getServerSoftware(String version, String name) {

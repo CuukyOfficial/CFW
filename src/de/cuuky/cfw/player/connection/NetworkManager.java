@@ -14,7 +14,7 @@ public class NetworkManager {
 
 	public NetworkManager(Player player) {
 		this.player = player;
-		this.internal = VersionUtils.getVersion().getAdapter();
+		this.internal = VersionUtils.getVersionAdapter();
 	}
 	
 	public Object getConnection() {

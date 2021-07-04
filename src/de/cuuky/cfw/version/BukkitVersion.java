@@ -18,7 +18,6 @@ public enum BukkitVersion {
 
 	private final int identifier;
 	private final Supplier<VersionAdapter> adapterSupplier;
-	private VersionAdapter adapter;
 
 	BukkitVersion(int identifier, Supplier<VersionAdapter> adapterSupplier) {
 		this.identifier = identifier;
@@ -37,11 +36,8 @@ public enum BukkitVersion {
 		return this.identifier;
 	}
 	
-	public VersionAdapter getAdapter() {
-		if(this.adapter == null)
-			return this.adapter = this.adapterSupplier.get();
-		else
-			return this.adapter;
+	Supplier<VersionAdapter> getAdapterSupplier() {
+		return adapterSupplier;
 	}
 
 	public static BukkitVersion getVersion(String versionString) {
