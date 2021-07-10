@@ -104,7 +104,7 @@ public class VersionUtils {
 	}
 	
 	public static VersionAdapter getVersionAdapter() {
-		return getVersion().getAdapter();
+		return getServerSoftware().getVersionAdapter(getVersion().getAdapterSupplier());
 	}
 
 	public static ServerSoftware getServerSoftware() {
