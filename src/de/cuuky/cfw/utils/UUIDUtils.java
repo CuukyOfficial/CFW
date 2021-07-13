@@ -1,6 +1,7 @@
 package de.cuuky.cfw.utils;
 
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Date;
@@ -21,9 +22,15 @@ public final class UUIDUtils {
 			//the timestamp parameter is no longer supported by mojang https://wiki.vg/Mojang_API#Username_to_UUID
 			url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name + "?at=" + String.valueOf(time));
 		}
-		URLConnection connection = url.openConnection();
+		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(timeout);
 		connection.setReadTimeout(timeout);
+
+		if(connection.getResponseCode() == 204) {
+			//unknown name
+			return null;
+		}
+
 		Scanner scanner = new Scanner(connection.getInputStream());
 
 		String input = scanner.nextLine();
