@@ -148,8 +148,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         List<T> original = this.getList();
         if (original == null || original.isEmpty()) {
             ItemInfo info = this.getEmptyInfoStack();
-            if (info != null)
-                this.addItem(info.getIndex(), info.getStack(), this.getEmptyInfoClick());
+            if (info != null) this.addItem(info.getIndex(), info.getStack(), this.getEmptyInfoClick());
             return;
         }
 
