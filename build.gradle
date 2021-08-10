@@ -4,7 +4,6 @@ apply plugin: 'java-library'
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
-libsDirName = System.getenv("libsDirName") == null ? libsDirName : System.getenv("libsDirName")
 
 sourceSets {
 	main {
@@ -19,10 +18,8 @@ sourceSets {
 }
 
 repositories {
-	flatDir {
-		dirs 'libs'
-	}
-
+	mavenCentral()
+	
 	maven {
 		url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
 	}
@@ -30,33 +27,17 @@ repositories {
 	maven {
 		url 'https://oss.sonatype.org/content/repositories/snapshots'
 	}
-
-	maven {
-		url 'https://jitpack.io'
-	}
-    
-	jcenter()
 }
 	
 dependencies {
-	this.addModularCompile('org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT', 'spigot', false)
-}
-
-boolean checkLib(String filePath) {
-	return file('libs/' + filePath + '.jar').exists();
-}
-
-void addModularCompile(String repoName, String fileName, boolean changingB) {
-	if (this.checkLib(fileName))
-		this.dependencies.compileOnly name: fileName
-	else
-		this.dependencies.compileOnly (repoName) { changing = changingB }
+	compileOnly 'org.spigotmc:spigot-api:1.13.2-R0.1-SNAPSHOT'
 }
 
 processResources {
+	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	from(sourceSets.main.resources.srcDirs) {
 		filter ReplaceTokens, tokens: [name: "CuukyFrameWork"]
-		filter ReplaceTokens, tokens: [version: "0.6.0-BETA"]
+		filter ReplaceTokens, tokens: [version: "0.6.0"]
 		filter ReplaceTokens, tokens: [author: "Cuuky"]
 	}
 }
