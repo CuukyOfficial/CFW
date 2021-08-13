@@ -4,8 +4,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Properties;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,12 +28,14 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	OneSevenVersionAdapter() {
 		try {
 			this.init();
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+				| SecurityException | ClassNotFoundException | NoSuchFieldException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.initEntity();
 		this.initPlayer();
 		this.initNetworkManager();
@@ -39,14 +44,18 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	protected void initEntity() throws NoSuchMethodException, SecurityException, ClassNotFoundException {
-		this.entityHandleMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftEntity").getMethod("getHandle");
+		this.entityHandleMethod = Class
+				.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftEntity")
+				.getMethod("getHandle");
 	}
 
-	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	protected void initPlayer()
+			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.nmsPlayerClass = Class.forName(VersionUtils.getNmsClass() + ".EntityPlayer");
 		this.pingField = this.nmsPlayerClass.getField("ping");
 		this.connectionField = this.nmsPlayerClass.getField("playerConnection");
-		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket", Class.forName(VersionUtils.getNmsClass() + ".Packet"));
+		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket",
+				Class.forName(VersionUtils.getNmsClass() + ".Packet"));
 	}
 
 	protected void initNetworkManager() throws IllegalArgumentException, IllegalAccessException {
@@ -55,35 +64,37 @@ class OneSevenVersionAdapter implements VersionAdapter {
 				this.networkManagerField = field;
 				return;
 			}
-		throw new Error("[CFW] Failed to initalize 1.7+ networkManager! Are you using a modified version of Spigot/Bukkit?");
+		throw new Error(
+				"[CFW] Failed to initalize 1.7+ networkManager! Are you using a modified version of Spigot/Bukkit?");
 	}
 
-	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	protected void initLocale()
+			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		this.localeField = this.nmsPlayerClass.getDeclaredField("locale");
 		this.localeField.setAccessible(true);
 	}
 
 	protected void initXp() {
-		this.initXp(VersionUtils.getNmsClass() + ".EntityHuman",VersionUtils.getNmsClass() + ".FoodMetaData");
+		this.initXp(VersionUtils.getNmsClass() + ".EntityHuman", VersionUtils.getNmsClass() + ".FoodMetaData");
 	}
 
 	protected void initXp(String entityHumanName, String foodMetaName) {
-		//this is EXTREMELY unsafe
+		// this is EXTREMELY unsafe
 		try {
 			int fieldNum = 0;
-			for(Field field : Class.forName(entityHumanName).getDeclaredFields())
-				if(fieldNum == 0 && field.getType() == Class.forName(foodMetaName))
+			for (Field field : Class.forName(entityHumanName).getDeclaredFields())
+				if (fieldNum == 0 && field.getType() == Class.forName(foodMetaName))
 					fieldNum = 1;
-				else if(fieldNum == 1 && field.getType() == int.class)
+				else if (fieldNum == 1 && field.getType() == int.class)
 					fieldNum = 2;
-				else if(fieldNum == 2 && field.getType() == float.class)
+				else if (fieldNum == 2 && field.getType() == float.class)
 					fieldNum = 3;
-				else if(fieldNum == 3 && field.getType() == float.class)
+				else if (fieldNum == 3 && field.getType() == float.class)
 					fieldNum = 4;
-				else if(fieldNum == 4 && field.getType() == int.class) {
+				else if (fieldNum == 4 && field.getType() == int.class) {
 					this.xpCooldownField = field;
 					return;
-				}else
+				} else
 					fieldNum = 0;
 
 			throw new Error("Unable to find xp cooldown field");
@@ -92,8 +103,15 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		}
 	}
 
-	protected Object getHandle(Entity entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected Object getHandle(Entity entity)
+			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.entityHandleMethod.invoke(entity);
+	}
+
+	@Override
+	public Collection<? extends Player> getOnlinePlayers() {
+		Object players = Bukkit.getOnlinePlayers();
+		return Arrays.asList((Player[]) players);
 	}
 
 	@Override
@@ -108,7 +126,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	@Override
 	public int getPing(Player player) {
 		try {
-			return pingField.getInt(this.getHandle(player));
+			return this.pingField.getInt(this.getHandle(player));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
@@ -119,12 +137,14 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	public void respawnPlayer(Player player) {
 		try {
 			Object respawnEnum = Class.forName(VersionUtils.getNmsClass() + ".EnumClientCommand").getEnumConstants()[0];
-			Constructor<?>[] constructors = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand").getConstructors();
+			Constructor<?>[] constructors = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand")
+					.getConstructors();
 			for (Constructor<?> constructor : constructors) {
 				Class<?>[] args = constructor.getParameterTypes();
 				if (args.length == 1 && args[0] == respawnEnum.getClass()) {
-					Object packet = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand").getConstructor(args).newInstance(respawnEnum);
-					sendPacket(player, packet);
+					Object packet = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand")
+							.getConstructor(args).newInstance(respawnEnum);
+					this.sendPacket(player, packet);
 					break;
 				}
 			}
@@ -135,17 +155,17 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
 	@Override
 	public void sendActionbar(Player player, String message, int duration, Plugin instance) {
-		//1.8+
+		// 1.8+
 	}
 
 	@Override
 	public void sendActionbar(Player player, String message) {
-		//1.8+
+		// 1.8+
 	}
 
 	@Override
 	public void sendLinkedMessage(Player player, String message, String link) {
-		//1.8+
+		// 1.8+
 		player.sendMessage(message);
 	}
 
@@ -160,27 +180,28 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
 	@Override
 	public void sendTablist(Player player, String header, String footer) {
-		//1.8+
+		// 1.8+
 	}
 
 	@Override
 	public void sendTitle(Player player, String header, String footer) {
-		//1.8+
+		// 1.8+
 	}
 
 	@Override
 	public void setAttributeSpeed(Player player, double value) {
-		//1.9+
+		// 1.9+
 	}
 
 	@Override
 	public void setNametagVisibility(Team team, boolean shown) {
-		//1.8+
+		// 1.8+
 	}
 
 	@Override
-	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
-		//1.8+
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity,
+			String customName) {
+		// 1.8+
 	}
 
 	@Override
@@ -199,7 +220,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
 	@Override
 	public void deleteItemAnnotations(ItemStack item) {
-		//1.8+ (?)
+		// 1.8+ (?)
 	}
 
 	@Override
@@ -222,7 +243,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
 	@Override
 	public void forceClearWorlds() {
-		//1.16+
+		// 1.16+
 	}
 
 	@Override
@@ -237,8 +258,19 @@ class OneSevenVersionAdapter implements VersionAdapter {
 			propertyField.setAccessible(true);
 
 			return (Properties) propertyField.get(propertyManager);
-		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
+		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException
+				| SecurityException | InvocationTargetException | NoSuchMethodException e) {
 			throw new Error(e);
 		}
+	}
+
+	@Override
+	public boolean supportsAntiXray() {
+		return false;
+	}
+
+	@Override
+	public void setAntiXrayEnabled(boolean enabled) {
+		throw new UnsupportedOperationException();
 	}
 }

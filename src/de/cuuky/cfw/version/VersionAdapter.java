@@ -1,5 +1,6 @@
 package de.cuuky.cfw.version;
 
+import java.util.Collection;
 import java.util.Properties;
 
 import org.bukkit.entity.Entity;
@@ -10,6 +11,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
 public interface VersionAdapter {
+
+	Collection<? extends Player> getOnlinePlayers();
 
 	Object getConnection(Player player);
 
@@ -33,7 +36,8 @@ public interface VersionAdapter {
 
 	void setNametagVisibility(Team team, boolean shown);
 
-	void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
+	void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity,
+			String customName);
 
 	void removeAi(LivingEntity entity);
 
@@ -48,4 +52,8 @@ public interface VersionAdapter {
 	void forceClearWorlds();
 
 	Properties getServerProperties();
+
+	boolean supportsAntiXray();
+
+	void setAntiXrayEnabled(boolean enabled);
 }

@@ -4,7 +4,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Collection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -23,22 +25,23 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	protected Class<?> chatBaseComponentInterface;
 	protected Method chatSerializerMethod;
 
-	//chat
+	// chat
 	protected Class<?> packetChatClass;
 	protected Constructor<?> packetChatConstructor;
 	private Constructor<?> titleConstructor;
 	private Object title, subtitle;
 
-	//tablist
+	// tablist
 	private Class<?> tablistPacketClass;
 	private Field footerField, headerField;
 
-	//nbt
+	// nbt
 	private Class<?> netTagClass;
 	private Method nbtSetByteMethod, initNbtMethod, loadNbtMethod;
 
 	@Override
-	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+			NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		super.init();
 		this.initTablist();
 		this.initChat();
@@ -46,7 +49,8 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.initNbt();
 	}
 
-	protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
+	protected void initTablist()
+			throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
 		this.tablistPacketClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutPlayerListHeaderFooter");
 
 		this.headerField = this.tablistPacketClass.getDeclaredField("a");
@@ -56,23 +60,28 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.footerField.setAccessible(true);
 	}
 
-	protected void initChat() throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+	protected void initChat() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
+			IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		this.chatBaseComponentInterface = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent");
-		Class<?> chatSerializer = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent$ChatSerializer"); //.ChatSerializer //.network.chat.IChatBaseComponent$ChatSerializer
+		Class<?> chatSerializer = Class.forName(VersionUtils.getNmsClass() + ".IChatBaseComponent$ChatSerializer"); // .ChatSerializer
+																													// //.network.chat.IChatBaseComponent$ChatSerializer
 		this.chatSerializerMethod = chatSerializer.getDeclaredMethod("a", String.class);
 
 		this.packetChatClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutChat");
 		this.initPacketChatArgConstructor();
 	}
 
-	protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+	protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException,
+			ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 		this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, byte.class);
 	}
 
-	protected void initTitle() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, NoSuchMethodException {
+	protected void initTitle() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException,
+			NoSuchFieldException, SecurityException, NoSuchMethodException {
 		Class<?> titleClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutTitle");
-		Class<?> enumTitleClass = titleClass.getDeclaredClasses()[0]; //Class.forName(path + ".EnumTitleAction");
-		this.titleConstructor = titleClass.getConstructor(enumTitleClass, chatBaseComponentInterface, int.class, int.class, int.class);
+		Class<?> enumTitleClass = titleClass.getDeclaredClasses()[0]; // Class.forName(path + ".EnumTitleAction");
+		this.titleConstructor = titleClass.getConstructor(enumTitleClass, this.chatBaseComponentInterface, int.class,
+				int.class, int.class);
 		this.title = enumTitleClass.getDeclaredField("TITLE").get(null);
 		this.subtitle = enumTitleClass.getDeclaredField("SUBTITLE").get(null);
 	}
@@ -87,6 +96,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	@Override
+	public Collection<? extends Player> getOnlinePlayers() {
+		return Bukkit.getOnlinePlayers();
+	}
+
+	@Override
 	public void sendActionbar(Player player, String message, int duration, Plugin instance) {
 		new BukkitRunnable() {
 
@@ -94,7 +108,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 
 			@Override
 			public void run() {
-				sendActionbar(player, message);
+				OneEightVersionAdapter.this.sendActionbar(player, message);
 
 				if (this.count >= duration)
 					this.cancel();
@@ -114,21 +128,26 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		}
 	}
 
-	protected Object getActionbarPacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected Object getActionbarPacket(Player player, Object text)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.packetChatConstructor.newInstance(text, (byte) 2);
 	}
 
 	@Override
 	public void sendLinkedMessage(Player player, String message, String link) {
 		try {
-			Object text = this.chatSerializerMethod.invoke(null, "{\"text\": \"" + message + "\", \"color\": \"white\", \"clickEvent\": {\"action\": \"open_url\" , \"value\": \"" + link + "\"}}");
+			Object text = this.chatSerializerMethod.invoke(null,
+					"{\"text\": \"" + message
+							+ "\", \"color\": \"white\", \"clickEvent\": {\"action\": \"open_url\" , \"value\": \""
+							+ link + "\"}}");
 			this.sendPacket(player, this.getMessagePacket(player, text));
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected Object getMessagePacket(Player player, Object text)
+			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.packetChatConstructor.newInstance(text, (byte) 1);
 	}
 
@@ -170,18 +189,18 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	@Override
-	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity,
+			String customName) {
 		ArmorStand stand = (ArmorStand) armorstand;
 		stand.setVisible(visible);
 		stand.setCustomNameVisible(customNameVisible);
 		stand.setGravity(gravity);
 
-		if(stand.getCustomName() == null) {
-			if(customName != null)
+		if (stand.getCustomName() == null) {
+			if (customName != null)
 				stand.setCustomName(customName);
-		} else
-			if(!stand.getCustomName().equals(customName))
-				stand.setCustomName(customName);
+		} else if (!stand.getCustomName().equals(customName))
+			stand.setCustomName(customName);
 	}
 
 	@Override
@@ -190,10 +209,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 			Object handle = this.getHandle(entity);
 			Object compound = this.netTagClass.newInstance();
 
-			this.initNbtMethod.invoke(handle, compound); //nms.Entity#c
+			this.initNbtMethod.invoke(handle, compound); // nms.Entity#c
 			this.nbtSetByteMethod.invoke(compound, "NoAI", (byte) 1);
-			this.loadNbtMethod.invoke(handle, compound); //nms.Entity#load
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | InstantiationException e) {
+			this.loadNbtMethod.invoke(handle, compound); // nms.Entity#load
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| InstantiationException e) {
 			throw new Error(e);
 		}
 	}

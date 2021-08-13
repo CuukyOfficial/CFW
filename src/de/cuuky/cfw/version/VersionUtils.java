@@ -18,32 +18,41 @@ public class VersionUtils {
 
 	private static String nmsClass;
 	private static String nmsVersion;
+	@Deprecated(forRemoval = true)
 	private static Object spigot;
 
-	private static BukkitVersion version;
-	private static ServerSoftware serverSoftware;
-	private static Map<Player, MinecraftVersion> playerVersions;
+	private final static BukkitVersion version;
+	private final static ServerSoftware serverSoftware;
+	private final static VersionAdapter versionAdapter;
+	private final static Map<Player, MinecraftVersion> playerVersions;
 
 	static {
 		playerVersions = new HashMap<>();
 
-		String base = "net.minecraft";
-		nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-		try {
-			//1.7 - 1.16
-			nmsClass = base + ".server." + nmsVersion;
-			Class.forName(nmsClass + ".MinecraftServer");
-		} catch (ClassNotFoundException e) {
-			//1.17+
-			nmsClass = base;
-		}
-		version = BukkitVersion.getVersion(nmsVersion);
-		serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
+		if (Bukkit.getServer() == null) {
+			version = BukkitVersion.UNSUPPORTED;
+			serverSoftware = ServerSoftware.UNKNOWN;
+		} else {
 
-		try {
-			spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
-		} catch (Exception e) {
+			String base = "net.minecraft";
+			nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+			try {
+				// 1.7 - 1.16
+				nmsClass = base + ".server." + nmsVersion;
+				Class.forName(nmsClass + ".MinecraftServer");
+			} catch (ClassNotFoundException e) {
+				// 1.17+
+				nmsClass = base;
+			}
+			version = BukkitVersion.getVersion(nmsVersion);
+			serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
+
+			try {
+				spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
+			} catch (Exception e) {
+			}
 		}
+		versionAdapter = serverSoftware.getVersionAdapter(version.getAdapterSupplier());
 	}
 
 	public static void setMinecraftServerProperty(String key, Object value) {
@@ -53,7 +62,8 @@ public class VersionUtils {
 			Object manager = server.getClass().getField("propertyManager").get(server);
 			Method method = manager.getClass().getMethod("setProperty", String.class, Object.class);
 			method.invoke(manager, key, value);
-		} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+		} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException
+				| ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
 			e.printStackTrace();
 		}
 	}
@@ -69,11 +79,23 @@ public class VersionUtils {
 	public static String getNmsVersion() {
 		return nmsVersion;
 	}
-	
+
+	/**
+	 * Use {@link VersionAdapter} instead
+	 * 
+	 * @return
+	 */
+	@Deprecated(forRemoval = true)
 	public static Object getSpigot() {
 		return spigot;
 	}
 
+	/**
+	 * Use {@link VersionAdapter#getOnlinePlayers()} instead
+	 * 
+	 * @return
+	 */
+	@Deprecated(forRemoval = true)
 	public static ArrayList<Player> getOnlinePlayer() {
 		ArrayList<Player> list = new ArrayList<Player>();
 		for (Player player : Bukkit.getOnlinePlayers())
@@ -102,9 +124,9 @@ public class VersionUtils {
 	public static BukkitVersion getVersion() {
 		return version;
 	}
-	
+
 	public static VersionAdapter getVersionAdapter() {
-		return getServerSoftware().getVersionAdapter(getVersion().getAdapterSupplier());
+		return versionAdapter;
 	}
 
 	public static ServerSoftware getServerSoftware() {
