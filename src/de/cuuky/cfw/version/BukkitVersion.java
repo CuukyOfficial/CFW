@@ -14,7 +14,8 @@ public enum BukkitVersion {
 	ONE_10(10, OneNineVersionAdapter::new),
 	ONE_9(9, OneNineVersionAdapter::new),
 	ONE_8(8, OneEightVersionAdapter::new),
-	ONE_7(7, OneSevenVersionAdapter::new);
+	ONE_7(7, OneSevenVersionAdapter::new),
+	UNSUPPORTED(0, UnsupportedVersionAdapter::new);
 
 	private final int identifier;
 	private final Supplier<VersionAdapter> adapterSupplier;
@@ -35,9 +36,9 @@ public enum BukkitVersion {
 	public int getIdentifier() {
 		return this.identifier;
 	}
-	
+
 	Supplier<VersionAdapter> getAdapterSupplier() {
-		return adapterSupplier;
+		return this.adapterSupplier;
 	}
 
 	public static BukkitVersion getVersion(String versionString) {

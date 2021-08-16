@@ -9,10 +9,10 @@ import java.util.function.Supplier;
 public enum ServerSoftware {
 
 	BUKKIT("Bukkit", false, null, "Bukkit"),
-	SPIGOT("Spigot", false, null, "Spigot"),
-	PAPER("PaperSpigot", false, null, "PaperSpigot", "Paper"),
-	TACO("TacoSpigot", false, null, "TacoSpigot"),
-	MAGMA("Magma", true, bukkitVersionSupplier -> new MagmaVersionAdapter(), "Magma"),
+	SPIGOT("Spigot", false, versionSupplier -> new SpigotVersionAdapter(versionSupplier), "Spigot"),
+	PAPER("PaperSpigot", false, versionSupplier -> new SpigotVersionAdapter(versionSupplier), "PaperSpigot", "Paper"),
+	TACO("TacoSpigot", false, versionSupplier -> new SpigotVersionAdapter(versionSupplier), "TacoSpigot"),
+	MAGMA("Magma", true, versionSupplier -> new MagmaVersionAdapter(), "Magma"),
 	CAULDRON("Cauldron", true, null, "Cauldron"),
 	THERMOS("Thermos", true, null, "Thermos"),
 	URANIUM("Uranium", true, null, "Uranium"),
@@ -21,7 +21,8 @@ public enum ServerSoftware {
 	private static List<Character> abc;
 
 	static {
-		abc = new ArrayList<Character>(Arrays.asList(new Character[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }));
+		abc = new ArrayList<Character>(Arrays.asList(new Character[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+				'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }));
 	}
 
 	private String name;
@@ -30,7 +31,8 @@ public enum ServerSoftware {
 	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
 	private VersionAdapter adapter;
 
-	private ServerSoftware(String name, boolean modsupport, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
+	private ServerSoftware(String name, boolean modsupport,
+			Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
 		this.modsupport = modsupport;
@@ -48,15 +50,15 @@ public enum ServerSoftware {
 	public boolean hasModSupport() {
 		return this.modsupport;
 	}
-	
+
 	VersionAdapter getVersionAdapter(Supplier<VersionAdapter> bukkitVersionSupplier) {
-		if(this.adapter == null)
+		if (this.adapter == null)
 			return this.adapter = this.adapterFunction.apply(bukkitVersionSupplier);
 		else
 			return this.adapter;
 	}
 
-	public static ServerSoftware getServerSoftware(String version, String name) {
+	static ServerSoftware getServerSoftware(String version, String name) {
 		version = version.toLowerCase();
 		name = name.toLowerCase();
 
