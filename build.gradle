@@ -43,3 +43,11 @@ processResources {
 		filter ReplaceTokens, tokens: [author: "Cuuky"]
 	}
 }
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+		}
+	}
+}
