@@ -1,5 +1,6 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java-library'
+apply plugin: 'maven-publish'
 libsDirName = System.getenv("libsDirName") == null ? libsDirName : System.getenv("libsDirName")
 
 sourceCompatibility = JavaVersion.VERSION_1_8
