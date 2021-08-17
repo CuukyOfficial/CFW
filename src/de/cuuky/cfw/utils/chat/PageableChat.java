@@ -43,10 +43,14 @@ public class PageableChat<T> {
 
     public void send(CommandSender sender) {
         if (this.invalid(sender)) return;
-        this.sendMessage(sender, this.title);
+
+        StringBuilder message = new StringBuilder();
+        if (this.title != null) message.append(title).append("\n");
         int start = (this.page - 1) * this.entriesPerPage, max = Math.min(start + this.entriesPerPage, list.size());
-        for (int i = start; i < max; i++) this.sendMessage(sender, this.messages.getEntry(list.get(i)));
-        this.sendMessage(sender, this.footer);
+        for (int i = start; i < max; i++) message.append(this.messages.getEntry(list.get(i))).append("\n");
+        if (this.footer != null) message.append(this.footer).append("\n");
+
+        this.sendMessage(sender, message.toString());
     }
 
     public int getMaxPage() {
