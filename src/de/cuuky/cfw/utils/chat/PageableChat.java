@@ -48,7 +48,7 @@ public class PageableChat<T> {
         if (this.title != null) message.append(title).append("\n");
         int start = (this.page - 1) * this.entriesPerPage, max = Math.min(start + this.entriesPerPage, list.size());
         for (int i = start; i < max; i++) message.append(this.messages.getEntry(list.get(i))).append("\n");
-        if (this.footer != null) message.append(this.footer).append("\n");
+        if (this.footer != null) message.append(this.footer);
 
         this.sendMessage(sender, message.toString());
     }
