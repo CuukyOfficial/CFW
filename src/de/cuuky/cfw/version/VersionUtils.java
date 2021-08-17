@@ -1,24 +1,22 @@
 package de.cuuky.cfw.version;
 
+import de.cuuky.cfw.version.minecraft.MinecraftVersion;
+import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
+import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Player;
-
-import de.cuuky.cfw.version.minecraft.MinecraftVersion;
-import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
-import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
-
 public class VersionUtils {
 
 	private static String nmsClass;
 	private static String nmsVersion;
-	@Deprecated(forRemoval = true)
+	@Deprecated()
 	private static Object spigot;
 
 	private final static BukkitVersion version;
@@ -69,7 +67,7 @@ public class VersionUtils {
 	}
 
 	public static double getHearts(Player player) {
-		return ((Damageable) player).getHealth();
+		return player.getHealth();
 	}
 
 	public static String getNmsClass() {
@@ -85,7 +83,7 @@ public class VersionUtils {
 	 * 
 	 * @return
 	 */
-	@Deprecated(forRemoval = true)
+	@Deprecated()
 	public static Object getSpigot() {
 		return spigot;
 	}
@@ -95,13 +93,9 @@ public class VersionUtils {
 	 * 
 	 * @return
 	 */
-	@Deprecated(forRemoval = true)
+	@Deprecated()
 	public static ArrayList<Player> getOnlinePlayer() {
-		ArrayList<Player> list = new ArrayList<Player>();
-		for (Player player : Bukkit.getOnlinePlayers())
-			list.add(player);
-
-		return list;
+		return new ArrayList<>(Bukkit.getOnlinePlayers());
 	}
 
 	public static MinecraftVersion getMinecraftVersion(Player player) {
