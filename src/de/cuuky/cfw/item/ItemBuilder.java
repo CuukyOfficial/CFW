@@ -96,7 +96,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder itemstack(ItemStack stack) {
-        this.pre = stack;
+        this.pre = stack.clone();
         return this;
     }
 
