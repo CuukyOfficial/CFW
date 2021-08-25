@@ -29,11 +29,11 @@ abstract class InfoProviderHolder {
         }
     }
 
-    protected boolean addProvider(InfoProvider provider) {
+    public boolean addProvider(InfoProvider provider) {
         return this.savedProvider.add(provider);
     }
 
-    protected boolean removeProvider(InfoProvider provider) {
+    public boolean removeProvider(InfoProvider provider) {
         return this.savedProvider.remove(provider);
     }
 

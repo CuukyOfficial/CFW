@@ -20,6 +20,15 @@ public class AdvancedInventoryManager extends FrameworkManager {
         this.ownerInstance.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), ownerInstance);
     }
 
+    protected AdvancedInventory registerInventory(AdvancedInventory inventory) {
+        this.inventories.add(inventory);
+        return inventory;
+    }
+
+    protected boolean unregisterInventory(AdvancedInventory inventory) {
+        return this.inventories.remove(inventory);
+    }
+
     public void updateInventories(AdvancedInventory self, Function<AdvancedInventory, Boolean> filter) {
         for (AdvancedInventory inventory : this.inventories)
             if ((self != null && !inventory.equals(self)) && filter.apply(inventory))
@@ -34,15 +43,6 @@ public class AdvancedInventoryManager extends FrameworkManager {
     public final void updateInventories(Class<? extends AdvancedInventory>... clazzes) {
         List<Class<? extends AdvancedInventory>> clazzList = Arrays.asList(clazzes);
         this.updateInventories(inv -> clazzList.contains(inv.getClass()));
-    }
-
-    AdvancedInventory registerInventory(AdvancedInventory inventory) {
-        this.inventories.add(inventory);
-        return inventory;
-    }
-
-    boolean unregisterInventory(AdvancedInventory inventory) {
-        return this.inventories.remove(inventory);
     }
 
     public void closeInventories() {
