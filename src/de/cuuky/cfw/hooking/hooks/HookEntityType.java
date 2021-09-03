@@ -3,18 +3,18 @@ package de.cuuky.cfw.hooking.hooks;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
 import de.cuuky.cfw.hooking.hooks.item.ItemHook;
 
-public enum HookEntityType {
+public class HookEntityType<B extends HookEntity> {
 
-	CHAT(ChatHook.class),
-	ITEM(ItemHook.class);
+	public static HookEntityType<ChatHook> CHAT = new HookEntityType<>(ChatHook.class);
+	public static HookEntityType<ItemHook> ITEM = new HookEntityType<>(ItemHook.class);
 
-	private Class<? extends HookEntity> clazz;
+	private final Class<B> clazz;
 
-	private <B extends HookEntity> HookEntityType(Class<B> clazz) {
+	HookEntityType(Class<B> clazz) {
 		this.clazz = clazz;
 	}
 
-	public Class<? extends HookEntity> getTypeClass() {
+	public Class<B> getTypeClass() {
 		return clazz;
 	}
 }

@@ -25,7 +25,7 @@ import de.cuuky.cfw.hooking.hooks.item.ItemHook;
 
 public class HookListener implements Listener {
 
-    private HookManager manager;
+    private final HookManager manager;
 
     public HookListener(HookManager manager) {
         this.manager = manager;
@@ -85,7 +85,7 @@ public class HookListener implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for (ItemHook hook : manager.getHooks(ItemHook.class)) {
+                    for (ItemHook hook : manager.getHooks(HookEntityType.ITEM)) {
                         if (!hook.getPlayer().equals(event.getWhoClicked()))
                             continue;
 

@@ -9,10 +9,10 @@ import de.cuuky.cfw.hooking.hooks.HookEntityType;
 
 public class ItemHook extends HookEntity {
 
-	private ItemHookHandler hookListener;
-	private int slot;
-	private boolean dropable, dragable;
-	private ItemStack stack;
+	private final ItemHookHandler hookListener;
+	private final int slot;
+	private final ItemStack stack;
+	private boolean dropable = false, dragable = false;
 
 	public ItemHook(Player player, ItemStack stack, int slot, ItemHookHandler listener) {
 		super(HookEntityType.ITEM, player);
@@ -20,20 +20,14 @@ public class ItemHook extends HookEntity {
 		this.hookListener = listener;
 		this.slot = slot;
 		this.stack = stack;
-		this.dropable = false;
-		this.dragable = false;
 
 		player.getInventory().setItem(slot, stack);
-
 		player.updateInventory();
 	}
 
 	@Override
-	public void setManager(HookManager manager) {
-		if (manager.getItemHook(stack, player) != null)
-			manager.getItemHook(stack, player).unregister();
-
-		super.setManager(manager);
+	protected HookEntity getExisting(HookManager manager, Player player) {
+		return manager.getItemHook(stack, player);
 	}
 
 	public void setDropable(boolean dropable) {
