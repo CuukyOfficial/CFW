@@ -34,6 +34,15 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         this(manager, player, (List<T>) null);
     }
 
+    private boolean checkEmpty(List<?> original) {
+        if (original == null || original.isEmpty()) {
+            ItemInfo info = this.getEmptyInfoStack();
+            if (info != null) this.addItem(info.getIndex(), info.getStack(), this.getEmptyInfoClick());
+            return true;
+        }
+        return false;
+    }
+
     protected String getEmptyName() {
         if (emptyClicked < 10) return "§cNothing here";
         else if (emptyClicked < 20) return "§csrsly, nothing here";
@@ -48,6 +57,12 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         else if (emptyClicked < 200) return "§24 real now, bye";
         else if (emptyClicked < 21474) return "§fok";
         else return "get a life, nerd";
+    }
+
+    protected void addJumpMap() {
+        ItemInfo info = this.getJumpToItemInfo();
+        if (info != null && this.getMinPage() != this.getMaxPage())
+            this.addItem(info.getIndex(), info.getStack(), this.getJumpToClick());
     }
 
     protected void addListItem(int index, T item) {
@@ -143,22 +158,14 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     @Override
     public void refreshContent() {
         List<T> original = this.getList();
-        if (original == null || original.isEmpty()) {
-            ItemInfo info = this.getEmptyInfoStack();
-            if (info != null) this.addItem(info.getIndex(), info.getStack(), this.getEmptyInfoClick());
-            return;
-        }
-
+        if (this.checkEmpty(original)) return;
         int start = this.getUsableSize() * (this.getPage() - 1);
         List<T> list = this.copyList() ? new ArrayList<>(original) : original;
         for (int i = 0; (start + i) < list.size() && i < this.getUsableSize(); i++) {
             T item = list.get(i + start);
             this.addListItem(i, item);
         }
-
-        ItemInfo info = this.getJumpToItemInfo();
-        if (info != null && this.getMinPage() != this.getMaxPage())
-            this.addItem(info.getIndex(), info.getStack(), this.getJumpToClick());
+        this.addJumpMap();
     }
 
     public List<T> getList() {
