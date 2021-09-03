@@ -11,6 +11,10 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.*;
 
+/**
+ * Use {@link de.cuuky.cfw.utils.item.BuildItem} and {@link de.cuuky.cfw.utils.item.BuildSkull} instead.
+ */
+@Deprecated
 public class ItemBuilder {
 
     private int amount;
@@ -34,16 +38,13 @@ public class ItemBuilder {
     public ItemStack build() {
         ItemStack stack = this.pre != null ? this.pre : new ItemStack(this.material);
         ItemMeta stackMeta = stack.getItemMeta();
-        if (displayName != null && stack.getType() != Material.AIR)
-            stackMeta.setDisplayName(displayName);
-
-        if (lore != null)
-            stackMeta.setLore(lore);
+        if (displayName != null && stack.getType() != Material.AIR) stackMeta.setDisplayName(displayName);
 
         if (enchantments != null)
             for (Enchantment ent : enchantments.keySet())
                 stackMeta.addEnchant(ent, enchantments.get(ent), true);
 
+        if (lore != null) stackMeta.setLore(lore);
         stack.setItemMeta(stackMeta);
         if (this.deleteAnnotations)
             VersionUtils.getVersionAdapter().deleteItemAnnotations(stack);
@@ -58,9 +59,7 @@ public class ItemBuilder {
         skullMeta.setDisplayName(displayName != null ? displayName : playerName);
         skullMeta.setOwner(playerName != null ? playerName : displayName);
 
-        if (lore != null)
-            skullMeta.setLore(lore);
-
+        if (lore != null) skullMeta.setLore(lore);
         stack.setItemMeta(skullMeta);
         if (this.deleteAnnotations)
         	VersionUtils.getVersionAdapter().deleteItemAnnotations(stack);
@@ -70,9 +69,7 @@ public class ItemBuilder {
     }
 
     public ItemBuilder addEnchantment(Enchantment enchantment, int amplifier) {
-        if (enchantments == null)
-            enchantments = new HashMap<>();
-
+        if (enchantments == null) enchantments = new HashMap<>();
         enchantments.put(enchantment, amplifier);
         return this;
     }
