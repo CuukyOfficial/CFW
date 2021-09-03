@@ -4,7 +4,7 @@ import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHookHandler;
 import de.cuuky.cfw.inventory.*;
-import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -63,9 +63,8 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     }
 
     protected ItemInfo getEmptyInfoStack() {
-        return new ItemInfo(this.getCenter(), new ItemBuilder()
-                .displayname(this.getEmptyName())
-                .itemstack(Materials.POPPY.parseItem()).lore(emptyClicked < 30 ? "§f:(" : "§f>:(").build());
+        return new ItemInfo(this.getCenter(), new BuildItem().displayName(this.getEmptyName())
+                .material(Materials.POPPY).lore(emptyClicked < 30 ? "§f:(" : "§f>:(").build());
     }
 
     protected ItemClick getEmptyInfoClick() {
@@ -94,7 +93,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     protected ItemInfo getJumpToItemInfo() {
         if (this.getHookManager() == null || this.getInfo(Info.HOTBAR_SIZE) == 0) return null;
         return new ItemInfo(this.getUsableSize() + 5,
-                new ItemBuilder().displayname("§2Jump to...").itemstack(Materials.MAP.parseItem()).build());
+                new BuildItem().displayName("§2Jump to...").material(Materials.MAP).build());
     }
 
     protected ItemClick getJumpToClick() {
@@ -104,7 +103,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
                 public boolean onChat(AsyncPlayerChatEvent event) {
                     int page;
                     try {
-                        page = Integer.valueOf(event.getMessage());
+                        page = Integer.parseInt(event.getMessage());
                     } catch (NumberFormatException e) {
                         getPlayer().sendMessage("§cPlease enter a valid number!");
                         return false;

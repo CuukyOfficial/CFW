@@ -1,7 +1,7 @@
 package de.cuuky.cfw.inventory.list;
 
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,7 +20,7 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
     }
 
     protected ItemStack getLoadingItem() {
-        return new ItemBuilder().displayname("§cLoading...").itemstack(Materials.COAL.parseItem()).build();
+        return new BuildItem().displayName("§cLoading...").material(Materials.COAL).build();
     }
 
     @Override

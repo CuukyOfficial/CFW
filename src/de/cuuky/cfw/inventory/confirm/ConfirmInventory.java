@@ -3,7 +3,7 @@ package de.cuuky.cfw.inventory.confirm;
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemInfo;
-import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
 
@@ -26,11 +26,11 @@ public class ConfirmInventory extends AdvancedInventory {
     }
 
     protected ItemInfo getYesItem() {
-        return new ItemInfo(this.getCenter() - 2, new ItemBuilder().displayname("§2Yes").itemstack(Materials.GREEN_DYE.parseItem()).build());
+        return new ItemInfo(this.getCenter() - 2, new BuildItem().displayName("§2Yes").material(Materials.GREEN_DYE).build());
     }
 
     protected ItemInfo getNoItem() {
-        return new ItemInfo(this.getCenter() + 2, new ItemBuilder().displayname("§4No").itemstack(Materials.RED_DYE.parseItem()).build());
+        return new ItemInfo(this.getCenter() + 2, new BuildItem().displayName("§4No").material(Materials.RED_DYE).build());
     }
 
     @Override
