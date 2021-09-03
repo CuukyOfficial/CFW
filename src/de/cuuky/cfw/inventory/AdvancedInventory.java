@@ -149,11 +149,11 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.playSound();
         if (this.open) this.update();
         if (this.getInfo(Info.CANCEL_CLICK)) event.setCancelled(true);
-        if (this instanceof EventNotifiable) ((EventNotifiable) this).onInventoryClick(event);
+        this.runOptionalEventNotification(this, e -> e.onInventoryClick(event));
     }
 
     void inventoryClosed(InventoryCloseEvent event) {
-        if (this instanceof EventNotifiable) ((EventNotifiable) this).onInventoryClose(event);
+        this.runOptionalEventNotification(this, e -> e.onInventoryClose(event));
         this.close(false);
     }
 
@@ -176,6 +176,10 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
 
     protected int getStartPage() {
         return 1;
+    }
+
+    protected void runOptionalEventNotification(Object object, Consumer<EventNotifiable> notifiableConsumer) {
+        if (object instanceof EventNotifiable) notifiableConsumer.accept((EventNotifiable) object);
     }
 
     protected int calculateInvSize(int entries) {

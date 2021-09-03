@@ -2,16 +2,16 @@ package de.cuuky.cfw.inventory.page;
 
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.EventNotifiable;
 import de.cuuky.cfw.inventory.InfoProvider;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
-public abstract class AdvancedPageInventory extends AdvancedInventory {
+public abstract class AdvancedPageInventory extends AdvancedInventory implements EventNotifiable {
 
     private final Map<Integer, Supplier<Page<?>>> pages = new HashMap<>();
     private final Map<Integer, Page<?>> loaded = new HashMap<>();
@@ -27,6 +27,10 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
             this.loaded.put(page, loaded = info.get());
 
         return loaded;
+    }
+
+    private Optional<Page<?>> getCurrentPage() {
+        return Optional.ofNullable(this.getLoadedPage(this.getPage()));
     }
 
     protected int getPageMax(int add) {
@@ -52,13 +56,7 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
     @Override
     protected final List<InfoProvider> getTemporaryProvider() {
         InfoProvider page = this.getLoadedPage(this.getPage());
-        return page != null ? Arrays.asList(page) : null;
-    }
-
-    @Override
-    public void refreshContent() {
-        Page<?> info = this.getLoadedPage(this.getPage());
-        if (info != null) info.refreshContent();
+        return page != null ? Collections.singletonList(page) : null;
     }
 
     @Override
@@ -69,5 +67,20 @@ public abstract class AdvancedPageInventory extends AdvancedInventory {
     @Override
     protected int getMinPage() {
         return this.getPageMax(-1);
+    }
+
+    @Override
+    public void onInventoryClick(InventoryClickEvent event) {
+        this.getCurrentPage().ifPresent(p -> this.runOptionalEventNotification(p, e -> e.onInventoryClick(event)));
+    }
+
+    @Override
+    public void onInventoryClose(InventoryCloseEvent event) {
+        this.getCurrentPage().ifPresent(p -> this.runOptionalEventNotification(p, e -> e.onInventoryClose(event)));
+    }
+
+    @Override
+    public void refreshContent() {
+        this.getCurrentPage().ifPresent(Page::refreshContent);
     }
 }
