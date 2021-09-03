@@ -1,6 +1,5 @@
 package de.cuuky.cfw.item;
 
-import de.cuuky.cfw.utils.JavaUtils;
 import de.cuuky.cfw.version.VersionUtils;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.Material;
@@ -10,9 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ItemBuilder {
 
@@ -106,12 +103,12 @@ public class ItemBuilder {
     }
 
     public ItemBuilder lore(String lore) {
-        this.lore = JavaUtils.collectionToArray(new String[]{lore});
+        this.lore = Collections.singletonList(lore);
         return this;
     }
 
     public ItemBuilder lore(String... lore) {
-        this.lore = JavaUtils.collectionToArray(lore);
+        this.lore = Arrays.asList(lore);
         return this;
     }
 
