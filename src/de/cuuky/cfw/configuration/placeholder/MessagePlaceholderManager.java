@@ -1,83 +1,61 @@
 package de.cuuky.cfw.configuration.placeholder;
 
+import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
+import de.cuuky.cfw.manager.FrameworkManager;
+import de.cuuky.cfw.manager.FrameworkManagerType;
+import javafx.util.Pair;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.bukkit.plugin.java.JavaPlugin;
-
-import de.cuuky.cfw.configuration.placeholder.placeholder.GeneralMessagePlaceholder;
-import de.cuuky.cfw.configuration.placeholder.placeholder.PlayerMessagePlaceholder;
-import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
-import de.cuuky.cfw.manager.FrameworkManager;
-import de.cuuky.cfw.manager.FrameworkManagerType;
-import de.cuuky.cfw.player.CustomPlayer;
+import java.util.stream.Collectors;
 
 public class MessagePlaceholderManager extends FrameworkManager {
 
-	private int tickTolerance;
+	private int tickTolerance = 900;
 
-	private Map<PlaceholderType, List<MessagePlaceholder>> placeholders;
-	private Map<PlaceholderType, Map<String, List<MessagePlaceholder>>> cachedRequests;
+	private final Map<PlaceholderType, List<MessagePlaceholder>> placeholders = new HashMap<>();
+	private final Map<PlaceholderType, Map<String, List<MessagePlaceholder>>> cachedRequests = new HashMap<>();
 
 	public MessagePlaceholderManager(JavaPlugin instance) {
 		super(FrameworkManagerType.PLACEHOLDER, instance);
-
-		this.tickTolerance = 900;
-
-		this.placeholders = new HashMap<>();
-		this.cachedRequests = new HashMap<>();
 	}
 
-	private Object[] replaceByList(String value, CustomPlayer vp, List<MessagePlaceholder> list) {
-		if (list == null)
-			return new Object[] { value, null };
+	private Pair<String, List<MessagePlaceholder>> replaceByList(String value, List<MessagePlaceholder> list, boolean check, Object... args) {
+		if (list == null) return new Pair<>(value, null);
 
-		ArrayList<MessagePlaceholder> cached = new ArrayList<>();
+		List<MessagePlaceholder> cached = new ArrayList<>();
 		for (MessagePlaceholder pmp : list) {
-			if (!pmp.containsPlaceholder(value))
-				continue;
-
-			if (pmp instanceof PlayerMessagePlaceholder)
-				value = ((PlayerMessagePlaceholder) pmp).replacePlaceholder(value, vp);
-			else
-				value = ((GeneralMessagePlaceholder) pmp).replacePlaceholder(value);
-
-			cached.add(pmp);
+			if (check && !pmp.containsPlaceholder(value)) continue;
+			value = pmp.replacePlaceholder(value, args);
+			if (check) cached.add(pmp);
 		}
 
-		return new Object[] { value, cached };
+		return new Pair<>(value, cached);
 	}
 
-	@SuppressWarnings("unchecked")
-	public String replacePlaceholders(String value, CustomPlayer vp, PlaceholderType type) {
+	public String replacePlaceholders(String value, PlaceholderType type, Object... objects) {
 		Map<String, List<MessagePlaceholder>> reqs = cachedRequests.get(type);
-		if (reqs == null)
-			reqs = new HashMap<>();
+		if (reqs == null) reqs = new HashMap<>();
 
 		if (reqs.get(value) != null)
-			return (String) replaceByList(value, vp, reqs.get(value))[0];
+			return replaceByList(value, reqs.get(value), false, objects).getKey();
 		else {
-			Object[] result = replaceByList(value, vp, getPlaceholders(type));
-			if (result[1] != null)
-				reqs.put(value, (List<MessagePlaceholder>) result[1]);
+			Pair<String, List<MessagePlaceholder>> result = replaceByList(value, getPlaceholders(type), true, objects);
+			if (result.getValue() != null) reqs.put(value, result.getValue());
 			cachedRequests.put(type, reqs);
-			return (String) result[0];
+			return result.getKey();
 		}
-	}
-
-	public String replacePlaceholders(String value, PlaceholderType type) {
-		return replacePlaceholders(value, null, type);
 	}
 
 	public MessagePlaceholder registerPlaceholder(MessagePlaceholder placeholder) {
 		if (placeholders.containsKey(placeholder.getType()))
 			placeholders.get(placeholder.getType()).add(placeholder);
 		else {
-			ArrayList<MessagePlaceholder> holders = new ArrayList<>();
+			List<MessagePlaceholder> holders = new ArrayList<>();
 			holders.add(placeholder);
-
 			this.placeholders.put(placeholder.getType(), holders);
 		}
 
@@ -93,9 +71,7 @@ public class MessagePlaceholderManager extends FrameworkManager {
 
 	public void clear() {
 		for (PlaceholderType type : placeholders.keySet())
-			for (MessagePlaceholder pl : this.placeholders.get(type))
-				pl.clearValue();
-
+			this.placeholders.get(type).forEach(MessagePlaceholder::clearValue);
 		this.cachedRequests.clear();
 	}
 
@@ -112,11 +88,11 @@ public class MessagePlaceholderManager extends FrameworkManager {
 	}
 
 	public List<MessagePlaceholder> getAllPlaceholders() {
-		ArrayList<MessagePlaceholder> msg = new ArrayList<>();
-		for (PlaceholderType type : this.placeholders.keySet())
-			msg.addAll(this.placeholders.get(type));
-
-		return msg;
+//		List<MessagePlaceholder> msg = new ArrayList<>();
+//		this.placeholders.keySet().stream().map(type -> this.placeholders.get(type)).collect(Collectors.toList());
+//		for (PlaceholderType type : this.placeholders.keySet())
+//			msg.addAll(this.placeholders.get(type));
+		return this.placeholders.keySet().stream().flatMap(type -> this.placeholders.get(type).stream()).collect(Collectors.toList());
 	}
 
 	public List<MessagePlaceholder> getPlaceholders(PlaceholderType type) {

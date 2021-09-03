@@ -1,20 +1,20 @@
 package de.cuuky.cfw.configuration.language.broadcast;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
 import de.cuuky.cfw.player.CustomPlayer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class MessageHolder {
 
-	private MessagePlaceholderManager placeholderManager;
-	private Map<String, String> replacements;
+	private final MessagePlaceholderManager placeholderManager;
+	private final Map<String, String> replacements;
 
 	public MessageHolder(MessagePlaceholderManager manager) {
 		this.placeholderManager = manager;
-		this.replacements = new HashMap<String, String>();
+		this.replacements = new HashMap<>();
 	}
 
 	public MessageHolder replace(String needle, String replacement) {
@@ -28,7 +28,7 @@ public class MessageHolder {
 
 		message = placeholderManager.replacePlaceholders(message, MessagePlaceholderType.GENERAL);
 		if (cp != null)
-			message = placeholderManager.replacePlaceholders(message, cp, MessagePlaceholderType.PLAYER);
+			message = placeholderManager.replacePlaceholders(message, MessagePlaceholderType.OBJECT, cp);
 		return message;
 	}
 }

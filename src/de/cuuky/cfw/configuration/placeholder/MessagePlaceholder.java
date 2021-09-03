@@ -6,33 +6,30 @@ public abstract class MessagePlaceholder {
 
 	private static final int TICK_TOLERANCE = 900;
 
-	protected PlaceholderType type;
-	protected String identifier, description;
-	protected int defaultRefresh, refreshDelay;
-	protected MessagePlaceholderManager managar;
+	private final PlaceholderType type;
+	private final String identifier;
+	private final String description;
+	private final int defaultRefresh;
+	private final int refreshDelay;
+	private MessagePlaceholderManager manager;
+
+	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, boolean rawIdentifier, String description) {
+		this.type = type;
+		this.identifier = rawIdentifier ? identifier : "%" + identifier + "%";
+		this.description = description;
+		this.defaultRefresh = refreshDelay;
+		this.refreshDelay = refreshDelay * 1000;
+	}
 
 	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, String description) {
 		this(type, identifier, refreshDelay, false, description);
 	}
 
-	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, boolean rawIdentifier, String description) {
-		this.type = type;
-
-		if (rawIdentifier)
-			this.identifier = identifier;
-		else
-			this.identifier = "%" + identifier + "%";
-
-		this.description = description;
-		this.defaultRefresh = refreshDelay;
-		this.refreshDelay = (int) (refreshDelay * 1000);
-	}
+	public abstract String replacePlaceholder(String message, Object... object);
 
 	protected boolean shallRefresh(long last) {
-		if (last < 1)
-			return true;
-
-		return (last + this.refreshDelay) - TICK_TOLERANCE <= System.currentTimeMillis() ? true : false;
+		if (last < 1) return true;
+		return (last + this.refreshDelay) - TICK_TOLERANCE <= System.currentTimeMillis();
 	}
 
 	public boolean containsPlaceholder(String message) {
@@ -55,12 +52,12 @@ public abstract class MessagePlaceholder {
 		return this.defaultRefresh;
 	}
 
-	public void setManager(MessagePlaceholderManager managaer) {
-		this.managar = managaer;
+	public void setManager(MessagePlaceholderManager manager) {
+		this.manager = manager;
 	}
 
 	public MessagePlaceholderManager getManager() {
-		return this.managar;
+		return this.manager;
 	}
 
 	public abstract void clearValue();
