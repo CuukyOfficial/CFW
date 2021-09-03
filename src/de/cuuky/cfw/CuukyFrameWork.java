@@ -1,12 +1,5 @@
 package de.cuuky.cfw;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import de.cuuky.cfw.configuration.language.LanguageManager;
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.hooking.HookManager;
@@ -16,6 +9,12 @@ import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.menu.SuperInventoryManager;
 import de.cuuky.cfw.serialization.CompatibleLocation;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
+import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CuukyFrameWork {
 
@@ -23,7 +22,7 @@ public class CuukyFrameWork {
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
 	}
 
-	private static final String NAME = "CuukyFrameWork", VERSION = "0.6.0-BETA", AUTHOR = "Cuuky";
+	private static final String NAME = "CuukyFrameWork", VERSION = "0.6.0", AUTHOR = "Cuuky";
 
 	/*
 	 * CFW - A Bukkit framework
@@ -47,7 +46,7 @@ public class CuukyFrameWork {
 		this.manager = new HashMap<>();
 
 		for (FrameworkManager fm : manager) {
-			System.out.println(this.consolePrefix + "Added CustomManager " + fm.getClass() + "!");
+			System.out.println(this.consolePrefix + "Using Custom-Manager " + fm.getClass().getName() + "!");
 			this.manager.put(fm.getType(), fm);
 		}
 	}
@@ -59,7 +58,7 @@ public class CuukyFrameWork {
 				this.manager.put(type, manager = type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
 			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
 				e.printStackTrace();
-				throw new IllegalStateException(this.consolePrefix + "Failed to initialize type " + type.toString() + "!");
+				throw new IllegalStateException(this.consolePrefix + "Failed to initialize type " + type + "!");
 			}
 		}
 
@@ -74,6 +73,7 @@ public class CuukyFrameWork {
 		return (HookManager) loadManager(FrameworkManagerType.HOOKING);
 	}
 
+	@Deprecated
 	public SuperInventoryManager getInventoryManager() {
 		return (SuperInventoryManager) loadManager(FrameworkManagerType.INVENTORY);
 	}
