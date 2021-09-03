@@ -1,29 +1,25 @@
 package de.cuuky.cfw.clientadapter.board.nametag;
 
-import java.util.Arrays;
-
+import de.cuuky.cfw.clientadapter.board.CustomBoard;
+import de.cuuky.cfw.clientadapter.board.CustomBoardType;
+import de.cuuky.cfw.player.CustomPlayer;
+import de.cuuky.cfw.version.VersionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import de.cuuky.cfw.clientadapter.board.CustomBoard;
-import de.cuuky.cfw.clientadapter.board.CustomBoardType;
-import de.cuuky.cfw.player.CustomPlayer;
-import de.cuuky.cfw.version.VersionUtils;
+import java.util.Arrays;
 
 public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 
 	// 0 = name, 1 = prefix, 2 = suffix
-	private String[] nametagContent;
+	private String[] nametagContent = new String[3];
 	private String oldName;
-	private boolean initalized, nametagShown;
+	private boolean initalized, nametagShown = true;
 
 	public CustomNametag(T player) {
 		super(CustomBoardType.NAMETAG, player);
-
-		this.nametagContent = new String[3];
-		this.nametagShown = true;
 	}
 
 	@Override

@@ -1,18 +1,17 @@
 package de.cuuky.cfw.clientadapter.board.scoreboard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import de.cuuky.cfw.clientadapter.board.CustomBoard;
+import de.cuuky.cfw.clientadapter.board.CustomBoardType;
+import de.cuuky.cfw.player.CustomPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import de.cuuky.cfw.clientadapter.board.CustomBoard;
-import de.cuuky.cfw.clientadapter.board.CustomBoardType;
-import de.cuuky.cfw.player.CustomPlayer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<T> {
 
@@ -25,7 +24,7 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 
 	@Override
 	protected void onEnable() {
-		replaces = new ArrayList<>();
+		this.replaces = new ArrayList<>();
 	}
 
 	private String prepareScoreboardStatement(int index, String line) {
