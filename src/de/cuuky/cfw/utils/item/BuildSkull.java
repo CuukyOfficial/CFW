@@ -2,7 +2,6 @@ package de.cuuky.cfw.utils.item;
 
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -10,11 +9,10 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class BuildSkull extends BuildItem {
 
-    private OfflinePlayer player;
     private String name;
 
     public BuildSkull() {
-        this.itemstack(Materials.PLAYER_HEAD.parseItem());
+        super.itemstack(Materials.PLAYER_HEAD.parseItem());
     }
 
     @Override
@@ -25,9 +23,9 @@ public class BuildSkull extends BuildItem {
 
     @Override
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
+        assert this.name != null;
         SkullMeta sm = (SkullMeta) meta;
-        if (this.player != null) sm.setOwningPlayer(this.player);
-        else if (this.name != null) sm.setOwner(this.name);
+        sm.setOwner(this.name);
         return super.applyMeta(meta, type);
     }
 
@@ -35,7 +33,7 @@ public class BuildSkull extends BuildItem {
      * Note: this won't have any effect
      */
     @Override
-    public BuildItem itemstack(ItemStack stack) {
+    public BuildSkull itemstack(ItemStack stack) {
         return this;
     }
 
@@ -43,17 +41,26 @@ public class BuildSkull extends BuildItem {
      * Note: this won't have any effect
      */
     @Override
-    public BuildItem material(Material material) {
+    public BuildSkull material(Material material) {
         return this;
     }
 
-    public BuildItem player(Player player) {
-        this.player = player;
-        return this.name(player.getName());
-    }
-
-    public BuildItem name(String name) {
+    public BuildSkull player(String name) {
         this.name = name;
         return this;
+    }
+
+    public BuildSkull player(Player player) {
+        return this.player(player.getName());
+    }
+
+    @Override
+    public BuildSkull displayName(String displayName) {
+        return (BuildSkull) super.displayName(displayName);
+    }
+
+    @Override
+    public BuildSkull amount(int amount) {
+        return (BuildSkull) super.amount(amount);
     }
 }

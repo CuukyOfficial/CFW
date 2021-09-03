@@ -11,7 +11,7 @@ import java.util.*;
 
 public class BuildItem {
 
-    private ItemStack pre;
+    private ItemStack stack;
     private Material material;
     private String displayName;
     private List<String> lore;
@@ -28,7 +28,7 @@ public class BuildItem {
     }
 
     public ItemStack build() {
-        ItemStack stack = this.pre != null ? this.pre : new ItemStack(this.material);
+        ItemStack stack = this.stack != null ? this.stack : new ItemStack(this.material);
         ItemMeta meta = stack.getItemMeta();
         if (meta != null) stack.setItemMeta(this.applyMeta(meta, stack.getType()));
         if (this.deleteAnnotations) VersionUtils.getVersionAdapter().deleteItemAnnotations(stack);
@@ -70,7 +70,7 @@ public class BuildItem {
     }
 
     public BuildItem itemstack(ItemStack stack) {
-        this.pre = stack.clone();
+        this.stack = stack.clone();
         return this;
     }
 
@@ -112,8 +112,8 @@ public class BuildItem {
         return deleteAnnotations;
     }
 
-    public ItemStack getPre() {
-        return pre;
+    public ItemStack getStack() {
+        return stack;
     }
 
     public Material getMaterial() {
