@@ -9,6 +9,8 @@ public class PageableChatBuilder<T> {
     private ChatMessageSupplier<T> chatMessageSupplier;
     private int page = 1, entriesPerPage = 10;
 
+    public PageableChatBuilder() {}
+
     public PageableChatBuilder(Supplier<List<T>> listSupplier) {
         this.listSupplier = listSupplier;
     }
