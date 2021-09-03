@@ -6,7 +6,7 @@ import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholde
 public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
 
 	private String value;
-	protected long lastRefresh = 0;
+	private long lastRefresh = 0;
 
 	public GeneralMessagePlaceholder(String identifier, int refreshDelay, boolean rawIdentifier, String description) {
 		super(MessagePlaceholderType.GENERAL, identifier, refreshDelay, rawIdentifier, description);

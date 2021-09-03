@@ -4,13 +4,10 @@ import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
 
 public abstract class MessagePlaceholder {
 
-	private static final int TICK_TOLERANCE = 900;
-
 	private final PlaceholderType type;
-	private final String identifier;
-	private final String description;
-	private final int defaultRefresh;
-	private final int refreshDelay;
+	private final String identifier, description;
+	private final int defaultRefresh, refreshDelay;
+	private int tickTolerance = 900;
 	private MessagePlaceholderManager manager;
 
 	public MessagePlaceholder(PlaceholderType type, String identifier, int refreshDelay, boolean rawIdentifier, String description) {
@@ -29,7 +26,7 @@ public abstract class MessagePlaceholder {
 
 	protected boolean shallRefresh(long last) {
 		if (last < 1) return true;
-		return (last + this.refreshDelay) - TICK_TOLERANCE <= System.currentTimeMillis();
+		return (last + this.refreshDelay) - this.getTickTolerance() <= System.currentTimeMillis();
 	}
 
 	public boolean containsPlaceholder(String message) {
@@ -54,6 +51,10 @@ public abstract class MessagePlaceholder {
 
 	public void setManager(MessagePlaceholderManager manager) {
 		this.manager = manager;
+	}
+
+	public int getTickTolerance() {
+		return this.manager != null ? this.manager.getTickTolerance() : this.tickTolerance;
 	}
 
 	public MessagePlaceholderManager getManager() {

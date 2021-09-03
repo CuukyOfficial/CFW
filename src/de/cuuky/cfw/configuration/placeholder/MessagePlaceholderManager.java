@@ -88,10 +88,6 @@ public class MessagePlaceholderManager extends FrameworkManager {
 	}
 
 	public List<MessagePlaceholder> getAllPlaceholders() {
-//		List<MessagePlaceholder> msg = new ArrayList<>();
-//		this.placeholders.keySet().stream().map(type -> this.placeholders.get(type)).collect(Collectors.toList());
-//		for (PlaceholderType type : this.placeholders.keySet())
-//			msg.addAll(this.placeholders.get(type));
 		return this.placeholders.keySet().stream().flatMap(type -> this.placeholders.get(type).stream()).collect(Collectors.toList());
 	}
 
