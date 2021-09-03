@@ -35,7 +35,7 @@ public abstract class AdvancedPageInventory extends AdvancedInventory implements
 
     protected int getPageMax(int add) {
         int page;
-        for (page = this.getStartPage(); pages.get(page) != null; page += add) continue;
+        for (page = this.getStartPage(); this.pages.get(page) != null; page += add) continue;
         return page + (add * -1);
     }
 
