@@ -28,9 +28,12 @@ public class MessagePlaceholderManager extends FrameworkManager {
 
 		List<MessagePlaceholder> cached = new ArrayList<>();
 		for (MessagePlaceholder pmp : list) {
-			if (check && !pmp.containsPlaceholder(value)) continue;
+			if (check) {
+				if (!pmp.containsPlaceholder(value)) continue;
+				cached.add(pmp);
+			}
+
 			value = pmp.replacePlaceholder(value, args);
-			if (check) cached.add(pmp);
 		}
 
 		return new Pair<>(value, cached);
