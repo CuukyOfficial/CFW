@@ -3,7 +3,6 @@ package de.cuuky.cfw.hooking;
 import de.cuuky.cfw.hooking.hooks.HookEntity;
 import de.cuuky.cfw.hooking.hooks.HookEntityType;
 import de.cuuky.cfw.hooking.hooks.item.ItemHook;
-import de.cuuky.cfw.hooking.listener.HookListener;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import org.bukkit.entity.Player;
