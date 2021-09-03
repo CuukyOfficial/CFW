@@ -1,6 +1,7 @@
 package de.cuuky.cfw.utils.item;
 
 import de.cuuky.cfw.version.VersionUtils;
+import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -59,6 +60,10 @@ public class BuildItem {
         return this;
     }
 
+    public BuildItem material(Materials material) {
+        return this.itemstack(material.parseItem());
+    }
+
     public BuildItem displayName(String displayName) {
         this.displayName = displayName;
         return this;
@@ -103,7 +108,7 @@ public class BuildItem {
         return enchantments;
     }
 
-    public boolean isDeleteAnnotations() {
+    public boolean shallDeleteAnnotations() {
         return deleteAnnotations;
     }
 
