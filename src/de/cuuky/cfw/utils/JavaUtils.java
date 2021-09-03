@@ -1,15 +1,11 @@
 package de.cuuky.cfw.utils;
 
+import org.bukkit.ChatColor;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public final class JavaUtils {
 
@@ -28,19 +24,12 @@ public final class JavaUtils {
 	}
 
 	public static String[] arrayToCollection(List<String> strings) {
-		String[] newStrings = new String[strings.size()];
-
-		for (int i = 0; i < strings.size(); i++)
-			newStrings[i] = strings.get(i);
-
-		return newStrings;
+		return strings.toArray(new String[0]);
 	}
 
 	public static ArrayList<String> collectionToArray(String[] strings) {
 		ArrayList<String> newStrings = new ArrayList<>();
-		for (String string : strings)
-			newStrings.add(string);
-
+		Collections.addAll(newStrings, strings);
 		return newStrings;
 	}
 
@@ -48,47 +37,26 @@ public final class JavaUtils {
 		ArrayList<String> string = new ArrayList<>();
 
 		for (String[] ss : strings)
-			for (String strin : ss)
-				string.add(strin);
+			Collections.addAll(string, ss);
 
 		return getAsArray(string);
 	}
 
 	public static String getArgsToString(ArrayList<String> args, String insertBewteen) {
-		String command = "";
-		for (String arg : args)
-			if (command.equals(""))
-				command = arg;
-			else
-				command = command + insertBewteen + arg;
-
-		return command;
+		return String.join(insertBewteen, args);
 	}
 
 	public static String getArgsToString(String[] args, String insertBewteen) {
-		String command = "";
-		for (String arg : args)
-			if (command.equals(""))
-				command = arg;
-			else
-				command = command + insertBewteen + arg;
-
-		return command;
+		return String.join(insertBewteen, args);
 	}
 
 	public static String[] getAsArray(ArrayList<String> string) {
-		String[] list = new String[string.size()];
-		for (int i = 0; i < string.size(); i++)
-			list[i] = string.get(i);
-
-		return list;
+		return string.toArray(new String[0]);
 	}
 
 	public static ArrayList<Object> getAsList(String[] lis) {
 		ArrayList<Object> list = new ArrayList<>();
-		for (Object u : lis)
-			list.add(u);
-
+		list.addAll(Arrays.asList(lis));
 		return list;
 	}
 
@@ -112,7 +80,7 @@ public final class JavaUtils {
 		} catch (NumberFormatException e) {}
 
 		if (obj.equalsIgnoreCase("true") || obj.equalsIgnoreCase("false"))
-			return obj.equalsIgnoreCase("true") ? true : false;
+			return obj.equalsIgnoreCase("true");
 		else
 			return obj;
 	}
@@ -126,9 +94,7 @@ public final class JavaUtils {
 	 */
 	public static int randomInt(int min, int max) {
 		Random rand = new Random();
-		int randomNum = rand.nextInt((max - min) + 1) + min;
-
-		return randomNum;
+		return rand.nextInt((max - min) + 1) + min;
 	}
 
 	public static String[] removeString(String[] string, int loc) {
@@ -149,29 +115,12 @@ public final class JavaUtils {
 	}
 
 	public static String replaceAllColors(String s) {
-		String newMessage = "";
-		boolean lastPara = false;
-		for (char c : s.toCharArray()) {
-			if (lastPara) {
-				lastPara = false;
-				continue;
-			}
-
-			if (c == '§' || c == '&') {
-				lastPara = true;
-				continue;
-			}
-
-			newMessage = newMessage.isEmpty() ? String.valueOf(c) : newMessage + c;
-		}
-
-		return newMessage;
+		return ChatColor.stripColor(s.replace("§", "&"));
 	}
 
 	public static String getCurrentDateAsFileable() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
 		Date date = new Date();
-
 		return dateFormat.format(date);
 	}
 
@@ -188,12 +137,9 @@ public final class JavaUtils {
 
 	public static <T, Z> LinkedHashMap<T, Z> reverseMap(Map<T, Z> map) {
 		LinkedHashMap<T, Z> reversed = new LinkedHashMap<>();
-		List<T> keys = new ArrayList<T>(map.keySet());
+		List<T> keys = new ArrayList<>(map.keySet());
 		Collections.reverse(keys);
-
-		for (T key : keys)
-			reversed.put(key, map.get(key));
-
+		for (T key : keys) reversed.put(key, map.get(key));
 		return reversed;
 	}
 
