@@ -1,5 +1,7 @@
 package de.cuuky.cfw.version.minecraft;
 
+import java.util.Arrays;
+
 public enum MinecraftVersion {
 
 	// Protocol version numbers: https://wiki.vg/Protocol_version_numbers
@@ -40,7 +42,7 @@ public enum MinecraftVersion {
 	private int protocolId;
 	private String name;
 
-	private MinecraftVersion(int id, String name) {
+	MinecraftVersion(int id, String name) {
 		this.name = name;
 		this.protocolId = id;
 	}
@@ -71,10 +73,7 @@ public enum MinecraftVersion {
 	}
 
 	public static MinecraftVersion getMinecraftVersion(String versionname) {
-		for (MinecraftVersion mcver : MinecraftVersion.values())
-			if (mcver.getName().equals(versionname))
-				return mcver;
-
-		return null;
+		return Arrays.stream(MinecraftVersion.values()).filter(ver ->
+				ver.getName().equals(versionname)).findFirst().orElse(null);
 	}
 }
