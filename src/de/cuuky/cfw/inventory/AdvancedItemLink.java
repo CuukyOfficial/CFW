@@ -7,7 +7,6 @@ class AdvancedItemLink {
 
     private final ItemStack stack;
     private final ItemClick link;
-    private boolean set;
 
     AdvancedItemLink(ItemStack stack, ItemClick click) {
         this.stack = stack;
