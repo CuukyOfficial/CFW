@@ -14,7 +14,7 @@ public class BuildItem {
     private ItemStack stack;
     private Material material;
     private String displayName;
-    private List<String> lore;
+    private List<String> lore = new ArrayList<>();
     private Map<Enchantment, Integer> enchantments = new HashMap<>();
     private int amount = 1;
     private boolean deleteAnnotations;
