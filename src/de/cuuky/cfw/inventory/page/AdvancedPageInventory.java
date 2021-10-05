@@ -7,6 +7,7 @@ import de.cuuky.cfw.inventory.InfoProvider;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -15,6 +16,7 @@ public abstract class AdvancedPageInventory extends AdvancedInventory implements
 
     private final Map<Integer, Supplier<Page<?>>> pages = new HashMap<>();
     private final Map<Integer, Page<?>> loaded = new HashMap<>();
+    private int min, max;
 
     public AdvancedPageInventory(AdvancedInventoryManager manager, Player player) {
         super(manager, player);
@@ -33,14 +35,16 @@ public abstract class AdvancedPageInventory extends AdvancedInventory implements
         return Optional.ofNullable(this.getLoadedPage(this.getPage()));
     }
 
-    protected int getPageMax(int add) {
-        int page;
-        for (page = this.getStartPage(); this.pages.get(page) != null; page += add) continue;
-        return page + (add * -1);
-    }
+//    protected int getPageMax(int add) {
+//        int page;
+//        for (page = this.getStartPage(); this.pages.get(page) != null; page += add) continue;
+//        return page + (add * -1);
+//    }
 
     protected void registerPage(int page, Supplier<Page<?>> info) {
         this.pages.put(page, info);
+        this.max = Math.max(max, page);
+        this.min = Math.min(min,page);
         if (this.loaded.get(page) != null) this.loaded.put(page, info.get());
     }
 
@@ -61,12 +65,12 @@ public abstract class AdvancedPageInventory extends AdvancedInventory implements
 
     @Override
     protected int getMaxPage() {
-        return this.getPageMax(1);
+        return this.max;
     }
 
     @Override
     protected int getMinPage() {
-        return this.getPageMax(-1);
+        return this.min;
     }
 
     @Override
@@ -77,6 +81,11 @@ public abstract class AdvancedPageInventory extends AdvancedInventory implements
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
         this.getCurrentPage().ifPresent(p -> this.runOptionalEventNotification(p, e -> e.onInventoryClose(event)));
+    }
+
+    @Override
+    public void onInventoryDrag(InventoryDragEvent event) {
+        this.getCurrentPage().ifPresent(p -> this.runOptionalEventNotification(p, e -> e.onInventoryDrag(event)));
     }
 
     @Override

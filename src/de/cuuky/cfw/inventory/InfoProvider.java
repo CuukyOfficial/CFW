@@ -12,9 +12,17 @@ public interface InfoProvider {
 
     List<Info<?>> getProvidedInfos();
 
-    default int getSize() { return 0; }
+    default List<PrioritisedInfo> getPrioritisedInfos() {
+        return null;
+    }
 
-    default String getTitle() { return null; }
+    default int getSize() {
+        return 0;
+    }
+
+    default String getTitle() {
+        return null;
+    }
 
     default boolean doAnimation() {
         return false;

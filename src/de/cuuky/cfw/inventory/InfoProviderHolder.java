@@ -1,54 +1,65 @@
 package de.cuuky.cfw.inventory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 abstract class InfoProviderHolder {
 
-    private final List<InfoProvider> savedProvider = new ArrayList<>();
-    private final Map<InfoProvider, List<Info<?>>> provider = new LinkedHashMap<>();
-    private final Map<Info<?>, Object> cache = new HashMap<>();
+    // A little bit messy ik
+    private final Map<String, InfoProvider> savedProvider = new HashMap<>();
+    private final Map<Info<?>, List<Map.Entry<InfoProvider, Supplier<Integer>>>> provider = new HashMap<>();
+    private final Map<Info<?>, Object> cache = new ConcurrentHashMap<>();
+
+    private List<InfoProvider> getActiveProvider() {
+        List<InfoProvider> providerList = new LinkedList<>(this.savedProvider.values()), current = this.getTemporaryProvider();
+        if (current != null) providerList.addAll(current);
+        Collections.reverse(providerList);
+        return providerList;
+    }
+
+    private void clearPrevious() {
+        this.provider.clear();
+        this.cache.clear();
+    }
+
+    private List<PrioritisedInfo> collectInfos(InfoProvider provider) {
+        List<PrioritisedInfo> pInfos = provider.getPrioritisedInfos();
+        if (pInfos == null) pInfos = new LinkedList<>();
+        else pInfos = new LinkedList<>(pInfos);
+        List<Info<?>> infos = provider.getProvidedInfos();
+        if (infos != null) infos.stream().map(info -> new PrioritisedInfo(() -> 0, info)).forEach(pInfos::add);
+        return pInfos;
+    }
 
     protected List<InfoProvider> getTemporaryProvider() {
         return null;
     }
 
-    private List<InfoProvider> getSortedProvider() {
-        List<InfoProvider> providerList = new ArrayList<>(this.savedProvider), current = this.getTemporaryProvider();
-        if (current != null) providerList.addAll(current);
-        providerList.sort((o1, o2) -> Integer.compare(o1.getPriority(), o2.getPriority()) * -1);
-        return providerList;
-    }
-
     protected void updateProvider() {
-        this.provider.clear();
-        this.cache.clear();
-        for (InfoProvider provider : this.getSortedProvider()) {
-            List<Info<?>> infos = provider.getProvidedInfos();
-            if (infos != null && !infos.isEmpty())
-                this.provider.put(provider, provider.getProvidedInfos());
+        this.clearPrevious();
+        for (InfoProvider provider : this.getActiveProvider()) {
+            for (PrioritisedInfo pInfo : this.collectInfos(provider)) {
+                Map.Entry<InfoProvider, Supplier<Integer>>
+                        current = new AbstractMap.SimpleEntry<>(provider, pInfo.getPriority());
+                this.provider.computeIfAbsent(pInfo.getInfo(), (k) -> new LinkedList<>()).add(current);
+            }
         }
     }
 
-    public boolean addProvider(InfoProvider provider) {
-        return this.savedProvider.add(provider);
+    public void addProvider(String id, InfoProvider provider) {
+        this.savedProvider.put(id, provider);
     }
 
-    public boolean removeProvider(InfoProvider provider) {
-        return this.savedProvider.remove(provider);
+    public void removeProvider(String id) {
+        this.savedProvider.remove(id);
+    }
+
+    private InfoProvider getProvider(Info<?> info) {
+        return this.provider.get(info).stream().max(Comparator.comparingInt(e -> e.getValue().get())).get().getKey();
     }
 
     public <T> T getInfo(Info<T> type) {
-        T info = (T) this.cache.get(type);
-        if (info == null) {
-            for (InfoProvider ip : provider.keySet()) {
-                if (!this.provider.get(ip).contains(type))
-                    continue;
-
-                this.cache.put(type, (info = type.apply(ip)));
-                break;
-            }
-        }
-
-        return info;
+        return (T) this.cache.computeIfAbsent(type, (typ) -> typ.apply(this.getProvider(typ)));
     }
 }

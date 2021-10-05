@@ -1,7 +1,7 @@
 package de.cuuky.cfw.inventory;
 
 import de.cuuky.cfw.inventory.inserter.DirectInserter;
-import de.cuuky.cfw.item.ItemBuilder;
+import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import de.cuuky.cfw.version.types.Sounds;
 import org.bukkit.Material;
@@ -41,36 +41,40 @@ public interface DefaultInfoProvider extends InfoProvider {
 
     @Override
     default Consumer<Player> getSoundPlayer() {
-        return (player) -> player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
+        return (player) -> {
+            ItemStack clicked = this.getUser().getInventory().getItem(this.getUser().getLastClickedSlot());
+            if (clicked != null && clicked.getType() != Material.AIR)
+                player.playSound(player.getLocation(), Sounds.CLICK.bukkitSound(), 1, 1);
+        };
     }
 
     @Override
     default ItemInfo getBackwardsInfo() {
-        return new ItemInfo(this.getUser().getUsableSize(), new ItemBuilder().material(Material.ARROW)
-                .displayname("§cBackwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
+        return new ItemInfo(this.getUser().getUsableSize(), new BuildItem().material(Material.ARROW)
+                .displayName("§cBackwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
     }
 
     @Override
     default ItemInfo getForwardsInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 8, new ItemBuilder().material(Material.ARROW)
-                .displayname("§aForwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
+        return new ItemInfo(this.getUser().getUsableSize() + 8, new BuildItem().material(Material.ARROW)
+                .displayName("§aForwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
     }
 
     @Override
     default ItemInfo getCloseInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 4, new ItemBuilder()
-                .material(Materials.REDSTONE.parseMaterial()).displayname("§4Close").build());
+        return new ItemInfo(this.getUser().getUsableSize() + 4, new BuildItem()
+                .material(Materials.REDSTONE).displayName("§4Close").build());
     }
 
     @Override
     default ItemInfo getBackInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 3, new ItemBuilder()
-                .material(Material.STONE_BUTTON).displayname("§cBack").build());
+        return new ItemInfo(this.getUser().getUsableSize() + 3, new BuildItem()
+                .material(Material.STONE_BUTTON).displayName("§cBack").build());
     }
 
     @Override
     default ItemStack getFillerStack() {
-        return new ItemBuilder().displayname("§c").itemstack(Materials.BLACK_STAINED_GLASS_PANE.parseItem()).build();
+        return new BuildItem().displayName("§c").material(Materials.BLACK_STAINED_GLASS_PANE).build();
     }
 
     @Override
@@ -85,6 +89,7 @@ public interface DefaultInfoProvider extends InfoProvider {
 
     @Override
     default String getPageViewer() {
-        return "§7" + this.getUser().getPage() + "§8/§7" + this.getUser().getMaxPage();
+        return "§7" + this.getUser().getPage() +
+                "§8/§7" + (this.getUser().getMaxPage() == Integer.MAX_VALUE ? "X" : this.getUser().getMaxPage());
     }
 }

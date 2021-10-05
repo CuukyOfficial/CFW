@@ -3,26 +3,31 @@ package de.cuuky.cfw.inventory.list;
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHookHandler;
-import de.cuuky.cfw.inventory.*;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.Info;
+import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.inventory.ItemInfo;
 import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
-public abstract class AdvancedListInventory<T> extends AdvancedInventory {
+public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory {
 
-    private final List<T> list;
+    private List<T> list;
     private int emptyClicked = 0;
 
     public AdvancedListInventory(AdvancedInventoryManager manager, Player player, List<T> list) {
         super(manager, player);
 
-        this.list = list;
+        this.updateList(list);
     }
 
     @Deprecated
@@ -30,17 +35,18 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         this(manager, player, list.get());
     }
 
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player) {
-        this(manager, player, (List<T>) null);
-    }
-
-    private boolean checkEmpty(List<?> original) {
-        if (original == null || original.isEmpty()) {
+    private boolean checkEmpty() {
+        if (this.list.isEmpty()) {
             ItemInfo info = this.getEmptyInfoStack();
             if (info != null) this.addItem(info.getIndex(), info.getStack(), this.getEmptyInfoClick());
             return true;
         }
         return false;
+    }
+
+    protected void updateList(List<T> list) {
+        assert list != null;
+        this.list = this.copyList() ? new ArrayList<>(list) : list;
     }
 
     protected String getEmptyName() {
@@ -59,22 +65,8 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         else return "get a life, nerd";
     }
 
-    protected void addJumpMap() {
-        ItemInfo info = this.getJumpToItemInfo();
-        if (info != null && this.getMinPage() != this.getMaxPage())
-            this.addItem(info.getIndex(), info.getStack(), this.getJumpToClick());
-    }
-
-    protected void addListItem(int index, T item) {
-        this.addItem(index, this.getItemStack(item), this.getClick(item));
-    }
-
     protected int getEmptyClicked() {
         return this.emptyClicked;
-    }
-
-    protected boolean copyList() {
-        return true;
     }
 
     protected ItemInfo getEmptyInfoStack() {
@@ -86,23 +78,14 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
         return (event) -> emptyClicked++;
     }
 
-    protected abstract ItemStack getItemStack(T item);
-
-    protected abstract ItemClick getClick(T item);
-
-    protected abstract HookManager getHookManager();
-
-    protected int getRecommendedSize(int min, int max) {
-        int size = this.calculateInvSize(this.getList().size());
-        return Math.min(Math.max(Math.min(size, max), min) + this.getInfo(Info.HOTBAR_SIZE), 54);
+    protected boolean copyList() {
+        return false;
     }
 
-    protected int getRecommendedSize(int min) {
-        return this.getRecommendedSize(min, 54);
-    }
-
-    protected int getRecommendedSize() {
-        return this.getRecommendedSize(27);
+    protected void addJumpMap() {
+        ItemInfo info = this.getJumpToItemInfo();
+        if (info != null && this.getHookManager() != null && this.getMinPage() != this.getMaxPage())
+            this.addItem(info.getIndex(), info.getStack(), this.getJumpToClick());
     }
 
     protected ItemInfo getJumpToItemInfo() {
@@ -134,41 +117,40 @@ public abstract class AdvancedListInventory<T> extends AdvancedInventory {
     }
 
     @Override
-    public int getSize() {
-        return this.getRecommendedSize();
+    protected Map.Entry<ItemStack, ItemClick> getInfo(int index) {
+        if (this.list.size() <= index) return null;
+        T item = this.list.get(index);
+        return new AbstractMap.SimpleEntry<>(this.getItemStack(item), this.getClick(item));
     }
 
     @Override
-    protected final int getStartPage() {
-        return 1;
+    protected int getMinPageSize() {
+        return this.list.size();
     }
 
-    @Override
-    protected final int getMinPage() {
-        return 1;
+    protected abstract ItemStack getItemStack(T item);
+
+    protected abstract ItemClick getClick(T item);
+
+    protected HookManager getHookManager() {
+        return null;
     }
 
     @Override
     public int getMaxPage() {
-        List<T> original = this.getList();
-        if (original == null || original.size() == 0) return 1;
+        List<T> original = this.list;
+        if (original.size() == 0) return 1;
         return (int) Math.ceil((float) original.size() / (float) this.getUsableSize());
     }
 
     @Override
     public void refreshContent() {
-        List<T> original = this.getList();
-        if (this.checkEmpty(original)) return;
-        int start = this.getUsableSize() * (this.getPage() - 1);
-        List<T> list = this.copyList() ? new ArrayList<>(original) : original;
-        for (int i = 0; (start + i) < list.size() && i < this.getUsableSize(); i++) {
-            T item = list.get(i + start);
-            this.addListItem(i, item);
-        }
+        if (this.checkEmpty()) return;
+        super.refreshContent();
         this.addJumpMap();
     }
 
-    public List<T> getList() {
-        return list;
+    public final List<T> getList() {
+        return this.list;
     }
 }

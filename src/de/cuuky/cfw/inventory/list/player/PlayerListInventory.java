@@ -41,9 +41,8 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     }
 
     @Override
-    protected void addListItem(int index, Player player) {
-        super.addItem(index, new BuildItem().material(Materials.SKELETON_SKULL).displayName(player.getName()).build());
-        super.addListItem(index, player);
+    protected ItemStack getLoadingItem() {
+        return new BuildItem().material(Materials.SKELETON_SKULL).displayName("§cLoading...").build();
     }
 
     @Override

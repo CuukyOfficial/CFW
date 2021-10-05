@@ -17,10 +17,12 @@ class AdvancedItemLink {
         return this.stack;
     }
 
-    boolean run(InventoryClickEvent event) {
-        if (this.link == null)
-            return false;
+    boolean hasLink() {
+        return this.link != null;
+    }
 
+    boolean run(InventoryClickEvent event) {
+        if (this.link == null) return false;
         link.onItemClick(event);
         return true;
     }

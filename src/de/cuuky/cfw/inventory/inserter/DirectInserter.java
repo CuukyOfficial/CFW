@@ -16,8 +16,7 @@ public class DirectInserter implements ItemInserter {
     public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
         started = true;
         items.keySet().forEach(index -> this.setItem(inventory, index, items.get(index), false));
-        if (!inventory.isUpdating())
-            player.updateInventory();
+        if (!inventory.isUpdating()) player.updateInventory();
     }
 
     @Override

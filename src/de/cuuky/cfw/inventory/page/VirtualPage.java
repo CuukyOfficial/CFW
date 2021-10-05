@@ -21,10 +21,8 @@ class VirtualPage implements Page<AdvancedPageInventory> {
     }
 
     private void generateInfoList() {
-        if (this.size != null)
-            infos.add(Info.SIZE);
-        if (this.title != null)
-            infos.add(Info.TITLE);
+        if (this.size != null) infos.add(Info.SIZE);
+        if (this.title != null) infos.add(Info.TITLE);
     }
 
     @Override

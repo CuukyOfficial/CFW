@@ -1,6 +1,7 @@
 package de.cuuky.cfw.inventory.list;
 
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.ItemClick;
 import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
 import org.bukkit.entity.Player;
@@ -15,21 +16,19 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
         super(manager, player, list);
     }
 
-    public AdvancedAsyncListInventory(AdvancedInventoryManager manager, Player player) {
-        super(manager, player);
-    }
-
     protected ItemStack getLoadingItem() {
         return new BuildItem().displayName("§cLoading...").material(Materials.COAL).build();
     }
 
     @Override
-    protected void addListItem(int index, T item) {
-        AdvancedAsyncListInventory.super.addItem(index, this.getLoadingItem());
+    protected void addShowItem(int index, ItemStack item, ItemClick click) {
+        if (item == null) return;
+        super.addItem(index, this.getLoadingItem());
         new BukkitRunnable() {
             @Override
             public void run() {
-                AdvancedAsyncListInventory.super.addListItem(index, item);
+                AdvancedAsyncListInventory.super.addShowItem(index, item, click);
+                AdvancedAsyncListInventory.this.getPlayer().updateInventory();
             }
         }.runTaskLaterAsynchronously(this.getManager().getOwnerInstance(), 0L);
     }
