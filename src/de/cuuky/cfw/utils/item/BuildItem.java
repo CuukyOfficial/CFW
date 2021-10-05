@@ -15,14 +15,13 @@ public class BuildItem {
     private Material material;
     private String displayName;
     private List<String> lore = new ArrayList<>();
-    private Map<Enchantment, Integer> enchantments = new HashMap<>();
+    private final Map<Enchantment, Integer> enchantments = new HashMap<>();
     private int amount = 1;
     private boolean deleteAnnotations;
 
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
         if (displayName != null && type != Material.AIR) meta.setDisplayName(displayName);
-        if (enchantments != null)
-            enchantments.keySet().forEach(ent -> meta.addEnchant(ent, enchantments.get(ent), true));
+        enchantments.keySet().forEach(ent -> meta.addEnchant(ent, enchantments.get(ent), true));
         if (lore != null) meta.setLore(lore);
         return meta;
     }
@@ -42,6 +41,7 @@ public class BuildItem {
     }
 
     public BuildItem addEnchantment(Enchantment enchantment, int amplifier) {
+        if (enchantment == null) return this;
         enchantments.put(enchantment, amplifier);
         return this;
     }
@@ -85,11 +85,11 @@ public class BuildItem {
     }
 
     public BuildItem lore(String lore) {
-        return this.lore(Collections.singletonList(lore));
+        return this.lore(lore == null ? null : lore.split("\n"));
     }
 
     public BuildItem lore(String... lore) {
-        return this.lore(Arrays.asList(lore));
+        return this.lore(lore == null ? null : Arrays.asList(lore));
     }
 
     public int getAmount() {
