@@ -32,7 +32,7 @@ public class CuukyFrameWork {
 
 	private final JavaPlugin ownerInstance;
 	private final String consolePrefix;
-	private final Map<FrameworkManagerType, FrameworkManager> manager;
+	private final Map<FrameworkManagerType, FrameworkManager> manager = new HashMap<>();
 
 	public CuukyFrameWork(JavaPlugin pluginInstance) {
 		this(pluginInstance, new FrameworkManager[0]);
@@ -43,7 +43,6 @@ public class CuukyFrameWork {
 
 		System.out.println(this.consolePrefix + "Loading " + NAME + " v" + VERSION + " by " + AUTHOR + " for plugin " + pluginInstance.getName() + "...");
 		this.ownerInstance = pluginInstance;
-		this.manager = new HashMap<>();
 
 		for (FrameworkManager fm : manager) {
 			System.out.println(this.consolePrefix + "Using Custom-Manager " + fm.getClass().getName() + "!");
@@ -63,6 +62,10 @@ public class CuukyFrameWork {
 		}
 
 		return manager;
+	}
+
+	public void disable() {
+		this.manager.values().forEach(FrameworkManager::disable);
 	}
 
 	public JavaPlugin getPluginInstance() {

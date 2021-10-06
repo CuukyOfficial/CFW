@@ -14,6 +14,8 @@ public class FrameworkManager {
 		this.ownerInstance = ownerInstance;
 	}
 
+	public void disable() {}
+
 	public JavaPlugin getOwnerInstance() {
 		return this.ownerInstance;
 	}

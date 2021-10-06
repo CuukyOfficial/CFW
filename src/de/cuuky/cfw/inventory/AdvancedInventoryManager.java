@@ -29,6 +29,11 @@ public class AdvancedInventoryManager extends FrameworkManager {
         return this.inventories.remove(inventory);
     }
 
+    @Override
+    public void disable() {
+        this.closeInventories();
+    }
+
     public void updateInventories(AdvancedInventory self, Function<AdvancedInventory, Boolean> filter) {
         for (AdvancedInventory inventory : this.inventories)
             if ((self != null && !inventory.equals(self)) && filter.apply(inventory))
@@ -46,8 +51,7 @@ public class AdvancedInventoryManager extends FrameworkManager {
     }
 
     public void closeInventories() {
-        for (int i = this.inventories.size() - 1; i > -1; i--)
-            this.inventories.get(i).close();
+        this.inventories.forEach(AdvancedInventory::close);
     }
 
     public List<AdvancedInventory> getInventories() {
