@@ -58,7 +58,7 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void sendTitle(Player player, String header, String footer) {
+	public void sendTitle(Player player, String title, String subtitle) {
 		throw new UnsupportedOperationException();
 	}
 
