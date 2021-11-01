@@ -7,24 +7,38 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 
 public abstract class AdvancedEditInventory extends AdvancedItemShowInventory implements EventNotifiable {
 
-    private final Map<Integer, ItemStack> contents = new TreeMap<>();
-    private final Set<Integer> updated = new HashSet<>();
+    private Map<Integer, ItemStack> contents;
+//    private final Set<Integer> updated = new HashSet<>();
+    private int size = -1;
 
     public AdvancedEditInventory(AdvancedInventoryManager manager, Player player) {
         super(manager, player);
 
+//        this.size = this.getRecommendedSize();
         this.addInfo(new PrioritisedInfo(this::getEditPriority, Info.PLAY_SOUND));
         this.addInfo(new PrioritisedInfo(this::getEditPriority, Info.CANCEL_CLICK));
     }
 
-    private void updated() {
-        this.updated.add(this.getPage());
+    private void loadItems() {
+        this.contents = new TreeMap<>();
+        int i = 0;
+        for (ItemStack stack : this.getInitialItems()) {
+            this.contents.put(i, stack);
+            i++;
+        }
     }
+
+//    private void updatePage() {
+//        this.updated.add(this.getPage());
+//    }
 
     private void updateCurrentContent() {
         ItemStack[] content = this.getInventory().getContents();
@@ -41,10 +55,13 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
 
     @Override
     protected Map.Entry<ItemStack, ItemClick> getInfo(int index) {
-        ItemStack stack;
-        if (this.updated.contains(this.getPage())) stack = this.contents.get(index);
-        else this.contents.put(index, stack = this.getStack(index));
+        ItemStack stack = this.contents.get(index);
         return stack == null ? null : new AbstractMap.SimpleEntry<>(stack, null);
+    }
+
+    @Override
+    public final int getSize() {
+        return this.size == -1 ? this.size = this.getRecommendedSize() : this.size;
     }
 
     @Override
@@ -57,7 +74,7 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
         return !this.clickedContent() && super.cancelClick();
     }
 
-    protected abstract ItemStack getStack(int index);
+    protected abstract Collection<ItemStack> getInitialItems();
 
     public Map<Integer, ItemStack> getContents() {
         return contents;
@@ -80,8 +97,8 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
 
     @Override
     public void update() {
+        if (this.contents == null) this.loadItems();
         super.update();
-        this.updated();
     }
 
     @Override

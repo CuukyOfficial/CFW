@@ -189,7 +189,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         if (object instanceof InventoryNotifiable) notifiableConsumer.accept((InventoryNotifiable) object);
     }
 
-    protected int calculateInvSize(int entries) {
+    protected int toInvSize(int entries) {
         int mod = entries % 9;
         int result = (mod != 0 ? (9 - mod) : mod) + entries;
         return Math.min(result, 54);

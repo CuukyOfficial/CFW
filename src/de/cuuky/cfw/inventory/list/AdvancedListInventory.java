@@ -124,7 +124,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
     }
 
     @Override
-    protected int getMinPageSize() {
+    protected int getMinSize() {
         return this.list.size();
     }
 

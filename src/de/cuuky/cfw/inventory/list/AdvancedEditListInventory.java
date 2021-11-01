@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -21,12 +22,12 @@ public abstract class AdvancedEditListInventory extends AdvancedEditInventory {
     }
 
     @Override
-    protected ItemStack getStack(int index) {
-        return this.stacks.size() > index ? this.stacks.get(index) : null;
+    protected Collection<ItemStack> getInitialItems() {
+        return this.stacks;
     }
 
     @Override
-    protected int getMinPageSize() {
+    protected int getMinSize() {
         return this.stacks.size();
     }
 
@@ -37,7 +38,4 @@ public abstract class AdvancedEditListInventory extends AdvancedEditInventory {
     protected List<ItemStack> collectItemsListed() {
         return this.collectNullFilteredItems().collect(Collectors.toList());
     }
-
-    @Override
-    public abstract int getMaxPage();
 }

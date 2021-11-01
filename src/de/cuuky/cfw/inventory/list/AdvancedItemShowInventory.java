@@ -16,23 +16,27 @@ abstract class AdvancedItemShowInventory extends AdvancedInventory implements Fi
         this.addItem(i, stack, click);
     }
 
+    protected int getIndex(int page) {
+        return this.getUsableSize() * (page - 1);
+    }
+
     protected int getCurrentIndex() {
-        return this.getUsableSize() * (this.getPage() - 1);
+        return this.getIndex(this.getPage());
     }
 
     protected abstract Map.Entry<ItemStack, ItemClick> getInfo(int index);
 
-    protected int getRecommendedSize(int min, int max) {
-        int size = this.calculateInvSize(this.getMinPageSize());
-        return Math.min(Math.max(Math.min(size, max), min) + this.getInfo(Info.HOTBAR_SIZE), 54);
-    }
-
-    protected int getRecommendedSize(int min) {
-        return this.getRecommendedSize(min, 54);
-    }
-
     protected int getRecommendedSize() {
-        return this.getRecommendedSize(27);
+        return Math.min(this.toInvSize(this.getMinSize()) + this.getInfo(Info.HOTBAR_SIZE), 54);
+    }
+
+    protected int getMinSize() {
+        return 27;
+    }
+
+    @Override
+    public int getSize() {
+        return this.getRecommendedSize();
     }
 
     @Override
@@ -47,15 +51,6 @@ abstract class AdvancedItemShowInventory extends AdvancedInventory implements Fi
 
     @Override
     public abstract int getMaxPage();
-
-    protected int getMinPageSize() {
-        return 27;
-    }
-
-    @Override
-    public int getSize() {
-        return this.getRecommendedSize();
-    }
 
     @Override
     public boolean shallInsertFiller(int location, ItemStack stack) {

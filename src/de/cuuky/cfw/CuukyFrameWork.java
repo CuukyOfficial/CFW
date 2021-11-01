@@ -34,10 +34,6 @@ public class CuukyFrameWork {
 	private final String consolePrefix;
 	private final Map<FrameworkManagerType, FrameworkManager> manager = new HashMap<>();
 
-	public CuukyFrameWork(JavaPlugin pluginInstance) {
-		this(pluginInstance, new FrameworkManager[0]);
-	}
-
 	public CuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
 		this.consolePrefix = "[" + pluginInstance.getName() + "] [CFW] ";
 
@@ -50,18 +46,19 @@ public class CuukyFrameWork {
 		}
 	}
 
-	protected FrameworkManager loadManager(FrameworkManagerType type) {
-		FrameworkManager manager = this.manager.get(type);
-		if (manager == null) {
+	public CuukyFrameWork(JavaPlugin pluginInstance) {
+		this(pluginInstance, new FrameworkManager[0]);
+	}
+
+	protected FrameworkManager loadManager(FrameworkManagerType t) {
+		return this.manager.computeIfAbsent(t, type -> {
 			try {
-				this.manager.put(type, manager = type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance));
-			} catch (NoSuchMethodException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
+				return type.getManager().getDeclaredConstructor(JavaPlugin.class).newInstance(this.ownerInstance);
+			} catch (ReflectiveOperationException e) {
 				e.printStackTrace();
 				throw new IllegalStateException(this.consolePrefix + "Failed to initialize type " + type + "!");
 			}
-		}
-
-		return manager;
+		});
 	}
 
 	public void disable() {
