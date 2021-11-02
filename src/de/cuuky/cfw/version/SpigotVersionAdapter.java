@@ -74,8 +74,8 @@ public class SpigotVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void sendTitle(Player player, String header, String footer) {
-		this.parent.sendTitle(player, header, footer);
+	public void sendTitle(Player player, String title, String subtitle) {
+		this.parent.sendTitle(player, title, subtitle);
 	}
 
 	@Override

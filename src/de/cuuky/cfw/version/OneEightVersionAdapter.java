@@ -168,10 +168,10 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	@Override
-	public void sendTitle(Player player, String header, String footer) {
+	public void sendTitle(Player player, String title, String subtitle) {
 		try {
-			Object titleHeader = this.chatSerializerMethod.invoke(null, "{\"text\": \"" + header + "\"}");
-			Object titleFooter = this.chatSerializerMethod.invoke(null, "{\"text\": \"" + footer + "\"}");
+			Object titleHeader = this.chatSerializerMethod.invoke(null, "{\"text\": \"" + title + "\"}");
+			Object titleFooter = this.chatSerializerMethod.invoke(null, "{\"text\": \"" + subtitle + "\"}");
 
 			Object headerPacket = this.titleConstructor.newInstance(this.title, titleHeader, 0, 2, 0);
 			Object footerPacket = this.titleConstructor.newInstance(this.subtitle, titleFooter, 0, 2, 0);

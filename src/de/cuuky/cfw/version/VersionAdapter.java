@@ -30,7 +30,7 @@ public interface VersionAdapter {
 
 	void sendTablist(Player player, String header, String footer);
 
-	void sendTitle(Player player, String header, String footer);
+	void sendTitle(Player player, String title, String subtitle);
 
 	void setAttributeSpeed(Player player, double value);
 
