@@ -43,8 +43,8 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 	}
 
 	@Override
-	public void sendTitle(Player player, String header, String footer) {
-		player.sendTitle(header, footer, 10, 70, 20);
+	public void sendTitle(Player player, String title, String subtitle) {
+		player.sendTitle(title, subtitle, 10, 70, 20);
 	}
 
 	@Override

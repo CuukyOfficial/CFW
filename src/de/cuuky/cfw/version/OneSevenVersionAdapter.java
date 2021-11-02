@@ -184,7 +184,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void sendTitle(Player player, String header, String footer) {
+	public void sendTitle(Player player, String title, String subtitle) {
 		// 1.8+
 	}
 
