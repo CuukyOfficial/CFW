@@ -34,13 +34,12 @@ public class VersionUtils {
 
 			String base = "net.minecraft";
 			nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-			try {
+			if (nmsVersion.startsWith("v1")) {
 				// 1.7 - 1.16
 				nmsClass = base + ".server." + nmsVersion;
-				Class.forName(nmsClass + ".MinecraftServer");
-			} catch (ClassNotFoundException e) {
-				// 1.17+
-				nmsClass = base;
+			} else {
+				// Thermos (1.17+ does not use this string at all)
+				nmsClass = base + ".server";
 			}
 			version = BukkitVersion.getVersion(nmsVersion);
 			serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
@@ -70,7 +69,7 @@ public class VersionUtils {
 		return player.getHealth();
 	}
 
-	public static String getNmsClass() {
+	static String getNmsClass() {
 		return nmsClass;
 	}
 
