@@ -9,34 +9,31 @@ import java.util.function.Supplier;
 public enum ServerSoftware {
 
 	BUKKIT("Bukkit", false, null, "Bukkit"),
-	SPIGOT("Spigot", false, versionSupplier -> new SpigotVersionAdapter(versionSupplier), "Spigot"),
-	PAPER("PaperSpigot", false, versionSupplier -> new SpigotVersionAdapter(versionSupplier), "PaperSpigot", "Paper"),
-	TACO("TacoSpigot", false, versionSupplier -> new SpigotVersionAdapter(versionSupplier), "TacoSpigot"),
+	SPIGOT("Spigot", false, SpigotVersionAdapter::new, "Spigot"),
+	PAPER("PaperSpigot", false, SpigotVersionAdapter::new, "PaperSpigot", "Paper"),
+	TACO("TacoSpigot", false, SpigotVersionAdapter::new, "TacoSpigot"),
 	MAGMA("Magma", true, versionSupplier -> new MagmaVersionAdapter(), "Magma"),
 	CAULDRON("Cauldron", true, null, "Cauldron"),
 	THERMOS("Thermos", true, null, "Thermos"),
 	URANIUM("Uranium", true, null, "Uranium"),
 	UNKNOWN("Unknown", true, null);
 
-	private static List<Character> abc;
+	private static final List<Character> abc =
+			new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+					'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
 
-	static {
-		abc = new ArrayList<Character>(Arrays.asList(new Character[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-				'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' }));
-	}
-
-	private String name;
-	private String[] versionnames;
-	private boolean modsupport;
+	private final String name;
+	private final String[] versionnames;
+	private final boolean modsupport;
 	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
 	private VersionAdapter adapter;
 
-	private ServerSoftware(String name, boolean modsupport,
-			Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
+	ServerSoftware(String name, boolean modsupport,
+				   Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
 		this.modsupport = modsupport;
-		this.adapterFunction = adapterFunction == null ? version -> version.get() : adapterFunction;
+		this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
 	}
 
 	public String getName() {
@@ -99,7 +96,6 @@ public enum ServerSoftware {
 						continue;
 
 					found = software;
-					foundName = softwareName;
 				}
 			}
 		}
