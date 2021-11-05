@@ -193,9 +193,16 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 			String customName) {
 		ArmorStand stand = (ArmorStand) armorstand;
 		stand.setVisible(visible);
+		if (!visible)
+			try {
+				stand.setMarker(true);
+			} catch(NoSuchMethodError e) {
+				//unsupported in 1.8.0
+			}
+
 		stand.setCustomNameVisible(customNameVisible);
 		stand.setGravity(gravity);
-
+		
 		if (stand.getCustomName() == null) {
 			if (customName != null)
 				stand.setCustomName(customName);
