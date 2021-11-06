@@ -125,7 +125,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
 
     @Override
     protected int getMinSize() {
-        return this.list.size();
+        return Math.max(27, this.list.size());
     }
 
     protected abstract ItemStack getItemStack(T item);

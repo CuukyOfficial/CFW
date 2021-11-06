@@ -8,8 +8,8 @@ abstract class InfoProviderHolder {
 
     // A little bit messy ik
     private final Map<String, InfoProvider> savedProvider = new HashMap<>();
-    private final Map<Info<?>, List<Map.Entry<InfoProvider, Supplier<Integer>>>> provider = new HashMap<>();
-    private final Map<Info<?>, Object> cache = new HashMap<>();
+    private final Map<Info<?>, List<Map.Entry<InfoProvider, Supplier<Integer>>>> provider = new ConcurrentHashMap<>();
+    private final Map<Info<?>, Object> cache = new ConcurrentHashMap<>();
 
     private List<InfoProvider> getActiveProvider() {
         List<InfoProvider> providerList = new LinkedList<>(this.savedProvider.values()), current = this.getTemporaryProvider();
@@ -42,9 +42,7 @@ abstract class InfoProviderHolder {
             for (PrioritisedInfo pInfo : this.collectInfos(provider)) {
                 Map.Entry<InfoProvider, Supplier<Integer>>
                         current = new AbstractMap.SimpleEntry<>(provider, pInfo.getPriority());
-                synchronized (this.cache) {
-                    this.provider.computeIfAbsent(pInfo.getInfo(), (k) -> new LinkedList<>()).add(current);
-                }
+                this.provider.computeIfAbsent(pInfo.getInfo(), (k) -> new LinkedList<>()).add(current);
             }
         }
     }
@@ -61,9 +59,19 @@ abstract class InfoProviderHolder {
         return this.provider.get(info).stream().max(Comparator.comparingInt(e -> e.getValue().get())).get().getKey();
     }
 
-    public <T> T getInfo(Info<T> type) {
-        synchronized (this.cache) {
-            return (T) this.cache.computeIfAbsent(type, (typ) -> typ.apply(this.getProvider(typ)));
+//    public <T> T getInfo(Info<T> type) {
+//        return (T) this.cache.computeIfAbsent(type, (typ) -> typ.apply(this.getProvider(typ)));
+//    }
+
+    public <T> T getInfo(Info<T> info) {
+        T type = (T) this.cache.get(info);
+        if (type == null) {
+            type = info.apply(this.getProvider(info));
+            if (type == null)
+                return null;
+
+            this.cache.put(info, type);
         }
+        return type;
     }
 }
