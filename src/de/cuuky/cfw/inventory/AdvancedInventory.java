@@ -291,19 +291,18 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
 
     public void update() {
         this.updating = true;
-        this.updateInformation();
         this.validatePage();
         boolean needsOpen = this.needsOpen();
         this.inserter.stopInserting();
         this.items.clear();
-        this.setSelector();
 
         this.inserter = this.getInfo(Info.DO_ANIMATION) ? this.getInfo(Info.ITEM_INSERTER) : new DirectInserter();
         this.refreshContent();
 
+        this.updateInformation();
+        this.setSelector();
         int size = this.getInfo(Info.SIZE);
         this.inserter.setItems(manager.getOwnerInstance(), this, this.getContent(size), player, size);
-
         if (!needsOpen) this.player.updateInventory();
         else this.player.openInventory(this.inventory);
 
