@@ -6,7 +6,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-abstract class AdvancedItemShowInventory extends AdvancedInventory implements FillerConfigurable {
+public abstract class AdvancedItemShowInventory extends AdvancedInventory implements FillerConfigurable {
 
     public AdvancedItemShowInventory(AdvancedInventoryManager manager, Player player) {
         super(manager, player);
