@@ -4,9 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -93,11 +91,6 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		Class<?> entityClass = Class.forName(VersionUtils.getNmsClass() + ".Entity");
 		this.initNbtMethod = entityClass.getMethod("c", this.netTagClass);
 		this.loadNbtMethod = entityClass.getMethod("f", this.netTagClass);
-	}
-
-	@Override
-	public Collection<? extends Player> getOnlinePlayers() {
-		return Bukkit.getOnlinePlayers();
 	}
 
 	@Override
