@@ -4,7 +4,6 @@ import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.IllegalClassException;
 import org.bukkit.configuration.ConfigurationSection;
 
 import de.cuuky.cfw.serialize.CFWSerializeManager;
@@ -32,7 +31,7 @@ public class MapSerializer extends CFWSerializeType {
 
 		if (keyClazz != null)
 			if (!Enum.class.isAssignableFrom(keyClazz))
-				throw new IllegalClassException("Cannot deserialize CFWSerialize class other than Enums as key");
+				throw new Error("Cannot deserialize CFWSerialize class other than Enums as key");
 
 		Map<Object, Object> content = new HashMap<>();
 		ConfigurationSection arraySection = section.getConfigurationSection(key);
@@ -71,7 +70,7 @@ public class MapSerializer extends CFWSerializeType {
 
 		if (keyClazz != null)
 			if (!Enum.class.isAssignableFrom(keyClazz))
-				throw new IllegalClassException("Cannot deserialize CFWSerialize class other than Enums as key");
+				throw new Error("Cannot deserialize CFWSerialize class other than Enums as key");
 
 		Map<Object, Object> list = (Map<Object, Object>) value;
 		ConfigurationSection mapSection = section.createSection(saveUnder);
