@@ -26,8 +26,6 @@ public interface VersionAdapter {
 
 	void sendLinkedMessage(Player player, String message, String link);
 
-	void sendPacket(Player player, Object packet);
-
 	void sendTablist(Player player, String header, String footer);
 
 	void sendTitle(Player player, String title, String subtitle);

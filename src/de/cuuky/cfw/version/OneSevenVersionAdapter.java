@@ -169,7 +169,6 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		player.sendMessage(message);
 	}
 
-	@Override
 	public void sendPacket(Player player, Object packet) {
 		try {
 			this.sendPacketMethod.invoke(this.getConnection(player), packet);

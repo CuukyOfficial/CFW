@@ -4,7 +4,10 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Statistic;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 public class FakeOfflinePlayer implements OfflinePlayer {
@@ -83,4 +86,80 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 
 	//@Override
 	public void setBanned(boolean arg0) {}
+
+	@Override
+	public void incrementStatistic(Statistic statistic) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, int amount) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, int amount) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void setStatistic(Statistic statistic, int newValue) throws IllegalArgumentException {
+	}
+
+	@Override
+	public int getStatistic(Statistic statistic) throws IllegalArgumentException {
+		return 0;
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+	}
+
+	@Override
+	public int getStatistic(Statistic statistic, Material material) throws IllegalArgumentException {
+		return 0;
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, Material material, int amount) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, Material material, int amount) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void setStatistic(Statistic statistic, Material material, int newValue) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+	}
+
+	@Override
+	public int getStatistic(Statistic statistic, EntityType entityType) throws IllegalArgumentException {
+		return 0;
+	}
+
+	@Override
+	public void incrementStatistic(Statistic statistic, EntityType entityType, int amount)
+			throws IllegalArgumentException {
+	}
+
+	@Override
+	public void decrementStatistic(Statistic statistic, EntityType entityType, int amount) {
+	}
+
+	@Override
+	public void setStatistic(Statistic statistic, EntityType entityType, int newValue) {
+	}
 }

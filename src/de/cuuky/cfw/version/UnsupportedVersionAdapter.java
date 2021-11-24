@@ -48,11 +48,6 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void sendPacket(Player player, Object packet) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
 	public void sendTablist(Player player, String header, String footer) {
 		throw new UnsupportedOperationException();
 	}

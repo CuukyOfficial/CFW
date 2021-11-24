@@ -46,7 +46,7 @@ public class NetworkManager {
 	}
 	
 	public void sendPacket(Object packet) {
-		this.internal.sendPacket(this.player, packet);
+		throw new Error("Unsupported");
 	}
 	
 	public void sendTablist(String header, String footer) {

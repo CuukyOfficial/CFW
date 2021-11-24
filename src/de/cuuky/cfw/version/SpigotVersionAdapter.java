@@ -64,11 +64,6 @@ public class SpigotVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void sendPacket(Player player, Object packet) {
-		this.parent.sendPacket(player, packet);
-	}
-
-	@Override
 	public void sendTablist(Player player, String header, String footer) {
 		this.parent.sendTablist(player, header, footer);
 	}

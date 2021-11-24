@@ -36,10 +36,6 @@ public class PlayerVersionAdapter {
 		this.internal.sendLinkedMessage(this.player, message, link);
 	}
 	
-	public void sendPacket(Object packet) {
-		this.internal.sendPacket(this.player, packet);
-	}
-	
 	public void sendTablist(String header, String footer) {
 		this.internal.sendTablist(this.player, header, footer);
 	}
