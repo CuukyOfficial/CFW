@@ -26,11 +26,11 @@ public class ConfirmInventory extends AdvancedInventory {
     }
 
     protected ItemInfo getYesItem() {
-        return new ItemInfo(this.getCenter() + 2, new BuildItem().displayName("§2Yes").material(Materials.GREEN_DYE).build());
+        return new ItemInfo(this.getCenter() - 2, new BuildItem().displayName("§2Yes").material(Materials.GREEN_DYE).build());
     }
 
     protected ItemInfo getNoItem() {
-        return new ItemInfo(this.getCenter() - 2, new BuildItem().displayName("§4No").material(Materials.RED_DYE).build());
+        return new ItemInfo(this.getCenter() + 2, new BuildItem().displayName("§4No").material(Materials.RED_DYE).build());
     }
 
     @Override
