@@ -2,10 +2,14 @@ package de.cuuky.cfw.utils;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
@@ -39,9 +43,9 @@ public class BlockUtils {
 
 		return false;
 	}
-
-	public static void setBlock(Block block, Materials mat) {
-		block.setType(mat.parseMaterial());
+	
+	public static void setBlock(Block block, Materials mat, boolean applyPhysics) {
+		block.setType(mat.parseMaterial(), applyPhysics);
 
 		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11)) {
 			try {
@@ -50,6 +54,18 @@ public class BlockUtils {
 				e.printStackTrace();
 			}
 		}
+	}
+
+	public static void setBlock(Block block, Materials mat) {
+		setBlock(block, mat, true);
+	}
+	
+	public static void setBlockDelayed(JavaPlugin plugin, World world, int x, int y, int z, Materials mat) {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(world.getBlockAt(x, y, z), mat, false), 1);
+	}
+	
+	public static void setBlockDelayed(JavaPlugin plugin, Block block, Materials mat) {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(block, mat, false), 1);
 	}
 
 	public static Object getBlockData(Block block, Object from) {
