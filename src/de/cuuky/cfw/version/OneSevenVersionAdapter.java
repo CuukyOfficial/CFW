@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -34,7 +35,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.initEntity();
 		this.initPlayer();
 		this.initNetworkManager();
@@ -240,7 +241,19 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
 	@Override
 	public void forceClearWorlds() {
-		// 1.16+
+		try {
+			for (World world : Bukkit.getWorlds())
+				if (!Bukkit.unloadWorld(world, false)) {
+					Object handle = world.getClass().getMethod("getHandle").invoke(world);
+					Field dimensionField = handle.getClass().getField("dimension");
+					dimensionField.setAccessible(true);
+					dimensionField.set(handle, 2);
+					if (Bukkit.unloadWorld(world, false))
+						throw new Error("Unable to unload world " + world.getName());
+				}
+		}catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
+			throw new Error(e);
+		}
 	}
 
 	@Override
