@@ -9,15 +9,19 @@ import java.util.Properties;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Sign;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
+@SuppressWarnings("deprecation")
 class OneSevenVersionAdapter implements VersionAdapter {
 
 	protected Class<?> nmsPlayerClass;
@@ -219,6 +223,13 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	@Override
 	public void deleteItemAnnotations(ItemStack item) {
 		// 1.8+ (?)
+	}
+	
+	@Override
+	public BlockFace getSignAttachedFace(Block block) {
+		// can be null on newer versions (paper 1.8.1 ???) but I'm not sure why.
+		BlockFace face = ((Sign) block.getState().getData()).getAttachedFace();
+		return face == null ? BlockFace.SOUTH : face;
 	}
 
 	@Override

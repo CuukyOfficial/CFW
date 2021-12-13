@@ -6,8 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.cuuky.cfw.version.BukkitVersion;
@@ -68,30 +66,5 @@ public class BlockUtils {
 	
 	public static void setBlockDelayed(JavaPlugin plugin, Block block, Materials mat) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(block, mat, false), 1);
-	}
-
-	public static Object getBlockData(Block block, Object from) {
-		BlockState blockState = block.getState();
-		try {
-			return from.getClass().getMethod("getBlockData").invoke(from);
-		} catch (NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | SecurityException e) {
-			return blockState.getData();
-		}
-	}
-
-	public static BlockFace getAttachedSignFace(Object sign) {
-		BlockFace attachedFace = null;
-		try {
-			attachedFace = (BlockFace) sign.getClass().getMethod("getAttachedFace").invoke(sign);
-		} catch (ClassCastException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			try {
-				Object facing = sign.getClass().getMethod("getFacing").invoke(sign);
-				attachedFace = (BlockFace) facing.getClass().getMethod("getOppositeFace").invoke(facing);
-			} catch (Exception e2) {
-				e2.printStackTrace();
-			}
-		}
-
-		return attachedFace;
 	}
 }

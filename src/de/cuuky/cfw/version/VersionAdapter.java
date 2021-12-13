@@ -3,6 +3,8 @@ package de.cuuky.cfw.version;
 import java.util.Collection;
 import java.util.Properties;
 
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -42,6 +44,8 @@ public interface VersionAdapter {
 	void setXpCooldown(Player player, int cooldown);
 
 	void deleteItemAnnotations(ItemStack item);
+	
+	BlockFace getSignAttachedFace(Block block);
 
 	Object getNetworkManager(Player player);
 

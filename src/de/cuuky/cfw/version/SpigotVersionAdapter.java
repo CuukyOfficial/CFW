@@ -6,6 +6,8 @@ import java.util.Properties;
 import java.util.function.Supplier;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -102,6 +104,11 @@ public class SpigotVersionAdapter implements VersionAdapter {
 	@Override
 	public void deleteItemAnnotations(ItemStack item) {
 		this.parent.deleteItemAnnotations(item);
+	}
+	
+	@Override
+	public BlockFace getSignAttachedFace(Block block) {
+		return this.parent.getSignAttachedFace(block);
 	}
 
 	@Override
