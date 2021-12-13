@@ -3,7 +3,6 @@ package de.cuuky.cfw.utils;
 import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -45,7 +44,10 @@ public class BlockUtils {
 	}
 	
 	public static void setBlock(Block block, Materials mat, boolean applyPhysics) {
-		block.setType(mat.parseMaterial(), applyPhysics);
+		if (VersionUtils.getVersion().isLowerThan(BukkitVersion.ONE_8))
+			block.setType(mat.parseMaterial());
+		else
+			block.setType(mat.parseMaterial(), applyPhysics);
 
 		if (!VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_11)) {
 			try {
