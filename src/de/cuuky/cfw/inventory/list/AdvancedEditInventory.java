@@ -29,8 +29,12 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
 
     private void loadItems() {
         this.contents = new TreeMap<>();
+        Collection<ItemStack> items = this.getInitialItems();
+        if (items == null)
+            return;
+
         int i = 0;
-        for (ItemStack stack : this.getInitialItems()) {
+        for (ItemStack stack : items) {
             this.contents.put(i, stack);
             i++;
         }
