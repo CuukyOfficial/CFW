@@ -112,7 +112,7 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 
 	public void sendScoreBoard() {
 		Scoreboard sb = this.manager.getOwnerInstance().getServer().getScoreboardManager().getNewScoreboard();
-		Objective obj = sb.registerNewObjective("CFW", "dummy");
+		Objective objective = sb.registerNewObjective("CFW", "dummy");
 		this.title = this.player.getUpdateHandler().getScoreboardTitle();
 		if (this.title == null)
 			this.title = "";
@@ -120,8 +120,9 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 		if (this.title.length() >= 32)
 			this.title = this.title.substring(0, 32);
 
-		obj.setDisplayName(this.title);
-		obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+		objective.setDisplayName(this.title);
+		this.title = objective.getDisplayName();
+		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		player.getPlayer().setScoreboard(sb);
 
 		replaces = new ArrayList<>();
