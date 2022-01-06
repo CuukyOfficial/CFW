@@ -40,7 +40,7 @@ processResources {
 	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	from(sourceSets.main.resources.srcDirs) {
 		filter ReplaceTokens, tokens: [name: "CuukyFrameWork"]
-		filter ReplaceTokens, tokens: [version: "0.6.2"]
+		filter ReplaceTokens, tokens: [version: "0.6.3"]
 		filter ReplaceTokens, tokens: [author: "Cuuky"]
 	}
 }

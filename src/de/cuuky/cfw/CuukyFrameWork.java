@@ -22,7 +22,7 @@ public class CuukyFrameWork {
 		ConfigurationSerialization.registerClass(CompatibleLocation.class);
 	}
 
-	private static final String NAME = "CuukyFrameWork", VERSION = "0.6.2", AUTHOR = "Cuuky";
+	private static final String NAME = "CuukyFrameWork", VERSION = "0.6.3", AUTHOR = "Cuuky";
 
 	/*
 	 * CFW - A Bukkit framework
