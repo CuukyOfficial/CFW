@@ -14,7 +14,7 @@ public class BuildItem {
     private ItemStack stack;
     private Material material;
     private String displayName;
-    private List<String> lore = new ArrayList<>();
+    private List<String> lore;
     private final Map<Enchantment, Integer> enchantments = new HashMap<>();
     private int amount = 1;
     private boolean deleteAnnotations;
@@ -22,7 +22,7 @@ public class BuildItem {
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
         if (displayName != null && type != Material.AIR) meta.setDisplayName(displayName);
         enchantments.keySet().forEach(ent -> meta.addEnchant(ent, enchantments.get(ent), true));
-        if (lore != null) meta.setLore(lore);
+        meta.setLore(this.lore);
         return meta;
     }
 
@@ -75,6 +75,8 @@ public class BuildItem {
     }
 
     public BuildItem addLore(String add) {
+    	if(this.lore == null)
+    		this.lore = new ArrayList<>();
         this.lore.add(add);
         return this;
     }
