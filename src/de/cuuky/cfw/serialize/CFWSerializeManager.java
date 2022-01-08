@@ -1,5 +1,15 @@
 package de.cuuky.cfw.serialize;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import de.cuuky.cfw.configuration.YamlConfigurationUtil;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
@@ -7,16 +17,12 @@ import de.cuuky.cfw.serialize.loader.FieldLoader;
 import de.cuuky.cfw.serialize.serializers.CFWDeserializer;
 import de.cuuky.cfw.serialize.serializers.CFWSerializer;
 import de.cuuky.cfw.serialize.serializers.type.CFWSerializeType;
-import de.cuuky.cfw.serialize.serializers.type.types.*;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import de.cuuky.cfw.serialize.serializers.type.types.CFWSerializeableSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.CollectionSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.EnumSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.LocationSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.MapSerializer;
+import de.cuuky.cfw.serialize.serializers.type.types.NumberSerializer;
 
 public class CFWSerializeManager extends FrameworkManager {
 
@@ -49,7 +55,7 @@ public class CFWSerializeManager extends FrameworkManager {
 	@SuppressWarnings("unchecked")
 	public <T> List<T> loadSerializeables(Class<T> clazz, File file, Object invokeObject) {
 		List<T> serializeables = new ArrayList<>();
-		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+		YamlConfiguration configuration = YamlConfigurationUtil.loadConfiguration(file);
 
 		for (String s : configuration.getKeys(true)) {
 			if (!configuration.isConfigurationSection(s) || s.contains("."))
@@ -65,16 +71,12 @@ public class CFWSerializeManager extends FrameworkManager {
 		if (file.exists())
 			file.delete();
 
-		YamlConfiguration configuration = YamlConfiguration.loadConfiguration(file);
+		YamlConfiguration configuration = YamlConfigurationUtil.loadConfiguration(file);
 
 		for (T serializeable : list)
 			new CFWSerializer(this, configuration.createSection(visit.onKeySave(serializeable)), (CFWSerializeable) serializeable).serialize();
 
-		try {
-			configuration.save(file);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		YamlConfigurationUtil.save(configuration, file);
 	}
 
 	public FieldLoader loadClass(Class<?> clazz) {

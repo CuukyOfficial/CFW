@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import de.cuuky.cfw.configuration.YamlConfigurationUtil;
 import de.cuuky.cfw.configuration.language.languages.LoadableMessage;
 
 public class Language {
@@ -36,18 +37,14 @@ public class Language {
 	}
 
 	private void saveConfiguration() {
-		try {
-			this.configuration.save(file);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		YamlConfigurationUtil.save(this.configuration, this.file);
 	}
 
 	public void load() {
 		if (manager.getDefaultLanguage() == null)
 			throw new IllegalStateException("Cannot load language while no default language is given");
 
-		this.configuration = YamlConfiguration.loadConfiguration(this.file);
+		this.configuration = YamlConfigurationUtil.loadConfiguration(this.file);
 		this.configuration.options().copyDefaults(true);
 
 		boolean save = file.exists();

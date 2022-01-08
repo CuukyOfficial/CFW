@@ -1,10 +1,9 @@
 package de.cuuky.cfw.configuration;
 
+import java.io.File;
+
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.io.File;
-import java.io.IOException;
 
 public class BasicConfigurationHandler {
 
@@ -13,17 +12,13 @@ public class BasicConfigurationHandler {
 
     public BasicConfigurationHandler(String path) {
         this.file = new File(path);
-        this.configuration = YamlConfiguration.loadConfiguration(this.file);
+        this.configuration = YamlConfigurationUtil.loadConfiguration(this.file);
         this.configuration.options().copyDefaults(true);
         if (!this.file.exists()) this.save();
     }
 
     public void save() {
-        try {
-            this.configuration.save(this.file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        YamlConfigurationUtil.save(this.configuration, this.file);
     }
 
     public void setValue(String path, Object object) {
