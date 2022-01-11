@@ -3,9 +3,17 @@ package de.cuuky.cfw.utils;
 import org.bukkit.ChatColor;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public final class JavaUtils {
 
@@ -55,9 +63,7 @@ public final class JavaUtils {
 	}
 
 	public static ArrayList<Object> getAsList(String[] lis) {
-		ArrayList<Object> list = new ArrayList<>();
-		list.addAll(Arrays.asList(lis));
-		return list;
+		return new ArrayList<>(Arrays.asList(lis));
 	}
 
 	public static int getNextToNine(int to) {
@@ -123,6 +129,19 @@ public final class JavaUtils {
 		Date date = new Date();
 		return dateFormat.format(date);
 	}
+
+    public static boolean createFile(File file) {
+        if (file.exists())
+            return true;
+
+        try {
+            File parent = new File(file.getParent());
+            parent.mkdirs();
+            return file.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 	public static void deleteDirectory(File file) {
 		for (File listFile : file.listFiles()) {
