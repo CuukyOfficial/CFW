@@ -87,7 +87,7 @@ public class BuildItem {
     }
 
     public BuildItem lore(String lore) {
-        return this.lore(lore == null ? null : lore.split("\n"));
+        return this.lore(lore == null || lore.isEmpty() ? null : lore.split("\n"));
     }
 
     public BuildItem lore(String... lore) {
