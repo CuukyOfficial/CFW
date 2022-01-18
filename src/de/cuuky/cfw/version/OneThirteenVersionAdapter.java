@@ -18,9 +18,6 @@ public class OneThirteenVersionAdapter extends OneTwelveVersionAdapter {
 	protected void initChat() throws ClassNotFoundException, NoSuchMethodException, SecurityException,
 			IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
 	}
-	
-	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-	}
 
 	@Override
 	protected void initNetworkManager() throws IllegalArgumentException, IllegalAccessException {
