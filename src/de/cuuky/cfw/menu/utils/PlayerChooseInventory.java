@@ -165,7 +165,7 @@ public class PlayerChooseInventory {
 
 		int start = size * (page - 1);
 		boolean notEnough = false;
-		Player[] players = this.players != null ? this.players : (Player[]) VersionUtils.getOnlinePlayer().toArray();
+		Player[] players = this.players != null ? this.players : (Player[]) VersionUtils.getVersionAdapter().getOnlinePlayers().toArray();
 		for (int i = 0; i != (size - 3); i++) {
 			Player player;
 

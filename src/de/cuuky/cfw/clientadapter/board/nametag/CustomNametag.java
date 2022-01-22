@@ -119,7 +119,7 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 	}
 
 	public void setToAll() {
-		for (Player toSet : VersionUtils.getOnlinePlayer())
+		for (Player toSet : VersionUtils.getVersionAdapter().getOnlinePlayers())
 			updateFor(toSet.getScoreboard(), this);
 	}
 
