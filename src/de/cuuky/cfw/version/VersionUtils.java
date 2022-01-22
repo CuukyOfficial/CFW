@@ -1,16 +1,16 @@
 package de.cuuky.cfw.version;
 
-import de.cuuky.cfw.version.minecraft.MinecraftVersion;
-import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
-import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import de.cuuky.cfw.version.minecraft.MinecraftVersion;
+import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
+import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
 
 public class VersionUtils {
 
@@ -85,16 +85,6 @@ public class VersionUtils {
 	@Deprecated()
 	public static Object getSpigot() {
 		return spigot;
-	}
-
-	/**
-	 * Use {@link VersionAdapter#getOnlinePlayers()} instead
-	 * 
-	 * @return
-	 */
-	@Deprecated()
-	public static ArrayList<Player> getOnlinePlayer() {
-		return new ArrayList<>(Bukkit.getOnlinePlayers());
 	}
 
 	public static MinecraftVersion getMinecraftVersion(Player player) {
