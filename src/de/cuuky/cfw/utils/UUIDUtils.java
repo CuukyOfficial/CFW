@@ -38,8 +38,7 @@ public final class UUIDUtils {
 		JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(input);
 		String uuidString = UUIDObject.get("id").toString();
 		String uuidSeperation = uuidString.replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
-		UUID uuid = UUID.fromString(uuidSeperation);
-		return uuid;
+        return UUID.fromString(uuidSeperation);
 	}
 
 	private static UUID getUUIDTime(String name, long time) throws Exception {
@@ -59,8 +58,7 @@ public final class UUIDUtils {
         JSONArray nameArray = (JSONArray) JSONValue.parseWithException(input);
         String playerSlot = nameArray.get(nameArray.size() - 1).toString();
         JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
-        String newName = nameObject.get("name").toString();
-        return newName;
+        return nameObject.get("name").toString();
     }
 
 	public static String getName(String name) throws Exception {
