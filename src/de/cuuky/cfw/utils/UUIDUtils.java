@@ -19,7 +19,7 @@ public final class UUIDUtils {
 			url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
 		} else {
 			//the timestamp parameter is no longer supported by mojang https://wiki.vg/Mojang_API#Username_to_UUID
-			url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name + "?at=" + String.valueOf(time));
+			url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name + "?at=" + time);
 		}
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(timeout);
@@ -46,22 +46,29 @@ public final class UUIDUtils {
 		return getUUIDTime(name, time, 30000);
 	}
 
-	public static String getNamesChanged(String name) throws Exception {
+    public static String getNamesChanged(String name) throws Exception {
+        return getName(name);
+    }
+
+    public static String getName(UUID uuid) throws Exception {
+        String uuidString = uuid.toString().replace("-", "");
+        Scanner scanner = new Scanner(new URL("https://api.mojang.com/user/profiles/" + uuidString + "/names").openStream());
+        String input = scanner.nextLine();
+        scanner.close();
+
+        JSONArray nameArray = (JSONArray) JSONValue.parseWithException(input);
+        String playerSlot = nameArray.get(nameArray.size() - 1).toString();
+        JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
+        String newName = nameObject.get("name").toString();
+        return newName;
+    }
+
+	public static String getName(String name) throws Exception {
 		Date Date = new Date();
 		long Time = Date.getTime() / 1000;
 
 		UUID UUIDOld = getUUIDTime(name, (Time - (60 * 60 * 24 * 30)));
-		String uuid = UUIDOld.toString().replace("-", "");
-
-		Scanner scanner = new Scanner(new URL("https://api.mojang.com/user/profiles/" + uuid + "/names").openStream());
-		String input = scanner.nextLine();
-		scanner.close();
-
-		JSONArray nameArray = (JSONArray) JSONValue.parseWithException(input);
-		String playerSlot = nameArray.get(nameArray.size() - 1).toString();
-		JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
-		String newName = nameObject.get("name").toString();
-		return newName;
+		return getName(UUIDOld);
 	}
 
 	public static UUID getCrackedUUID(String name) throws UnsupportedEncodingException {
