@@ -3,6 +3,7 @@ package de.cuuky.cfw.version;
 import java.util.Collection;
 import java.util.Properties;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -25,6 +26,8 @@ public interface VersionAdapter {
 	void sendActionbar(Player player, String message, int duration, Plugin instance);
 
 	void sendActionbar(Player player, String message);
+
+    void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value);
 
 	void sendLinkedMessage(Player player, String message, String link);
 

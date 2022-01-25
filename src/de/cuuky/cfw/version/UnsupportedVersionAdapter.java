@@ -3,6 +3,7 @@ package de.cuuky.cfw.version;
 import java.util.Collection;
 import java.util.Properties;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -44,9 +45,14 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 		throw new UnsupportedOperationException();
 	}
 
-	@Override
+    @Override
+    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
 	public void sendLinkedMessage(Player player, String message, String link) {
-		throw new UnsupportedOperationException();
+		this.sendClickableMessage(player, message, null, link);
 	}
 
 	@Override

@@ -4,7 +4,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Locale;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -126,18 +128,18 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		return this.packetChatConstructor.newInstance(text, (byte) 2);
 	}
 
-	@Override
-	public void sendLinkedMessage(Player player, String message, String link) {
-		try {
-			Object text = this.chatSerializerMethod.invoke(null,
-					"{\"text\": \"" + message
-							+ "\", \"color\": \"white\", \"clickEvent\": {\"action\": \"open_url\" , \"value\": \""
-							+ link + "\"}}");
-			this.sendPacket(player, this.getMessagePacket(player, text));
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-	}
+    @Override
+    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+        try {
+            Object text = this.chatSerializerMethod.invoke(null,
+                "{\"text\": \"" + message
+                    + "\", \"color\": \"white\", \"clickEvent\": {\"action\": \"" +
+                    action.name().toLowerCase(Locale.ROOT) + "\" , \"value\": \"" + value + "\"}}");
+            this.sendPacket(player, this.getMessagePacket(player, text));
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
 
 	protected Object getMessagePacket(Player player, Object text)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

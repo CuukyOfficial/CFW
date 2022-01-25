@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.function.Supplier;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -60,7 +61,12 @@ public class SpigotVersionAdapter implements VersionAdapter {
 		this.parent.sendActionbar(player, message);
 	}
 
-	@Override
+    @Override
+    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+        this.parent.sendClickableMessage(player, message, action, value);
+    }
+
+    @Override
 	public void sendLinkedMessage(Player player, String message, String link) {
 		this.parent.sendLinkedMessage(player, message, link);
 	}
