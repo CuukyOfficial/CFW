@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.inventory.ShapedRecipe;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -45,6 +47,7 @@ public final class UUIDUtils {
 		return getUUIDTime(name, time, 30000);
 	}
 
+    @Deprecated
     public static String getNamesChanged(String name) throws Exception {
         return getName(name);
     }
