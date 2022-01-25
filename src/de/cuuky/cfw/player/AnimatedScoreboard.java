@@ -4,10 +4,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Objective;
 
+import de.cuuky.cfw.version.BukkitVersion;
+import de.cuuky.cfw.version.VersionUtils;
+
 public class AnimatedScoreboard {
 
 	private static final int TITLE_MAX = 32;
-	private static final int CONTENT_MAX = 40;
+	private static final int CONTENT_MAX = VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_7) ? 40 : 16;
 	private static final int LINES_MAX = 15;
 
 	private ScoreboardInstance scoreboard;
