@@ -5,6 +5,7 @@ import de.cuuky.cfw.clientadapter.board.scoreboard.CustomScoreboard;
 import de.cuuky.cfw.clientadapter.board.tablist.CustomTablist;
 import de.cuuky.cfw.player.CustomPlayer;
 
+@Deprecated
 public enum CustomBoardType {
 
 	NAMETAG(CustomNametag.class),

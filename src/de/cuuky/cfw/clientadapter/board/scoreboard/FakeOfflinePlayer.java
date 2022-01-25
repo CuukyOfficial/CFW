@@ -10,6 +10,7 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class FakeOfflinePlayer implements OfflinePlayer {
 
 	private static final UUID PLAYER_UUID = UUID.fromString("fbaa9566-6002-4359-b42a-f7235487f10c");
