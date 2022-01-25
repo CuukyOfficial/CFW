@@ -10,6 +10,11 @@ import org.bukkit.entity.Player;
 
 class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
+	@Override
+	protected void initPlayer()
+			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	}
+	
 	protected void initXp() {
 		this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
 	}
