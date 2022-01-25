@@ -28,12 +28,12 @@ public class OneThirteenVersionAdapter extends OneTwelveVersionAdapter {
 		player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
 	}
 
-	@Override
-	public void sendLinkedMessage(Player player, String message, String link) {
-		TextComponent component = new TextComponent(TextComponent.fromLegacyText(message));
-		component.setClickEvent(new ClickEvent(Action.OPEN_URL, link));
-		player.spigot().sendMessage(ChatMessageType.CHAT, component);
-	}
+    @Override
+    public void sendClickableMessage(Player player, String message, Action action, String value) {
+        TextComponent component = new TextComponent(TextComponent.fromLegacyText(message));
+        component.setClickEvent(new ClickEvent(action, value));
+        player.spigot().sendMessage(ChatMessageType.CHAT, component);
+    }
 	
 	@Override
 	public void sendTablist(Player player, String header, String footer) {

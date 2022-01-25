@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Properties;
 
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -166,10 +167,16 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		// 1.8+
 	}
 
-	@Override
+    @Override
+    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+        // 1.8+
+        player.sendMessage(message);
+    }
+
+    @Override
 	public void sendLinkedMessage(Player player, String message, String link) {
 		// 1.8+
-		player.sendMessage(message);
+		this.sendClickableMessage(player, message, ClickEvent.Action.OPEN_URL, link);
 	}
 
 	public void sendPacket(Player player, Object packet) {
