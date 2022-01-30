@@ -48,7 +48,7 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 				field.setAccessible(true);
 				return (Properties) field.get(dedicatedServerProp);
 			}
-			throw new Error("missing propertys field");
+			throw new Error("missing properties field");
 		}catch(NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			throw new Error(e);
 		}
