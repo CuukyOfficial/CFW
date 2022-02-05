@@ -39,8 +39,8 @@ dependencies {
 }
 
 jar {
-	if (project.hasProperty('libsDirName'))
-		destinationDir = file(project.property('libsDirName').toString())
+	if (project.hasProperty('destinationDir'))
+		destinationDir = file(project.property('destinationDir').toString())
 
 	if (project.hasProperty('fileName'))
 		archiveFileName = project.property('fileName').toString()
