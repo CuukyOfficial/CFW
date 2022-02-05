@@ -1,7 +1,9 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
-libsDirName = System.getenv("libsDirName") == null ? (System.getProperty('libsDirName') == null ? libsDirName : System.getProperty('libsDirName').toString()) : System.getenv("libsDirName")
+
+group 'de.varoplugin'
+version '0.6.5'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -36,12 +38,20 @@ dependencies {
 	compileOnly 'com.googlecode.json-simple:json-simple:1.1'
 }
 
+jar {
+	if (project.hasProperty('libsDirName'))
+		destinationDir = file(project.property('libsDirName').toString())
+
+	if (project.hasProperty('fileName'))
+		archiveFileName = project.property('fileName').toString()
+}
+
 processResources {
 	duplicatesStrategy = DuplicatesStrategy.INCLUDE
 	from(sourceSets.main.resources.srcDirs) {
-		filter ReplaceTokens, tokens: [name: "CuukyFrameWork"]
-		filter ReplaceTokens, tokens: [version: "0.6.4"]
-		filter ReplaceTokens, tokens: [author: "Cuuky"]
+		filter ReplaceTokens, tokens: [name: 'CuukyFrameWork']
+		filter ReplaceTokens, tokens: [version: project.version]
+		filter ReplaceTokens, tokens: [author: 'Cuuky']
 	}
 }
 
@@ -49,6 +59,23 @@ publishing {
 	publications {
 		mavenJava(MavenPublication) {
 			from components.java
+			
+			pom {
+                name = 'CuukyFrameWork'
+                description = 'A powerful bukkit framework that runs on 1.7+ and makes coding with bukkit less painful'
+                url = 'https://github.com/CuukyOfficial/CFW'
+			}
+		}
+	}
+
+	repositories {
+		maven {
+			url 'https://archiva.varoplugin.de/repository/public'
+			credentials {
+                username project.hasProperty('repouser') ? project.property('repouser').toString() : null
+                password project.hasProperty('repopassword') ? project.property('repopassword').toString() : null
+            }
 		}
 	}
 }
+	
