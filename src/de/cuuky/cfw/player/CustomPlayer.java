@@ -14,6 +14,7 @@ public interface CustomPlayer {
 
 	public String getLocale();
 
+	@Deprecated
 	public BoardUpdateHandler<? extends CustomPlayer> getUpdateHandler();
 
 }

@@ -10,8 +10,11 @@ import org.bukkit.Statistic;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class FakeOfflinePlayer implements OfflinePlayer {
 
+	private static final UUID PLAYER_UUID = UUID.fromString("fbaa9566-6002-4359-b42a-f7235487f10c");
+	
 	private String name;
 
 	public FakeOfflinePlayer(String name) {
@@ -58,7 +61,7 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 
 	@Override
 	public UUID getUniqueId() {
-		return UUID.fromString("fbaa9566-6002-4359-b42a-f7235487f10c");
+		return PLAYER_UUID;
 	}
 
 	@Override

@@ -15,6 +15,7 @@ import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
 import de.cuuky.cfw.player.CustomPlayer;
 
+@Deprecated
 public class ClientAdapterManager<T extends CustomPlayer> extends FrameworkManager {
 
 	private List<CustomBoard<T>> boards;

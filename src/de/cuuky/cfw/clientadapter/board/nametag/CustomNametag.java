@@ -11,6 +11,7 @@ import org.bukkit.scoreboard.Team;
 
 import java.util.Arrays;
 
+@Deprecated
 public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 
 	// 0 = name, 1 = prefix, 2 = suffix

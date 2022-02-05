@@ -3,6 +3,7 @@ package de.cuuky.cfw.clientadapter.board;
 import de.cuuky.cfw.clientadapter.ClientAdapterManager;
 import de.cuuky.cfw.player.CustomPlayer;
 
+@Deprecated
 public abstract class CustomBoard<T extends CustomPlayer> {
 
 	protected ClientAdapterManager<T> manager;

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Deprecated
 public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<T> {
 
 	private List<String> replaces;
