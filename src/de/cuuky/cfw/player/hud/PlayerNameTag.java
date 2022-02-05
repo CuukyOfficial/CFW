@@ -1,4 +1,4 @@
-package de.cuuky.cfw.player;
+package de.cuuky.cfw.player.hud;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
@@ -19,7 +19,7 @@ class PlayerNameTag {
 	PlayerNameTag(ScoreboardInstance scoreboard) {
 		this.scoreboard = scoreboard;
 	}
-	
+
 	void setValues(boolean visible, String prefix, String suffix) {
 		this.visible = visible;
 		this.prefix = prefix;
@@ -30,7 +30,7 @@ class PlayerNameTag {
 		Scoreboard scoreboard = this.scoreboard.getScoreboard();
 		Team team = scoreboard.getTeam(player.getName());
 
-		if(team == null) {
+		if (team == null) {
 			team = scoreboard.registerNewTeam(player.getName());
 			team.addEntry(player.getName());
 		}

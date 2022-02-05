@@ -1,4 +1,4 @@
-package de.cuuky.cfw.player;
+package de.cuuky.cfw.player.hud;
 
 public class AnimationData<T> {
 
@@ -6,17 +6,17 @@ public class AnimationData<T> {
 	T[] frames;
 
 	public AnimationData(int delay, T[] frames) {
-		if(delay < 0)
+		if (delay < 0)
 			throw new IllegalArgumentException("Delay < 0");
-		
-		if(frames == null || frames.length == 0)
+
+		if (frames == null || frames.length == 0)
 			throw new IllegalArgumentException("Frames are null or empty");
-		
+
 		this.delay = delay;
 		this.frames = frames;
 		this.processFrames(frames);
 	}
-	
+
 	protected void processFrames(T[] frames) {
 	}
 }

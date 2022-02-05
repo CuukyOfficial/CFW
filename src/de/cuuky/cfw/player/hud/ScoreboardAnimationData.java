@@ -1,4 +1,4 @@
-package de.cuuky.cfw.player;
+package de.cuuky.cfw.player.hud;
 
 public class ScoreboardAnimationData extends AnimationData<String[]> {
 
