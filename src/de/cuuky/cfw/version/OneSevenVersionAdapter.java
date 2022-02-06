@@ -266,7 +266,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 					Field dimensionField = handle.getClass().getField("dimension");
 					dimensionField.setAccessible(true);
 					dimensionField.set(handle, 2);
-					if (Bukkit.unloadWorld(world, false))
+					if (!Bukkit.unloadWorld(world, false))
 						throw new Error("Unable to unload world " + world.getName());
 				}
 		}catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
