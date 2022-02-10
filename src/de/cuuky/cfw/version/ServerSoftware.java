@@ -5,27 +5,34 @@ import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-	BUKKIT("CraftBukkit", null, "CraftBukkit", "Bukkit"),
-	SPIGOT("Spigot", SpigotVersionAdapter::new, "Spigot"),
-	PAPER("Paper", SpigotVersionAdapter::new, "Paper", "PaperSpigot"),
-	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "SportPaper"),
-	TACO("TacoSpigot", SpigotVersionAdapter::new, "Taco", "TacoSpigot"),
-	NACHO("NachoSpigot", SpigotVersionAdapter::new, "Nacho", "NachoSpigot"),
-	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "Magma"),
-	THERMOS("Thermos", null, "Thermos"),
-	CRUCIBLE("Crucible", null, "Crucible"),
+	// Other
+	UNKNOWN("Unknown", null, null),
 
-	@Deprecated // Unused
-	URANIUM("Uranium", null, "Uranium"),
-	@Deprecated // Unused
-	CAULDRON("Cauldron", null, "Cauldron"),
+	// Base
+	BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
+	SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"),
 
-	UNKNOWN("Unknown", null);
+	// Paper
+	PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"),
+	TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
+	NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
+	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
+
+	// Modded
+	@Deprecated // Unused
+	CAULDRON("Cauldron", null, null, "Cauldron"),
+	THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
+	@Deprecated // Unused
+	URANIUM("Uranium", null, null, "Uranium"),
+	CRUCIBLE("Crucible", null, "io.github.crucible.Crucible", "Crucible"),
+	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma");
+
 
 	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
 
 	private final String name;
 	private final String[] versionnames;
+	private String identifierClass;
 	private final boolean forgeSupport;
 	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
 	private VersionAdapter adapter;
@@ -36,12 +43,14 @@ public enum ServerSoftware {
 	/**
 	 * @param name Display name for platform.
 	 * @param adapterFunction Version adapter for this platform
+	 * @param identifierClass Class that identifies this platform
 	 * @param versionnames Names the platform could be known as
 	 */
-	ServerSoftware(String name, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
+	ServerSoftware(String name, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String identifierClass, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
 		this.forgeSupport = isClassPresent(FORGE_CLASS);
+		this.identifierClass = identifierClass == null ? "" : identifierClass;
 		this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
 	}
 	/**
@@ -50,6 +59,7 @@ public enum ServerSoftware {
 	public String getName() {
 		return this.name;
 	}
+
 	/**
 	 * @return Names of the software
 	 **/
@@ -71,6 +81,13 @@ public enum ServerSoftware {
 	 **/
 	public boolean hasForgeSupport() {
 		return this.forgeSupport;
+	}
+
+	/**
+	 * @return Name of the identifier class
+	 **/
+	public String getIdentifierClass() {
+		return this.identifierClass;
 	}
 
 	/**
@@ -108,28 +125,12 @@ public enum ServerSoftware {
 
 		// Don't check every time, it's not going to change
 		if (currentSoftware == null) {
-
 			// Order is important due to fork chain
-			if (isClassPresent("org.magmafoundation.magma.Magma"))
-				currentSoftware = MAGMA;
-			else if (isClassPresent("io.github.crucible.Crucible"))
-				currentSoftware = CRUCIBLE;
-			else if (isClassPresent("thermos.Thermos"))
-				currentSoftware = THERMOS;
-			else if (isClassPresent("org.github.paperspigot.SharedConfig"))
-				currentSoftware = SPORT_PAPER;
-			else if (isClassPresent("me.elier.nachospigot.config.NachoConfig"))
-				currentSoftware = NACHO;
-			else if (isClassPresent("net.techcable.tacospigot.TacoSpigotConfig"))
-				currentSoftware = TACO;
-			else if (isClassPresent("co.aikar.timings.Timings"))
-				currentSoftware = PAPER;
-			else if (isClassPresent("org.spigotmc.SpigotConfig"))
-				currentSoftware = SPIGOT;
-			else if (isClassPresent("org.bukkit.craftbukkit.CraftServer") || isClassPresent("org.bukkit.craftbukkit.Main"))
-				currentSoftware = BUKKIT;
+			for (ServerSoftware software : values())
+				if (isClassPresent(software.getIdentifierClass()))
+					currentSoftware = software;
 		}
-
 		return currentSoftware;
 	}
+
 }
