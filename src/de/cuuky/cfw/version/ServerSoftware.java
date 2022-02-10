@@ -1,51 +1,89 @@
 package de.cuuky.cfw.version;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-	BUKKIT("Bukkit", false, null, "Bukkit"),
-	SPIGOT("Spigot", false, SpigotVersionAdapter::new, "Spigot"),
-	PAPER("PaperSpigot", false, SpigotVersionAdapter::new, "PaperSpigot", "Paper"),
-	TACO("TacoSpigot", false, SpigotVersionAdapter::new, "TacoSpigot"),
-	MAGMA("Magma", true, versionSupplier -> new MagmaVersionAdapter(), "Magma"),
-	CAULDRON("Cauldron", true, null, "Cauldron"),
-	THERMOS("Thermos", true, null, "Thermos"),
-	URANIUM("Uranium", true, null, "Uranium"),
-	UNKNOWN("Unknown", true, null);
+	BUKKIT("CraftBukkit", null, "CraftBukkit", "Bukkit"),
+	SPIGOT("Spigot", SpigotVersionAdapter::new, "Spigot"),
+	PAPER("Paper", SpigotVersionAdapter::new, "Paper", "PaperSpigot"),
+	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "SportPaper"),
+	TACO("TacoSpigot", SpigotVersionAdapter::new, "Taco", "TacoSpigot"),
+	NACHO("NachoSpigot", SpigotVersionAdapter::new, "Nacho", "NachoSpigot"),
+	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "Magma"),
+	THERMOS("Thermos", null, "Thermos"),
+	CRUCIBLE("Crucible", null, "Crucible"),
 
-	private static final List<Character> abc =
-			new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-					'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
+	@Deprecated // Unused
+	URANIUM("Uranium", null, "Uranium"),
+	@Deprecated // Unused
+	CAULDRON("Cauldron", null, "Cauldron"),
+
+	UNKNOWN("Unknown", null);
+
+	private static final String forgeClass = "net.minecraftforge.common.MinecraftForge";
 
 	private final String name;
 	private final String[] versionnames;
-	private final boolean modsupport;
+	private final boolean forgeSupport;
 	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
 	private VersionAdapter adapter;
 
-	ServerSoftware(String name, boolean modsupport,
-				   Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
+	private static ServerSoftware currentSoftware = null;
+
+
+	/**
+	 * @param name Display name for platform.
+	 * @param adapterFunction Version adapter for this platform
+	 * @param versionnames Names the platform could be known as
+	 */
+	ServerSoftware(String name, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
-		this.modsupport = modsupport;
+		this.forgeSupport = isClassPresent(forgeClass);
 		this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
 	}
-
+	/**
+	 * @return Name of the software
+	 **/
 	public String getName() {
 		return this.name;
 	}
-
+	/**
+	 * @return Names of the software
+	 **/
 	public String[] getVersionNames() {
 		return this.versionnames;
 	}
 
+	/**
+	 * @return Whether the software has support for Forge mods
+	 * @deprecated use {@link #hasForgeSupport()} instead
+	 **/
+	@Deprecated
 	public boolean hasModSupport() {
-		return this.modsupport;
+		return this.hasForgeSupport();
+	}
+
+	/**
+	 * @return Whether the software has support for Forge mods
+	 **/
+	public boolean hasForgeSupport() {
+		return this.forgeSupport;
+	}
+
+	/**
+	 * @param clazz Class you want to check
+	 * @return Whether the provided class is loaded
+	 **/
+	private static boolean isClassPresent(String clazz) {
+		try {
+			Class.forName(clazz);
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 
 	VersionAdapter getVersionAdapter(Supplier<VersionAdapter> bukkitVersionSupplier) {
@@ -55,51 +93,43 @@ public enum ServerSoftware {
 			return this.adapter;
 	}
 
+	/**
+	 * @return Software the server is running on
+	 * @deprecated use {@link #getServerSoftware()} instead
+	 **/
 	static ServerSoftware getServerSoftware(String version, String name) {
-		version = version.toLowerCase();
-		name = name.toLowerCase();
+		return getServerSoftware();
+	}
 
-		ServerSoftware found = null;
-		String foundName = null;
-		for (ServerSoftware software : values()) {
-			for (String softwareName : software.getVersionNames()) {
-				softwareName = softwareName.toLowerCase();
+	/**
+	 * @return Software the server is running on or the next highest one on the fork chain
+	 **/
+	static ServerSoftware getServerSoftware() {
 
-				if (!version.contains(softwareName) || found != null && softwareName.length() < foundName.length())
-					continue;
+		// Don't check every time, it's not going to change
+		if (currentSoftware == null) {
 
-				found = software;
-				foundName = softwareName;
-			}
+			// Order is important due to fork chain
+			if (isClassPresent("org.magmafoundation.magma.Magma"))
+				currentSoftware = MAGMA;
+			else if (isClassPresent("io.github.crucible.Crucible"))
+				currentSoftware = CRUCIBLE;
+			else if (isClassPresent("thermos.Thermos"))
+				currentSoftware = THERMOS;
+			else if (isClassPresent("org.github.paperspigot.SharedConfig"))
+				currentSoftware = SPORT_PAPER;
+			else if (isClassPresent("me.elier.nachospigot.config.NachoConfig"))
+				currentSoftware = NACHO;
+			else if (isClassPresent("net.techcable.tacospigot.TacoSpigotConfig"))
+				currentSoftware = TACO;
+			else if (isClassPresent("co.aikar.timings.Timings"))
+				currentSoftware = PAPER;
+			else if (isClassPresent("org.spigotmc.SpigotConfig"))
+				currentSoftware = SPIGOT;
+			else if (isClassPresent("org.bukkit.craftbukkit.CraftServer") || isClassPresent("org.bukkit.craftbukkit.Main"))
+				currentSoftware = BUKKIT;
 		}
 
-		if (found == null)
-			found = UNKNOWN;
-		else if (found != UNKNOWN) {
-			int location = version.indexOf(foundName);
-
-			if (location - 1 > -1)
-				if (abc.contains(version.charAt(location - 1)))
-					found = UNKNOWN;
-
-			if (location + foundName.length() + 1 < version.length())
-				if (abc.contains(version.charAt(location + foundName.length())))
-					found = UNKNOWN;
-		}
-
-		if (found == UNKNOWN) {
-			for (ServerSoftware software : values()) {
-				for (String softwareName : software.getVersionNames()) {
-					softwareName = softwareName.toLowerCase();
-
-					if (!name.equals(softwareName))
-						continue;
-
-					found = software;
-				}
-			}
-		}
-
-		return found;
+		return currentSoftware;
 	}
 }
