@@ -22,7 +22,7 @@ public enum ServerSoftware {
 
 	UNKNOWN("Unknown", null);
 
-	private static final String forgeClass = "net.minecraftforge.common.MinecraftForge";
+	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
 
 	private final String name;
 	private final String[] versionnames;
@@ -41,7 +41,7 @@ public enum ServerSoftware {
 	ServerSoftware(String name, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
-		this.forgeSupport = isClassPresent(forgeClass);
+		this.forgeSupport = isClassPresent(FORGE_CLASS);
 		this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
 	}
 	/**
