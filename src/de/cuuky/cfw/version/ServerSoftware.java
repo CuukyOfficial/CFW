@@ -102,15 +102,7 @@ public enum ServerSoftware {
 		else
 			return this.adapter;
 	}
-
-	/**
-	 * @return Software the server is running on
-	 * @deprecated use {@link #getServerSoftware()} instead
-	 **/
-	static ServerSoftware getServerSoftware(String version, String name) {
-		return getServerSoftware();
-	}
-
+	
 	/**
 	 * @return Software the server is running on or the next highest one on the fork chain
 	 **/
