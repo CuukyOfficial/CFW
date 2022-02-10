@@ -5,27 +5,20 @@ import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-	// Other
-	UNKNOWN("Unknown", null, null),
-
-	// Base
-	BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
-	SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"),
-
-	// Paper
-	PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"),
-	TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
-	NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
-	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
-
-	// Modded
-	@Deprecated // Unused
-	CAULDRON("Cauldron", null, null, "Cauldron"),
-	THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
+	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
+	CRUCIBLE("Crucible", null, "io.github.crucible.Crucible", "Crucible"),
 	@Deprecated // Unused
 	URANIUM("Uranium", null, null, "Uranium"),
-	CRUCIBLE("Crucible", null, "io.github.crucible.Crucible", "Crucible"),
-	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma");
+	THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
+	@Deprecated // Unused
+	CAULDRON("Cauldron", null, null, "Cauldron"),
+	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
+	NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
+	TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
+	PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"),
+	SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"),
+	BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
+	UNKNOWN("Unknown", null, null);
 
 
 	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
@@ -126,9 +119,12 @@ public enum ServerSoftware {
 		// Don't check every time, it's not going to change
 		if (currentSoftware == null) {
 			// Order is important due to fork chain
-			for (ServerSoftware software : values())
-				if (isClassPresent(software.getIdentifierClass()))
+			for (ServerSoftware software : values()) {
+				if (isClassPresent(software.getIdentifierClass())) {
 					currentSoftware = software;
+					break;
+				}
+			}
 		}
 		return currentSoftware;
 	}
