@@ -1,51 +1,99 @@
 package de.cuuky.cfw.version;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-	BUKKIT("Bukkit", false, null, "Bukkit"),
-	SPIGOT("Spigot", false, SpigotVersionAdapter::new, "Spigot"),
-	PAPER("PaperSpigot", false, SpigotVersionAdapter::new, "PaperSpigot", "Paper"),
-	TACO("TacoSpigot", false, SpigotVersionAdapter::new, "TacoSpigot"),
-	MAGMA("Magma", true, versionSupplier -> new MagmaVersionAdapter(), "Magma"),
-	CAULDRON("Cauldron", true, null, "Cauldron"),
-	THERMOS("Thermos", true, null, "Thermos"),
-	URANIUM("Uranium", true, null, "Uranium"),
-	UNKNOWN("Unknown", true, null);
+	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
+	CRUCIBLE("Crucible", null, "io.github.crucible.Crucible", "Crucible"),
+	@Deprecated // Unused
+	URANIUM("Uranium", null, null, "Uranium"),
+	THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
+	@Deprecated // Unused
+	CAULDRON("Cauldron", null, null, "Cauldron"),
+	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
+	NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
+	TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
+	PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"),
+	SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"),
+	BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
+	UNKNOWN("Unknown", null, null);
 
-	private static final List<Character> abc =
-			new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-					'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
+
+	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
 
 	private final String name;
 	private final String[] versionnames;
-	private final boolean modsupport;
+	private String identifierClass;
+	private final boolean forgeSupport;
 	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
 	private VersionAdapter adapter;
 
-	ServerSoftware(String name, boolean modsupport,
-				   Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String... versionnames) {
+	private static ServerSoftware currentSoftware = null;
+
+
+	/**
+	 * @param name Display name for platform.
+	 * @param adapterFunction Version adapter for this platform
+	 * @param identifierClass Class that identifies this platform
+	 * @param versionnames Names the platform could be known as
+	 */
+	ServerSoftware(String name, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String identifierClass, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
-		this.modsupport = modsupport;
+		this.forgeSupport = isClassPresent(FORGE_CLASS);
+		this.identifierClass = identifierClass == null ? "" : identifierClass;
 		this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
 	}
-
+	/**
+	 * @return Name of the software
+	 **/
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * @return Names of the software
+	 **/
 	public String[] getVersionNames() {
 		return this.versionnames;
 	}
 
+	/**
+	 * @return Whether the software has support for Forge mods
+	 * @deprecated use {@link #hasForgeSupport()} instead
+	 **/
+	@Deprecated
 	public boolean hasModSupport() {
-		return this.modsupport;
+		return this.hasForgeSupport();
+	}
+
+	/**
+	 * @return Whether the software has support for Forge mods
+	 **/
+	public boolean hasForgeSupport() {
+		return this.forgeSupport;
+	}
+
+	/**
+	 * @return Name of the identifier class
+	 **/
+	public String getIdentifierClass() {
+		return this.identifierClass;
+	}
+
+	/**
+	 * @param clazz Class you want to check
+	 * @return Whether the provided class is loaded
+	 **/
+	private static boolean isClassPresent(String clazz) {
+		try {
+			Class.forName(clazz);
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 
 	VersionAdapter getVersionAdapter(Supplier<VersionAdapter> bukkitVersionSupplier) {
@@ -54,52 +102,23 @@ public enum ServerSoftware {
 		else
 			return this.adapter;
 	}
+	
+	/**
+	 * @return Software the server is running on or the next highest one on the fork chain
+	 **/
+	static ServerSoftware getServerSoftware() {
 
-	static ServerSoftware getServerSoftware(String version, String name) {
-		version = version.toLowerCase();
-		name = name.toLowerCase();
-
-		ServerSoftware found = null;
-		String foundName = null;
-		for (ServerSoftware software : values()) {
-			for (String softwareName : software.getVersionNames()) {
-				softwareName = softwareName.toLowerCase();
-
-				if (!version.contains(softwareName) || found != null && softwareName.length() < foundName.length())
-					continue;
-
-				found = software;
-				foundName = softwareName;
-			}
-		}
-
-		if (found == null)
-			found = UNKNOWN;
-		else if (found != UNKNOWN) {
-			int location = version.indexOf(foundName);
-
-			if (location - 1 > -1)
-				if (abc.contains(version.charAt(location - 1)))
-					found = UNKNOWN;
-
-			if (location + foundName.length() + 1 < version.length())
-				if (abc.contains(version.charAt(location + foundName.length())))
-					found = UNKNOWN;
-		}
-
-		if (found == UNKNOWN) {
+		// Don't check every time, it's not going to change
+		if (currentSoftware == null) {
+			// Order is important due to fork chain
 			for (ServerSoftware software : values()) {
-				for (String softwareName : software.getVersionNames()) {
-					softwareName = softwareName.toLowerCase();
-
-					if (!name.equals(softwareName))
-						continue;
-
-					found = software;
+				if (isClassPresent(software.getIdentifierClass())) {
+					currentSoftware = software;
+					break;
 				}
 			}
 		}
-
-		return found;
+		return currentSoftware;
 	}
+
 }

@@ -42,7 +42,7 @@ public class VersionUtils {
 				nmsClass = base + ".server";
 			}
 			version = BukkitVersion.getVersion(nmsVersion);
-			serverSoftware = ServerSoftware.getServerSoftware(Bukkit.getVersion(), Bukkit.getName());
+			serverSoftware = ServerSoftware.getServerSoftware();
 
 			try {
 				spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
