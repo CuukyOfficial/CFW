@@ -3,7 +3,7 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
 group 'de.varoplugin'
-version '0.6.6'
+version '0.6.7'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
