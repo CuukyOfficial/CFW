@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Properties;
 import java.util.function.Supplier;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,6 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
+
+import net.md_5.bungee.api.chat.ClickEvent;
 
 public class SpigotVersionAdapter implements VersionAdapter {
 
@@ -61,12 +62,12 @@ public class SpigotVersionAdapter implements VersionAdapter {
 		this.parent.sendActionbar(player, message);
 	}
 
-    @Override
-    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
-        this.parent.sendClickableMessage(player, message, action, value);
-    }
+	@Override
+	public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+		this.parent.sendClickableMessage(player, message, action, value);
+	}
 
-    @Override
+	@Override
 	public void sendLinkedMessage(Player player, String message, String link) {
 		this.parent.sendLinkedMessage(player, message, link);
 	}
@@ -111,7 +112,7 @@ public class SpigotVersionAdapter implements VersionAdapter {
 	public void deleteItemAnnotations(ItemStack item) {
 		this.parent.deleteItemAnnotations(item);
 	}
-	
+
 	@Override
 	public BlockFace getSignAttachedFace(Block block) {
 		return this.parent.getSignAttachedFace(block);
@@ -135,6 +136,11 @@ public class SpigotVersionAdapter implements VersionAdapter {
 	@Override
 	public Properties getServerProperties() {
 		return this.parent.getServerProperties();
+	}
+
+	@Override
+	public void setServerProperty(String key, Object value) {
+		this.parent.setServerProperty(key, value);
 	}
 
 	@Override

@@ -27,7 +27,7 @@ public interface VersionAdapter {
 
 	void sendActionbar(Player player, String message);
 
-    void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value);
+	void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value);
 
 	void sendLinkedMessage(Player player, String message, String link);
 
@@ -47,7 +47,7 @@ public interface VersionAdapter {
 	void setXpCooldown(Player player, int cooldown);
 
 	void deleteItemAnnotations(ItemStack item);
-	
+
 	BlockFace getSignAttachedFace(Block block);
 
 	Object getNetworkManager(Player player);
@@ -57,6 +57,8 @@ public interface VersionAdapter {
 	void forceClearWorlds();
 
 	Properties getServerProperties();
+
+	void setServerProperty(String key, Object value);
 
 	boolean supportsAntiXray();
 

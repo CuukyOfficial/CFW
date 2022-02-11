@@ -25,8 +25,12 @@ import org.bukkit.scoreboard.Team;
 @SuppressWarnings("deprecation")
 class OneSevenVersionAdapter implements VersionAdapter {
 
+	protected Class<?> minecraftServerClass;
+	protected Method minecraftServerMethod, propertyManagerMethod;
+	protected Field propertiesField;
+	protected Class<?> enumClientCommandClass, packetPlayInClientCommandClass;
 	protected Class<?> nmsPlayerClass;
-	private Method entityHandleMethod;
+	protected Method entityHandleMethod;
 	protected Method sendPacketMethod;
 	protected Field connectionField, networkManagerField, pingField, localeField, xpCooldownField;
 
@@ -41,11 +45,21 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
 	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
 	NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+		this.initServerPropertys();
 		this.initEntity();
 		this.initPlayer();
+		this.initRespawn();
 		this.initNetworkManager();
 		this.initLocale();
 		this.initXp();
+	}
+
+	protected void initServerPropertys() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+		this.minecraftServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
+		this.minecraftServerMethod = this.minecraftServerClass.getMethod("getServer");
+		this.propertyManagerMethod = this.minecraftServerClass.getDeclaredMethod("getPropertyManager");
+		this.propertiesField = this.propertyManagerMethod.getReturnType().getDeclaredField("properties");
+		this.propertiesField.setAccessible(true);
 	}
 
 	protected void initEntity() throws NoSuchMethodException, SecurityException, ClassNotFoundException {
@@ -61,6 +75,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		this.connectionField = this.nmsPlayerClass.getField("playerConnection");
 		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket",
 				Class.forName(VersionUtils.getNmsClass() + ".Packet"));
+	}
+
+	protected void initRespawn() throws ClassNotFoundException {
+		this.enumClientCommandClass = Class.forName(VersionUtils.getNmsClass() + ".EnumClientCommand");
+		this.packetPlayInClientCommandClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand");
 	}
 
 	protected void initNetworkManager() throws IllegalArgumentException, IllegalAccessException {
@@ -140,14 +159,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	@Override
 	public void respawnPlayer(Player player) {
 		try {
-			Object respawnEnum = Class.forName(VersionUtils.getNmsClass() + ".EnumClientCommand").getEnumConstants()[0];
-			Constructor<?>[] constructors = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand")
-					.getConstructors();
+			Object respawnEnum = this.enumClientCommandClass.getEnumConstants()[0];
+			Constructor<?>[] constructors = this.packetPlayInClientCommandClass.getConstructors();
 			for (Constructor<?> constructor : constructors) {
 				Class<?>[] args = constructor.getParameterTypes();
 				if (args.length == 1 && args[0] == respawnEnum.getClass()) {
-					Object packet = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand")
-							.getConstructor(args).newInstance(respawnEnum);
+					Object packet = this.packetPlayInClientCommandClass.getConstructor(args).newInstance(respawnEnum);
 					this.sendPacket(player, packet);
 					break;
 				}
@@ -167,13 +184,13 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		// 1.8+
 	}
 
-    @Override
-    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
-        // 1.8+
-        player.sendMessage(message);
-    }
+	@Override
+	public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+		// 1.8+
+		player.sendMessage(message);
+	}
 
-    @Override
+	@Override
 	public void sendLinkedMessage(Player player, String message, String link) {
 		// 1.8+
 		this.sendClickableMessage(player, message, ClickEvent.Action.OPEN_URL, link);
@@ -231,10 +248,10 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	public void deleteItemAnnotations(ItemStack item) {
 		// 1.8+ (?)
 	}
-	
+
 	@Override
 	public BlockFace getSignAttachedFace(Block block) {
-		// can be null on newer versions (paper 1.8.1 ???) but I'm not sure why.
+		// Can be null on newer versions (paper 1.18.1 ???) but I'm not sure why
 		BlockFace face = ((Sign) block.getState().getData()).getAttachedFace();
 		return face == null ? BlockFace.SOUTH : face;
 	}
@@ -277,19 +294,17 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	@Override
 	public Properties getServerProperties() {
 		try {
-			Class<?> mcServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
-			Object mcServer = mcServerClass.getMethod("getServer").invoke(null);
-			Field propertyManagerField = mcServer.getClass().getField("propertyManager");
-			propertyManagerField.setAccessible(true);
-			Object propertyManager = propertyManagerField.get(mcServer);
-			Field propertyField = propertyManager.getClass().getDeclaredField("properties");
-			propertyField.setAccessible(true);
-
-			return (Properties) propertyField.get(propertyManager);
-		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException
-				| SecurityException | InvocationTargetException | NoSuchMethodException e) {
-			throw new Error(e);
+			Object mcServer = this.minecraftServerMethod.invoke(null);
+			Object propertyManager = this.propertyManagerMethod.invoke(mcServer);
+			return (Properties) this.propertiesField.get(propertyManager);
+		} catch (Throwable t) {
+			throw new Error(t);
 		}
+	}
+
+	@Override
+	public void setServerProperty(String key, Object value) {
+		this.getServerProperties().setProperty(key, String.valueOf(value));
 	}
 
 	@Override

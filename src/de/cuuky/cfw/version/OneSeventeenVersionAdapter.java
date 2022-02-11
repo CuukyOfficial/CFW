@@ -15,6 +15,11 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 	}
 	
+	@Override
+	protected void initRespawn() throws ClassNotFoundException {
+		// TODO implement this
+	}
+	
 	protected void initXp() {
 		this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
 	}
@@ -26,7 +31,7 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
 	@Override
 	public void respawnPlayer(Player player) {
-		throw new Error("No implemented yet");
+		throw new Error("Not implemented yet");
 	}
 
 	@Override

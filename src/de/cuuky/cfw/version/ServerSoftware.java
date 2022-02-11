@@ -6,7 +6,7 @@ import java.util.function.Supplier;
 public enum ServerSoftware {
 
 	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
-	CRUCIBLE("Crucible", null, "io.github.crucible.Crucible", "Crucible"),
+	CRUCIBLE("Crucible", versionSupplier -> new CrucibleVersionAdapter(), "io.github.crucible.Crucible", "Crucible"),
 	@Deprecated // Unused
 	URANIUM("Uranium", null, null, "Uranium"),
 	THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),

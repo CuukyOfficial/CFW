@@ -48,6 +48,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		this.initTitle();
 		this.initNbt();
 	}
+	
+	@Override
+	protected void initRespawn() throws ClassNotFoundException {
+		// TODO
+	}
 
 	protected void initTablist()
 			throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
@@ -93,6 +98,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 		Class<?> entityClass = Class.forName(VersionUtils.getNmsClass() + ".Entity");
 		this.initNbtMethod = entityClass.getMethod("c", this.netTagClass);
 		this.loadNbtMethod = entityClass.getMethod("f", this.netTagClass);
+	}
+	
+	@Override
+	public void respawnPlayer(Player player) {
+		throw new Error("Unimplemented");
 	}
 
 	@Override

@@ -5,6 +5,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 public class OneFourteenVersionAdapter extends OneThirteenVersionAdapter {
+	
+	@Override
+	protected void initServerPropertys()
+			throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+		// TODO implement this
+	}
 
 	@Override
 	public Properties getServerProperties() {

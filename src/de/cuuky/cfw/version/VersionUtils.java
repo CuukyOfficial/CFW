@@ -1,7 +1,5 @@
 package de.cuuky.cfw.version;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,19 +50,18 @@ public class VersionUtils {
 		versionAdapter = serverSoftware.getVersionAdapter(version.getAdapterSupplier());
 	}
 
+	/**
+	 * Use {@link VersionAdapter#setServerProperty} instead
+	 * 
+	 * @param key
+	 * @param value
+	 * @deprecated Use {@link VersionAdapter#setServerProperty} instead
+	 */
 	public static void setMinecraftServerProperty(String key, Object value) {
-		try {
-			Class<?> serverClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
-			Object server = serverClass.getMethod("getServer").invoke(null);
-			Object manager = server.getClass().getField("propertyManager").get(server);
-			Method method = manager.getClass().getMethod("setProperty", String.class, Object.class);
-			method.invoke(manager, key, value);
-		} catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException
-				| ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
+		versionAdapter.setServerProperty(key, value);
 	}
 
+	@Deprecated
 	public static double getHearts(Player player) {
 		return player.getHealth();
 	}

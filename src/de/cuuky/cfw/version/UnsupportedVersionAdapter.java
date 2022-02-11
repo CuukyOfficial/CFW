@@ -120,6 +120,11 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 	public Properties getServerProperties() {
 		throw new UnsupportedOperationException();
 	}
+	
+	@Override
+	public void setServerProperty(String key, Object value) {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public boolean supportsAntiXray() {
