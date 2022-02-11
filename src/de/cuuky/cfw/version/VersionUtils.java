@@ -11,9 +11,12 @@ import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
 import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
 
 public class VersionUtils {
+	
+	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
 
-	private static String nmsClass;
-	private static String nmsVersion;
+	private static final String nmsClass;
+	private static final String nmsVersion;
+	private static final boolean forgeSupport;
 	@Deprecated()
 	private static Object spigot;
 
@@ -23,11 +26,14 @@ public class VersionUtils {
 	private final static Map<Player, MinecraftVersion> playerVersions;
 
 	static {
+		forgeSupport = isClassPresent(FORGE_CLASS);
 		playerVersions = new HashMap<>();
 
 		if (Bukkit.getServer() == null) {
 			version = BukkitVersion.UNSUPPORTED;
 			serverSoftware = ServerSoftware.UNKNOWN;
+			nmsClass = null;
+			nmsVersion = null;
 		} else {
 
 			String base = "net.minecraft";
@@ -48,6 +54,19 @@ public class VersionUtils {
 			}
 		}
 		versionAdapter = serverSoftware.getVersionAdapter(version.getAdapterSupplier());
+	}
+	
+	/**
+	 * @param clazz Class you want to check
+	 * @return Whether the provided class is loaded
+	 */
+	static boolean isClassPresent(String clazz) {
+		try {
+			Class.forName(clazz);
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
 	}
 
 	/**
@@ -72,6 +91,13 @@ public class VersionUtils {
 
 	public static String getNmsVersion() {
 		return nmsVersion;
+	}
+
+	/**
+	 * @return Whether the software has support for Forge mods
+	 */
+	public static boolean hasForgeSupport() {
+		return forgeSupport;
 	}
 
 	/**

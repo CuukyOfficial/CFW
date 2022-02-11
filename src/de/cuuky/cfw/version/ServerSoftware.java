@@ -20,13 +20,9 @@ public enum ServerSoftware {
 	BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
 	UNKNOWN("Unknown", null, null);
 
-
-	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
-
 	private final String name;
 	private final String[] versionnames;
 	private String identifierClass;
-	private final boolean forgeSupport;
 	private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
 	private VersionAdapter adapter;
 
@@ -42,7 +38,6 @@ public enum ServerSoftware {
 	ServerSoftware(String name, Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction, String identifierClass, String... versionnames) {
 		this.name = name;
 		this.versionnames = versionnames;
-		this.forgeSupport = isClassPresent(FORGE_CLASS);
 		this.identifierClass = identifierClass == null ? "" : identifierClass;
 		this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
 	}
@@ -62,18 +57,20 @@ public enum ServerSoftware {
 
 	/**
 	 * @return Whether the software has support for Forge mods
-	 * @deprecated use {@link #hasForgeSupport()} instead
+	 * @deprecated use {@link VersionUtils#hasForgeSupport()} instead
 	 **/
 	@Deprecated
 	public boolean hasModSupport() {
-		return this.hasForgeSupport();
+		return VersionUtils.hasForgeSupport();
 	}
 
 	/**
 	 * @return Whether the software has support for Forge mods
+	 * @deprecated use {@link VersionUtils#hasForgeSupport()} instead
 	 **/
+	@Deprecated
 	public boolean hasForgeSupport() {
-		return this.forgeSupport;
+		return VersionUtils.hasForgeSupport();
 	}
 
 	/**
@@ -81,19 +78,6 @@ public enum ServerSoftware {
 	 **/
 	public String getIdentifierClass() {
 		return this.identifierClass;
-	}
-
-	/**
-	 * @param clazz Class you want to check
-	 * @return Whether the provided class is loaded
-	 **/
-	private static boolean isClassPresent(String clazz) {
-		try {
-			Class.forName(clazz);
-			return true;
-		} catch (ClassNotFoundException e) {
-			return false;
-		}
 	}
 
 	VersionAdapter getVersionAdapter(Supplier<VersionAdapter> bukkitVersionSupplier) {
@@ -112,7 +96,7 @@ public enum ServerSoftware {
 		if (currentSoftware == null) {
 			// Order is important due to fork chain
 			for (ServerSoftware software : values()) {
-				if (isClassPresent(software.getIdentifierClass())) {
+				if (VersionUtils.isClassPresent(software.getIdentifierClass())) {
 					currentSoftware = software;
 					break;
 				}
