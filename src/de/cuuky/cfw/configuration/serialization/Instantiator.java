@@ -1,7 +1,5 @@
 package de.cuuky.cfw.configuration.serialization;
 
-import sun.reflect.ReflectionFactory;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -15,7 +13,6 @@ class Instantiator<T extends BasicSerializable> {
 
     @SuppressWarnings("unchecked")
     private Constructor<T> getInitConstructor(Class<?> current) throws NoSuchMethodException {
-        ReflectionFactory rf = ReflectionFactory.getReflectionFactory();
         Constructor<?> objDef;
         try {
             objDef = current.getDeclaredConstructor();
@@ -23,7 +20,7 @@ class Instantiator<T extends BasicSerializable> {
             return this.getInitConstructor(current.getSuperclass());
         }
         objDef.setAccessible(true);
-        return (Constructor<T>) rf.newConstructorForSerialization(this.clazz, objDef);
+        return (Constructor<T>) objDef;
     }
 
     T instantiate()
