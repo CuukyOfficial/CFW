@@ -39,15 +39,18 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
         }
     }
 
-    private Object getFieldValue(Field field) throws IllegalAccessException {
-        SerializationPolicy<?> policy = this.policies.get(field.getType());
+    private SerializationPolicy<?> prepareField(Field field) {
         field.setAccessible(true);
+        return this.policies.get(field.getType());
+    }
+
+    private Object getFieldValue(Field field) throws IllegalAccessException {
+        SerializationPolicy<?> policy = this.prepareField(field);
         return policy != null ? policy.get() : field.get(this);
     }
 
     private void deserializeField(Field field, Object value) throws IllegalAccessException {
-        SerializationPolicy<?> policy = this.policies.get(field.getType());
-        field.setAccessible(true);
+        SerializationPolicy<?> policy = this.prepareField(field);
         if (policy != null) {
             policy.save(value);
         } else {
