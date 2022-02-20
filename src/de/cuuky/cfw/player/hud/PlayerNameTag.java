@@ -12,6 +12,7 @@ class PlayerNameTag {
 	private static final VersionAdapter VERISON_ADAPTER = VersionUtils.getVersionAdapter();
 
 	private ScoreboardInstance scoreboard;
+	private String name;
 	private String prefix;
 	private String suffix;
 	private boolean visible;
@@ -20,18 +21,25 @@ class PlayerNameTag {
 		this.scoreboard = scoreboard;
 	}
 
-	void setValues(boolean visible, String prefix, String suffix) {
+	void setValues(boolean visible, String name, String prefix, String suffix) {
 		this.visible = visible;
+		this.name = name;
 		this.prefix = prefix;
 		this.suffix = suffix;
 	}
 
-	void updatePlayer(Player player, boolean visible, String prefix, String suffix) {
+	void updatePlayer(Player player, boolean visible, String name, String prefix, String suffix) {
 		Scoreboard scoreboard = this.scoreboard.getScoreboard();
-		Team team = scoreboard.getTeam(player.getName());
+		Team team = scoreboard.getEntryTeam(player.getName());
+
+		if (team != null && !team.getName().equals(name)) {
+			team.removeEntry(player.getName());
+			team.unregister();
+			team = null;
+		}
 
 		if (team == null) {
-			team = scoreboard.registerNewTeam(player.getName());
+			team = scoreboard.registerNewTeam(name);
 			team.addEntry(player.getName());
 		}
 
@@ -41,7 +49,7 @@ class PlayerNameTag {
 	}
 
 	void updatePlayer(PlayerNameTag nameTag) {
-		this.updatePlayer(nameTag.scoreboard.getPlayer(), nameTag.visible, nameTag.prefix, nameTag.suffix);
+		this.updatePlayer(nameTag.scoreboard.getPlayer(), nameTag.visible, nameTag.name, nameTag.prefix, nameTag.suffix);
 	}
 
 	ScoreboardInstance getScoreboard() {
