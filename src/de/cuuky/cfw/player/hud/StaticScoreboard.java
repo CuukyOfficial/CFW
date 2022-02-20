@@ -74,7 +74,7 @@ public class StaticScoreboard {
 			String prevLine = this.buffer[i];
 
 			if (i < content.length) {
-				String line = this.limit(this.processString(content[i]), CONTENT_MAX);
+				String line = this.limit(this.checkDuplicate(this.processString(content[i]), i), CONTENT_MAX);
 				if (!line.equals(prevLine)) {
 					this.checkReset(objective, i);
 					objective.getScore(line).setScore(LINES_MAX - 1 - i);
@@ -97,6 +97,13 @@ public class StaticScoreboard {
 
 		objective.getScoreboard().resetScores(line);
 		return true;
+	}
+
+	private String checkDuplicate(String input, int i) {
+		for (int j = 0; j < i; j++)
+			if (input.equals(this.buffer[j]))
+				return checkDuplicate(input += "§r", i);
+		return input;
 	}
 
 	private String limit(String string, int max) {
