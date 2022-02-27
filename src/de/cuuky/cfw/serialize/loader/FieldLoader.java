@@ -9,6 +9,7 @@ import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.cfw.serialize.identifiers.NullClass;
 import de.cuuky.cfw.utils.JavaUtils;
 
+@Deprecated
 public class FieldLoader {
 
 	private Map<Field, Class<? extends CFWSerializeable>> keyTypes, valueTypes;

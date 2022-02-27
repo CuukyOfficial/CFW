@@ -6,13 +6,11 @@ import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.manager.FrameworkManager;
 import de.cuuky.cfw.manager.FrameworkManagerType;
-import de.cuuky.cfw.menu.SuperInventoryManager;
 import de.cuuky.cfw.serialization.CompatibleLocation;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,11 +69,6 @@ public class CuukyFrameWork {
 
 	public HookManager getHookManager() {
 		return (HookManager) loadManager(FrameworkManagerType.HOOKING);
-	}
-
-	@Deprecated
-	public SuperInventoryManager getInventoryManager() {
-		return (SuperInventoryManager) loadManager(FrameworkManagerType.INVENTORY);
 	}
 
 	public AdvancedInventoryManager getAdvancedInventoryManager() {

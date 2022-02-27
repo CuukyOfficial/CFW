@@ -24,6 +24,7 @@ import de.cuuky.cfw.serialize.serializers.type.types.LocationSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.MapSerializer;
 import de.cuuky.cfw.serialize.serializers.type.types.NumberSerializer;
 
+@Deprecated
 public class CFWSerializeManager extends FrameworkManager {
 
 	private final Map<Class<?>, FieldLoader> loaded;

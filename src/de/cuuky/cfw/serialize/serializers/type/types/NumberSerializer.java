@@ -8,6 +8,7 @@ import de.cuuky.cfw.serialize.CFWSerializeManager;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.cfw.serialize.serializers.type.CFWSerializeType;
 
+@Deprecated
 public class NumberSerializer extends CFWSerializeType {
 
 	public NumberSerializer(CFWSerializeManager manager) {

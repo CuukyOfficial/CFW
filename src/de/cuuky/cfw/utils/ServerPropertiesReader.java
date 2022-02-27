@@ -5,6 +5,7 @@ import java.util.Properties;
 
 import de.cuuky.cfw.version.VersionUtils;
 
+@Deprecated
 public class ServerPropertiesReader {
 
     private HashMap<String, String> configuration;

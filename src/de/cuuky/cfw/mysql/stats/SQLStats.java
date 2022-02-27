@@ -22,6 +22,7 @@ import de.cuuky.cfw.mysql.request.PreparedStatementQuery;
  * @author Almighty-Satan
  *
  */
+@Deprecated
 public class SQLStats<T> extends MySQLClient {
 
 	private String table;

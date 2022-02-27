@@ -10,6 +10,7 @@ import de.cuuky.cfw.serialize.serializers.CFWDeserializer;
 import de.cuuky.cfw.serialize.serializers.CFWSerializer;
 import de.cuuky.cfw.serialize.serializers.type.CFWSerializeType;
 
+@Deprecated
 public class CFWSerializeableSerializer extends CFWSerializeType {
 
 	public CFWSerializeableSerializer(CFWSerializeManager manager) {

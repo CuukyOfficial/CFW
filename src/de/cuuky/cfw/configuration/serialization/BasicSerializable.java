@@ -3,23 +3,32 @@ package de.cuuky.cfw.configuration.serialization;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.UUID;
+import java.util.function.Function;
 
 public abstract class BasicSerializable implements ConfigurationSerializable {
 
     private final Map<String, Field> fields = new HashMap<>();
-    private final Map<Class<?>, SerializationPolicy<?>> policies = new HashMap<>();
+    private final Map<Class<?>, SerializationPolicy<?, ?>> policies = new HashMap<>();
     private boolean scanned;
+
+    public BasicSerializable() {}
+
+    BasicSerializable(Map<String, Object> data) {
+        try {
+            this.deserialized(data);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void initSerialization() {
         if (!this.scanned) {
             this.scanFields(this.getClass());
-            this.registerSerializes();
+            this.registerPolicies();
             this.scanned = true;
         }
     }
@@ -39,23 +48,20 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
         }
     }
 
-    private SerializationPolicy<?> prepareField(Field field) {
+    private SerializationPolicy<?, ?> prepareField(Field field) {
         field.setAccessible(true);
         return this.policies.get(field.getType());
     }
 
     private Object getFieldValue(Field field) throws IllegalAccessException {
-        SerializationPolicy<?> policy = this.prepareField(field);
-        return policy != null ? policy.get() : field.get(this);
+        SerializationPolicy<?, ?> policy = this.prepareField(field);
+        Object value = field.get(this);
+        return policy != null ? policy.parse(value) : value;
     }
 
     private void deserializeField(Field field, Object value) throws IllegalAccessException {
-        SerializationPolicy<?> policy = this.prepareField(field);
-        if (policy != null) {
-            policy.save(value);
-        } else {
-            field.set(this, value);
-        }
+        SerializationPolicy<?, ?> policy = this.prepareField(field);
+        field.set(this, policy != null ? policy.parse(value) : value);
     }
 
     void deserialized(Map<String, Object> data) throws IllegalAccessException {
@@ -67,11 +73,21 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
         }
     }
 
-    protected <P> void registerSerialize(Class<?> clazz, Supplier<P> supplier, Consumer<P> consumer) {
+    protected <P, C> void registerPolicy(Class<C> clazz, SerializationPolicy<P, C> policy) {
+        this.policies.put(clazz, policy);
+    }
+
+    protected <P, C> void registerPolicy(Class<C> clazz, Function<C, P> supplier, Function<P, C> consumer) {
         this.policies.put(clazz, new SerializationPolicy<>(supplier, consumer));
     }
 
-    protected void registerSerializes() {}
+    /**
+     * List of default policies:
+     *  - UUID
+     */
+    protected void registerPolicies() {
+        this.registerPolicy(UUID.class, UUID::toString, UUID::fromString);
+    }
 
     @Override
     public Map<String, Object> serialize() {
@@ -85,16 +101,5 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
             }
         }
         return data;
-    }
-
-    public static <T extends BasicSerializable> T computeData(Map<String, Object> data, Class<T> clazz) {
-        T object = null;
-        try {
-            object = new Instantiator<>(clazz).instantiate();
-            object.deserialized(data);
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
-        return object;
     }
 }

@@ -7,6 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import de.cuuky.cfw.serialize.CFWSerializeManager;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 
+@Deprecated
 public abstract class CFWSerializeType {
 
 	protected CFWSerializeManager manager;

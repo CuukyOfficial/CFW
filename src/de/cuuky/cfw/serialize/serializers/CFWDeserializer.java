@@ -10,6 +10,7 @@ import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.cfw.serialize.loader.FieldLoader;
 import de.cuuky.cfw.serialize.serializers.type.CFWSerializeType;
 
+@Deprecated
 public class CFWDeserializer {
 
 	private CFWSerializeManager manager;

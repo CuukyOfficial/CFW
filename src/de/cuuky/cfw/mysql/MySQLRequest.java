@@ -6,6 +6,7 @@ import de.cuuky.cfw.mysql.request.PreparedStatementExec;
 import de.cuuky.cfw.mysql.request.PreparedStatementHandler;
 import de.cuuky.cfw.mysql.request.PreparedStatementQuery;
 
+@Deprecated
 public class MySQLRequest {
 
 	private String sql;

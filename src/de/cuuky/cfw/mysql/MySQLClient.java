@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 
 import de.cuuky.cfw.mysql.request.PreparedStatementHandler;
 
+@Deprecated
 public class MySQLClient {
 
 	private static final ExecutorService THREAD_POOL;

@@ -1,5 +1,6 @@
 package de.cuuky.cfw.serialize.identifiers;
 
+@Deprecated
 public class NullClass implements CFWSerializeable {
 
 	/*
