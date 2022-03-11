@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.base.Charsets;
 
+@Deprecated
 public class YamlConfigurationUtil {
 
 	public static YamlConfiguration loadConfiguration(File file) {
