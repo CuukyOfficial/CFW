@@ -13,7 +13,7 @@ public class SerializationPolicy<T, C> {
     }
 
     @SuppressWarnings("unchecked")
-    public T get(Object from) {
+    public T serialize(Object from) {
         if (this.getter == null)
             return null;
 
@@ -21,7 +21,7 @@ public class SerializationPolicy<T, C> {
     }
 
     @SuppressWarnings("unchecked")
-    public C parse(Object type) {
+    public C deserialize(Object type) {
         if (this.receiver == null)
             return null;
 

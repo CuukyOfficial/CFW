@@ -1,5 +1,6 @@
 package de.cuuky.cfw.configuration.serialization;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 import java.lang.reflect.Field;
@@ -7,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class BasicSerializable implements ConfigurationSerializable {
@@ -15,9 +17,10 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
     private final Map<Class<?>, SerializationPolicy<?, ?>> policies = new HashMap<>();
     private boolean scanned;
 
-    public BasicSerializable() {}
+    public BasicSerializable() {
+    }
 
-    BasicSerializable(Map<String, Object> data) {
+    public BasicSerializable(Map<String, Object> data) {
         try {
             this.deserialized(data);
         } catch (IllegalAccessException e) {
@@ -48,20 +51,22 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
         }
     }
 
-    private SerializationPolicy<?, ?> prepareField(Field field) {
-        field.setAccessible(true);
-        return this.policies.get(field.getType());
+    private Object parseObject(Object object, Field field,
+                               BiFunction<SerializationPolicy<?, ?>, Object, Object> parseFunc) {
+        if (object == null) return null;
+        SerializationPolicy<?, ?> policy = this.policies.get(field.getType());
+        return policy == null ? object : parseFunc.apply(policy, object);
     }
 
     private Object getFieldValue(Field field) throws IllegalAccessException {
-        SerializationPolicy<?, ?> policy = this.prepareField(field);
+        field.setAccessible(true);
         Object value = field.get(this);
-        return policy != null ? policy.parse(value) : value;
+        return this.parseObject(value, field, SerializationPolicy::serialize);
     }
 
     private void deserializeField(Field field, Object value) throws IllegalAccessException {
-        SerializationPolicy<?, ?> policy = this.prepareField(field);
-        field.set(this, policy != null ? policy.parse(value) : value);
+        field.setAccessible(true);
+        field.set(this, this.parseObject(value, field, SerializationPolicy::deserialize));
     }
 
     void deserialized(Map<String, Object> data) throws IllegalAccessException {
@@ -83,10 +88,12 @@ public abstract class BasicSerializable implements ConfigurationSerializable {
 
     /**
      * List of default policies:
-     *  - UUID
+     * - UUID
+     * - Material
      */
     protected void registerPolicies() {
         this.registerPolicy(UUID.class, UUID::toString, UUID::fromString);
+        this.registerPolicy(Material.class, Material::toString, Material::valueOf);
     }
 
     @Override

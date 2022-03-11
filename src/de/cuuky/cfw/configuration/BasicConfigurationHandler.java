@@ -1,24 +1,19 @@
 package de.cuuky.cfw.configuration;
 
-import java.io.File;
-
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class BasicConfigurationHandler {
 
-    private final File file;
-    private final YamlConfiguration configuration;
+    private final BetterYamlConfiguration configuration;
 
     public BasicConfigurationHandler(String path) {
-        this.file = new File(path);
-        this.configuration = YamlConfigurationUtil.loadConfiguration(this.file);
+        this.configuration = new BetterYamlConfiguration(path);
         this.configuration.options().copyDefaults(true);
-        if (!this.file.exists()) this.save();
+        if (!this.configuration.getFile().exists()) this.save();
     }
 
     public void save() {
-        YamlConfigurationUtil.save(this.configuration, this.file);
+        this.configuration.save();
     }
 
     public void setValue(String path, Object object) {
