@@ -28,8 +28,6 @@ public class Hologramm extends BasicSerializable {
     @Serialize("nameTagUuid")
     private UUID nameTagUuid;
 
-    private JavaPlugin plugin;
-
     public Hologramm(JavaPlugin plugin, Location location, String name) {
         this.location = new SerializableLocation(location);
         this.initialize(plugin, name);
@@ -62,8 +60,7 @@ public class Hologramm extends BasicSerializable {
         VersionUtils.getVersionAdapter().setArmorstandAttributes(armorStand, false, true, false, name);
     }
 
-    void initialize(JavaPlugin plugin, String name) {
-        this.plugin = plugin;
+    public void initialize(JavaPlugin plugin, String name) {
         if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(
             BukkitVersion.ONE_16))
             // temporary paper 1.17+ workaround
