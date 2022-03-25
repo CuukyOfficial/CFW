@@ -39,6 +39,8 @@ dependencies {
 }
 
 jar {
+	withJavadocJar()
+	withSourcesJar()
 	if (project.hasProperty('destinationDir'))
 		destinationDir = file(project.property('destinationDir').toString())
 
