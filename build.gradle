@@ -39,13 +39,16 @@ dependencies {
 }
 
 jar {
-	withJavadocJar()
-	withSourcesJar()
 	if (project.hasProperty('destinationDir'))
 		destinationDir = file(project.property('destinationDir').toString())
 
 	if (project.hasProperty('fileName'))
 		archiveFileName = project.property('fileName').toString()
+}
+
+java {
+	withJavadocJar()
+	withSourcesJar()
 }
 
 processResources {
