@@ -6,6 +6,11 @@ import java.lang.reflect.Method;
 import java.util.Properties;
 
 import org.bukkit.Bukkit;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 
 class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
@@ -14,16 +19,16 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 	protected void initPlayer()
 			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 	}
-	
+
 	@Override
 	protected void initRespawn() throws ClassNotFoundException {
 		// TODO implement this
 	}
-	
+
 	protected void initXp() {
 		this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
 	}
-	
+
 	@Override
 	public int getPing(Player player) {
 		return player.getPing();
@@ -37,6 +42,17 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 	@Override
 	protected String getWorldServerFieldName() {
 		return "R";
+	}
+
+	@Override
+	public BlockFace getSignAttachedFace(Block block) {
+		BlockData data = block.getBlockData();
+		if (data instanceof WallSign)
+			return ((WallSign) data).getFacing().getOppositeFace();
+		else if (data instanceof Sign)
+			return BlockFace.DOWN;
+		else
+			throw new Error("Block is not a sign: " + block.getLocation());
 	}
 
 	@Override
