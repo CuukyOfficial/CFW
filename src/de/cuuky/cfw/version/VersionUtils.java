@@ -72,8 +72,8 @@ public class VersionUtils {
 	/**
 	 * Use {@link VersionAdapter#setServerProperty} instead
 	 * 
-	 * @param key
-	 * @param value
+	 * @param key The key
+	 * @param value The new value
 	 * @deprecated Use {@link VersionAdapter#setServerProperty} instead
 	 */
 	public static void setMinecraftServerProperty(String key, Object value) {
@@ -103,7 +103,7 @@ public class VersionUtils {
 	/**
 	 * Use {@link VersionAdapter} instead
 	 * 
-	 * @return
+	 * @return The spigot object
 	 */
 	@Deprecated()
 	public static Object getSpigot() {

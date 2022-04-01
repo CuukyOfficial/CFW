@@ -121,7 +121,7 @@ public class StaticScoreboard {
 	 * Enables or disables the scoreboard. {@link StaticScoreboard#update} has to be
 	 * invoked for the change to take affect
 	 * 
-	 * @param headerEnabled
+	 * @param enabled True if enabled
 	 */
 	public void setEnabled(boolean enabled) {
 		this.enabledChanged = enabled != this.enabled;

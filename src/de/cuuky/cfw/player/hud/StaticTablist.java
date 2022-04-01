@@ -53,7 +53,7 @@ public class StaticTablist {
 	 * Enables or disables the header. {@link StaticTablist#update} has to be
 	 * invoked for the change to take affect
 	 * 
-	 * @param headerEnabled
+	 * @param headerEnabled True if enabled
 	 */
 	public void setHeaderEnabled(boolean headerEnabled) {
 		this.headerEnabled = headerEnabled;
@@ -67,7 +67,7 @@ public class StaticTablist {
 	 * Enables or disables the footer. {@link StaticTablist#update} has to be
 	 * invoked for the change to take affect
 	 * 
-	 * @param headerEnabled
+	 * @param footerEnabled True if enabled
 	 */
 	public void setFooterEnabled(boolean footerEnabled) {
 		this.footerEnabled = footerEnabled;
