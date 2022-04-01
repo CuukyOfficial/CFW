@@ -9,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Statistic;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.profile.PlayerProfile;
 
 @Deprecated
 public class FakeOfflinePlayer implements OfflinePlayer {
@@ -164,5 +165,10 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 
 	@Override
 	public void setStatistic(Statistic statistic, EntityType entityType, int newValue) {
+	}
+
+	@Override
+	public PlayerProfile getPlayerProfile() {
+		return null;
 	}
 }
