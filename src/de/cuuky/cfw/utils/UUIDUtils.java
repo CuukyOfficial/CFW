@@ -3,6 +3,7 @@ package de.cuuky.cfw.utils;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
@@ -73,7 +74,7 @@ public final class UUIDUtils {
 	}
 
 	public static UUID getCrackedUUID(String name) throws UnsupportedEncodingException {
-		return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes("UTF_8"));
+		return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
 	}
 
 	public static UUID getUUID(String name) throws Exception {
