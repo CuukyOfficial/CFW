@@ -65,4 +65,8 @@ public class AdvancedInventoryManager extends FrameworkManager {
     public AdvancedInventory getInventory(Inventory inventory) {
         return inventories.stream().filter(inv -> inv.getInventory() != null && inv.getInventory().equals(inventory)).findFirst().orElse(null);
     }
+
+    public AdvancedInventory getPrevInventory(Inventory inventory) {
+        return inventories.stream().filter(inv -> inv.getPrevious() != null && inv.getPrevious().getInventory() != null && inv.getPrevious().getInventory().equals(inventory)).findFirst().orElse(null);
+    }
 }
