@@ -43,4 +43,8 @@ public class BasicConfigurationHandler {
     public int getInt(String name, int defaultValue) {
         return (Integer) getValue(name, defaultValue);
     }
+    
+    public BetterYamlConfiguration getYamlConfig() {
+        return this.configuration;
+    }
 }
