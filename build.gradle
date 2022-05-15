@@ -11,7 +11,7 @@ targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
 
 checkstyle {
-	configFile = 'checkstyle.xml' as File
+	configDirectory = '.' as File
 	toolVersion '9.3';
 }
 

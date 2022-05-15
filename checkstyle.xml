@@ -6,7 +6,7 @@
 <module name="Checker">
 	<!-- https://checkstyle.sourceforge.io/config_header.html -->
 	<module name="Header">
-		<property name="headerFile" value="header.txt"/>
+		<property name="headerFile" value="${config_loc}/header.txt"/>
 	</module>
 	<module name="SuppressionSingleFilter">
 		<property name="checks" value="Header"/>
