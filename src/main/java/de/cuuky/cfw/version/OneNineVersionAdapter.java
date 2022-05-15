@@ -32,8 +32,9 @@ import org.bukkit.scoreboard.Team;
 class OneNineVersionAdapter extends OneEightVersionAdapter {
 
 	@Override
-	protected void initNbt() throws ClassNotFoundException, NoSuchMethodException, SecurityException {}
-	
+	protected void initNbt() throws ClassNotFoundException, NoSuchMethodException, SecurityException {
+	}
+
 	@Override
 	public void setAttributeSpeed(Player player, double value) {
 		player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(value);

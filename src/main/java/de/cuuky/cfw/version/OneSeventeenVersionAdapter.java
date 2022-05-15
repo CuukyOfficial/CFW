@@ -40,8 +40,7 @@ import org.bukkit.entity.Player;
 class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
 	@Override
-	protected void initPlayer()
-			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 	}
 
 	@Override
@@ -94,7 +93,7 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 				return (Properties) field.get(dedicatedServerProp);
 			}
 			throw new Error("missing properties field");
-		}catch(NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			throw new Error(e);
 		}
 	}

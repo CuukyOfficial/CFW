@@ -28,5 +28,5 @@ import org.bukkit.inventory.ItemStack;
 
 public interface FillerConfigurable {
 
-    boolean shallInsertFiller(int location, ItemStack stack);
+	boolean shallInsertFiller(int location, ItemStack stack);
 }

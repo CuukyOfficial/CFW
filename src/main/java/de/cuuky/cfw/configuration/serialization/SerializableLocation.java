@@ -34,19 +34,19 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
 public class SerializableLocation extends Location implements ConfigurationSerializable {
 
-    public SerializableLocation(World world, double x, double y, double z) {
-        super(world, x, y, z);
-    }
+	public SerializableLocation(World world, double x, double y, double z) {
+		super(world, x, y, z);
+	}
 
-    public SerializableLocation(World world, double x, double y, double z, float yaw, float pitch) {
-        super(world, x, y, z, yaw, pitch);
-    }
+	public SerializableLocation(World world, double x, double y, double z, float yaw, float pitch) {
+		super(world, x, y, z, yaw, pitch);
+	}
 
-    public SerializableLocation(Location location) {
-        this(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-    }
+	public SerializableLocation(Location location) {
+		this(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+	}
 
-    @Deprecated
+	@Deprecated
 	public Location getLocation() {
 		return this;
 	}
@@ -65,14 +65,14 @@ public class SerializableLocation extends Location implements ConfigurationSeria
 		return map;
 	}
 
-    @Override
-    public SerializableLocation clone() {
-        return (SerializableLocation) super.clone();
-    }
+	@Override
+	public SerializableLocation clone() {
+		return (SerializableLocation) super.clone();
+	}
 
-    public static SerializableLocation deserialize(Map<String, Object> args) {
+	public static SerializableLocation deserialize(Map<String, Object> args) {
 		Number x = (Number) args.get("x"), y = (Number) args.get("y"), z = (Number) args.get("z"), yaw = (Number) args.get("yaw"), pitch = (Number) args.get("pitch");
-        String world = (String) args.get("world");
+		String world = (String) args.get("world");
 		return new SerializableLocation(Bukkit.getWorld(world), x.doubleValue(), y.doubleValue(), z.doubleValue(), yaw.floatValue(), pitch.floatValue());
 	}
 }

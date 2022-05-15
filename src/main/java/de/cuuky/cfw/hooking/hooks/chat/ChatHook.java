@@ -47,7 +47,8 @@ public class ChatHook extends HookEntity {
 
 	private boolean run(Supplier<Boolean> runner) {
 		boolean unregister = runner.get();
-		if (unregister) this.unregister();
+		if (unregister)
+			this.unregister();
 		return unregister;
 	}
 

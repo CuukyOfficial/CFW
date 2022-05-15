@@ -41,7 +41,8 @@ public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
 	}
 
 	private void checkRefresh() {
-		if (!this.shallRefresh(this.lastRefresh)) return;
+		if (!this.shallRefresh(this.lastRefresh))
+			return;
 		this.refreshValue();
 	}
 

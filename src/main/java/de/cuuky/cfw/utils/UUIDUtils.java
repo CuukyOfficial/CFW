@@ -43,15 +43,15 @@ public final class UUIDUtils {
 		if (time == -1) {
 			url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name);
 		} else {
-			//the timestamp parameter is no longer supported by mojang https://wiki.vg/Mojang_API#Username_to_UUID
+			// the timestamp parameter is no longer supported by mojang https://wiki.vg/Mojang_API#Username_to_UUID
 			url = new URL("https://api.mojang.com/users/profiles/minecraft/" + name + "?at=" + time);
 		}
 		HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 		connection.setConnectTimeout(timeout);
 		connection.setReadTimeout(timeout);
 
-		if(connection.getResponseCode() == 204) {
-			//unknown name
+		if (connection.getResponseCode() == 204) {
+			// unknown name
 			return null;
 		}
 
@@ -63,29 +63,29 @@ public final class UUIDUtils {
 		JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(input);
 		String uuidString = UUIDObject.get("id").toString();
 		String uuidSeperation = uuidString.replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
-        return UUID.fromString(uuidSeperation);
+		return UUID.fromString(uuidSeperation);
 	}
 
 	private static UUID getUUIDTime(String name, long time) throws Exception {
 		return getUUIDTime(name, time, 30000);
 	}
 
-    @Deprecated
-    public static String getNamesChanged(String name) throws Exception {
-        return getName(name);
-    }
+	@Deprecated
+	public static String getNamesChanged(String name) throws Exception {
+		return getName(name);
+	}
 
-    public static String getName(UUID uuid) throws Exception {
-        String uuidString = uuid.toString().replace("-", "");
-        Scanner scanner = new Scanner(new URL("https://api.mojang.com/user/profiles/" + uuidString + "/names").openStream());
-        String input = scanner.nextLine();
-        scanner.close();
+	public static String getName(UUID uuid) throws Exception {
+		String uuidString = uuid.toString().replace("-", "");
+		Scanner scanner = new Scanner(new URL("https://api.mojang.com/user/profiles/" + uuidString + "/names").openStream());
+		String input = scanner.nextLine();
+		scanner.close();
 
-        JSONArray nameArray = (JSONArray) JSONValue.parseWithException(input);
-        String playerSlot = nameArray.get(nameArray.size() - 1).toString();
-        JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
-        return nameObject.get("name").toString();
-    }
+		JSONArray nameArray = (JSONArray) JSONValue.parseWithException(input);
+		String playerSlot = nameArray.get(nameArray.size() - 1).toString();
+		JSONObject nameObject = (JSONObject) JSONValue.parseWithException(playerSlot);
+		return nameObject.get("name").toString();
+	}
 
 	public static String getName(String name) throws Exception {
 		Date Date = new Date();

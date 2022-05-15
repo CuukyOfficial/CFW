@@ -34,7 +34,7 @@ public class AnimatedActionbar {
 	private final int task;
 	private Animation<String> content;
 	private boolean contentChanged;
-	
+
 	public AnimatedActionbar(JavaPlugin javaPlugin, Player player, AnimationData<String> content) {
 		this.content = new Animation<>(content);
 		this.actionbar = new StaticActionbar(player) {
@@ -46,13 +46,13 @@ public class AnimatedActionbar {
 		this.update();
 		this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(javaPlugin, this::update, 0, 0);
 	}
-	
+
 	public void queueUpdate() {
 		this.contentChanged = true;
 	}
 
 	private void update() {
-		if(this.contentChanged || this.content.shouldUpdate())
+		if (this.contentChanged || this.content.shouldUpdate())
 			this.actionbar.update(this.content.getCurrentFrame());
 		this.content.tick();
 	}
@@ -60,7 +60,7 @@ public class AnimatedActionbar {
 	protected String processString(String input) {
 		return input;
 	}
-	
+
 	public boolean isEnabled() {
 		return this.actionbar.isEnabled();
 	}

@@ -39,11 +39,11 @@ public class OneSixteenVersionAdapter extends OneFourteenVersionAdapter {
 			Object dedicatedServer = dedicatedServerField.get(Bukkit.getServer());
 			Map<?, ?> worldServer = (Map<?, ?>) dedicatedServer.getClass().getField(this.getWorldServerFieldName()).get(dedicatedServer);
 			worldServer.clear();
-		}catch(ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+		} catch (ClassNotFoundException | IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			throw new Error(e);
 		}
 	}
-	
+
 	protected String getWorldServerFieldName() {
 		return "worldServer";
 	}

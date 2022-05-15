@@ -38,56 +38,56 @@ import de.cuuky.cfw.manager.FrameworkManagerType;
 
 public class AdvancedInventoryManager extends FrameworkManager {
 
-    private final List<AdvancedInventory> inventories = new CopyOnWriteArrayList<>();
+	private final List<AdvancedInventory> inventories = new CopyOnWriteArrayList<>();
 
-    public AdvancedInventoryManager(JavaPlugin ownerInstance) {
-        super(FrameworkManagerType.ADVANCED_INVENTORY, ownerInstance);
-        this.ownerInstance.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), ownerInstance);
-    }
+	public AdvancedInventoryManager(JavaPlugin ownerInstance) {
+		super(FrameworkManagerType.ADVANCED_INVENTORY, ownerInstance);
+		this.ownerInstance.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), ownerInstance);
+	}
 
-    protected AdvancedInventory registerInventory(AdvancedInventory inventory) {
-        this.inventories.add(inventory);
-        return inventory;
-    }
+	protected AdvancedInventory registerInventory(AdvancedInventory inventory) {
+		this.inventories.add(inventory);
+		return inventory;
+	}
 
-    protected boolean unregisterInventory(AdvancedInventory inventory) {
-        return this.inventories.remove(inventory);
-    }
+	protected boolean unregisterInventory(AdvancedInventory inventory) {
+		return this.inventories.remove(inventory);
+	}
 
-    @Override
-    public void disable() {
-        this.closeInventories();
-    }
+	@Override
+	public void disable() {
+		this.closeInventories();
+	}
 
-    public void updateInventories(AdvancedInventory self, Function<AdvancedInventory, Boolean> filter) {
-        for (AdvancedInventory inventory : this.inventories)
-            if ((self != null && !inventory.equals(self)) && filter.apply(inventory))
-                inventory.update();
-    }
+	public void updateInventories(AdvancedInventory self, Function<AdvancedInventory, Boolean> filter) {
+		for (AdvancedInventory inventory : this.inventories)
+			if ((self != null && !inventory.equals(self)) && filter.apply(inventory))
+				inventory.update();
+	}
 
-    public void updateInventories(Function<AdvancedInventory, Boolean> filter) {
-        this.updateInventories(null, filter);
-    }
+	public void updateInventories(Function<AdvancedInventory, Boolean> filter) {
+		this.updateInventories(null, filter);
+	}
 
-    @SafeVarargs
-    public final void updateInventories(Class<? extends AdvancedInventory>... clazzes) {
-        List<Class<? extends AdvancedInventory>> clazzList = Arrays.asList(clazzes);
-        this.updateInventories(inv -> clazzList.contains(inv.getClass()));
-    }
+	@SafeVarargs
+	public final void updateInventories(Class<? extends AdvancedInventory>... clazzes) {
+		List<Class<? extends AdvancedInventory>> clazzList = Arrays.asList(clazzes);
+		this.updateInventories(inv -> clazzList.contains(inv.getClass()));
+	}
 
-    public void closeInventories() {
-        this.inventories.forEach(AdvancedInventory::close);
-    }
+	public void closeInventories() {
+		this.inventories.forEach(AdvancedInventory::close);
+	}
 
-    public List<AdvancedInventory> getInventories() {
-        return inventories;
-    }
+	public List<AdvancedInventory> getInventories() {
+		return inventories;
+	}
 
-    public AdvancedInventory getInventory(Player player) {
-        return inventories.stream().filter(inv -> inv.getPlayer() != null && inv.getPlayer().equals(player)).findFirst().orElse(null);
-    }
+	public AdvancedInventory getInventory(Player player) {
+		return inventories.stream().filter(inv -> inv.getPlayer() != null && inv.getPlayer().equals(player)).findFirst().orElse(null);
+	}
 
-    public AdvancedInventory getInventory(Inventory inventory) {
-        return inventories.stream().filter(inv -> inv.getInventory() != null && inv.getInventory().equals(inventory)).findFirst().orElse(null);
-    }
+	public AdvancedInventory getInventory(Inventory inventory) {
+		return inventories.stream().filter(inv -> inv.getInventory() != null && inv.getInventory().equals(inventory)).findFirst().orElse(null);
+	}
 }

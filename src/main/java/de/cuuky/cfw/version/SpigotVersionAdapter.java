@@ -50,8 +50,7 @@ public class SpigotVersionAdapter implements VersionAdapter {
 		this.parent = parentSupplier.get();
 		try {
 			this.spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -117,8 +116,7 @@ public class SpigotVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity,
-			String customName) {
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
 		this.parent.setArmorstandAttributes(armorstand, visible, customNameVisible, gravity, customName);
 	}
 

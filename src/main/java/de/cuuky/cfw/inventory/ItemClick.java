@@ -28,5 +28,5 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 
 public interface ItemClick {
 
-    void onItemClick(InventoryClickEvent event);
+	void onItemClick(InventoryClickEvent event);
 }

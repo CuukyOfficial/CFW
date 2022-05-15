@@ -28,20 +28,20 @@ import java.util.function.Supplier;
 
 public class ShortGMP extends GeneralMessagePlaceholder {
 
-    private final Supplier<String> supplier;
+	private final Supplier<String> supplier;
 
-    public ShortGMP(String identifier, int refreshDelay, boolean rawIdentifier, String description, Supplier<String> supplier) {
-        super(identifier, refreshDelay, rawIdentifier, description);
+	public ShortGMP(String identifier, int refreshDelay, boolean rawIdentifier, String description, Supplier<String> supplier) {
+		super(identifier, refreshDelay, rawIdentifier, description);
 
-        this.supplier = supplier;
-    }
+		this.supplier = supplier;
+	}
 
-    public ShortGMP(String identifier, int refreshDelay, String description, Supplier<String> supplier) {
-        this(identifier, refreshDelay, false, description, supplier);
-    }
+	public ShortGMP(String identifier, int refreshDelay, String description, Supplier<String> supplier) {
+		this(identifier, refreshDelay, false, description, supplier);
+	}
 
-    @Override
-    protected String getValue() {
-        return supplier.get();
-    }
+	@Override
+	protected String getValue() {
+		return supplier.get();
+	}
 }

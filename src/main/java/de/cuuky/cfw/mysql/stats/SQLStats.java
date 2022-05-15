@@ -153,7 +153,8 @@ public class SQLStats<T> extends MySQLClient {
 		return this.getAsyncPreparedQuery(this.getLoadStatsQuery(uuid), new PreparedStatementQuery() {
 
 			@Override
-			public void onStatementPrepared(PreparedStatement statement) {}
+			public void onStatementPrepared(PreparedStatement statement) {
+			}
 
 			@Override
 			public void onResultRecieve(ResultSet result) {

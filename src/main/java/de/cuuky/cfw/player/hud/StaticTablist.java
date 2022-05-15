@@ -74,8 +74,7 @@ public class StaticTablist {
 	}
 
 	/**
-	 * Enables or disables the header. {@link StaticTablist#update} has to be
-	 * invoked for the change to take affect
+	 * Enables or disables the header. {@link StaticTablist#update} has to be invoked for the change to take affect
 	 * 
 	 * @param headerEnabled True if enabled
 	 */
@@ -88,8 +87,7 @@ public class StaticTablist {
 	}
 
 	/**
-	 * Enables or disables the footer. {@link StaticTablist#update} has to be
-	 * invoked for the change to take affect
+	 * Enables or disables the footer. {@link StaticTablist#update} has to be invoked for the change to take affect
 	 * 
 	 * @param footerEnabled True if enabled
 	 */

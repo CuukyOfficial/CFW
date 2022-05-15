@@ -51,7 +51,8 @@ public class LocationSerializer extends CFWSerializeType {
 		try {
 			Number yaw = (Number) section.get(key + ".yaw"), pitch = (Number) section.get(key + ".pitch");
 			return new Location(manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")), x.doubleValue(), y.doubleValue(), z.doubleValue(), yaw.floatValue(), pitch.floatValue());
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
 		return new Location(manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")), x.doubleValue(), y.doubleValue(), z.doubleValue());
 	}

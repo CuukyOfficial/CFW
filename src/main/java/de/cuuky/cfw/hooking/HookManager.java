@@ -75,8 +75,7 @@ public class HookManager extends FrameworkManager {
 	}
 
 	public <B extends HookEntity> List<B> getHooks(HookEntityType<B> type) {
-		return hooks.stream().filter(ent ->
-				ent.getType().getTypeClass().equals(type.getTypeClass())).map(ent -> (B) ent).collect(Collectors.toList());
+		return hooks.stream().filter(ent -> ent.getType().getTypeClass().equals(type.getTypeClass())).map(ent -> (B) ent).collect(Collectors.toList());
 	}
 
 	public HookEntity getHook(HookEntityType<?> type, Player player) {
@@ -84,8 +83,7 @@ public class HookManager extends FrameworkManager {
 	}
 
 	public <B extends HookEntity> B getHook(Class<B> clazz, Player player) {
-		return (B) hooks.stream().filter(ent -> ent.getType().getTypeClass().equals(clazz)
-				&& ent.getPlayer().equals(player)).findFirst().orElse(null);
+		return (B) hooks.stream().filter(ent -> ent.getType().getTypeClass().equals(clazz) && ent.getPlayer().equals(player)).findFirst().orElse(null);
 	}
 
 	public ItemHook getItemHook(ItemStack stack, Player player) {

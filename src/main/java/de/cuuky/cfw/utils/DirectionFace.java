@@ -26,10 +26,7 @@ package de.cuuky.cfw.utils;
 
 public enum DirectionFace {
 
-	NORTH("NORTH", 135f, -135f),
-	EAST("EAST", -135f, -45f),
-	SOUTH("SOUTH", -45f, 45f),
-	WEST("WEST", 45f, 135f);
+	NORTH("NORTH", 135f, -135f), EAST("EAST", -135f, -45f), SOUTH("SOUTH", -45f, 45f), WEST("WEST", 45f, 135f);
 
 	private String identifier;
 	private float start, end;

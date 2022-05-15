@@ -31,7 +31,7 @@ import de.cuuky.cfw.version.VersionAdapter;
 import de.cuuky.cfw.version.VersionUtils;
 
 public class StaticActionbar {
-	
+
 	private static final VersionAdapter VERSION_ADAPTER = VersionUtils.getVersionAdapter();
 
 	private final Player player;
@@ -41,7 +41,7 @@ public class StaticActionbar {
 		this.player = player;
 		this.enabled = true;
 	}
-	
+
 	public StaticActionbar(CustomPlayer player) {
 		this(player.getPlayer());
 	}

@@ -32,9 +32,7 @@ import de.cuuky.cfw.player.CustomPlayer;
 @Deprecated
 public enum CustomBoardType {
 
-	NAMETAG(CustomNametag.class),
-	SCOREBOARD(CustomScoreboard.class),
-	TABLIST(CustomTablist.class);
+	NAMETAG(CustomNametag.class), SCOREBOARD(CustomScoreboard.class), TABLIST(CustomTablist.class);
 
 	private Class<? extends CustomBoard<? extends CustomPlayer>> clazz;
 

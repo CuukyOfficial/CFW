@@ -43,7 +43,8 @@ public abstract class HookEntity {
 
 	public void setManager(HookManager manager) {
 		HookEntity entity = this.getExisting(manager, this.player);
-		if (entity != null) entity.unregister();
+		if (entity != null)
+			entity.unregister();
 		this.manager = manager;
 	}
 

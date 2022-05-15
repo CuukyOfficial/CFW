@@ -45,12 +45,14 @@ public final class PermissionUtils {
 
 		try {
 			toAdd.add(Class.forName("ru.tehkode.permissions.bukkit.PermissionsEx"));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
 		try {
 			toAdd.add(Class.forName("net.luckperms.api.LuckPerms"));
 			toAdd.add(Class.forName("net.luckperms.api.query.QueryOptions"));
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 
 		for (Class<?> clazz : toAdd)
 			clazzes.put(clazz.getName(), clazz);
@@ -65,7 +67,8 @@ public final class PermissionUtils {
 			userManager = luckPermsAPI.getClass().getMethod("getUserManager").invoke(luckPermsAPI);
 			groupManager = luckPermsAPI.getClass().getMethod("getGroupManager").invoke(luckPermsAPI);
 			queryOptions = clazzes.get("net.luckperms.api.query.QueryOptions").getDeclaredMethod("defaultContextualOptions").invoke(null);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
 	}
 
 	public static String getLuckPermsPrefix(CustomPlayer player) {
@@ -79,7 +82,8 @@ public final class PermissionUtils {
 			Object metadata = cachedData.getClass().getMethod("getMetaData", clazzes.get("net.luckperms.api.query.QueryOptions")).invoke(cachedData, queryOptions);
 			String prefix = (String) metadata.getClass().getMethod("getPrefix").invoke(metadata);
 			return prefix != null ? prefix.replace("&", "§") : prefix;
-		} catch (Throwable e) {}
+		} catch (Throwable e) {
+		}
 
 		return "";
 	}
@@ -94,7 +98,8 @@ public final class PermissionUtils {
 				prefix = (String) groups[0].getClass().getMethod("getPrefix").invoke(groups[0]);
 			else
 				prefix = (String) permissionUser.getClass().getMethod("getPrefix").invoke(permissionUser);
-		} catch (Throwable e) {}
+		} catch (Throwable e) {
+		}
 
 		return prefix != null ? prefix.replace("&", "§") : prefix;
 	}

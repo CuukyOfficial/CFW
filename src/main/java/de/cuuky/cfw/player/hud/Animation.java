@@ -46,7 +46,6 @@ class Animation<T> {
 	}
 
 	T getCurrentFrame() {
-		return this.data.delay == 0 ? this.data.frames[0]
-				: this.data.frames[((int) (this.ticksPassed / this.data.delay)) % this.data.frames.length];
+		return this.data.delay == 0 ? this.data.frames[0] : this.data.frames[((int) (this.ticksPassed / this.data.delay)) % this.data.frames.length];
 	}
 }

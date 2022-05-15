@@ -37,51 +37,53 @@ import de.cuuky.cfw.inventory.ItemInserter;
 
 public class AnimatedClosingInserter implements ItemInserter {
 
-    private boolean cancelled, started;
+	private boolean cancelled, started;
 
-    private boolean setItem(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int index, int delay) {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+	private boolean setItem(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int index, int delay) {
+		try {
+			Thread.sleep(delay);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 
-        if (cancelled) return false;
-        this.setItem(inventory, index, items.get(index), false);
-        if (!inventory.isUpdating()) player.updateInventory();
-        return true;
-    }
+		if (cancelled)
+			return false;
+		this.setItem(inventory, index, items.get(index), false);
+		if (!inventory.isUpdating())
+			player.updateInventory();
+		return true;
+	}
 
-    @Override
-    public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
-        started = true;
-        int delay = 300 / (inventory.getInfo(Info.SIZE));
-        int middle = (size - 1) / 2;
+	@Override
+	public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
+		started = true;
+		int delay = 300 / (inventory.getInfo(Info.SIZE));
+		int middle = (size - 1) / 2;
 
-        new BukkitRunnable() {
+		new BukkitRunnable() {
 
-            boolean end = false;
+			boolean end = false;
 
-            @Override
-            public void run() {
-                for (int index = 0; index <= middle * 2 + 1; index++) {
-                    int tempIndex = (int) Math.floor((float) index / 2);
-                    if (!setItem(inventory, items, player, (end ? size - tempIndex - 1 : tempIndex), delay))
-                        return;
+			@Override
+			public void run() {
+				for (int index = 0; index <= middle * 2 + 1; index++) {
+					int tempIndex = (int) Math.floor((float) index / 2);
+					if (!setItem(inventory, items, player, (end ? size - tempIndex - 1 : tempIndex), delay))
+						return;
 
-                    end = !end;
-                }
-            }
-        }.runTaskAsynchronously(plugin);
-    }
+					end = !end;
+				}
+			}
+		}.runTaskAsynchronously(plugin);
+	}
 
-    @Override
-    public void stopInserting() {
-        this.cancelled = true;
-    }
+	@Override
+	public void stopInserting() {
+		this.cancelled = true;
+	}
 
-    @Override
-    public boolean hasStarted() {
-        return this.started;
-    }
+	@Override
+	public boolean hasStarted() {
+		return this.started;
+	}
 }

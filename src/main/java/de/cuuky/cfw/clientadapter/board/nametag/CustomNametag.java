@@ -57,7 +57,8 @@ public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {
 				try {
 					if (!team.getName().startsWith("team-"))
 						team.unregister();
-				} catch (IllegalStateException e) {}
+				} catch (IllegalStateException e) {
+				}
 			}
 
 		giveAll();

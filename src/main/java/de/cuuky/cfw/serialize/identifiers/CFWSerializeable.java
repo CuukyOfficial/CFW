@@ -31,8 +31,10 @@ public interface CFWSerializeable {
 	 * To mark classes
 	 */
 
-	default void onDeserializeEnd() {}
+	default void onDeserializeEnd() {
+	}
 
-	default void onSerializeStart() {}
+	default void onSerializeStart() {
+	}
 
 }

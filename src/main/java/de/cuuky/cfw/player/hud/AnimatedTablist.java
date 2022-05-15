@@ -37,8 +37,7 @@ public class AnimatedTablist {
 	private Animation<String> footer;
 	private boolean contentChanged;
 
-	public AnimatedTablist(JavaPlugin javaPlugin, CustomPlayer player, AnimationData<String> header,
-			AnimationData<String> footer) {
+	public AnimatedTablist(JavaPlugin javaPlugin, CustomPlayer player, AnimationData<String> header, AnimationData<String> footer) {
 		this.header = new Animation<>(header);
 		this.footer = new Animation<>(footer);
 

@@ -39,7 +39,7 @@ import org.bukkit.profile.PlayerProfile;
 public class FakeOfflinePlayer implements OfflinePlayer {
 
 	private static final UUID PLAYER_UUID = UUID.fromString("fbaa9566-6002-4359-b42a-f7235487f10c");
-	
+
 	private String name;
 
 	public FakeOfflinePlayer(String name) {
@@ -52,7 +52,8 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 	}
 
 	@Override
-	public void setOp(boolean arg0) {}
+	public void setOp(boolean arg0) {
+	}
 
 	@Override
 	public Map<String, Object> serialize() {
@@ -110,10 +111,12 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 	}
 
 	@Override
-	public void setWhitelisted(boolean arg0) {}
+	public void setWhitelisted(boolean arg0) {
+	}
 
-	//@Override
-	public void setBanned(boolean arg0) {}
+	// @Override
+	public void setBanned(boolean arg0) {
+	}
 
 	@Override
 	public void incrementStatistic(Statistic statistic) throws IllegalArgumentException {
@@ -179,8 +182,7 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 	}
 
 	@Override
-	public void incrementStatistic(Statistic statistic, EntityType entityType, int amount)
-			throws IllegalArgumentException {
+	public void incrementStatistic(Statistic statistic, EntityType entityType, int amount) throws IllegalArgumentException {
 	}
 
 	@Override

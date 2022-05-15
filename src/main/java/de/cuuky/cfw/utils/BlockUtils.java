@@ -44,8 +44,7 @@ public class BlockUtils {
 
 		if (VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_12)) {
 			return type.toString().contains("GRASS") && !type.toString().contains("BLOCK");
-		}
-		else {
+		} else {
 			return type.toString().equals("LONG_GRASS");
 		}
 	}
@@ -64,7 +63,7 @@ public class BlockUtils {
 
 		return false;
 	}
-	
+
 	public static void setBlock(Block block, Materials mat, boolean applyPhysics) {
 		if (VersionUtils.getVersion().isLowerThan(BukkitVersion.ONE_8))
 			block.setType(mat.parseMaterial());
@@ -83,11 +82,11 @@ public class BlockUtils {
 	public static void setBlock(Block block, Materials mat) {
 		setBlock(block, mat, true);
 	}
-	
+
 	public static void setBlockDelayed(JavaPlugin plugin, World world, int x, int y, int z, Materials mat) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(world.getBlockAt(x, y, z), mat, false), 1);
 	}
-	
+
 	public static void setBlockDelayed(JavaPlugin plugin, Block block, Materials mat) {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(block, mat, false), 1);
 	}

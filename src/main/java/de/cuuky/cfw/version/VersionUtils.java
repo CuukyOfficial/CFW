@@ -35,7 +35,7 @@ import de.cuuky.cfw.version.minecraft.utils.ProtocolSupportUtils;
 import de.cuuky.cfw.version.minecraft.utils.ViaVersionUtils;
 
 public class VersionUtils {
-	
+
 	private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
 
 	private static final String nmsClass;
@@ -79,7 +79,7 @@ public class VersionUtils {
 		}
 		versionAdapter = serverSoftware.getVersionAdapter(version.getAdapterSupplier());
 	}
-	
+
 	/**
 	 * @param clazz Class you want to check
 	 * @return Whether the provided class is loaded
@@ -96,7 +96,7 @@ public class VersionUtils {
 	/**
 	 * Use {@link VersionAdapter#setServerProperty} instead
 	 * 
-	 * @param key The key
+	 * @param key   The key
 	 * @param value The new value
 	 * @deprecated Use {@link VersionAdapter#setServerProperty} instead
 	 */

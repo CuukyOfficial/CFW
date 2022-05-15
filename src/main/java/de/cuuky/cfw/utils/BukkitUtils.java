@@ -41,12 +41,12 @@ public class BukkitUtils {
 		player.teleport(location.clone().add(0, 1, 0));
 	}
 
-    public static Player getPlayer(String name) throws Exception {
-        return Bukkit.getPlayer(getUUID(name));
-    }
+	public static Player getPlayer(String name) throws Exception {
+		return Bukkit.getPlayer(getUUID(name));
+	}
 
-    public static UUID getUUID(String name) throws Exception {
-        Player player = Bukkit.getPlayer(name);
-        return player == null ? UUIDUtils.getUUID(name) : player.getUniqueId();
-    }
+	public static UUID getUUID(String name) throws Exception {
+		Player player = Bukkit.getPlayer(name);
+		return player == null ? UUIDUtils.getUUID(name) : player.getUniqueId();
+	}
 }

@@ -41,7 +41,7 @@ import de.cuuky.cfw.utils.JavaUtils;
 public class YamlConfigurationUtil {
 
 	public static YamlConfiguration loadConfiguration(File file) {
-        JavaUtils.createFile(file);
+		JavaUtils.createFile(file);
 		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
 			return YamlConfiguration.loadConfiguration(reader);
 		} catch (IOException e) {
@@ -50,7 +50,7 @@ public class YamlConfigurationUtil {
 	}
 
 	public static void save(YamlConfiguration configuration, File file) {
-        JavaUtils.createFile(file);
+		JavaUtils.createFile(file);
 		try {
 			try (OutputStreamWriter oos = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8)) {
 				oos.write(configuration.saveToString());

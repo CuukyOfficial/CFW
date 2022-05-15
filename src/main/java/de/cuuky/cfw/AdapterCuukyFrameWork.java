@@ -34,17 +34,17 @@ import de.cuuky.cfw.player.CustomPlayer;
 @Deprecated
 public class AdapterCuukyFrameWork<T extends CustomPlayer> extends CuukyFrameWork {
 
-    @Deprecated
+	@Deprecated
 	public AdapterCuukyFrameWork(JavaPlugin pluginInstance) {
 		super(pluginInstance);
 	}
 
-    @Deprecated
+	@Deprecated
 	public AdapterCuukyFrameWork(JavaPlugin pluginInstance, FrameworkManager... manager) {
 		super(pluginInstance, manager);
 	}
 
-    @Deprecated
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public ClientAdapterManager<T> getClientAdapterManager() {
 		return (ClientAdapterManager<T>) loadManager(FrameworkManagerType.CLIENT_ADAPTER);

@@ -49,7 +49,8 @@ public abstract class MessagePlaceholder {
 	public abstract String replacePlaceholder(String message, Object... object);
 
 	protected boolean shallRefresh(long last) {
-		if (last < 1) return true;
+		if (last < 1)
+			return true;
 		return (last + this.refreshDelay) - this.getTickTolerance() <= System.currentTimeMillis();
 	}
 

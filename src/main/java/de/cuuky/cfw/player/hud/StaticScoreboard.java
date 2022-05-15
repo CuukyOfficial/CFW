@@ -142,8 +142,7 @@ public class StaticScoreboard {
 	}
 
 	/**
-	 * Enables or disables the scoreboard. {@link StaticScoreboard#update} has to be
-	 * invoked for the change to take affect
+	 * Enables or disables the scoreboard. {@link StaticScoreboard#update} has to be invoked for the change to take affect
 	 * 
 	 * @param enabled True if enabled
 	 */

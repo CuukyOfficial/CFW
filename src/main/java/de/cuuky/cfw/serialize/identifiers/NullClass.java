@@ -32,9 +32,11 @@ public class NullClass implements CFWSerializeable {
 	 */
 
 	@Override
-	public void onDeserializeEnd() {}
+	public void onDeserializeEnd() {
+	}
 
 	@Override
-	public void onSerializeStart() {}
+	public void onSerializeStart() {
+	}
 
 }

@@ -37,24 +37,25 @@ import de.cuuky.cfw.version.types.Materials;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 
-    public AdvancedAsyncListInventory(AdvancedInventoryManager manager, Player player, List<T> list) {
-        super(manager, player, list);
-    }
+	public AdvancedAsyncListInventory(AdvancedInventoryManager manager, Player player, List<T> list) {
+		super(manager, player, list);
+	}
 
-    protected ItemStack getLoadingItem() {
-        return new BuildItem().displayName("§cLoading...").material(Materials.COAL).build();
-    }
+	protected ItemStack getLoadingItem() {
+		return new BuildItem().displayName("§cLoading...").material(Materials.COAL).build();
+	}
 
-    @Override
-    protected void addShowItem(int index, ItemStack item, ItemClick click) {
-        if (item == null) return;
-        super.addItem(index, this.getLoadingItem());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                AdvancedAsyncListInventory.super.addShowItem(index, item, click);
-                AdvancedAsyncListInventory.this.getPlayer().updateInventory();
-            }
-        }.runTaskLaterAsynchronously(this.getManager().getOwnerInstance(), 0L);
-    }
+	@Override
+	protected void addShowItem(int index, ItemStack item, ItemClick click) {
+		if (item == null)
+			return;
+		super.addItem(index, this.getLoadingItem());
+		new BukkitRunnable() {
+			@Override
+			public void run() {
+				AdvancedAsyncListInventory.super.addShowItem(index, item, click);
+				AdvancedAsyncListInventory.this.getPlayer().updateInventory();
+			}
+		}.runTaskLaterAsynchronously(this.getManager().getOwnerInstance(), 0L);
+	}
 }

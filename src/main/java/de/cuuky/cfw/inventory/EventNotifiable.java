@@ -30,9 +30,9 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 
 public interface EventNotifiable {
 
-    void onInventoryClick(InventoryClickEvent event);
+	void onInventoryClick(InventoryClickEvent event);
 
-    void onInventoryClose(InventoryCloseEvent event);
+	void onInventoryClose(InventoryCloseEvent event);
 
-    void onInventoryDrag(InventoryDragEvent event);
+	void onInventoryDrag(InventoryDragEvent event);
 }

@@ -32,13 +32,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public interface ItemInserter {
 
-    void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size);
+	void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size);
 
-    void stopInserting();
+	void stopInserting();
 
-    boolean hasStarted();
+	boolean hasStarted();
 
-    default void setItem(AdvancedInventory inventory, int index, ItemStack stack, boolean overwrite) {
-        inventory.addToInventory(index, stack, overwrite);
-    }
+	default void setItem(AdvancedInventory inventory, int index, ItemStack stack, boolean overwrite) {
+		inventory.addToInventory(index, stack, overwrite);
+	}
 }

@@ -28,19 +28,7 @@ import java.util.function.Supplier;
 
 public enum BukkitVersion {
 
-	ONE_18(18, OneSeventeenVersionAdapter::new),
-	ONE_17(17, OneSeventeenVersionAdapter::new),
-	ONE_16(16, OneSixteenVersionAdapter::new),
-	ONE_15(15, OneFourteenVersionAdapter::new),
-	ONE_14(14, OneFourteenVersionAdapter::new),
-	ONE_13(13, OneThirteenVersionAdapter::new),
-	ONE_12(12, OneTwelveVersionAdapter::new),
-	ONE_11(11, OneNineVersionAdapter::new),
-	ONE_10(10, OneNineVersionAdapter::new),
-	ONE_9(9, OneNineVersionAdapter::new),
-	ONE_8(8, OneEightVersionAdapter::new),
-	ONE_7(7, OneSevenVersionAdapter::new),
-	UNSUPPORTED(0, UnsupportedVersionAdapter::new);
+	ONE_18(18, OneSeventeenVersionAdapter::new), ONE_17(17, OneSeventeenVersionAdapter::new), ONE_16(16, OneSixteenVersionAdapter::new), ONE_15(15, OneFourteenVersionAdapter::new), ONE_14(14, OneFourteenVersionAdapter::new), ONE_13(13, OneThirteenVersionAdapter::new), ONE_12(12, OneTwelveVersionAdapter::new), ONE_11(11, OneNineVersionAdapter::new), ONE_10(10, OneNineVersionAdapter::new), ONE_9(9, OneNineVersionAdapter::new), ONE_8(8, OneEightVersionAdapter::new), ONE_7(7, OneSevenVersionAdapter::new), UNSUPPORTED(0, UnsupportedVersionAdapter::new);
 
 	private final int identifier;
 	private final Supplier<VersionAdapter> adapterSupplier;

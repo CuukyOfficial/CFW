@@ -99,15 +99,18 @@ public final class JavaUtils {
 	public static Object getStringObject(String obj) {
 		try {
 			return Integer.parseInt(obj);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+		}
 
 		try {
 			return Long.parseLong(obj);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+		}
 
 		try {
 			return Double.parseDouble(obj);
-		} catch (NumberFormatException e) {}
+		} catch (NumberFormatException e) {
+		}
 
 		if (obj.equalsIgnoreCase("true") || obj.equalsIgnoreCase("false"))
 			return obj.equalsIgnoreCase("true");
@@ -116,10 +119,8 @@ public final class JavaUtils {
 	}
 
 	/**
-	 * @param min
-	 *            The minimum Range
-	 * @param max
-	 *            The maximum Range
+	 * @param min The minimum Range
+	 * @param max The maximum Range
 	 * @return Returns a random Integer between the min and the max range
 	 */
 	public static int randomInt(int min, int max) {
@@ -154,18 +155,18 @@ public final class JavaUtils {
 		return dateFormat.format(date);
 	}
 
-    public static boolean createFile(File file) {
-        if (file.exists())
-            return true;
+	public static boolean createFile(File file) {
+		if (file.exists())
+			return true;
 
-        try {
-            File parent = new File(file.getParent());
-            parent.mkdirs();
-            return file.createNewFile();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+		try {
+			File parent = new File(file.getParent());
+			parent.mkdirs();
+			return file.createNewFile();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
 	public static void deleteDirectory(File file) {
 		for (File listFile : file.listFiles()) {
@@ -182,7 +183,8 @@ public final class JavaUtils {
 		LinkedHashMap<T, Z> reversed = new LinkedHashMap<>();
 		List<T> keys = new ArrayList<>(map.keySet());
 		Collections.reverse(keys);
-		for (T key : keys) reversed.put(key, map.get(key));
+		for (T key : keys)
+			reversed.put(key, map.get(key));
 		return reversed;
 	}
 

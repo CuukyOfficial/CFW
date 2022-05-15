@@ -62,14 +62,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	OneSevenVersionAdapter() {
 		try {
 			this.init();
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-				| SecurityException | ClassNotFoundException | NoSuchFieldException e) {
+		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException e) {
 			e.printStackTrace();
 		}
 	}
 
-	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-	NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.initServerPropertys();
 		this.initEntity();
 		this.initPlayer();
@@ -88,18 +86,14 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	protected void initEntity() throws NoSuchMethodException, SecurityException, ClassNotFoundException {
-		this.entityHandleMethod = Class
-				.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftEntity")
-				.getMethod("getHandle");
+		this.entityHandleMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftEntity").getMethod("getHandle");
 	}
 
-	protected void initPlayer()
-			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
 		this.nmsPlayerClass = Class.forName(VersionUtils.getNmsClass() + ".EntityPlayer");
 		this.pingField = this.nmsPlayerClass.getField("ping");
 		this.connectionField = this.nmsPlayerClass.getField("playerConnection");
-		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket",
-				Class.forName(VersionUtils.getNmsClass() + ".Packet"));
+		this.sendPacketMethod = this.connectionField.getType().getMethod("sendPacket", Class.forName(VersionUtils.getNmsClass() + ".Packet"));
 	}
 
 	protected void initRespawn() throws ClassNotFoundException {
@@ -113,12 +107,10 @@ class OneSevenVersionAdapter implements VersionAdapter {
 				this.networkManagerField = field;
 				return;
 			}
-		throw new Error(
-				"[CFW] Failed to initalize 1.7+ networkManager! Are you using a modified version of Spigot/Bukkit?");
+		throw new Error("[CFW] Failed to initalize 1.7+ networkManager! Are you using a modified version of Spigot/Bukkit?");
 	}
 
-	protected void initLocale()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		this.localeField = this.nmsPlayerClass.getDeclaredField("locale");
 		this.localeField.setAccessible(true);
 	}
@@ -152,8 +144,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 		}
 	}
 
-	protected Object getHandle(Entity entity)
-			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected Object getHandle(Entity entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		return this.entityHandleMethod.invoke(entity);
 	}
 
@@ -250,8 +241,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity,
-			String customName) {
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
 		// 1.8+
 	}
 
@@ -311,7 +301,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 					if (!Bukkit.unloadWorld(world, false))
 						throw new Error("Unable to unload world " + world.getName());
 				}
-		}catch(IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
 			throw new Error(e);
 		}
 	}

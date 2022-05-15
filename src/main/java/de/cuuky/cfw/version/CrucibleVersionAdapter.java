@@ -27,7 +27,7 @@ package de.cuuky.cfw.version;
 import org.bukkit.entity.Player;
 
 public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
-	
+
 	@Override
 	protected void initServerPropertys() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
 		this.minecraftServerClass = Class.forName("net.minecraft.server.MinecraftServer");
@@ -38,17 +38,13 @@ public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	@Override
-	protected void initPlayer()
-			throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-		this.nmsPlayerClass = Class
-				.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer")
-				.getMethod("getHandle").getReturnType();
+	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+		this.nmsPlayerClass = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer").getMethod("getHandle").getReturnType();
 		this.pingField = this.nmsPlayerClass.getField("field_71138_i");
 		this.connectionField = this.nmsPlayerClass.getField("field_71135_a");
-		this.sendPacketMethod = this.connectionField.getType().getMethod("func_147359_a",
-				Class.forName("net.minecraft.network.Packet"));
+		this.sendPacketMethod = this.connectionField.getType().getMethod("func_147359_a", Class.forName("net.minecraft.network.Packet"));
 	}
-	
+
 	@Override
 	protected void initRespawn() throws ClassNotFoundException {
 		this.enumClientCommandClass = Class.forName("net.minecraft.network.play.client.C16PacketClientStatus$EnumState");
@@ -62,8 +58,7 @@ public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
 	}
 
 	@Override
-	protected void initLocale()
-			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+	protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		this.localeField = this.nmsPlayerClass.getDeclaredField("field_71148_cg");
 		this.localeField.setAccessible(true);
 	}

@@ -38,43 +38,43 @@ import de.cuuky.cfw.utils.JavaUtils;
 
 public class BetterYamlConfiguration extends YamlConfiguration {
 
-    private interface ThrowingConsumer<T> {
-        void accept(T type) throws IOException, InvalidConfigurationException;
-    }
+	private interface ThrowingConsumer<T> {
+		void accept(T type) throws IOException, InvalidConfigurationException;
+	}
 
-    private final File file;
+	private final File file;
 
-    public BetterYamlConfiguration(File file) {
-        this.file = file;
-        this.doFileOperation(this::loadParsed);
-    }
+	public BetterYamlConfiguration(File file) {
+		this.file = file;
+		this.doFileOperation(this::loadParsed);
+	}
 
-    public BetterYamlConfiguration(String name) {
-        this(new File(name));
-    }
+	public BetterYamlConfiguration(String name) {
+		this(new File(name));
+	}
 
-    private void loadParsed(File file) throws InvalidConfigurationException {
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-            this.load(reader);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	private void loadParsed(File file) throws InvalidConfigurationException {
+		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
+			this.load(reader);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    private void doFileOperation(ThrowingConsumer<File> operation) {
-        try {
-            JavaUtils.createFile(this.file);
-            operation.accept(this.file);
-        } catch (IOException | InvalidConfigurationException e) {
-            throw new RuntimeException(e);
-        }
-    }
+	private void doFileOperation(ThrowingConsumer<File> operation) {
+		try {
+			JavaUtils.createFile(this.file);
+			operation.accept(this.file);
+		} catch (IOException | InvalidConfigurationException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-    public void save() {
-        this.doFileOperation(this::save);
-    }
+	public void save() {
+		this.doFileOperation(this::save);
+	}
 
-    public File getFile() {
-        return this.file;
-    }
+	public File getFile() {
+		return this.file;
+	}
 }

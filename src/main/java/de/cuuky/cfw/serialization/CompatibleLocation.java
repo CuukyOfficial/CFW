@@ -35,19 +35,19 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable;
 @Deprecated
 public class CompatibleLocation extends Location implements ConfigurationSerializable {
 
-    public CompatibleLocation(World world, double x, double y, double z) {
-        super(world, x, y, z);
-    }
+	public CompatibleLocation(World world, double x, double y, double z) {
+		super(world, x, y, z);
+	}
 
-    public CompatibleLocation(World world, double x, double y, double z, float yaw, float pitch) {
-        super(world, x, y, z, yaw, pitch);
-    }
+	public CompatibleLocation(World world, double x, double y, double z, float yaw, float pitch) {
+		super(world, x, y, z, yaw, pitch);
+	}
 
-    public CompatibleLocation(Location location) {
-        this(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-    }
+	public CompatibleLocation(Location location) {
+		this(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+	}
 
-    @Deprecated
+	@Deprecated
 	public Location getLocation() {
 		return this;
 	}
@@ -66,14 +66,14 @@ public class CompatibleLocation extends Location implements ConfigurationSeriali
 		return map;
 	}
 
-    @Override
-    public CompatibleLocation clone() {
-        return (CompatibleLocation) super.clone();
-    }
+	@Override
+	public CompatibleLocation clone() {
+		return (CompatibleLocation) super.clone();
+	}
 
-    public static CompatibleLocation deserialize(Map<String, Object> args) {
+	public static CompatibleLocation deserialize(Map<String, Object> args) {
 		Number x = (Number) args.get("x"), y = (Number) args.get("y"), z = (Number) args.get("z"), yaw = (Number) args.get("yaw"), pitch = (Number) args.get("pitch");
-        String world = (String) args.get("world");
+		String world = (String) args.get("world");
 		return new CompatibleLocation(Bukkit.getWorld(world), x.doubleValue(), y.doubleValue(), z.doubleValue(), yaw.floatValue(), pitch.floatValue());
 	}
 }

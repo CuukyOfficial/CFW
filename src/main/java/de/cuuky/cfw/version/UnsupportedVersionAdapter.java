@@ -70,12 +70,12 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 		throw new UnsupportedOperationException();
 	}
 
-    @Override
-    public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
-        throw new UnsupportedOperationException();
-    }
+	@Override
+	public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
+		throw new UnsupportedOperationException();
+	}
 
-    @Override
+	@Override
 	public void sendLinkedMessage(Player player, String message, String link) {
 		this.sendClickableMessage(player, message, null, link);
 	}
@@ -101,8 +101,7 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 	}
 
 	@Override
-	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity,
-			String customName) {
+	public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -145,7 +144,7 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 	public Properties getServerProperties() {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	@Override
 	public void setServerProperty(String key, Object value) {
 		throw new UnsupportedOperationException();
