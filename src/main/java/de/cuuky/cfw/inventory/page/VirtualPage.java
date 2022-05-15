@@ -24,11 +24,11 @@
 
 package de.cuuky.cfw.inventory.page;
 
-import de.cuuky.cfw.inventory.Info;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+
+import de.cuuky.cfw.inventory.Info;
 
 class VirtualPage implements Page<AdvancedPageInventory> {
 

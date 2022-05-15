@@ -31,7 +31,6 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Properties;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -45,6 +44,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
+
+import net.md_5.bungee.api.chat.ClickEvent;
 
 @SuppressWarnings("deprecation")
 class OneSevenVersionAdapter implements VersionAdapter {

@@ -24,13 +24,14 @@
 
 package de.cuuky.cfw.inventory.inserter;
 
-import de.cuuky.cfw.inventory.AdvancedInventory;
-import de.cuuky.cfw.inventory.ItemInserter;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Map;
+import de.cuuky.cfw.inventory.AdvancedInventory;
+import de.cuuky.cfw.inventory.ItemInserter;
 
 public class DirectInserter implements ItemInserter {
 

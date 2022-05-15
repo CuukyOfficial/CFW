@@ -24,18 +24,23 @@
 
 package de.cuuky.cfw.inventory.list;
 
-import de.cuuky.cfw.inventory.*;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Consumer;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Consumer;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.EventNotifiable;
+import de.cuuky.cfw.inventory.Info;
+import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.inventory.PrioritisedInfo;
 
 public abstract class AdvancedEditInventory extends AdvancedItemShowInventory implements EventNotifiable {
 

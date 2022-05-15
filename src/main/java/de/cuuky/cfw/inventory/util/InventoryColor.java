@@ -24,10 +24,11 @@
 
 package de.cuuky.cfw.inventory.util;
 
+import org.bukkit.inventory.ItemStack;
+
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeField;
 import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 import de.cuuky.cfw.version.types.Materials;
-import org.bukkit.inventory.ItemStack;
 
 public enum InventoryColor implements CFWSerializeable {
 

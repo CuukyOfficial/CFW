@@ -24,12 +24,12 @@
 
 package de.cuuky.cfw.configuration.language.broadcast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
 import de.cuuky.cfw.player.CustomPlayer;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class MessageHolder {
 

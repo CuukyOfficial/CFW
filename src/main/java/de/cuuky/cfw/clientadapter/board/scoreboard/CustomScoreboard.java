@@ -24,18 +24,19 @@
 
 package de.cuuky.cfw.clientadapter.board.scoreboard;
 
-import de.cuuky.cfw.clientadapter.board.CustomBoard;
-import de.cuuky.cfw.clientadapter.board.CustomBoardType;
-import de.cuuky.cfw.player.CustomPlayer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import de.cuuky.cfw.clientadapter.board.CustomBoard;
+import de.cuuky.cfw.clientadapter.board.CustomBoardType;
+import de.cuuky.cfw.player.CustomPlayer;
 
 @Deprecated
 public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<T> {

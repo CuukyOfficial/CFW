@@ -24,11 +24,12 @@
 
 package de.cuuky.cfw.inventory.page;
 
+import org.bukkit.inventory.ItemStack;
+
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.ContentRefreshable;
 import de.cuuky.cfw.inventory.InfoProvider;
 import de.cuuky.cfw.inventory.ItemClick;
-import org.bukkit.inventory.ItemStack;
 
 public interface Page<Inventory extends AdvancedInventory> extends InfoProvider, ContentRefreshable {
 

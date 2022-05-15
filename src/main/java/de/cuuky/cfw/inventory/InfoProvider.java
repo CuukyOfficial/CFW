@@ -24,11 +24,11 @@
 
 package de.cuuky.cfw.inventory;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import java.util.List;
 import java.util.function.Consumer;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public interface InfoProvider {
 

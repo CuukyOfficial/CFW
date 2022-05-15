@@ -24,15 +24,17 @@
 
 package de.cuuky.cfw.configuration;
 
-import com.google.common.base.Charsets;
-import de.cuuky.cfw.utils.JavaUtils;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.google.common.base.Charsets;
+
+import de.cuuky.cfw.utils.JavaUtils;
 
 public class BetterYamlConfiguration extends YamlConfiguration {
 

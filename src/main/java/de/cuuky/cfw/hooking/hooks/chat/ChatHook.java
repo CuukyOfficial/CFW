@@ -24,6 +24,8 @@
 
 package de.cuuky.cfw.hooking.hooks.chat;
 
+import java.util.function.Supplier;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -31,8 +33,6 @@ import org.bukkit.event.player.PlayerChatEvent;
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.HookEntity;
 import de.cuuky.cfw.hooking.hooks.HookEntityType;
-
-import java.util.function.Supplier;
 
 public class ChatHook extends HookEntity {
 

@@ -31,10 +31,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 
-import de.cuuky.cfw.utils.JavaUtils;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.google.common.base.Charsets;
+
+import de.cuuky.cfw.utils.JavaUtils;
 
 @Deprecated
 public class YamlConfigurationUtil {

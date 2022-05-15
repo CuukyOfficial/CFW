@@ -24,8 +24,6 @@
 
 package de.cuuky.cfw.utils;
 
-import org.bukkit.ChatColor;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -38,6 +36,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import org.bukkit.ChatColor;
 
 public final class JavaUtils {
 

@@ -24,14 +24,15 @@
 
 package de.cuuky.cfw.inventory.confirm;
 
+import java.util.function.Consumer;
+
+import org.bukkit.entity.Player;
+
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemInfo;
 import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
-import org.bukkit.entity.Player;
-
-import java.util.function.Consumer;
 
 public class ConfirmInventory extends AdvancedInventory {
 

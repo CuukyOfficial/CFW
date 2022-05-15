@@ -24,11 +24,11 @@
 
 package de.cuuky.cfw.configuration.placeholder.placeholder;
 
-import de.cuuky.cfw.configuration.placeholder.MessagePlaceholder;
-import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import de.cuuky.cfw.configuration.placeholder.MessagePlaceholder;
+import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholderType;
 
 public abstract class ObjectMessagePlaceholder<T> extends MessagePlaceholder {
 

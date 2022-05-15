@@ -24,6 +24,16 @@
 
 package de.cuuky.cfw.inventory.list;
 
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Supplier;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.inventory.ItemStack;
+
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHook;
 import de.cuuky.cfw.hooking.hooks.chat.ChatHookHandler;
@@ -33,15 +43,6 @@ import de.cuuky.cfw.inventory.ItemClick;
 import de.cuuky.cfw.inventory.ItemInfo;
 import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.version.types.Materials;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory {
 

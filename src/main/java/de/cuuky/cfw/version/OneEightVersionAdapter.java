@@ -30,7 +30,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Locale;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -42,6 +41,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
+
+import net.md_5.bungee.api.chat.ClickEvent;
 
 @SuppressWarnings("deprecation")
 class OneEightVersionAdapter extends OneSevenVersionAdapter {

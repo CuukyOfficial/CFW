@@ -24,11 +24,12 @@
 
 package de.cuuky.cfw.inventory.page;
 
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemClick;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public abstract class AdvancedInfiniteInventory extends AdvancedInventory {
 

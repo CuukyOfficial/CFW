@@ -24,16 +24,17 @@
 
 package de.cuuky.cfw.clientadapter.board.nametag;
 
-import de.cuuky.cfw.clientadapter.board.CustomBoard;
-import de.cuuky.cfw.clientadapter.board.CustomBoardType;
-import de.cuuky.cfw.player.CustomPlayer;
-import de.cuuky.cfw.version.VersionUtils;
+import java.util.Arrays;
+
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Arrays;
+import de.cuuky.cfw.clientadapter.board.CustomBoard;
+import de.cuuky.cfw.clientadapter.board.CustomBoardType;
+import de.cuuky.cfw.player.CustomPlayer;
+import de.cuuky.cfw.version.VersionUtils;
 
 @Deprecated
 public class CustomNametag<T extends CustomPlayer> extends CustomBoard<T> {

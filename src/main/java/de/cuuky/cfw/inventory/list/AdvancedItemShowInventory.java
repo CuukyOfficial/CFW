@@ -24,11 +24,16 @@
 
 package de.cuuky.cfw.inventory.list;
 
-import de.cuuky.cfw.inventory.*;
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
+import de.cuuky.cfw.inventory.AdvancedInventory;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.FillerConfigurable;
+import de.cuuky.cfw.inventory.Info;
+import de.cuuky.cfw.inventory.ItemClick;
 
 public abstract class AdvancedItemShowInventory extends AdvancedInventory implements FillerConfigurable {
 

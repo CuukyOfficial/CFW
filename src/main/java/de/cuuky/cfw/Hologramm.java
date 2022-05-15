@@ -24,12 +24,12 @@
 
 package de.cuuky.cfw;
 
-import de.cuuky.cfw.configuration.serialization.BasicSerializable;
-import de.cuuky.cfw.configuration.serialization.SerializableLocation;
-import de.cuuky.cfw.configuration.serialization.Serialize;
-import de.cuuky.cfw.version.BukkitVersion;
-import de.cuuky.cfw.version.ServerSoftware;
-import de.cuuky.cfw.version.VersionUtils;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -37,11 +37,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import de.cuuky.cfw.configuration.serialization.BasicSerializable;
+import de.cuuky.cfw.configuration.serialization.SerializableLocation;
+import de.cuuky.cfw.configuration.serialization.Serialize;
+import de.cuuky.cfw.version.BukkitVersion;
+import de.cuuky.cfw.version.ServerSoftware;
+import de.cuuky.cfw.version.VersionUtils;
 
 // TODO: Maybe move to CFW or other package
 public class Hologramm extends BasicSerializable {

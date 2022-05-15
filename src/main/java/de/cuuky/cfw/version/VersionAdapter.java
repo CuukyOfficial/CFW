@@ -27,7 +27,6 @@ package de.cuuky.cfw.version;
 import java.util.Collection;
 import java.util.Properties;
 
-import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -36,6 +35,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
+
+import net.md_5.bungee.api.chat.ClickEvent;
 
 public interface VersionAdapter {
 

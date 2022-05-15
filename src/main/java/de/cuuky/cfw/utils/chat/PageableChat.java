@@ -24,9 +24,9 @@
 
 package de.cuuky.cfw.utils.chat;
 
-import org.bukkit.command.CommandSender;
-
 import java.util.List;
+
+import org.bukkit.command.CommandSender;
 
 public class PageableChat<T> {
 

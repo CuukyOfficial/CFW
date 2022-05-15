@@ -24,15 +24,16 @@
 
 package de.cuuky.cfw.inventory.list;
 
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.inventory.ItemClick;
-import de.cuuky.cfw.utils.item.BuildItem;
-import de.cuuky.cfw.version.types.Materials;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.utils.item.BuildItem;
+import de.cuuky.cfw.version.types.Materials;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 

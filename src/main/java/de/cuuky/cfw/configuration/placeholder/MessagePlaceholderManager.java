@@ -24,16 +24,17 @@
 
 package de.cuuky.cfw.configuration.placeholder;
 
-import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
-import de.cuuky.cfw.manager.FrameworkManager;
-import de.cuuky.cfw.manager.FrameworkManagerType;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
+import de.cuuky.cfw.manager.FrameworkManager;
+import de.cuuky.cfw.manager.FrameworkManagerType;
 
 public class MessagePlaceholderManager extends FrameworkManager {
 

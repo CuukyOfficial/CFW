@@ -24,17 +24,22 @@
 
 package de.cuuky.cfw.inventory.page;
 
-import de.cuuky.cfw.inventory.AdvancedInventory;
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.inventory.EventNotifiable;
-import de.cuuky.cfw.inventory.InfoProvider;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
-import java.util.*;
-import java.util.function.Supplier;
+import de.cuuky.cfw.inventory.AdvancedInventory;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.EventNotifiable;
+import de.cuuky.cfw.inventory.InfoProvider;
 
 public abstract class AdvancedPageInventory extends AdvancedInventory implements EventNotifiable {
 

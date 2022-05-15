@@ -24,14 +24,9 @@
 
 package de.cuuky.cfw.inventory.list.player;
 
-import de.cuuky.cfw.hooking.HookManager;
-import de.cuuky.cfw.inventory.AdvancedInventoryManager;
-import de.cuuky.cfw.inventory.ItemClick;
-import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
-import de.cuuky.cfw.utils.item.BuildItem;
-import de.cuuky.cfw.utils.item.BuildSkull;
-import de.cuuky.cfw.version.VersionUtils;
-import de.cuuky.cfw.version.types.Materials;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,8 +35,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.cuuky.cfw.hooking.HookManager;
+import de.cuuky.cfw.inventory.AdvancedInventoryManager;
+import de.cuuky.cfw.inventory.ItemClick;
+import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
+import de.cuuky.cfw.utils.item.BuildItem;
+import de.cuuky.cfw.utils.item.BuildSkull;
+import de.cuuky.cfw.version.VersionUtils;
+import de.cuuky.cfw.version.types.Materials;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 

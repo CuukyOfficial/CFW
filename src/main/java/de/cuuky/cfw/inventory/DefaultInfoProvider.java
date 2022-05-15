@@ -24,15 +24,16 @@
 
 package de.cuuky.cfw.inventory;
 
-import de.cuuky.cfw.inventory.inserter.DirectInserter;
-import de.cuuky.cfw.utils.item.BuildItem;
-import de.cuuky.cfw.version.types.Materials;
-import de.cuuky.cfw.version.types.Sounds;
+import java.util.function.Consumer;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.function.Consumer;
+import de.cuuky.cfw.inventory.inserter.DirectInserter;
+import de.cuuky.cfw.utils.item.BuildItem;
+import de.cuuky.cfw.version.types.Materials;
+import de.cuuky.cfw.version.types.Sounds;
 
 public interface DefaultInfoProvider extends InfoProvider {
 

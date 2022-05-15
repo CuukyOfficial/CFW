@@ -24,8 +24,12 @@
 
 package de.cuuky.cfw.item;
 
-import de.cuuky.cfw.version.VersionUtils;
-import de.cuuky.cfw.version.types.Materials;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -33,7 +37,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.*;
+import de.cuuky.cfw.version.VersionUtils;
+import de.cuuky.cfw.version.types.Materials;
 
 /**
  * Use {@link de.cuuky.cfw.utils.item.BuildItem} and {@link de.cuuky.cfw.utils.item.BuildSkull} instead.

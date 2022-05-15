@@ -24,13 +24,13 @@
 
 package de.cuuky.cfw.configuration.serialization;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class SerializableLocation extends Location implements ConfigurationSerializable {
 

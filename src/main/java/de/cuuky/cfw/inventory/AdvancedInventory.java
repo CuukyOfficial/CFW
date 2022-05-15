@@ -24,15 +24,6 @@
 
 package de.cuuky.cfw.inventory;
 
-import de.cuuky.cfw.inventory.inserter.DirectInserter;
-import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -41,6 +32,16 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
+
+import de.cuuky.cfw.inventory.inserter.DirectInserter;
 
 public abstract class AdvancedInventory extends InfoProviderHolder implements ContentRefreshable, DefaultInfoProvider {
 

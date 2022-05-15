@@ -24,11 +24,11 @@
 
 package de.cuuky.cfw.utils;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
 
 public class BukkitUtils {
 
