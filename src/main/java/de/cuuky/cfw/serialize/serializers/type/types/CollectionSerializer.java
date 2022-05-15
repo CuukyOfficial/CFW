@@ -54,7 +54,7 @@ public class CollectionSerializer extends CFWSerializeType {
 		if (keyClazz == null)
 			return null;
 
-		ArrayList<CFWSerializeable> content = new ArrayList<CFWSerializeable>();
+		ArrayList<CFWSerializeable> content = new ArrayList<>();
 		ConfigurationSection arraySection = section.getConfigurationSection(key);
 		for (String arrayKey : arraySection.getKeys(true)) {
 			Object entry = arraySection.get(arrayKey);

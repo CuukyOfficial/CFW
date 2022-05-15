@@ -119,7 +119,7 @@ public enum Materials {
 		if (isNewVersion())
 			return comp.getType() == this.parseMaterial();
 
-		if (comp.getType() == this.parseMaterial() && (int) comp.getData().getData() == (int) this.data)
+		if (comp.getType() == this.parseMaterial() && comp.getData().getData() == this.data)
 			return true;
 
 		Materials xmat = fromMaterial(comp.getType());

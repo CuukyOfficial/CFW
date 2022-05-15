@@ -100,6 +100,7 @@ public class VersionUtils {
 	 * @param value The new value
 	 * @deprecated Use {@link VersionAdapter#setServerProperty} instead
 	 */
+	@Deprecated
 	public static void setMinecraftServerProperty(String key, Object value) {
 		versionAdapter.setServerProperty(key, value);
 	}

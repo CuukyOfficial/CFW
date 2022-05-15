@@ -42,9 +42,9 @@ public class FieldLoader {
 	private Class<?> clazz;
 
 	public FieldLoader(Class<?> clazz) {
-		this.fields = new LinkedHashMap<String, Field>();
-		this.keyTypes = new LinkedHashMap<Field, Class<? extends CFWSerializeable>>();
-		this.valueTypes = new LinkedHashMap<Field, Class<? extends CFWSerializeable>>();
+		this.fields = new LinkedHashMap<>();
+		this.keyTypes = new LinkedHashMap<>();
+		this.valueTypes = new LinkedHashMap<>();
 		this.clazz = clazz;
 
 		loadFields();

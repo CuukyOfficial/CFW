@@ -48,6 +48,7 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 		// TODO implement this
 	}
 
+	@Override
 	protected void initXp() {
 		this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
 	}

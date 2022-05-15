@@ -64,7 +64,7 @@ public class MySQLClient {
 		this.password = password;
 		this.autoReconnect = true;
 		this.keepAlive = true;
-		this.queries = new CopyOnWriteArrayList<MySQLRequest>();
+		this.queries = new CopyOnWriteArrayList<>();
 		this.connectWait = connectWait;
 
 		startConnecting();

@@ -73,7 +73,7 @@ public class SQLStats<T> extends MySQLClient {
 	}
 
 	private void loadFields() {
-		this.fields = new HashMap<String, Field>();
+		this.fields = new HashMap<>();
 
 		for (Field field : this.statsClazz.getDeclaredFields()) {
 			StatsInt annotation = field.getAnnotation(StatsInt.class);
@@ -105,7 +105,7 @@ public class SQLStats<T> extends MySQLClient {
 	}
 
 	private T processStats(ResultSet result) throws SQLException, InstantiationException, IllegalAccessException {
-		T stats = (T) this.statsClazz.newInstance();
+		T stats = this.statsClazz.newInstance();
 
 		if (result.next())
 			for (Entry<String, Field> entry : this.fields.entrySet())

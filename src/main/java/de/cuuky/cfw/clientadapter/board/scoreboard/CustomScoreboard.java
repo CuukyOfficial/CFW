@@ -98,7 +98,7 @@ public final class CustomScoreboard<T extends CustomPlayer> extends CustomBoard<
 	protected void onUpdate() {
 		ArrayList<String> scoreboardLines = this.player.getUpdateHandler().getScoreboardEntries();
 		if (scoreboardLines == null)
-			scoreboardLines = new ArrayList<String>();
+			scoreboardLines = new ArrayList<>();
 
 		Collections.reverse(scoreboardLines);
 

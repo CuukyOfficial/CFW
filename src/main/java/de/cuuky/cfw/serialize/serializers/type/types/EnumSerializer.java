@@ -47,7 +47,7 @@ public class EnumSerializer extends CFWSerializeType {
 			return null;
 
 		@SuppressWarnings("unchecked")
-		FieldLoader loader = manager.loadClass((Class<? extends CFWSerializeable>) field.getType());
+		FieldLoader loader = manager.loadClass(field.getType());
 		return manager.deserializeEnum(loader, object);
 		// try {
 		// return loader.getFields().get((String) object).get(null);
@@ -64,7 +64,7 @@ public class EnumSerializer extends CFWSerializeType {
 		if (!field.getType().isEnum() || !CFWSerializeable.class.isAssignableFrom(field.getType()))
 			return false;
 
-		FieldLoader loader = manager.loadClass((Class<? extends CFWSerializeable>) field.getType());
+		FieldLoader loader = manager.loadClass(field.getType());
 		section.set(saveUnder, manager.serializeEnum(loader, value));
 		return true;
 	}
