@@ -1,6 +1,7 @@
 package de.cuuky.cfw.configuration;
 
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.YamlConfiguration
 
 public class BasicConfigurationHandler {
 
@@ -44,7 +45,7 @@ public class BasicConfigurationHandler {
         return (Integer) getValue(name, defaultValue);
     }
     
-    public BetterYamlConfiguration getYamlConfig() {
+    public YamlConfiguration getYamlConfig() {
         return this.configuration;
     }
 }
