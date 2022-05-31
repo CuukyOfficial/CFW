@@ -29,9 +29,20 @@ import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"), CRUCIBLE("Crucible", versionSupplier -> new CrucibleVersionAdapter(), "io.github.crucible.Crucible", "Crucible"), @Deprecated // Unused
-	URANIUM("Uranium", null, null, "Uranium"), THERMOS("Thermos", null, "thermos.Thermos", "Thermos"), @Deprecated // Unused
-	CAULDRON("Cauldron", null, null, "Cauldron"), SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"), NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"), TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"), PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"), SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"), BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"), UNKNOWN("Unknown", null, null);
+	MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
+	CRUCIBLE("Crucible", versionSupplier -> new CrucibleVersionAdapter(), "io.github.crucible.Crucible", "Crucible"),
+	@Deprecated // Unused
+	URANIUM("Uranium", null, null, "Uranium"),
+	THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
+	@Deprecated // Unused
+	CAULDRON("Cauldron", null, null, "Cauldron"),
+	SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
+	NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
+	TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
+	PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"),
+	SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"),
+	BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
+	UNKNOWN("Unknown", null, null);
 
 	private final String name;
 	private final String[] versionnames;
