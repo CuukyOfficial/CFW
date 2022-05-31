@@ -36,32 +36,32 @@ import de.cuuky.cfw.hooking.hooks.HookEntityType;
 
 public class ChatHook extends HookEntity {
 
-	private final ChatHookHandler listener;
+    private final ChatHookHandler listener;
 
-	public ChatHook(Player player, String message, ChatHookHandler chatHookListener) {
-		super(HookEntityType.CHAT, player);
+    public ChatHook(Player player, String message, ChatHookHandler chatHookListener) {
+        super(HookEntityType.CHAT, player);
 
-		this.listener = chatHookListener;
-		player.sendMessage(message);
-	}
+        this.listener = chatHookListener;
+        player.sendMessage(message);
+    }
 
-	private boolean run(Supplier<Boolean> runner) {
-		boolean unregister = runner.get();
-		if (unregister)
-			this.unregister();
-		return unregister;
-	}
+    private boolean run(Supplier<Boolean> runner) {
+        boolean unregister = runner.get();
+        if (unregister)
+            this.unregister();
+        return unregister;
+    }
 
-	@Override
-	protected HookEntity getExisting(HookManager manager, Player player) {
-		return manager.getHook(HookEntityType.CHAT, this.getPlayer());
-	}
+    @Override
+    protected HookEntity getExisting(HookManager manager, Player player) {
+        return manager.getHook(HookEntityType.CHAT, this.getPlayer());
+    }
 
-	public boolean run(AsyncPlayerChatEvent event) {
-		return this.run(() -> listener.onChat(event));
-	}
+    public boolean run(AsyncPlayerChatEvent event) {
+        return this.run(() -> listener.onChat(event));
+    }
 
-	public boolean run(PlayerChatEvent event) {
-		return this.run(() -> listener.onChat(event));
-	}
+    public boolean run(PlayerChatEvent event) {
+        return this.run(() -> listener.onChat(event));
+    }
 }

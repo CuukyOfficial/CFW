@@ -30,17 +30,17 @@ import org.bukkit.scoreboard.Scoreboard;
 
 public interface ScoreboardInstance {
 
-	Objective registerSideBar();
+    Objective registerSideBar();
 
-	Objective getSideBar();
+    Objective getSideBar();
 
-	void clearSideBar();
+    void clearSideBar();
 
-	Player getPlayer();
+    Player getPlayer();
 
-	Scoreboard getScoreboard();
+    Scoreboard getScoreboard();
 
-	public static ScoreboardInstance newInstance(Player player) {
-		return new DefaultScoreboardInstance(player);
-	}
+    public static ScoreboardInstance newInstance(Player player) {
+        return new DefaultScoreboardInstance(player);
+    }
 }

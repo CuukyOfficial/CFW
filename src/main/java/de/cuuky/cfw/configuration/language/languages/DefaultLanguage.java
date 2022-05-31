@@ -28,10 +28,10 @@ import de.cuuky.cfw.player.CustomPlayer;
 
 public interface DefaultLanguage extends LoadableMessage {
 
-	public String getValue();
+    public String getValue();
 
-	public String getValue(CustomPlayer languageHolder);
+    public String getValue(CustomPlayer languageHolder);
 
-	public String getValue(CustomPlayer languageHolder, CustomPlayer replace);
+    public String getValue(CustomPlayer languageHolder, CustomPlayer replace);
 
 }

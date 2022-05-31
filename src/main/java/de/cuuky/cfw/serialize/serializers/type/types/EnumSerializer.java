@@ -36,36 +36,36 @@ import de.cuuky.cfw.serialize.serializers.type.CFWSerializeType;
 @Deprecated
 public class EnumSerializer extends CFWSerializeType {
 
-	public EnumSerializer(CFWSerializeManager manager) {
-		super(manager);
-	}
+    public EnumSerializer(CFWSerializeManager manager) {
+        super(manager);
+    }
 
-	@Override
-	public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
-		Object object = section.get(key);
-		if (!field.getType().isEnum() || !(object instanceof String) || !CFWSerializeable.class.isAssignableFrom(field.getType()))
-			return null;
+    @Override
+    public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
+        Object object = section.get(key);
+        if (!field.getType().isEnum() || !(object instanceof String) || !CFWSerializeable.class.isAssignableFrom(field.getType()))
+            return null;
 
-		@SuppressWarnings("unchecked")
-		FieldLoader loader = manager.loadClass(field.getType());
-		return manager.deserializeEnum(loader, object);
-		// try {
-		// return loader.getFields().get((String) object).get(null);
-		// } catch (IllegalArgumentException | IllegalAccessException e) {
-		// e.printStackTrace();
-		// }
-		//
-		// return null;
-	}
+        @SuppressWarnings("unchecked")
+        FieldLoader loader = manager.loadClass(field.getType());
+        return manager.deserializeEnum(loader, object);
+        // try {
+        // return loader.getFields().get((String) object).get(null);
+        // } catch (IllegalArgumentException | IllegalAccessException e) {
+        // e.printStackTrace();
+        // }
+        //
+        // return null;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public boolean serialize(CFWSerializeable instance, Field field, Object value, String saveUnder, ConfigurationSection section) {
-		if (!field.getType().isEnum() || !CFWSerializeable.class.isAssignableFrom(field.getType()))
-			return false;
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean serialize(CFWSerializeable instance, Field field, Object value, String saveUnder, ConfigurationSection section) {
+        if (!field.getType().isEnum() || !CFWSerializeable.class.isAssignableFrom(field.getType()))
+            return false;
 
-		FieldLoader loader = manager.loadClass(field.getType());
-		section.set(saveUnder, manager.serializeEnum(loader, value));
-		return true;
-	}
+        FieldLoader loader = manager.loadClass(field.getType());
+        section.set(saveUnder, manager.serializeEnum(loader, value));
+        return true;
+    }
 }

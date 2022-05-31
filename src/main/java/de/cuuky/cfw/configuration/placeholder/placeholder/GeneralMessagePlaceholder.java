@@ -29,39 +29,39 @@ import de.cuuky.cfw.configuration.placeholder.placeholder.type.MessagePlaceholde
 
 public abstract class GeneralMessagePlaceholder extends MessagePlaceholder {
 
-	private String value;
-	private long lastRefresh = 0;
+    private String value;
+    private long lastRefresh = 0;
 
-	public GeneralMessagePlaceholder(String identifier, int refreshDelay, boolean rawIdentifier, String description) {
-		super(MessagePlaceholderType.GENERAL, identifier, refreshDelay, rawIdentifier, description);
-	}
+    public GeneralMessagePlaceholder(String identifier, int refreshDelay, boolean rawIdentifier, String description) {
+        super(MessagePlaceholderType.GENERAL, identifier, refreshDelay, rawIdentifier, description);
+    }
 
-	public GeneralMessagePlaceholder(String identifier, int refreshDelay, String description) {
-		this(identifier, refreshDelay, false, description);
-	}
+    public GeneralMessagePlaceholder(String identifier, int refreshDelay, String description) {
+        this(identifier, refreshDelay, false, description);
+    }
 
-	private void checkRefresh() {
-		if (!this.shallRefresh(this.lastRefresh))
-			return;
-		this.refreshValue();
-	}
+    private void checkRefresh() {
+        if (!this.shallRefresh(this.lastRefresh))
+            return;
+        this.refreshValue();
+    }
 
-	private void refreshValue() {
-		this.value = getValue();
-		this.lastRefresh = System.currentTimeMillis();
-	}
+    private void refreshValue() {
+        this.value = getValue();
+        this.lastRefresh = System.currentTimeMillis();
+    }
 
-	protected abstract String getValue();
+    protected abstract String getValue();
 
-	@Override
-	public String replacePlaceholder(String message, Object... objects) {
-		this.checkRefresh();
-		return message.replace(this.getIdentifier(), this.value != null ? this.value : "");
-	}
+    @Override
+    public String replacePlaceholder(String message, Object... objects) {
+        this.checkRefresh();
+        return message.replace(this.getIdentifier(), this.value != null ? this.value : "");
+    }
 
-	@Override
-	public void clearValue() {
-		this.value = null;
-		this.lastRefresh = 0;
-	}
+    @Override
+    public void clearValue() {
+        this.value = null;
+        this.lastRefresh = 0;
+    }
 }

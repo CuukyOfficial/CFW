@@ -39,63 +39,63 @@ import org.bukkit.entity.Player;
 
 class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
-	@Override
-	protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-	}
+    @Override
+    protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+    }
 
-	@Override
-	protected void initRespawn() throws ClassNotFoundException {
-		// TODO implement this
-	}
+    @Override
+    protected void initRespawn() throws ClassNotFoundException {
+        // TODO implement this
+    }
 
-	@Override
-	protected void initXp() {
-		this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
-	}
+    @Override
+    protected void initXp() {
+        this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
+    }
 
-	@Override
-	public int getPing(Player player) {
-		return player.getPing();
-	}
+    @Override
+    public int getPing(Player player) {
+        return player.getPing();
+    }
 
-	@Override
-	public void respawnPlayer(Player player) {
-		throw new Error("Not implemented yet");
-	}
+    @Override
+    public void respawnPlayer(Player player) {
+        throw new Error("Not implemented yet");
+    }
 
-	@Override
-	protected String getWorldServerFieldName() {
-		return "R";
-	}
+    @Override
+    protected String getWorldServerFieldName() {
+        return "R";
+    }
 
-	@Override
-	public BlockFace getSignAttachedFace(Block block) {
-		BlockData data = block.getBlockData();
-		if (data instanceof WallSign)
-			return ((WallSign) data).getFacing().getOppositeFace();
-		else if (data instanceof Sign)
-			return BlockFace.DOWN;
-		else
-			throw new Error("Block is not a sign: " + block.getLocation());
-	}
+    @Override
+    public BlockFace getSignAttachedFace(Block block) {
+        BlockData data = block.getBlockData();
+        if (data instanceof WallSign)
+            return ((WallSign) data).getFacing().getOppositeFace();
+        else if (data instanceof Sign)
+            return BlockFace.DOWN;
+        else
+            throw new Error("Block is not a sign: " + block.getLocation());
+    }
 
-	@Override
-	public Properties getServerProperties() {
-		try {
-			Method dedicatedServerPropMethod = Bukkit.getServer().getClass().getDeclaredMethod("getProperties");
-			dedicatedServerPropMethod.setAccessible(true);
-			Object dedicatedServerProp = dedicatedServerPropMethod.invoke(Bukkit.getServer());
-			Field[] fields = dedicatedServerProp.getClass().getFields();
-			for (Field field : fields) {
-				if (!field.getType().equals(Properties.class))
-					continue;
+    @Override
+    public Properties getServerProperties() {
+        try {
+            Method dedicatedServerPropMethod = Bukkit.getServer().getClass().getDeclaredMethod("getProperties");
+            dedicatedServerPropMethod.setAccessible(true);
+            Object dedicatedServerProp = dedicatedServerPropMethod.invoke(Bukkit.getServer());
+            Field[] fields = dedicatedServerProp.getClass().getFields();
+            for (Field field : fields) {
+                if (!field.getType().equals(Properties.class))
+                    continue;
 
-				field.setAccessible(true);
-				return (Properties) field.get(dedicatedServerProp);
-			}
-			throw new Error("missing properties field");
-		} catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-			throw new Error(e);
-		}
-	}
+                field.setAccessible(true);
+                return (Properties) field.get(dedicatedServerProp);
+            }
+            throw new Error("missing properties field");
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+            throw new Error(e);
+        }
+    }
 }

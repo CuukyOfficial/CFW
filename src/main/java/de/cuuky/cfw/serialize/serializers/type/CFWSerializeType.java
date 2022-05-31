@@ -34,14 +34,14 @@ import de.cuuky.cfw.serialize.identifiers.CFWSerializeable;
 @Deprecated
 public abstract class CFWSerializeType {
 
-	protected CFWSerializeManager manager;
+    protected CFWSerializeManager manager;
 
-	public CFWSerializeType(CFWSerializeManager manager) {
-		this.manager = manager;
-	}
+    public CFWSerializeType(CFWSerializeManager manager) {
+        this.manager = manager;
+    }
 
-	public abstract Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section);
+    public abstract Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section);
 
-	public abstract boolean serialize(CFWSerializeable instance, Field field, Object value, String saveUnder, ConfigurationSection section);
+    public abstract boolean serialize(CFWSerializeable instance, Field field, Object value, String saveUnder, ConfigurationSection section);
 
 }

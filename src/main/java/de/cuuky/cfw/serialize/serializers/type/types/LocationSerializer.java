@@ -36,39 +36,39 @@ import de.cuuky.cfw.serialize.serializers.type.CFWSerializeType;
 @Deprecated
 public class LocationSerializer extends CFWSerializeType {
 
-	public LocationSerializer(CFWSerializeManager manager) {
-		super(manager);
-	}
+    public LocationSerializer(CFWSerializeManager manager) {
+        super(manager);
+    }
 
-	@Override
-	public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
-		if (field.getType() != Location.class || manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")) == null)
-			return null;
+    @Override
+    public Object deserialize(CFWSerializeable instance, String key, Field field, ConfigurationSection section) {
+        if (field.getType() != Location.class || manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")) == null)
+            return null;
 
-		Number x = (Number) section.get(key + ".x"), y = (Number) section.get(key + ".y"), z = (Number) section.get(key + ".z");
+        Number x = (Number) section.get(key + ".x"), y = (Number) section.get(key + ".y"), z = (Number) section.get(key + ".z");
 
-		// Compatibility
-		try {
-			Number yaw = (Number) section.get(key + ".yaw"), pitch = (Number) section.get(key + ".pitch");
-			return new Location(manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")), x.doubleValue(), y.doubleValue(), z.doubleValue(), yaw.floatValue(), pitch.floatValue());
-		} catch (Exception e) {
-		}
+        // Compatibility
+        try {
+            Number yaw = (Number) section.get(key + ".yaw"), pitch = (Number) section.get(key + ".pitch");
+            return new Location(manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")), x.doubleValue(), y.doubleValue(), z.doubleValue(), yaw.floatValue(), pitch.floatValue());
+        } catch (Exception e) {
+        }
 
-		return new Location(manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")), x.doubleValue(), y.doubleValue(), z.doubleValue());
-	}
+        return new Location(manager.getOwnerInstance().getServer().getWorld(section.getString(key + ".world")), x.doubleValue(), y.doubleValue(), z.doubleValue());
+    }
 
-	@Override
-	public boolean serialize(CFWSerializeable instance, Field field, Object value, String saveUnder, ConfigurationSection section) {
-		if (field.getType() != Location.class)
-			return false;
+    @Override
+    public boolean serialize(CFWSerializeable instance, Field field, Object value, String saveUnder, ConfigurationSection section) {
+        if (field.getType() != Location.class)
+            return false;
 
-		Location loc = (Location) value;
-		section.set(saveUnder + ".world", loc.getWorld().getName());
-		section.set(saveUnder + ".x", loc.getX());
-		section.set(saveUnder + ".y", loc.getY());
-		section.set(saveUnder + ".z", loc.getZ());
-		section.set(saveUnder + ".yaw", loc.getYaw());
-		section.set(saveUnder + ".pitch", loc.getPitch());
-		return true;
-	}
+        Location loc = (Location) value;
+        section.set(saveUnder + ".world", loc.getWorld().getName());
+        section.set(saveUnder + ".x", loc.getX());
+        section.set(saveUnder + ".y", loc.getY());
+        section.set(saveUnder + ".z", loc.getZ());
+        section.set(saveUnder + ".yaw", loc.getYaw());
+        section.set(saveUnder + ".pitch", loc.getPitch());
+        return true;
+    }
 }

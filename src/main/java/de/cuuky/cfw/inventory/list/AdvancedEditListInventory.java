@@ -38,29 +38,29 @@ import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 
 public abstract class AdvancedEditListInventory extends AdvancedEditInventory {
 
-	private final List<ItemStack> stacks;
+    private final List<ItemStack> stacks;
 
-	public AdvancedEditListInventory(AdvancedInventoryManager manager, Player player, List<ItemStack> stacks) {
-		super(manager, player);
+    public AdvancedEditListInventory(AdvancedInventoryManager manager, Player player, List<ItemStack> stacks) {
+        super(manager, player);
 
-		this.stacks = new ArrayList<>(stacks);
-	}
+        this.stacks = new ArrayList<>(stacks);
+    }
 
-	@Override
-	protected Collection<ItemStack> getInitialItems() {
-		return this.stacks;
-	}
+    @Override
+    protected Collection<ItemStack> getInitialItems() {
+        return this.stacks;
+    }
 
-	@Override
-	protected int getMinSize() {
-		return this.stacks.size();
-	}
+    @Override
+    protected int getMinSize() {
+        return this.stacks.size();
+    }
 
-	protected Stream<ItemStack> collectNullFilteredItems() {
-		return this.getItems().stream().filter(Objects::nonNull);
-	}
+    protected Stream<ItemStack> collectNullFilteredItems() {
+        return this.getItems().stream().filter(Objects::nonNull);
+    }
 
-	protected List<ItemStack> collectItemsListed() {
-		return this.collectNullFilteredItems().collect(Collectors.toList());
-	}
+    protected List<ItemStack> collectItemsListed() {
+        return this.collectNullFilteredItems().collect(Collectors.toList());
+    }
 }

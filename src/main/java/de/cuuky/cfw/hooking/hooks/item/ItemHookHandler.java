@@ -30,10 +30,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public interface ItemHookHandler {
 
-	void onEntityHit(EntityDamageByEntityEvent event);
+    void onEntityHit(EntityDamageByEntityEvent event);
 
-	void onInteract(PlayerInteractEvent event);
+    void onInteract(PlayerInteractEvent event);
 
-	void onInteractEntity(PlayerInteractEntityEvent event);
+    void onInteractEntity(PlayerInteractEntityEvent event);
 
 }

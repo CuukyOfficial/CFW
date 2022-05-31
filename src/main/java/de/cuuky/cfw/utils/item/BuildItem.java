@@ -40,118 +40,118 @@ import de.cuuky.cfw.version.types.Materials;
 
 public class BuildItem {
 
-	private ItemStack stack;
-	private Material material;
-	private String displayName;
-	private List<String> lore;
-	private final Map<Enchantment, Integer> enchantments = new HashMap<>();
-	private int amount = 1;
-	private boolean deleteAnnotations;
+    private ItemStack stack;
+    private Material material;
+    private String displayName;
+    private List<String> lore;
+    private final Map<Enchantment, Integer> enchantments = new HashMap<>();
+    private int amount = 1;
+    private boolean deleteAnnotations;
 
-	protected ItemMeta applyMeta(ItemMeta meta, Material type) {
-		if (displayName != null && type != Material.AIR)
-			meta.setDisplayName(displayName);
-		enchantments.keySet().forEach(ent -> meta.addEnchant(ent, enchantments.get(ent), true));
-		meta.setLore(this.lore);
-		return meta;
-	}
+    protected ItemMeta applyMeta(ItemMeta meta, Material type) {
+        if (displayName != null && type != Material.AIR)
+            meta.setDisplayName(displayName);
+        enchantments.keySet().forEach(ent -> meta.addEnchant(ent, enchantments.get(ent), true));
+        meta.setLore(this.lore);
+        return meta;
+    }
 
-	public ItemStack build() {
-		ItemStack stack = this.stack != null ? this.stack : new ItemStack(this.material);
-		ItemMeta meta = stack.getItemMeta();
-		if (meta != null)
-			stack.setItemMeta(this.applyMeta(meta, stack.getType()));
-		if (this.deleteAnnotations)
-			VersionUtils.getVersionAdapter().deleteItemAnnotations(stack);
-		stack.setAmount(amount);
-		return stack;
-	}
+    public ItemStack build() {
+        ItemStack stack = this.stack != null ? this.stack : new ItemStack(this.material);
+        ItemMeta meta = stack.getItemMeta();
+        if (meta != null)
+            stack.setItemMeta(this.applyMeta(meta, stack.getType()));
+        if (this.deleteAnnotations)
+            VersionUtils.getVersionAdapter().deleteItemAnnotations(stack);
+        stack.setAmount(amount);
+        return stack;
+    }
 
-	public BuildItem amount(int amount) {
-		this.amount = amount;
-		return this;
-	}
+    public BuildItem amount(int amount) {
+        this.amount = amount;
+        return this;
+    }
 
-	public BuildItem addEnchantment(Enchantment enchantment, int amplifier) {
-		if (enchantment == null)
-			return this;
-		enchantments.put(enchantment, amplifier);
-		return this;
-	}
+    public BuildItem addEnchantment(Enchantment enchantment, int amplifier) {
+        if (enchantment == null)
+            return this;
+        enchantments.put(enchantment, amplifier);
+        return this;
+    }
 
-	public BuildItem deleteDamageAnnotation(boolean deleteAnnotations) {
-		this.deleteAnnotations = deleteAnnotations;
-		return this;
-	}
+    public BuildItem deleteDamageAnnotation(boolean deleteAnnotations) {
+        this.deleteAnnotations = deleteAnnotations;
+        return this;
+    }
 
-	public BuildItem deleteDamageAnnotation() {
-		return this.deleteDamageAnnotation(true);
-	}
+    public BuildItem deleteDamageAnnotation() {
+        return this.deleteDamageAnnotation(true);
+    }
 
-	public BuildItem material(Material material) {
-		this.material = material;
-		return this;
-	}
+    public BuildItem material(Material material) {
+        this.material = material;
+        return this;
+    }
 
-	public BuildItem material(Materials material) {
-		return this.itemstack(material.parseItem());
-	}
+    public BuildItem material(Materials material) {
+        return this.itemstack(material.parseItem());
+    }
 
-	public BuildItem displayName(String displayName) {
-		this.displayName = displayName;
-		return this;
-	}
+    public BuildItem displayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
 
-	public BuildItem itemstack(ItemStack stack) {
-		this.stack = stack.clone();
-		return this;
-	}
+    public BuildItem itemstack(ItemStack stack) {
+        this.stack = stack.clone();
+        return this;
+    }
 
-	public BuildItem addLore(String add) {
-		if (this.lore == null)
-			this.lore = new ArrayList<>();
-		this.lore.add(add);
-		return this;
-	}
+    public BuildItem addLore(String add) {
+        if (this.lore == null)
+            this.lore = new ArrayList<>();
+        this.lore.add(add);
+        return this;
+    }
 
-	public BuildItem lore(List<String> lore) {
-		this.lore = lore;
-		return this;
-	}
+    public BuildItem lore(List<String> lore) {
+        this.lore = lore;
+        return this;
+    }
 
-	public BuildItem lore(String lore) {
-		return this.lore(lore == null || lore.isEmpty() ? null : lore.split("\n"));
-	}
+    public BuildItem lore(String lore) {
+        return this.lore(lore == null || lore.isEmpty() ? null : lore.split("\n"));
+    }
 
-	public BuildItem lore(String... lore) {
-		return this.lore(lore == null ? null : Arrays.asList(lore));
-	}
+    public BuildItem lore(String... lore) {
+        return this.lore(lore == null ? null : Arrays.asList(lore));
+    }
 
-	public int getAmount() {
-		return amount;
-	}
+    public int getAmount() {
+        return amount;
+    }
 
-	public String getDisplayName() {
-		return displayName;
-	}
+    public String getDisplayName() {
+        return displayName;
+    }
 
-	public List<String> getLore() {
-		return lore;
-	}
+    public List<String> getLore() {
+        return lore;
+    }
 
-	public Map<Enchantment, Integer> getEnchantments() {
-		return enchantments;
-	}
+    public Map<Enchantment, Integer> getEnchantments() {
+        return enchantments;
+    }
 
-	public boolean shallDeleteAnnotations() {
-		return deleteAnnotations;
-	}
+    public boolean shallDeleteAnnotations() {
+        return deleteAnnotations;
+    }
 
-	public ItemStack getStack() {
-		return stack;
-	}
+    public ItemStack getStack() {
+        return stack;
+    }
 
-	public Material getMaterial() {
-		return material;
-	}
+    public Material getMaterial() {
+        return material;
+    }
 }

@@ -33,18 +33,18 @@ import de.cuuky.cfw.configuration.placeholder.MessagePlaceholderManager;
 
 public abstract class CustomLanguagePlayer implements CustomPlayer {
 
-	public MessageHolder sendTranslatedMessage(LoadableMessage message, CustomPlayer replace, MessagePlaceholderManager placeholder, LanguageManager languageManager) {
-		MessageHolder holder = new MessageHolder(placeholder);
-		new BukkitRunnable() {
-			@Override
-			public void run() {
-				if (getPlayer() == null)
-					return;
+    public MessageHolder sendTranslatedMessage(LoadableMessage message, CustomPlayer replace, MessagePlaceholderManager placeholder, LanguageManager languageManager) {
+        MessageHolder holder = new MessageHolder(placeholder);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (getPlayer() == null)
+                    return;
 
-				getPlayer().sendMessage(holder.getReplaced(languageManager.getMessage(message.getPath(), getLocale()), (replace != null ? replace : CustomLanguagePlayer.this)));
-			}
-		}.runTaskLater(placeholder.getOwnerInstance(), 1L);
+                getPlayer().sendMessage(holder.getReplaced(languageManager.getMessage(message.getPath(), getLocale()), (replace != null ? replace : CustomLanguagePlayer.this)));
+            }
+        }.runTaskLater(placeholder.getOwnerInstance(), 1L);
 
-		return holder;
-	}
+        return holder;
+    }
 }

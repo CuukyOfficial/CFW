@@ -28,28 +28,28 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class FrameworkManager {
 
-	protected JavaPlugin ownerInstance;
-	protected String consolePrefix;
-	protected FrameworkManagerType type;
+    protected JavaPlugin ownerInstance;
+    protected String consolePrefix;
+    protected FrameworkManagerType type;
 
-	public FrameworkManager(FrameworkManagerType type, JavaPlugin ownerInstance) {
-		this.type = type;
-		this.consolePrefix = "[" + ownerInstance.getName() + "] [CFW] ";
-		this.ownerInstance = ownerInstance;
-	}
+    public FrameworkManager(FrameworkManagerType type, JavaPlugin ownerInstance) {
+        this.type = type;
+        this.consolePrefix = "[" + ownerInstance.getName() + "] [CFW] ";
+        this.ownerInstance = ownerInstance;
+    }
 
-	public void disable() {
-	}
+    public void disable() {
+    }
 
-	public JavaPlugin getOwnerInstance() {
-		return this.ownerInstance;
-	}
+    public JavaPlugin getOwnerInstance() {
+        return this.ownerInstance;
+    }
 
-	public FrameworkManagerType getType() {
-		return this.type;
-	}
+    public FrameworkManagerType getType() {
+        return this.type;
+    }
 
-	public String getConsolePrefix() {
-		return consolePrefix;
-	}
+    public String getConsolePrefix() {
+        return consolePrefix;
+    }
 }

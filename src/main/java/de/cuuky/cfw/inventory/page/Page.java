@@ -33,18 +33,18 @@ import de.cuuky.cfw.inventory.ItemClick;
 
 public interface Page<Inventory extends AdvancedInventory> extends InfoProvider, ContentRefreshable {
 
-	Inventory getInventory();
+    Inventory getInventory();
 
-	@Override
-	default int getPriority() {
-		return 1;
-	}
+    @Override
+    default int getPriority() {
+        return 1;
+    }
 
-	default void addItem(int index, ItemStack stack, ItemClick click) {
-		this.getInventory().addItem(index, stack, click);
-	}
+    default void addItem(int index, ItemStack stack, ItemClick click) {
+        this.getInventory().addItem(index, stack, click);
+    }
 
-	default void addItem(int index, ItemStack stack) {
-		this.getInventory().addItem(index, stack, null);
-	}
+    default void addItem(int index, ItemStack stack) {
+        this.getInventory().addItem(index, stack, null);
+    }
 }

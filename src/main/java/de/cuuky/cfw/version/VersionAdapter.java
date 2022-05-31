@@ -40,51 +40,51 @@ import net.md_5.bungee.api.chat.ClickEvent;
 
 public interface VersionAdapter {
 
-	Collection<? extends Player> getOnlinePlayers();
+    Collection<? extends Player> getOnlinePlayers();
 
-	Object getConnection(Player player);
+    Object getConnection(Player player);
 
-	int getPing(Player player);
+    int getPing(Player player);
 
-	void respawnPlayer(Player player);
+    void respawnPlayer(Player player);
 
-	void sendActionbar(Player player, String message, int duration, Plugin instance);
+    void sendActionbar(Player player, String message, int duration, Plugin instance);
 
-	void sendActionbar(Player player, String message);
+    void sendActionbar(Player player, String message);
 
-	void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value);
+    void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value);
 
-	void sendLinkedMessage(Player player, String message, String link);
+    void sendLinkedMessage(Player player, String message, String link);
 
-	void sendTablist(Player player, String header, String footer);
+    void sendTablist(Player player, String header, String footer);
 
-	void sendTitle(Player player, String title, String subtitle);
+    void sendTitle(Player player, String title, String subtitle);
 
-	void setAttributeSpeed(Player player, double value);
+    void setAttributeSpeed(Player player, double value);
 
-	void setNametagVisibility(Team team, boolean shown);
+    void setNametagVisibility(Team team, boolean shown);
 
-	void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
+    void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
 
-	void removeAi(LivingEntity entity);
+    void removeAi(LivingEntity entity);
 
-	void setXpCooldown(Player player, int cooldown);
+    void setXpCooldown(Player player, int cooldown);
 
-	void deleteItemAnnotations(ItemStack item);
+    void deleteItemAnnotations(ItemStack item);
 
-	BlockFace getSignAttachedFace(Block block);
+    BlockFace getSignAttachedFace(Block block);
 
-	Object getNetworkManager(Player player);
+    Object getNetworkManager(Player player);
 
-	String getLocale(Player player);
+    String getLocale(Player player);
 
-	void forceClearWorlds();
+    void forceClearWorlds();
 
-	Properties getServerProperties();
+    Properties getServerProperties();
 
-	void setServerProperty(String key, Object value);
+    void setServerProperty(String key, Object value);
 
-	boolean supportsAntiXray();
+    boolean supportsAntiXray();
 
-	void setAntiXrayEnabled(boolean enabled);
+    void setAntiXrayEnabled(boolean enabled);
 }

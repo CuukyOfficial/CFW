@@ -34,12 +34,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CFWSerializeField {
 
-	Class<? extends CFWSerializeable> keyClass() default NullClass.class;
+    Class<? extends CFWSerializeable> keyClass() default NullClass.class;
 
-	Class<? extends CFWSerializeable> valueClass() default NullClass.class;
+    Class<? extends CFWSerializeable> valueClass() default NullClass.class;
 
-	String enumValue() default "ENUM";
+    String enumValue() default "ENUM";
 
-	String path() default "PATH";
+    String path() default "PATH";
 
 }

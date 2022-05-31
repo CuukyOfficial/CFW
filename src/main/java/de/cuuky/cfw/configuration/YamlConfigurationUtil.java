@@ -40,23 +40,23 @@ import de.cuuky.cfw.utils.JavaUtils;
 @Deprecated
 public class YamlConfigurationUtil {
 
-	public static YamlConfiguration loadConfiguration(File file) {
-		JavaUtils.createFile(file);
-		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
-			return YamlConfiguration.loadConfiguration(reader);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    public static YamlConfiguration loadConfiguration(File file) {
+        JavaUtils.createFile(file);
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
+            return YamlConfiguration.loadConfiguration(reader);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-	public static void save(YamlConfiguration configuration, File file) {
-		JavaUtils.createFile(file);
-		try {
-			try (OutputStreamWriter oos = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8)) {
-				oos.write(configuration.saveToString());
-			}
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
-	}
+    public static void save(YamlConfiguration configuration, File file) {
+        JavaUtils.createFile(file);
+        try {
+            try (OutputStreamWriter oos = new OutputStreamWriter(new FileOutputStream(file), Charsets.UTF_8)) {
+                oos.write(configuration.saveToString());
+            }
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
 }

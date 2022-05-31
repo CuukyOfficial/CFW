@@ -29,18 +29,18 @@ import org.bukkit.event.player.PlayerChatEvent;
 
 public interface ChatHookHandler {
 
-	/*
-	 * @return Return if the hooks should be removed
-	 */
-	default boolean onChat(AsyncPlayerChatEvent event) {
-		return false;
-	}
+    /*
+     * @return Return if the hooks should be removed
+     */
+    default boolean onChat(AsyncPlayerChatEvent event) {
+        return false;
+    }
 
-	@Deprecated
-	/*
-	 * @return Return if the hooks should be removed
-	 */
-	default boolean onChat(PlayerChatEvent event) {
-		return false;
-	}
+    @Deprecated
+    /*
+     * @return Return if the hooks should be removed
+     */
+    default boolean onChat(PlayerChatEvent event) {
+        return false;
+    }
 }

@@ -30,15 +30,15 @@ import de.cuuky.cfw.player.clientadapter.BoardUpdateHandler;
 
 public interface CustomPlayer {
 
-	public String getUUID();
+    public String getUUID();
 
-	public String getName();
+    public String getName();
 
-	public Player getPlayer();
+    public Player getPlayer();
 
-	public String getLocale();
+    public String getLocale();
 
-	@Deprecated
-	public BoardUpdateHandler<? extends CustomPlayer> getUpdateHandler();
+    @Deprecated
+    public BoardUpdateHandler<? extends CustomPlayer> getUpdateHandler();
 
 }

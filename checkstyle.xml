@@ -31,6 +31,16 @@
 		
 		<!-- https://checkstyle.sourceforge.io/config_misc.html -->
 		<module name="UpperEll"/>
+		<module name="Indentation"/>
+		
+		<!-- https://checkstyle.sourceforge.io/config_regexp.html -->
+		<module name="Regexp">
+			<property name="format" value="[ \t]+$"/>
+			<property name="illegalPattern" value="true"/>
+			<property name="message" value="Trailing whitespace"/>
+			<property name="ignoreComments" value="true" />
+		</module>
+        
 
 		<!-- https://checkstyle.sourceforge.io/config_whitespace.html -->
 		<module name="EmptyLineSeparator">
@@ -55,12 +65,5 @@
 		<module name="TypecastParenPad"/>
 		<module name="WhitespaceAfter"/>
 		<module name="WhitespaceAround"/>
-
-		<!-- https://stackoverflow.com/questions/28458846/how-to-require-tab-indentation-with-checkstyle -->
-		<module name="RegexpSinglelineJava">
-		    <property name="format" value="^\t* "/>
-		    <property name="message" value="Indent must use tab characters"/>
-		    <property name="ignoreComments" value="true"/>
-		</module>
 	</module>
 </module>

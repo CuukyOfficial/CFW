@@ -32,63 +32,63 @@ import org.bukkit.inventory.ItemStack;
 
 public interface InfoProvider {
 
-	int getPriority();
+    int getPriority();
 
-	List<Info<?>> getProvidedInfos();
+    List<Info<?>> getProvidedInfos();
 
-	default List<PrioritisedInfo> getPrioritisedInfos() {
-		return null;
-	}
+    default List<PrioritisedInfo> getPrioritisedInfos() {
+        return null;
+    }
 
-	default int getSize() {
-		return 0;
-	}
+    default int getSize() {
+        return 0;
+    }
 
-	default String getTitle() {
-		return null;
-	}
+    default String getTitle() {
+        return null;
+    }
 
-	default boolean doAnimation() {
-		return false;
-	}
+    default boolean doAnimation() {
+        return false;
+    }
 
-	default int getHotbarSize() {
-		return 0;
-	}
+    default int getHotbarSize() {
+        return 0;
+    }
 
-	default Consumer<Player> getSoundPlayer() {
-		return null;
-	}
+    default Consumer<Player> getSoundPlayer() {
+        return null;
+    }
 
-	default ItemInfo getBackwardsInfo() {
-		return null;
-	}
+    default ItemInfo getBackwardsInfo() {
+        return null;
+    }
 
-	default ItemInfo getForwardsInfo() {
-		return null;
-	}
+    default ItemInfo getForwardsInfo() {
+        return null;
+    }
 
-	default ItemInfo getCloseInfo() {
-		return null;
-	}
+    default ItemInfo getCloseInfo() {
+        return null;
+    }
 
-	default ItemInfo getBackInfo() {
-		return null;
-	}
+    default ItemInfo getBackInfo() {
+        return null;
+    }
 
-	default ItemStack getFillerStack() {
-		return null;
-	}
+    default ItemStack getFillerStack() {
+        return null;
+    }
 
-	default ItemInserter getInserter() {
-		return null;
-	}
+    default ItemInserter getInserter() {
+        return null;
+    }
 
-	default boolean cancelClick() {
-		return false;
-	}
+    default boolean cancelClick() {
+        return false;
+    }
 
-	default String getPageViewer() {
-		return null;
-	}
+    default String getPageViewer() {
+        return null;
+    }
 }

@@ -29,26 +29,26 @@ import org.bukkit.inventory.ItemStack;
 
 class AdvancedItemLink {
 
-	private final ItemStack stack;
-	private final ItemClick link;
+    private final ItemStack stack;
+    private final ItemClick link;
 
-	AdvancedItemLink(ItemStack stack, ItemClick click) {
-		this.stack = stack;
-		this.link = click;
-	}
+    AdvancedItemLink(ItemStack stack, ItemClick click) {
+        this.stack = stack;
+        this.link = click;
+    }
 
-	ItemStack getStack() {
-		return this.stack;
-	}
+    ItemStack getStack() {
+        return this.stack;
+    }
 
-	boolean hasLink() {
-		return this.link != null;
-	}
+    boolean hasLink() {
+        return this.link != null;
+    }
 
-	boolean run(InventoryClickEvent event) {
-		if (this.link == null)
-			return false;
-		link.onItemClick(event);
-		return true;
-	}
+    boolean run(InventoryClickEvent event) {
+        if (this.link == null)
+            return false;
+        link.onItemClick(event);
+        return true;
+    }
 }

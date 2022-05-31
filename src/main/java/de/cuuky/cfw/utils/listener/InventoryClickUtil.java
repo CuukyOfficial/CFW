@@ -29,16 +29,16 @@ import org.bukkit.inventory.Inventory;
 
 public class InventoryClickUtil {
 
-	private InventoryClickEvent event;
+    private InventoryClickEvent event;
 
-	public InventoryClickUtil(InventoryClickEvent event) {
-		this.event = event;
-	}
+    public InventoryClickUtil(InventoryClickEvent event) {
+        this.event = event;
+    }
 
-	public Inventory getInventory() {
-		if (event.getWhoClicked().getOpenInventory() == null)
-			return null;
+    public Inventory getInventory() {
+        if (event.getWhoClicked().getOpenInventory() == null)
+            return null;
 
-		return event.getWhoClicked().getOpenInventory().getTopInventory();
-	}
+        return event.getWhoClicked().getOpenInventory().getTopInventory();
+    }
 }

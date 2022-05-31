@@ -46,62 +46,62 @@ import de.cuuky.cfw.version.types.Materials;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 
-	private final int size;
+    private final int size;
 
-	public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size, List<Player> players) {
-		super(manager, player, players);
+    public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size, List<Player> players) {
+        super(manager, player, players);
 
-		this.size = size;
-		JavaPlugin plugin = this.getManager().getOwnerInstance();
-		plugin.getServer().getPluginManager().registerEvents(this, plugin);
-	}
+        this.size = size;
+        JavaPlugin plugin = this.getManager().getOwnerInstance();
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
+    }
 
-	public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size) {
-		this(manager, player, size, new ArrayList<>(VersionUtils.getVersionAdapter().getOnlinePlayers()));
-	}
+    public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size) {
+        this(manager, player, size, new ArrayList<>(VersionUtils.getVersionAdapter().getOnlinePlayers()));
+    }
 
-	@Override
-	protected HookManager getHookManager() {
-		return null;
-	}
+    @Override
+    protected HookManager getHookManager() {
+        return null;
+    }
 
-	@Override
-	protected ItemStack getLoadingItem() {
-		return new BuildItem().material(Materials.SKELETON_SKULL).displayName("§cLoading...").build();
-	}
+    @Override
+    protected ItemStack getLoadingItem() {
+        return new BuildItem().material(Materials.SKELETON_SKULL).displayName("§cLoading...").build();
+    }
 
-	@Override
-	protected ItemStack getItemStack(Player item) {
-		return new BuildSkull().player(item).build();
-	}
+    @Override
+    protected ItemStack getItemStack(Player item) {
+        return new BuildSkull().player(item).build();
+    }
 
-	@Override
-	protected ItemClick getClick(Player item) {
-		return event -> {
-			this.getPlayer().teleport(item);
-			this.close();
-		};
-	}
+    @Override
+    protected ItemClick getClick(Player item) {
+        return event -> {
+            this.getPlayer().teleport(item);
+            this.close();
+        };
+    }
 
-	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent event) {
-		this.getList().add(event.getPlayer());
-		this.update();
-	}
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        this.getList().add(event.getPlayer());
+        this.update();
+    }
 
-	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent event) {
-		this.getList().remove(event.getPlayer());
-		this.update();
-	}
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        this.getList().remove(event.getPlayer());
+        this.update();
+    }
 
-	@Override
-	public int getSize() {
-		return this.size;
-	}
+    @Override
+    public int getSize() {
+        return this.size;
+    }
 
-	@Override
-	public String getTitle() {
-		return "Online players";
-	}
+    @Override
+    public String getTitle() {
+        return "Online players";
+    }
 }

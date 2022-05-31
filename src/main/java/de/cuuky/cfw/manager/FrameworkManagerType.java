@@ -34,23 +34,23 @@ import de.cuuky.cfw.serialize.CFWSerializeManager;
 
 public enum FrameworkManagerType {
 
-	PLACEHOLDER(MessagePlaceholderManager.class),
-	LANGUAGE(LanguageManager.class),
-	ADVANCED_INVENTORY(AdvancedInventoryManager.class),
-	HOOKING(HookManager.class),
-	@Deprecated
-	CLIENT_ADAPTER(ClientAdapterManager.class),
-	PLAYER(LanguagePlayerManager.class),
-	@Deprecated
-	SERIALIZE(CFWSerializeManager.class);
+    PLACEHOLDER(MessagePlaceholderManager.class),
+    LANGUAGE(LanguageManager.class),
+    ADVANCED_INVENTORY(AdvancedInventoryManager.class),
+    HOOKING(HookManager.class),
+    @Deprecated
+    CLIENT_ADAPTER(ClientAdapterManager.class),
+    PLAYER(LanguagePlayerManager.class),
+    @Deprecated
+    SERIALIZE(CFWSerializeManager.class);
 
-	private Class<? extends FrameworkManager> manager;
+    private Class<? extends FrameworkManager> manager;
 
-	FrameworkManagerType(Class<? extends FrameworkManager> manager) {
-		this.manager = manager;
-	}
+    FrameworkManagerType(Class<? extends FrameworkManager> manager) {
+        this.manager = manager;
+    }
 
-	public Class<? extends FrameworkManager> getManager() {
-		return this.manager;
-	}
+    public Class<? extends FrameworkManager> getManager() {
+        return this.manager;
+    }
 }

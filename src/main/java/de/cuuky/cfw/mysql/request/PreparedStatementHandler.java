@@ -29,6 +29,6 @@ import java.sql.PreparedStatement;
 @Deprecated
 public interface PreparedStatementHandler {
 
-	public void onStatementPrepared(PreparedStatement statement);
+    public void onStatementPrepared(PreparedStatement statement);
 
 }
