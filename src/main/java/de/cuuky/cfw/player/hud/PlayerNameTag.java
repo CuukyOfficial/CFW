@@ -63,7 +63,8 @@ class PlayerNameTag {
         }
 
         if (team == null) {
-            team = scoreboard.registerNewTeam(name);
+            if ((team = scoreboard.getTeam(name)) == null)
+                team = scoreboard.registerNewTeam(name);
             team.addEntry(player.getName());
         }
 
