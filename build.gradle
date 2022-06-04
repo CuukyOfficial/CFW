@@ -1,6 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'checkstyle'
 
 group 'de.varoplugin'
 version '0.6.11'
@@ -9,16 +10,9 @@ sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
 
-sourceSets {
-	main {
-		java {
-			srcDirs 'src'
-		}
-
-		resources {
-			srcDirs 'resources'
-		}
-	}
+checkstyle {
+	configDirectory = '.' as File
+	toolVersion '9.3';
 }
 
 repositories {
