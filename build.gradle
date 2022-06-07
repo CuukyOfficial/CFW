@@ -4,7 +4,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'checkstyle'
 
 group 'de.varoplugin'
-version '0.6.11'
+version '0.6.12'
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
