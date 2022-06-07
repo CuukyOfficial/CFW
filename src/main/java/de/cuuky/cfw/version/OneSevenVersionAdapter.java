@@ -126,6 +126,8 @@ class OneSevenVersionAdapter implements VersionAdapter {
             for (Field field : Class.forName(entityHumanName).getDeclaredFields())
                 if (fieldNum == 0 && field.getType() == Class.forName(foodMetaName))
                     fieldNum = 1;
+                // This is for 1.19+, but I don't want to create a new version adapter class for one single line of code (Yes, I am lazy)
+                else if (fieldNum == 1 && field.getType().getName().equals("net.minecraft.world.entity.monster.warden.WardenSpawnTracker"));
                 else if (fieldNum == 1 && field.getType() == int.class)
                     fieldNum = 2;
                 else if (fieldNum == 2 && field.getType() == float.class)
