@@ -259,7 +259,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     }
 
     protected void back() {
-        this.close(false);
+        this.close(true);
         if (this.previous != null)
             this.previous.open();
     }

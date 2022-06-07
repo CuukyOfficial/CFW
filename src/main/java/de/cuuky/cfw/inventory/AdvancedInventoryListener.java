@@ -50,8 +50,11 @@ class AdvancedInventoryListener implements Listener {
             return;
 
         AdvancedInventory inv = this.manager.getInventory(clicked);
-        if (inv == null)
+        if (inv == null) {
+            if (this.manager.getPrevInventory(clicked) != null)
+                event.setCancelled(true);
             return;
+        }
         inv.slotClicked(event.getSlot(), event);
         inv.runOptionalEventNotification(inv, e -> e.onInventoryClick(event));
     }
@@ -59,8 +62,11 @@ class AdvancedInventoryListener implements Listener {
     @EventHandler
     public void onInventoryDrag(InventoryDragEvent event) {
         AdvancedInventory inv = this.getInventory(event.getInventory());
-        if (inv == null)
+        if (inv == null) {
+            if (this.manager.getPrevInventory(event.getInventory()) != null)
+                event.setCancelled(true);
             return;
+        }
         inv.runOptionalEventNotification(inv, e -> e.onInventoryDrag(event));
     }
 
