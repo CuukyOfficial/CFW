@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 
 public enum BukkitVersion {
 
+    ONE_19(19, OneSeventeenVersionAdapter::new),
     ONE_18(18, OneSeventeenVersionAdapter::new),
     ONE_17(17, OneSeventeenVersionAdapter::new),
     ONE_16(16, OneSixteenVersionAdapter::new),
