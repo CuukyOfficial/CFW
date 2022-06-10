@@ -93,7 +93,7 @@ public class HookManager {
 
         return null;
     }
-    
+
     public Plugin getPlugin() {
         return this.plugin;
     }

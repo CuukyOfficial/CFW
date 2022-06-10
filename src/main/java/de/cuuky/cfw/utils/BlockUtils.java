@@ -32,9 +32,10 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.cryptomorin.xseries.XMaterial;
+
 import de.cuuky.cfw.version.BukkitVersion;
 import de.cuuky.cfw.version.VersionUtils;
-import de.cuuky.cfw.version.types.Materials;
 
 public class BlockUtils {
 
@@ -54,17 +55,17 @@ public class BlockUtils {
             return true;
 
         Material type = block.getType();
-        return isGrass(type) || type.name().contains("AIR") || Materials.POPPY.parseMaterial() == type || type == Materials.SUNFLOWER.parseMaterial() || type == Materials.LILY_PAD.parseMaterial() || type.name().contains("LEAVES") || type.name().contains("WOOD") || type == Materials.SNOW.parseMaterial() || type.name().contains("GLASS") || type == Materials.VINE.parseMaterial();
+        return isGrass(type) || type.name().contains("AIR") || XMaterial.POPPY.parseMaterial() == type || type == XMaterial.SUNFLOWER.parseMaterial() || type == XMaterial.LILY_PAD.parseMaterial() || type.name().contains("LEAVES") || type.name().contains("WOOD") || type == XMaterial.SNOW.parseMaterial() || type.name().contains("GLASS") || type == XMaterial.VINE.parseMaterial();
     }
 
-    public static boolean isSame(Materials mat, Block block) {
+    public static boolean isSame(XMaterial mat, Block block) {
         if (mat.getData() == block.getData() && mat.parseMaterial().equals(block.getType()))
             return true;
 
         return false;
     }
 
-    public static void setBlock(Block block, Materials mat, boolean applyPhysics) {
+    public static void setBlock(Block block, XMaterial mat, boolean applyPhysics) {
         if (VersionUtils.getVersion().isLowerThan(BukkitVersion.ONE_8))
             block.setType(mat.parseMaterial());
         else
@@ -79,15 +80,15 @@ public class BlockUtils {
         }
     }
 
-    public static void setBlock(Block block, Materials mat) {
+    public static void setBlock(Block block, XMaterial mat) {
         setBlock(block, mat, true);
     }
 
-    public static void setBlockDelayed(JavaPlugin plugin, World world, int x, int y, int z, Materials mat) {
+    public static void setBlockDelayed(JavaPlugin plugin, World world, int x, int y, int z, XMaterial mat) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(world.getBlockAt(x, y, z), mat, false), 1);
     }
 
-    public static void setBlockDelayed(JavaPlugin plugin, Block block, Materials mat) {
+    public static void setBlockDelayed(JavaPlugin plugin, Block block, XMaterial mat) {
         Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> setBlock(block, mat, false), 1);
     }
 }

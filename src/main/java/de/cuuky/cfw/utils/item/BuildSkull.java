@@ -30,14 +30,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import de.cuuky.cfw.version.types.Materials;
+import com.cryptomorin.xseries.XMaterial;
 
 public class BuildSkull extends BuildItem {
 
     private String name;
 
     public BuildSkull() {
-        super.itemstack(Materials.PLAYER_HEAD.parseItem());
+        super.itemstack(XMaterial.PLAYER_HEAD.parseItem());
     }
 
     @Override

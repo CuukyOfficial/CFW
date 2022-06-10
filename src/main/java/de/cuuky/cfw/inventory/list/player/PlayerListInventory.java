@@ -35,6 +35,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.cryptomorin.xseries.XMaterial;
+
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemClick;
@@ -42,7 +44,6 @@ import de.cuuky.cfw.inventory.list.AdvancedAsyncListInventory;
 import de.cuuky.cfw.utils.item.BuildItem;
 import de.cuuky.cfw.utils.item.BuildSkull;
 import de.cuuky.cfw.version.VersionUtils;
-import de.cuuky.cfw.version.types.Materials;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 
@@ -67,7 +68,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     @Override
     protected ItemStack getLoadingItem() {
-        return new BuildItem().material(Materials.SKELETON_SKULL).displayName("§cLoading...").build();
+        return new BuildItem().material(XMaterial.SKELETON_SKULL).displayName("§cLoading...").build();
     }
 
     @Override

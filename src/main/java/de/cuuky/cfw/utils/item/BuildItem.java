@@ -35,8 +35,9 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.cryptomorin.xseries.XMaterial;
+
 import de.cuuky.cfw.version.VersionUtils;
-import de.cuuky.cfw.version.types.Materials;
 
 public class BuildItem {
 
@@ -93,7 +94,7 @@ public class BuildItem {
         return this;
     }
 
-    public BuildItem material(Materials material) {
+    public BuildItem material(XMaterial material) {
         return this.itemstack(material.parseItem());
     }
 

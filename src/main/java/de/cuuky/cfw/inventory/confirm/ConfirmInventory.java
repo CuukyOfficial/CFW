@@ -28,11 +28,12 @@ import java.util.function.Consumer;
 
 import org.bukkit.entity.Player;
 
+import com.cryptomorin.xseries.XMaterial;
+
 import de.cuuky.cfw.inventory.AdvancedInventory;
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemInfo;
 import de.cuuky.cfw.utils.item.BuildItem;
-import de.cuuky.cfw.version.types.Materials;
 
 public class ConfirmInventory extends AdvancedInventory {
 
@@ -51,11 +52,11 @@ public class ConfirmInventory extends AdvancedInventory {
     }
 
     protected ItemInfo getYesItem() {
-        return new ItemInfo(this.getCenter() - 2, new BuildItem().displayName("§2Yes").material(Materials.GREEN_DYE).build());
+        return new ItemInfo(this.getCenter() - 2, new BuildItem().displayName("§2Yes").material(XMaterial.GREEN_DYE).build());
     }
 
     protected ItemInfo getNoItem() {
-        return new ItemInfo(this.getCenter() + 2, new BuildItem().displayName("§4No").material(Materials.RED_DYE).build());
+        return new ItemInfo(this.getCenter() + 2, new BuildItem().displayName("§4No").material(XMaterial.RED_DYE).build());
     }
 
     @Override

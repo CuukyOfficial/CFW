@@ -26,24 +26,24 @@ package de.cuuky.cfw.inventory.util;
 
 import org.bukkit.inventory.ItemStack;
 
-import de.cuuky.cfw.version.types.Materials;
+import com.cryptomorin.xseries.XMaterial;
 
 public enum InventoryColor {
 
-    GRAY(Materials.GRAY_STAINED_GLASS_PANE.parseItem()),
-    WHITE(Materials.WHITE_STAINED_GLASS_PANE.parseItem()),
-    BROWN(Materials.BROWN_STAINED_GLASS_PANE.parseItem()),
-    BLACK(Materials.BLACK_STAINED_GLASS_PANE.parseItem()),
-    RED(Materials.RED_STAINED_GLASS_PANE.parseItem()),
-    GREEN(Materials.GREEN_STAINED_GLASS_PANE.parseItem()),
-    BLUE(Materials.BLUE_STAINED_GLASS_PANE.parseItem()),
-    YELLOW(Materials.YELLOW_STAINED_GLASS_PANE.parseItem()),
-    MAGENTA(Materials.MAGENTA_STAINED_GLASS_PANE.parseItem()),
-    ORANGE(Materials.ORANGE_STAINED_GLASS_PANE.parseItem()),
-    PINK(Materials.PINK_STAINED_GLASS_PANE.parseItem()),
-    PURPLE(Materials.PURPLE_STAINED_GLASS_PANE.parseItem()),
-    LIME(Materials.LIME_STAINED_GLASS_PANE.parseItem()),
-    CYAN(Materials.CYAN_STAINED_GLASS_PANE.parseItem());
+    GRAY(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()),
+    WHITE(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()),
+    BROWN(XMaterial.BROWN_STAINED_GLASS_PANE.parseItem()),
+    BLACK(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem()),
+    RED(XMaterial.RED_STAINED_GLASS_PANE.parseItem()),
+    GREEN(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem()),
+    BLUE(XMaterial.BLUE_STAINED_GLASS_PANE.parseItem()),
+    YELLOW(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()),
+    MAGENTA(XMaterial.MAGENTA_STAINED_GLASS_PANE.parseItem()),
+    ORANGE(XMaterial.ORANGE_STAINED_GLASS_PANE.parseItem()),
+    PINK(XMaterial.PINK_STAINED_GLASS_PANE.parseItem()),
+    PURPLE(XMaterial.PURPLE_STAINED_GLASS_PANE.parseItem()),
+    LIME(XMaterial.LIME_STAINED_GLASS_PANE.parseItem()),
+    CYAN(XMaterial.CYAN_STAINED_GLASS_PANE.parseItem());
 
     private final ItemStack colorPane;
 

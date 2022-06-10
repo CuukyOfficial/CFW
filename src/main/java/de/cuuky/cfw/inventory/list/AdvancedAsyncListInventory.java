@@ -30,10 +30,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.cryptomorin.xseries.XMaterial;
+
 import de.cuuky.cfw.inventory.AdvancedInventoryManager;
 import de.cuuky.cfw.inventory.ItemClick;
 import de.cuuky.cfw.utils.item.BuildItem;
-import de.cuuky.cfw.version.types.Materials;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 
@@ -42,7 +43,7 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
     }
 
     protected ItemStack getLoadingItem() {
-        return new BuildItem().displayName("§cLoading...").material(Materials.COAL).build();
+        return new BuildItem().displayName("§cLoading...").material(XMaterial.COAL).build();
     }
 
     @Override

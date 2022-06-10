@@ -31,16 +31,20 @@ import java.util.function.Function;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.server.PluginDisableEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class AdvancedInventoryManager {
+public class AdvancedInventoryManager implements Listener {
 
     private final JavaPlugin plugin;
     private final List<AdvancedInventory> inventories = new CopyOnWriteArrayList<>();
 
     public AdvancedInventoryManager(JavaPlugin plugin) {
         this.plugin = plugin;
+        Bukkit.getServer().getPluginManager().registerEvents(this, plugin);
         Bukkit.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), plugin);
     }
 
@@ -53,8 +57,8 @@ public class AdvancedInventoryManager {
         return this.inventories.remove(inventory);
     }
 
-    @Override
-    public void disable() {
+    @EventHandler
+    public void onDisable(PluginDisableEvent event) {
         this.closeInventories();
     }
 
@@ -81,21 +85,21 @@ public class AdvancedInventoryManager {
     public JavaPlugin getPlugin() {
         return this.plugin;
     }
-    
+
     public List<AdvancedInventory> getInventories() {
-        return inventories;
+        return this.inventories;
     }
 
     public AdvancedInventory getInventory(Player player) {
-        return inventories.stream().filter(inv -> inv.getPlayer() != null && inv.getPlayer().equals(player)).findFirst().orElse(null);
+        return this.inventories.stream().filter(inv -> inv.getPlayer() != null && inv.getPlayer().equals(player)).findFirst().orElse(null);
     }
 
     public AdvancedInventory getInventory(Inventory inventory) {
-        return inventories.stream().filter(inv -> inv.getInventory() != null && inv.getInventory().equals(inventory)).findFirst().orElse(null);
+        return this.inventories.stream().filter(inv -> inv.getInventory() != null && inv.getInventory().equals(inventory)).findFirst().orElse(null);
     }
 
     // This is a method that belongs to a temporary hotfix and should be removed once the issue is fixed properly
     public AdvancedInventory getPrevInventory(Inventory inventory) {
-        return inventories.stream().filter(inv -> inv.getPrevious() != null && inv.getPrevious().getInventory() != null && inv.getPrevious().getInventory().equals(inventory)).findFirst().orElse(null);
+        return this.inventories.stream().filter(inv -> inv.getPrevious() != null && inv.getPrevious().getInventory() != null && inv.getPrevious().getInventory().equals(inventory)).findFirst().orElse(null);
     }
 }
