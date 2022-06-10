@@ -1,4 +1,4 @@
 name: @name@
 author: @author@
 version: @version@
-main: de.cuuky.cfw.Main
+main: de.varoplugin.cfw.Main
