@@ -70,11 +70,6 @@ public final class UUIDUtils {
         return getUUIDTime(name, time, 30000);
     }
 
-    @Deprecated
-    public static String getNamesChanged(String name) throws Exception {
-        return getName(name);
-    }
-
     public static String getName(UUID uuid) throws Exception {
         String uuidString = uuid.toString().replace("-", "");
         Scanner scanner = new Scanner(new URL("https://api.mojang.com/user/profiles/" + uuidString + "/names").openStream());

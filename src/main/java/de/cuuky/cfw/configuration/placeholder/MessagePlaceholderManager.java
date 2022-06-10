@@ -30,22 +30,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.bukkit.plugin.java.JavaPlugin;
-
 import de.cuuky.cfw.configuration.placeholder.placeholder.type.PlaceholderType;
-import de.cuuky.cfw.manager.FrameworkManager;
-import de.cuuky.cfw.manager.FrameworkManagerType;
 
-public class MessagePlaceholderManager extends FrameworkManager {
+public class MessagePlaceholderManager {
 
     private int tickTolerance = 900;
 
     private final Map<PlaceholderType, List<MessagePlaceholder>> placeholders = new HashMap<>();
     private final Map<PlaceholderType, Map<String, List<MessagePlaceholder>>> cachedRequests = new HashMap<>();
-
-    public MessagePlaceholderManager(JavaPlugin instance) {
-        super(FrameworkManagerType.PLACEHOLDER, instance);
-    }
 
     private List<MessagePlaceholder> search(PlaceholderType type, String containing) {
         return this.getPlaceholders(type).stream().filter(mp -> mp.containsPlaceholder(containing)).collect(Collectors.toList());

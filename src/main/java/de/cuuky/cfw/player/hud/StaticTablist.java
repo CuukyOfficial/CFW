@@ -24,7 +24,8 @@
 
 package de.cuuky.cfw.player.hud;
 
-import de.cuuky.cfw.player.CustomPlayer;
+import org.bukkit.entity.Player;
+
 import de.cuuky.cfw.version.VersionAdapter;
 import de.cuuky.cfw.version.VersionUtils;
 
@@ -32,13 +33,13 @@ public class StaticTablist {
 
     private static final VersionAdapter VERISON_ADAPTER = VersionUtils.getVersionAdapter();
 
-    private final CustomPlayer player;
+    private final Player player;
     private String headerBuffer;
     private String footerBuffer;
     private boolean headerEnabled;
     private boolean footerEnabled;
 
-    public StaticTablist(CustomPlayer player, String header, String footer) {
+    public StaticTablist(Player player, String header, String footer) {
         this.player = player;
         this.headerEnabled = true;
         this.footerEnabled = true;
@@ -46,7 +47,7 @@ public class StaticTablist {
         this.update(header, footer);
     }
 
-    public StaticTablist(CustomPlayer player) {
+    public StaticTablist(Player player) {
         this.player = player;
         this.headerEnabled = false;
         this.footerEnabled = false;

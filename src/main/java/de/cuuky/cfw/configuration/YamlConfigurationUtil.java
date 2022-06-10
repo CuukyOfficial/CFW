@@ -37,7 +37,6 @@ import com.google.common.base.Charsets;
 
 import de.cuuky.cfw.utils.JavaUtils;
 
-@Deprecated
 public class YamlConfigurationUtil {
 
     public static YamlConfiguration loadConfiguration(File file) {

@@ -28,7 +28,6 @@ import java.util.function.Supplier;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChatEvent;
 
 import de.cuuky.cfw.hooking.HookManager;
 import de.cuuky.cfw.hooking.hooks.HookEntity;
@@ -58,10 +57,6 @@ public class ChatHook extends HookEntity {
     }
 
     public boolean run(AsyncPlayerChatEvent event) {
-        return this.run(() -> listener.onChat(event));
-    }
-
-    public boolean run(PlayerChatEvent event) {
         return this.run(() -> listener.onChat(event));
     }
 }

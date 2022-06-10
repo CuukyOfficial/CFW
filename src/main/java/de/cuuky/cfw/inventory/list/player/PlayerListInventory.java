@@ -52,7 +52,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
         super(manager, player, players);
 
         this.size = size;
-        JavaPlugin plugin = this.getManager().getOwnerInstance();
+        JavaPlugin plugin = this.getManager().getPlugin();
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 

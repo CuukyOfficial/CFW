@@ -31,10 +31,8 @@ public enum ServerSoftware {
 
     MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
     CRUCIBLE("Crucible", versionSupplier -> new CrucibleVersionAdapter(), "io.github.crucible.Crucible", "Crucible"),
-    @Deprecated // Unused
     URANIUM("Uranium", null, null, "Uranium"),
     THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
-    @Deprecated // Unused
     CAULDRON("Cauldron", null, null, "Cauldron"),
     SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
     NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
@@ -77,24 +75,6 @@ public enum ServerSoftware {
      **/
     public String[] getVersionNames() {
         return this.versionnames;
-    }
-
-    /**
-     * @return Whether the software has support for Forge mods
-     * @deprecated use {@link VersionUtils#hasForgeSupport()} instead
-     **/
-    @Deprecated
-    public boolean hasModSupport() {
-        return VersionUtils.hasForgeSupport();
-    }
-
-    /**
-     * @return Whether the software has support for Forge mods
-     * @deprecated use {@link VersionUtils#hasForgeSupport()} instead
-     **/
-    @Deprecated
-    public boolean hasForgeSupport() {
-        return VersionUtils.hasForgeSupport();
     }
 
     /**

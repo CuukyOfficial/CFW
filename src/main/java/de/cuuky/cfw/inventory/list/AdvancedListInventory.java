@@ -55,11 +55,6 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
         this.updateList(list);
     }
 
-    @Deprecated
-    public AdvancedListInventory(AdvancedInventoryManager manager, Player player, Supplier<List<T>> list) {
-        this(manager, player, list.get());
-    }
-
     private boolean checkEmpty() {
         if (this.list.isEmpty()) {
             ItemInfo info = this.getEmptyInfoStack();

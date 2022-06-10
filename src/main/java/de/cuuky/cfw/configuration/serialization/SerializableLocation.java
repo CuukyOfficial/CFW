@@ -46,11 +46,6 @@ public class SerializableLocation extends Location implements ConfigurationSeria
         this(location.getWorld(), location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
-    @Deprecated
-    public Location getLocation() {
-        return this;
-    }
-
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

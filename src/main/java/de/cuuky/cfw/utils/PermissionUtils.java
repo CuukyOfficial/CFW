@@ -29,9 +29,8 @@ import java.util.HashMap;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
-import de.cuuky.cfw.player.CustomPlayer;
 
 public final class PermissionUtils {
 
@@ -71,9 +70,9 @@ public final class PermissionUtils {
         }
     }
 
-    public static String getLuckPermsPrefix(CustomPlayer player) {
+    public static String getLuckPermsPrefix(Player player) {
         try {
-            Object user = userManager.getClass().getMethod("getUser", UUID.class).invoke(userManager, UUID.fromString(player.getUUID()));
+            Object user = userManager.getClass().getMethod("getUser", UUID.class).invoke(userManager, player);
             String groupname = (String) user.getClass().getMethod("getPrimaryGroup").invoke(user);
 
             Object group = groupManager.getClass().getMethod("getGroup", String.class).invoke(groupManager, groupname);
@@ -88,7 +87,7 @@ public final class PermissionUtils {
         return "";
     }
 
-    public static String getPermissionsExPrefix(CustomPlayer player) {
+    public static String getPermissionsExPrefix(Player player) {
         String prefix = null;
         try {
             Object permissionUser = clazzes.get("ru.tehkode.permissions.bukkit.PermissionsEx").getDeclaredMethod("getUser", String.class).invoke(null, player.getName());

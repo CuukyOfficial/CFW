@@ -92,7 +92,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     private void createInventory() {
         String title = this.getInfo(Info.TITLE);
         title = title.length() > 32 ? title.substring(0, 32) : title;
-        this.inventory = this.manager.getOwnerInstance().getServer().createInventory(this.player, this.getInfo(Info.SIZE), title);
+        this.inventory = this.manager.getPlugin().getServer().createInventory(this.player, this.getInfo(Info.SIZE), title);
     }
 
     private void validatePage() {
@@ -168,7 +168,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
             public void run() {
                 update();
             }
-        }.runTaskTimerAsynchronously(this.getManager().getOwnerInstance(), interval, interval);
+        }.runTaskTimerAsynchronously(this.getManager().getPlugin(), interval, interval);
     }
 
     private void updateInformation() {
@@ -308,7 +308,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
                 updateProvider();
                 update();
             }
-        }.runTaskLater(manager.getOwnerInstance(), 0L);
+        }.runTaskLater(manager.getPlugin(), 0L);
     }
 
     public void close(boolean close) {
@@ -342,7 +342,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.updateInformation();
         this.setSelector();
         int size = this.getInfo(Info.SIZE);
-        this.inserter.setItems(manager.getOwnerInstance(), this, this.getContent(size), player, size);
+        this.inserter.setItems(manager.getPlugin(), this, this.getContent(size), player, size);
         if (!needsOpen)
             this.player.updateInventory();
         else

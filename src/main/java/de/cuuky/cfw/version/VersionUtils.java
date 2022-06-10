@@ -41,8 +41,6 @@ public class VersionUtils {
     private static final String nmsClass;
     private static final String nmsVersion;
     private static final boolean forgeSupport;
-    @Deprecated()
-    private static Object spigot;
 
     private final static BukkitVersion version;
     private final static ServerSoftware serverSoftware;
@@ -71,11 +69,6 @@ public class VersionUtils {
             }
             version = BukkitVersion.getVersion(nmsVersion);
             serverSoftware = ServerSoftware.getServerSoftware();
-
-            try {
-                spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
-            } catch (Exception e) {
-            }
         }
         versionAdapter = serverSoftware.getVersionAdapter(version.getAdapterSupplier());
     }
@@ -93,23 +86,6 @@ public class VersionUtils {
         }
     }
 
-    /**
-     * Use {@link VersionAdapter#setServerProperty} instead
-     * 
-     * @param key   The key
-     * @param value The new value
-     * @deprecated Use {@link VersionAdapter#setServerProperty} instead
-     */
-    @Deprecated
-    public static void setMinecraftServerProperty(String key, Object value) {
-        versionAdapter.setServerProperty(key, value);
-    }
-
-    @Deprecated
-    public static double getHearts(Player player) {
-        return player.getHealth();
-    }
-
     static String getNmsClass() {
         return nmsClass;
     }
@@ -123,16 +99,6 @@ public class VersionUtils {
      */
     public static boolean hasForgeSupport() {
         return forgeSupport;
-    }
-
-    /**
-     * Use {@link VersionAdapter} instead
-     * 
-     * @return The spigot object
-     */
-    @Deprecated()
-    public static Object getSpigot() {
-        return spigot;
     }
 
     public static MinecraftVersion getMinecraftVersion(Player player) {

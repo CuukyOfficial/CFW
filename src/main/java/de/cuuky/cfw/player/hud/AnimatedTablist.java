@@ -25,9 +25,8 @@
 package de.cuuky.cfw.player.hud;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import de.cuuky.cfw.player.CustomPlayer;
 
 public class AnimatedTablist {
 
@@ -37,7 +36,7 @@ public class AnimatedTablist {
     private Animation<String> footer;
     private boolean contentChanged;
 
-    public AnimatedTablist(JavaPlugin javaPlugin, CustomPlayer player, AnimationData<String> header, AnimationData<String> footer) {
+    public AnimatedTablist(JavaPlugin javaPlugin, Player player, AnimationData<String> header, AnimationData<String> footer) {
         this.header = new Animation<>(header);
         this.footer = new Animation<>(footer);
 

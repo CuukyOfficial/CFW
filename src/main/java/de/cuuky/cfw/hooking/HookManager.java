@@ -28,25 +28,25 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.cuuky.cfw.hooking.hooks.HookEntity;
 import de.cuuky.cfw.hooking.hooks.HookEntityType;
 import de.cuuky.cfw.hooking.hooks.item.ItemHook;
-import de.cuuky.cfw.manager.FrameworkManager;
-import de.cuuky.cfw.manager.FrameworkManagerType;
 
-public class HookManager extends FrameworkManager {
+public class HookManager {
 
+    private final Plugin plugin;
     private final List<HookEntity> hooks;
 
-    public HookManager(JavaPlugin instance) {
-        super(FrameworkManagerType.HOOKING, instance);
-
+    public HookManager(JavaPlugin plugin) {
+        this.plugin = plugin;
         this.hooks = new CopyOnWriteArrayList<>();
-        this.ownerInstance.getServer().getPluginManager().registerEvents(new HookListener(this), ownerInstance);
+        Bukkit.getServer().getPluginManager().registerEvents(new HookListener(this), plugin);
     }
 
     public <B extends HookEntity> B registerHook(B hook) {
@@ -92,6 +92,10 @@ public class HookManager extends FrameworkManager {
                 return (ItemHook) ent;
 
         return null;
+    }
+    
+    public Plugin getPlugin() {
+        return this.plugin;
     }
 
     public List<HookEntity> getHooks() {

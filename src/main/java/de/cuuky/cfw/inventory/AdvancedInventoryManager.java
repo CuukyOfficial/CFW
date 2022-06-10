@@ -29,20 +29,19 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Function;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import de.cuuky.cfw.manager.FrameworkManager;
-import de.cuuky.cfw.manager.FrameworkManagerType;
+public class AdvancedInventoryManager {
 
-public class AdvancedInventoryManager extends FrameworkManager {
-
+    private final JavaPlugin plugin;
     private final List<AdvancedInventory> inventories = new CopyOnWriteArrayList<>();
 
-    public AdvancedInventoryManager(JavaPlugin ownerInstance) {
-        super(FrameworkManagerType.ADVANCED_INVENTORY, ownerInstance);
-        this.ownerInstance.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), ownerInstance);
+    public AdvancedInventoryManager(JavaPlugin plugin) {
+        this.plugin = plugin;
+        Bukkit.getServer().getPluginManager().registerEvents(new AdvancedInventoryListener(this), plugin);
     }
 
     protected AdvancedInventory registerInventory(AdvancedInventory inventory) {
@@ -79,6 +78,10 @@ public class AdvancedInventoryManager extends FrameworkManager {
         this.inventories.forEach(AdvancedInventory::close);
     }
 
+    public JavaPlugin getPlugin() {
+        return this.plugin;
+    }
+    
     public List<AdvancedInventory> getInventories() {
         return inventories;
     }
@@ -92,7 +95,6 @@ public class AdvancedInventoryManager extends FrameworkManager {
     }
 
     // This is a method that belongs to a temporary hotfix and should be removed once the issue is fixed properly
-    @Deprecated
     public AdvancedInventory getPrevInventory(Inventory inventory) {
         return inventories.stream().filter(inv -> inv.getPrevious() != null && inv.getPrevious().getInventory() != null && inv.getPrevious().getInventory().equals(inventory)).findFirst().orElse(null);
     }

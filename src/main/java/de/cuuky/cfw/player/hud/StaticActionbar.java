@@ -26,7 +26,6 @@ package de.cuuky.cfw.player.hud;
 
 import org.bukkit.entity.Player;
 
-import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.version.VersionAdapter;
 import de.cuuky.cfw.version.VersionUtils;
 
@@ -40,10 +39,6 @@ public class StaticActionbar {
     public StaticActionbar(Player player) {
         this.player = player;
         this.enabled = true;
-    }
-
-    public StaticActionbar(CustomPlayer player) {
-        this(player.getPlayer());
     }
 
     public void update(String content) {
