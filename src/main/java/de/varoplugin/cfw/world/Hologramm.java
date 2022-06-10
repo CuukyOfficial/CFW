@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw;
+package de.varoplugin.cfw.world;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -44,7 +44,6 @@ import de.varoplugin.cfw.version.BukkitVersion;
 import de.varoplugin.cfw.version.ServerSoftware;
 import de.varoplugin.cfw.version.VersionUtils;
 
-// TODO: Maybe move to CFW or other package
 public class Hologramm extends BasicSerializable {
 
     @Serialize("location")
@@ -70,7 +69,7 @@ public class Hologramm extends BasicSerializable {
         if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(BukkitVersion.ONE_8))
             return Optional.empty();
 
-        return Arrays.stream(location.getChunk().getEntities()).filter(entity -> this.nameTagUuid.equals(entity.getUniqueId())).findAny();
+        return Arrays.stream(this.location.getChunk().getEntities()).filter(entity -> this.nameTagUuid.equals(entity.getUniqueId())).findAny();
     }
 
     private void createNameTag(String name) {
