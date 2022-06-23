@@ -24,9 +24,13 @@
 
 package de.varoplugin.cfw.inventory.list.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.cryptomorin.xseries.XMaterial;
+import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
+import de.varoplugin.cfw.inventory.ItemClick;
+import de.varoplugin.cfw.inventory.list.AdvancedAsyncListInventory;
+import de.varoplugin.cfw.utils.item.BuildItem;
+import de.varoplugin.cfw.utils.item.BuildSkull;
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,15 +39,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.cryptomorin.xseries.XMaterial;
-
-import de.varoplugin.cfw.hooking.HookManager;
-import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
-import de.varoplugin.cfw.inventory.ItemClick;
-import de.varoplugin.cfw.inventory.list.AdvancedAsyncListInventory;
-import de.varoplugin.cfw.utils.item.BuildItem;
-import de.varoplugin.cfw.utils.item.BuildSkull;
-import de.varoplugin.cfw.version.VersionUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
 
@@ -59,11 +56,6 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     public PlayerListInventory(AdvancedInventoryManager manager, Player player, int size) {
         this(manager, player, size, new ArrayList<>(VersionUtils.getVersionAdapter().getOnlinePlayers()));
-    }
-
-    @Override
-    protected HookManager getHookManager() {
-        return null;
     }
 
     @Override

@@ -30,22 +30,17 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class EntityDamageByEntityUtil {
 
-    private final EntityDamageByEntityEvent event;
-
-    private Player damager;
+    private final Player damager;
 
     public EntityDamageByEntityUtil(EntityDamageByEntityEvent event) {
-        this.event = event;
 
-        this.registerDamager();
-    }
-
-    private void registerDamager() {
         if (event.getDamager() instanceof Arrow) {
             if ((((Arrow) event.getDamager()).getShooter() instanceof Player))
                 this.damager = ((Player) ((Arrow) event.getDamager()).getShooter());
+            else this.damager = null;
         } else if (event.getDamager() instanceof Player)
             this.damager = (Player) event.getDamager();
+        else this.damager = null;
     }
 
     /**

@@ -24,20 +24,20 @@
 
 package de.varoplugin.cfw.utils;
 
-import java.lang.reflect.InvocationTargetException;
-
+import com.cryptomorin.xseries.XMaterial;
+import de.varoplugin.cfw.version.BukkitVersion;
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.cryptomorin.xseries.XMaterial;
+import java.lang.reflect.InvocationTargetException;
 
-import de.varoplugin.cfw.version.BukkitVersion;
-import de.varoplugin.cfw.version.VersionUtils;
+public final class BlockUtils {
 
-public class BlockUtils {
+    private BlockUtils() {}
 
     private static boolean isGrass(Material type) {
         if (!type.toString().contains("GRASS"))

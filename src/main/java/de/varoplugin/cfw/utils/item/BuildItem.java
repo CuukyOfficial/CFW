@@ -24,20 +24,19 @@
 
 package de.varoplugin.cfw.utils.item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.cryptomorin.xseries.XMaterial;
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.cryptomorin.xseries.XMaterial;
-
-import de.varoplugin.cfw.version.VersionUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public class BuildItem {
 
@@ -95,7 +94,7 @@ public class BuildItem {
     }
 
     public BuildItem material(XMaterial material) {
-        return this.itemstack(material.parseItem());
+        return this.itemstack(Objects.requireNonNull(material.parseItem()));
     }
 
     public BuildItem displayName(String displayName) {

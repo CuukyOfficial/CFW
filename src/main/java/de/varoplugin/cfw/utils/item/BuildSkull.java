@@ -32,12 +32,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.cryptomorin.xseries.XMaterial;
 
+import java.util.Objects;
+
 public class BuildSkull extends BuildItem {
 
     private String name;
 
     public BuildSkull() {
-        super.itemstack(XMaterial.PLAYER_HEAD.parseItem());
+        super.itemstack(Objects.requireNonNull(XMaterial.PLAYER_HEAD.parseItem()));
     }
 
     @Override

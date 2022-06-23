@@ -24,13 +24,15 @@
 
 package de.varoplugin.cfw.utils;
 
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class BukkitUtils {
+import java.util.UUID;
+
+public final class BukkitUtils {
+
+    private BukkitUtils() {}
 
     public static void saveTeleport(Player player, Location location) {
         while (!location.getChunk().isLoaded())
