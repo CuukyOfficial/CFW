@@ -25,7 +25,7 @@
 package de.varoplugin.cfw.player.hook.chat;
 
 import de.varoplugin.cfw.player.hook.AbstractPlayerHook;
-import de.varoplugin.cfw.player.hook.HookEvent;
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -35,7 +35,7 @@ public class PlayerChatHook extends AbstractPlayerHook<PlayerChatHookListener> i
 
     private final String message;
 
-    public PlayerChatHook(boolean cancel, Collection<HookSubscriber<? extends HookEvent<?, ?>>> subscriber, String message) {
+    public PlayerChatHook(boolean cancel, Collection<HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscriber, String message) {
         super(cancel, subscriber, new PlayerChatHookListener());
 
         this.message = message;

@@ -38,16 +38,16 @@ import java.util.function.Consumer;
 public abstract class AbstractPlayerHook<T extends HookListener<?>> extends AbstractPluginRegistrable implements PlayerHook {
 
     private final Collection<T> listeners;
-    private final Collection<HookSubscriber<? extends HookEvent<?, ?>>> subscriber;
+    private final Collection<HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscriber;
     private final boolean cancelEvent;
 
-    public AbstractPlayerHook(boolean cancelEvent, Collection<HookSubscriber<? extends HookEvent<?, ?>>> subscriber, T listener) {
+    public AbstractPlayerHook(boolean cancelEvent, Collection<HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscriber, T listener) {
         this.listeners = new LinkedList<>(Collections.singletonList(listener));
         this.subscriber = new LinkedList<>(subscriber);
         this.cancelEvent = cancelEvent;
     }
 
-    private HookSubscriber<? extends HookEvent<?, ?>> getSubscriber(Class<? extends Event> eventClass) {
+    private HookSubscriber<? extends AbstractHookEvent<?, ?>> getSubscriber(Class<? extends Event> eventClass) {
         return this.subscriber.stream().filter(sub -> sub.getKey().equals(eventClass)).findAny().orElse(null);
     }
 
@@ -76,15 +76,15 @@ public abstract class AbstractPlayerHook<T extends HookListener<?>> extends Abst
 
     @Override
     @SuppressWarnings("unchecked")
-    public <E extends HookEvent<?, ?>> void eventFired(E event) {
+    public <E extends AbstractHookEvent<?, ?>> void eventFired(E event) {
         if (!this.isRegistered()) throw new IllegalStateException("Cannot fire event on unregistered hook");
         if (this.cancelEvent) event.setCancelled(true);
         this.getPlugin().getServer().getPluginManager().callEvent(event);
-        HookSubscriber<E> subscriber = (HookSubscriber<E>) this.getSubscriber(event.getSource().getClass());
+        HookSubscriber<E> subscriber = (HookSubscriber<E>) this.getSubscriber(event.getClass());
         if (subscriber != null) subscriber.getValue().accept(event);
     }
 
-    public static class HookSubscriber<T extends HookEvent<?, ?>> extends AbstractMap.SimpleEntry<Class<T>, Consumer<T>> {
+    public static class HookSubscriber<T extends AbstractHookEvent<?, ?>> extends AbstractMap.SimpleEntry<Class<T>, Consumer<T>> {
 
         public HookSubscriber(Class<T> tClass, Consumer<T> consumer) {
             super(tClass, consumer);

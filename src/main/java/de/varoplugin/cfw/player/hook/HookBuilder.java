@@ -31,7 +31,7 @@ import java.util.function.Consumer;
 
 public interface HookBuilder<T extends PlayerHook> {
 
-    <E extends HookEvent<?, ?>> HookBuilder<T> subscribe(Class<E> eventType, Consumer<E> eventConsumer);
+    <E extends AbstractHookEvent<?, ?>> HookBuilder<T> subscribe(Class<E> eventType, Consumer<E> eventConsumer);
 
     HookBuilder<T> cancel(boolean cancel);
 

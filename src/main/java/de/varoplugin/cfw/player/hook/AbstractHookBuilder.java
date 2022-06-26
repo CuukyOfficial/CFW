@@ -34,14 +34,14 @@ import java.util.function.Consumer;
 public abstract class AbstractHookBuilder<T extends PlayerHook> implements HookBuilder<T> {
 
     protected boolean cancelEvent = true;
-    protected Collection<AbstractPlayerHook.HookSubscriber<? extends HookEvent<?, ?>>> subscribers;
+    protected Collection<AbstractPlayerHook.HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscribers;
 
     protected AbstractHookBuilder() {
         this.subscribers = new LinkedList<>();
     }
 
     @Override
-    public <E extends HookEvent<?, ?>> HookBuilder<T> subscribe(Class<E> eventType, Consumer<E> eventConsumer) {
+    public <E extends AbstractHookEvent<?, ?>> HookBuilder<T> subscribe(Class<E> eventType, Consumer<E> eventConsumer) {
         this.subscribers.add(new AbstractPlayerHook.HookSubscriber<>(eventType, eventConsumer));
         return this;
     }

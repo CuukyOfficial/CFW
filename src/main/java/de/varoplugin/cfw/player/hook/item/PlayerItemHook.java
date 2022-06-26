@@ -25,7 +25,7 @@
 package de.varoplugin.cfw.player.hook.item;
 
 import de.varoplugin.cfw.player.hook.AbstractPlayerHook;
-import de.varoplugin.cfw.player.hook.HookEvent;
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -39,7 +39,7 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
     private final boolean movable;
     private final boolean droppable;
 
-    public PlayerItemHook(boolean cancel, Collection<HookSubscriber<? extends HookEvent<?, ?>>> subscriber, ItemStack item, int slot, boolean movable, boolean droppable) {
+    public PlayerItemHook(boolean cancel, Collection<HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscriber, ItemStack item, int slot, boolean movable, boolean droppable) {
         super(cancel, subscriber, new PlayerItemHookListener());
 
         if (item == null) throw new IllegalArgumentException("Missing item");

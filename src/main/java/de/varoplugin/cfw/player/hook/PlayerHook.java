@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 
 public interface PlayerHook extends PlayerRegistrable {
 
-    <E extends HookEvent<?, ?>> void eventFired(E event);
+    <E extends AbstractHookEvent<?, ?>> void eventFired(E event);
 
     Player getPlayer();
 

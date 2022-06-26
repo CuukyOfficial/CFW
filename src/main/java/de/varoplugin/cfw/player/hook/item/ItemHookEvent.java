@@ -24,11 +24,11 @@
 
 package de.varoplugin.cfw.player.hook.item;
 
-import de.varoplugin.cfw.player.hook.HookEvent;
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 
-public abstract class ItemHookEvent<E extends Event & Cancellable> extends HookEvent<ItemHook, E> {
+public abstract class ItemHookEvent<E extends Event & Cancellable> extends AbstractHookEvent<ItemHook, E> {
 
     public ItemHookEvent(ItemHook hook, E source) {
         super(hook, source);

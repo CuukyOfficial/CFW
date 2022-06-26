@@ -31,14 +31,14 @@ import org.bukkit.event.HandlerList;
 
 import java.util.Objects;
 
-public abstract class HookEvent<T extends PlayerHook, E extends Event & Cancellable> extends Event implements Cancellable {
+public abstract class AbstractHookEvent<T extends PlayerHook, E extends Event & Cancellable> extends Event implements Cancellable {
 
     private static final HandlerList handlers = new HandlerList();
 
     private final T hook;
     private final E source;
 
-    public HookEvent(T hook, E source) {
+    public AbstractHookEvent(T hook, E source) {
         this.hook = hook;
         this.source = source;
     }

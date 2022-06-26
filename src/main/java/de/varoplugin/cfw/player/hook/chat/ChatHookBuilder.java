@@ -25,13 +25,13 @@
 package de.varoplugin.cfw.player.hook.chat;
 
 import de.varoplugin.cfw.player.hook.HookBuilder;
-import de.varoplugin.cfw.player.hook.HookEvent;
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 
 import java.util.function.Consumer;
 
 public interface ChatHookBuilder extends HookBuilder<ChatHook> {
 
-    <E extends HookEvent<?, ?>> ChatHookBuilder subscribe(Class<E> eventType, Consumer<E> eventConsumer);
+    <E extends AbstractHookEvent<?, ?>> ChatHookBuilder subscribe(Class<E> eventType, Consumer<E> eventConsumer);
 
     ChatHookBuilder message(String message);
 
