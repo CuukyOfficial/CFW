@@ -24,7 +24,6 @@
 
 package de.varoplugin.cfw.player.hook;
 
-import com.sun.istack.internal.NotNull;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -61,7 +60,6 @@ public abstract class AbstractHookEvent<T extends PlayerHook, E extends Event & 
         return this.source;
     }
 
-    @NotNull
     @Override
     public HandlerList getHandlers() {
         return Objects.requireNonNull(handlers);
