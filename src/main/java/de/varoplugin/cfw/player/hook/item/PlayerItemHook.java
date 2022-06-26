@@ -42,7 +42,8 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
     public PlayerItemHook(boolean cancel, Collection<HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscriber, ItemStack item, int slot, boolean movable, boolean droppable) {
         super(cancel, subscriber, new PlayerItemHookListener());
 
-        if (item == null) throw new IllegalArgumentException("Missing item");
+        if (item == null)
+            throw new IllegalArgumentException("Missing item");
 
         this.item = item;
         this.slot = slot;

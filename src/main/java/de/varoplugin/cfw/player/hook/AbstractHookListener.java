@@ -29,7 +29,7 @@ import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.PluginDisableEvent;
 
-public abstract class AbstractHookListener<T extends PlayerHook> implements HookListener<T>{
+public abstract class AbstractHookListener<T extends PlayerHook> implements HookListener<T> {
 
     protected T trigger;
 
@@ -44,13 +44,15 @@ public abstract class AbstractHookListener<T extends PlayerHook> implements Hook
 
     @EventHandler
     public void onPluginDisable(PluginDisableEvent event) {
-        if (!event.getPlugin().equals(this.trigger.getPlugin())) return;
+        if (!event.getPlugin().equals(this.trigger.getPlugin()))
+            return;
         this.trigger.unregister();
     }
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        if (this.ignoreEvent(event)) return;
+        if (this.ignoreEvent(event))
+            return;
         this.trigger.unregister();
     }
 }

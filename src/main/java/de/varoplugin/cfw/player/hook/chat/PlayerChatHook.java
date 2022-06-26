@@ -48,7 +48,8 @@ public class PlayerChatHook extends AbstractPlayerHook<PlayerChatHookListener> i
 
     @Override
     protected void onRegister(Player player, Plugin plugin) {
-        if (this.message != null) player.sendMessage(this.message);
+        if (this.message != null)
+            player.sendMessage(this.message);
         super.onRegister(player, plugin);
     }
 

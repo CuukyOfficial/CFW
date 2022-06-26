@@ -48,14 +48,16 @@ public abstract class AbstractPluginRegistrable implements PlayerRegistrable {
 
     @Override
     public boolean register(Player player, Plugin plugin) {
-        if (this.plugin != null) return false;
+        if (this.plugin != null)
+            return false;
         this.onRegister(player, plugin);
         return true;
     }
 
     @Override
     public boolean unregister() {
-        if (this.plugin == null) return false;
+        if (this.plugin == null)
+            return false;
         this.onUnregister();
         return true;
     }

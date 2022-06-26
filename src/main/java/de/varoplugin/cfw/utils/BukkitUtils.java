@@ -32,7 +32,8 @@ import java.util.UUID;
 
 public final class BukkitUtils {
 
-    private BukkitUtils() {}
+    private BukkitUtils() {
+    }
 
     public static void saveTeleport(Player player, Location location) {
         while (!location.getChunk().isLoaded())

@@ -38,7 +38,8 @@ import java.util.stream.IntStream;
 
 public final class JavaUtils {
 
-    private JavaUtils() {}
+    private JavaUtils() {
+    }
 
     public static String[] combineArrays(String[]... strings) {
         return Arrays.stream(strings).map(Arrays::asList).flatMap(List::stream).toArray(String[]::new);
@@ -55,12 +56,12 @@ public final class JavaUtils {
     }
 
     public static String[] removeString(String[] string, int loc) {
-        return IntStream.rangeClosed(0, string.length).filter(i -> i != loc).mapToObj(i -> string[i])
-            .toArray(String[]::new);
+        return IntStream.rangeClosed(0, string.length).filter(i -> i != loc).mapToObj(i -> string[i]).toArray(String[]::new);
     }
 
     public static boolean createFile(File file) {
-        if (file.exists()) return true;
+        if (file.exists())
+            return true;
 
         try {
             File parent = new File(file.getParent());
@@ -72,7 +73,8 @@ public final class JavaUtils {
 
     public static boolean deleteDirectory(File file) {
         for (File listFile : Objects.requireNonNull(file.listFiles())) {
-            if (listFile.isDirectory()) deleteDirectory(listFile);
+            if (listFile.isDirectory())
+                deleteDirectory(listFile);
             listFile.delete();
         }
 
@@ -83,7 +85,8 @@ public final class JavaUtils {
         LinkedHashMap<T, Z> reversed = new LinkedHashMap<>();
         List<T> keys = new ArrayList<>(map.keySet());
         Collections.reverse(keys);
-        for (T key : keys) reversed.put(key, map.get(key));
+        for (T key : keys)
+            reversed.put(key, map.get(key));
         return reversed;
     }
 }

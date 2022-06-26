@@ -37,7 +37,8 @@ import java.lang.reflect.InvocationTargetException;
 
 public final class BlockUtils {
 
-    private BlockUtils() {}
+    private BlockUtils() {
+    }
 
     private static boolean isGrass(Material type) {
         if (!type.toString().contains("GRASS"))

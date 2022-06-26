@@ -37,10 +37,12 @@ public class EntityDamageByEntityUtil {
         if (event.getDamager() instanceof Arrow) {
             if ((((Arrow) event.getDamager()).getShooter() instanceof Player))
                 this.damager = ((Player) ((Arrow) event.getDamager()).getShooter());
-            else this.damager = null;
+            else
+                this.damager = null;
         } else if (event.getDamager() instanceof Player)
             this.damager = (Player) event.getDamager();
-        else this.damager = null;
+        else
+            this.damager = null;
     }
 
     /**

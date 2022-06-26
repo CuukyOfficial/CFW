@@ -64,35 +64,37 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> imple
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (this.ignoreEvent(event.getPlayer(), event.getItem())) return;
+        if (this.ignoreEvent(event.getPlayer(), event.getItem()))
+            return;
         this.trigger.eventFired(new HookItemInteractEvent(this.trigger, event));
     }
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (this.ignoreEvent(event.getPlayer(), event.getPlayer().getItemInHand())) return;
+        if (this.ignoreEvent(event.getPlayer(), event.getPlayer().getItemInHand()))
+            return;
         this.trigger.eventFired(new HookItemInteractEntityEvent(this.trigger, event));
     }
 
     @EventHandler
     public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player))
+            return;
 
         Player damager = (Player) event.getDamager();
-        if (this.ignoreEvent(damager, damager.getItemInHand())) return;
+        if (this.ignoreEvent(damager, damager.getItemInHand()))
+            return;
         this.trigger.eventFired(new HookItemHitEvent(this.trigger, event));
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(InventoryClickEvent event) {
-        ItemStack hotKeyed = event.getClick() == ClickType.NUMBER_KEY ?
-            event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) : null;
-        if (this.ignoreEvent(event.getWhoClicked(), event.getCurrentItem()) && this.ignoreEvent(event.getCursor()) &&
-            (hotKeyed == null || this.ignoreEvent(hotKeyed)))
+        ItemStack hotKeyed = event.getClick() == ClickType.NUMBER_KEY ? event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) : null;
+        if (this.ignoreEvent(event.getWhoClicked(), event.getCurrentItem()) && this.ignoreEvent(event.getCursor()) && (hotKeyed == null || this.ignoreEvent(hotKeyed)))
             return;
 
-        if (this.isPlayerInventory(event.getInventory()) && this.isPlayerInventory(event.getInventory()) &&
-            this.trigger.isMovable()) return;
+        if (this.isPlayerInventory(event.getInventory()) && this.isPlayerInventory(event.getInventory()) && this.trigger.isMovable())
+            return;
 
         event.setCancelled(true);
         ((Player) event.getWhoClicked()).updateInventory();
@@ -100,7 +102,8 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> imple
 
     @EventHandler(ignoreCancelled = true)
     public void onItemMove(InventoryDragEvent event) {
-        if (this.ignoreEvent(event.getWhoClicked(), event.getOldCursor())) return;
+        if (this.ignoreEvent(event.getWhoClicked(), event.getOldCursor()))
+            return;
         event.setCancelled(true);
         ((Player) event.getWhoClicked()).updateInventory();
     }
