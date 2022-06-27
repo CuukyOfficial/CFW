@@ -28,14 +28,14 @@ import org.bukkit.Location;
 
 public class SimpleLocationFormat implements LocationFormat {
 
-    private final Location location;
+    private final String format;
 
-    public SimpleLocationFormat(Location location) {
-        this.location = location;
+    public SimpleLocationFormat(String format) {
+        this.format = format;
     }
 
     @Override
-    public String format(String format) {
-        return format.replace("x", String.valueOf(location.getBlockX())).replace("y", String.valueOf(location.getBlockY())).replace("z", String.valueOf(location.getBlockZ())).replace("world", location.getWorld().getName());
+    public String format(Location location) {
+        return this.format.replace("x", String.valueOf(location.getBlockX())).replace("y", String.valueOf(location.getBlockY())).replace("z", String.valueOf(location.getBlockZ())).replace("world", location.getWorld().getName());
     }
 }

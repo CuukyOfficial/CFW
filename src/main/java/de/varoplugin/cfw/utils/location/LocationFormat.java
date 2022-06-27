@@ -24,6 +24,8 @@
 
 package de.varoplugin.cfw.utils.location;
 
+import org.bukkit.Location;
+
 public interface LocationFormat {
-    String format(String format);
+    String format(Location location);
 }
