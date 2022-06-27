@@ -38,15 +38,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class BuildItem {
+public class EmptyItemBuilder implements ItemBuilder {
 
     private ItemStack stack;
     private Material material;
     private String displayName;
     private List<String> lore;
-    private final Map<Enchantment, Integer> enchantments = new HashMap<>();
+    private final Map<Enchantment, Integer> enchantments;
     private int amount = 1;
     private boolean deleteAnnotations;
+
+    public EmptyItemBuilder() {
+        this.enchantments = new HashMap<>();
+    }
 
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
         if (displayName != null && type != Material.AIR)
@@ -56,6 +60,7 @@ public class BuildItem {
         return meta;
     }
 
+    @Override
     public ItemStack build() {
         ItemStack stack = this.stack != null ? this.stack : new ItemStack(this.material);
         ItemMeta meta = stack.getItemMeta();
@@ -67,90 +72,109 @@ public class BuildItem {
         return stack;
     }
 
-    public BuildItem amount(int amount) {
+    @Override
+    public ItemBuilder amount(int amount) {
         this.amount = amount;
         return this;
     }
 
-    public BuildItem addEnchantment(Enchantment enchantment, int amplifier) {
+    @Override
+    public ItemBuilder addEnchantment(Enchantment enchantment, int amplifier) {
         if (enchantment == null)
             return this;
         enchantments.put(enchantment, amplifier);
         return this;
     }
 
-    public BuildItem deleteDamageAnnotation(boolean deleteAnnotations) {
+    @Override
+    public ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations) {
         this.deleteAnnotations = deleteAnnotations;
         return this;
     }
 
-    public BuildItem deleteDamageAnnotation() {
+    @Override
+    public ItemBuilder deleteDamageAnnotation() {
         return this.deleteDamageAnnotation(true);
     }
 
-    public BuildItem material(Material material) {
+    @Override
+    public ItemBuilder material(Material material) {
         this.material = material;
         return this;
     }
 
-    public BuildItem material(XMaterial material) {
-        return this.itemstack(Objects.requireNonNull(material.parseItem()));
+    @Override
+    public ItemBuilder material(XMaterial material) {
+        return this.itemStack(Objects.requireNonNull(material.parseItem()));
     }
 
-    public BuildItem displayName(String displayName) {
+    @Override
+    public ItemBuilder displayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
 
-    public BuildItem itemstack(ItemStack stack) {
+    @Override
+    public ItemBuilder itemStack(ItemStack stack) {
         this.stack = stack.clone();
         return this;
     }
 
-    public BuildItem addLore(String add) {
+    @Override
+    public ItemBuilder addLore(String add) {
         if (this.lore == null)
             this.lore = new ArrayList<>();
         this.lore.add(add);
         return this;
     }
 
-    public BuildItem lore(List<String> lore) {
+    @Override
+    public ItemBuilder lore(List<String> lore) {
         this.lore = lore;
         return this;
     }
 
-    public BuildItem lore(String lore) {
+    @Override
+    public ItemBuilder lore(String lore) {
         return this.lore(lore == null || lore.isEmpty() ? null : lore.split("\n"));
     }
 
-    public BuildItem lore(String... lore) {
+    @Override
+    public ItemBuilder lore(String... lore) {
         return this.lore(lore == null ? null : Arrays.asList(lore));
     }
 
+    @Override
     public int getAmount() {
         return amount;
     }
 
+    @Override
     public String getDisplayName() {
         return displayName;
     }
 
+    @Override
     public List<String> getLore() {
         return lore;
     }
 
+    @Override
     public Map<Enchantment, Integer> getEnchantments() {
         return enchantments;
     }
 
+    @Override
     public boolean shallDeleteAnnotations() {
         return deleteAnnotations;
     }
 
+    @Override
     public ItemStack getStack() {
         return stack;
     }
 
+    @Override
     public Material getMaterial() {
         return material;
     }

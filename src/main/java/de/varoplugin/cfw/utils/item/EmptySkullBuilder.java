@@ -36,13 +36,13 @@ import org.bukkit.inventory.meta.SkullMeta;
 import java.util.Objects;
 import java.util.UUID;
 
-public class BuildSkull extends BuildItem {
+public class EmptySkullBuilder extends EmptyItemBuilder implements SkullBuilder {
 
     private UUID uuid;
     private String name;
 
-    public BuildSkull() {
-        super.itemstack(Objects.requireNonNull(XMaterial.PLAYER_HEAD.parseItem()));
+    public EmptySkullBuilder() {
+        super.itemStack(Objects.requireNonNull(XMaterial.PLAYER_HEAD.parseItem()));
     }
 
     @Override
@@ -60,28 +60,24 @@ public class BuildSkull extends BuildItem {
         return super.applyMeta(meta, type);
     }
 
-    /**
-     * Note: this won't have any effect
-     */
     @Override
-    public BuildSkull itemstack(ItemStack stack) {
+    public SkullBuilder itemStack(ItemStack stack) {
         return this;
     }
 
-    /**
-     * Note: this won't have any effect
-     */
     @Override
-    public BuildSkull material(Material material) {
+    public SkullBuilder material(Material material) {
         return this;
     }
 
-    public BuildSkull player(UUID uuid) {
+    @Override
+    public SkullBuilder player(UUID uuid) {
         this.uuid = uuid;
         return this;
     }
 
-    public BuildSkull fetchPlayer(String name) {
+    @Override
+    public SkullBuilder fetchPlayer(String name) {
         this.name = name;
         try {
             this.player(UUIDUtils.getUUID(name));
@@ -91,18 +87,9 @@ public class BuildSkull extends BuildItem {
         return this;
     }
 
-    public BuildSkull player(Player player) {
+    @Override
+    public SkullBuilder player(Player player) {
         this.name = player.getName();
         return this.player(player.getUniqueId());
-    }
-
-    @Override
-    public BuildSkull displayName(String displayName) {
-        return (BuildSkull) super.displayName(displayName);
-    }
-
-    @Override
-    public BuildSkull amount(int amount) {
-        return (BuildSkull) super.amount(amount);
     }
 }

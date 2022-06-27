@@ -26,6 +26,7 @@ package de.varoplugin.cfw.inventory.list;
 
 import java.util.List;
 
+import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -34,7 +35,6 @@ import com.cryptomorin.xseries.XMaterial;
 
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
-import de.varoplugin.cfw.utils.item.BuildItem;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 
@@ -43,7 +43,7 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
     }
 
     protected ItemStack getLoadingItem() {
-        return new BuildItem().displayName("§cLoading...").material(XMaterial.COAL).build();
+        return new EmptyItemBuilder().displayName("§cLoading...").material(XMaterial.COAL).build();
     }
 
     @Override

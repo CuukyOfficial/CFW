@@ -22,35 +22,20 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils;
+package de.varoplugin.cfw.utils.location;
 
-import de.varoplugin.cfw.version.VersionUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
-import java.util.UUID;
+public class SimpleLocationFormat implements LocationFormat {
 
-public final class BukkitUtils {
+    private final Location location;
 
-    private BukkitUtils() {
+    public SimpleLocationFormat(Location location) {
+        this.location = location;
     }
 
-    public static void saveTeleport(Player player, Location location) {
-        while (!location.getChunk().isLoaded())
-            location.getChunk().load();
-
-        Location blockUnder = location.clone().add(0, -1, 0);
-        VersionUtils.getVersionAdapter().sendBlockChange(player, blockUnder, blockUnder.getBlock().getType());
-        player.teleport(location.clone().add(0, 1, 0));
-    }
-
-    public static Player getPlayer(String name) throws Exception {
-        return Bukkit.getPlayer(getUUID(name));
-    }
-
-    public static UUID getUUID(String name) throws Exception {
-        Player player = Bukkit.getPlayer(name);
-        return player == null ? UUIDUtils.getUUID(name) : player.getUniqueId();
+    @Override
+    public String format(String format) {
+        return format.replace("x", String.valueOf(location.getBlockX())).replace("y", String.valueOf(location.getBlockY())).replace("z", String.valueOf(location.getBlockZ())).replace("world", location.getWorld().getName());
     }
 }

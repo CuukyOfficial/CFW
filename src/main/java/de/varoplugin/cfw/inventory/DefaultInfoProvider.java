@@ -26,6 +26,7 @@ package de.varoplugin.cfw.inventory;
 
 import java.util.function.Consumer;
 
+import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,7 +34,6 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 
 import de.varoplugin.cfw.inventory.inserter.DirectInserter;
-import de.varoplugin.cfw.utils.item.BuildItem;
 
 public interface DefaultInfoProvider extends InfoProvider {
 
@@ -75,27 +75,27 @@ public interface DefaultInfoProvider extends InfoProvider {
 
     @Override
     default ItemInfo getBackwardsInfo() {
-        return new ItemInfo(this.getUser().getUsableSize(), new BuildItem().material(XMaterial.ARROW).displayName("§cBackwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
+        return new ItemInfo(this.getUser().getUsableSize(), new EmptyItemBuilder().material(XMaterial.ARROW).displayName("§cBackwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
     }
 
     @Override
     default ItemInfo getForwardsInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 8, new BuildItem().material(XMaterial.ARROW).displayName("§aForwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
+        return new ItemInfo(this.getUser().getUsableSize() + 8, new EmptyItemBuilder().material(XMaterial.ARROW).displayName("§aForwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
     }
 
     @Override
     default ItemInfo getCloseInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 4, new BuildItem().material(XMaterial.REDSTONE).displayName("§4Close").build());
+        return new ItemInfo(this.getUser().getUsableSize() + 4, new EmptyItemBuilder().material(XMaterial.REDSTONE).displayName("§4Close").build());
     }
 
     @Override
     default ItemInfo getBackInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 3, new BuildItem().material(XMaterial.STONE_BUTTON).displayName("§cBack").build());
+        return new ItemInfo(this.getUser().getUsableSize() + 3, new EmptyItemBuilder().material(XMaterial.STONE_BUTTON).displayName("§cBack").build());
     }
 
     @Override
     default ItemStack getFillerStack() {
-        return new BuildItem().displayName("§c").material(XMaterial.BLACK_STAINED_GLASS_PANE).build();
+        return new EmptyItemBuilder().displayName("§c").material(XMaterial.BLACK_STAINED_GLASS_PANE).build();
     }
 
     @Override

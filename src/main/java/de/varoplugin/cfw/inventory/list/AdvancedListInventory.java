@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +41,6 @@ import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.inventory.ItemInfo;
 import de.varoplugin.cfw.player.hook.chat.ChatHookTriggerEvent;
 import de.varoplugin.cfw.player.hook.chat.PlayerChatHookBuilder;
-import de.varoplugin.cfw.utils.item.BuildItem;
 
 public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory {
 
@@ -102,7 +102,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
     }
 
     protected ItemInfo getEmptyInfoStack() {
-        return new ItemInfo(this.getCenter(), new BuildItem().displayName(this.getEmptyName()).material(XMaterial.POPPY).lore(this.emptyClicked < 30 ? "§f:(" : "§f>:(").build());
+        return new ItemInfo(this.getCenter(), new EmptyItemBuilder().displayName(this.getEmptyName()).material(XMaterial.POPPY).lore(this.emptyClicked < 30 ? "§f:(" : "§f>:(").build());
     }
 
     protected ItemClick getEmptyInfoClick() {
@@ -122,7 +122,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
     protected ItemInfo getJumpToItemInfo() {
         if (this.getInfo(Info.HOTBAR_SIZE) == 0)
             return null;
-        return new ItemInfo(this.getUsableSize() + 5, new BuildItem().displayName("§2Jump to...").material(XMaterial.MAP).build());
+        return new ItemInfo(this.getUsableSize() + 5, new EmptyItemBuilder().displayName("§2Jump to...").material(XMaterial.MAP).build());
     }
 
     protected ItemClick getJumpToClick() {

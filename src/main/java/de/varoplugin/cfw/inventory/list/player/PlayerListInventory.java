@@ -28,8 +28,8 @@ import com.cryptomorin.xseries.XMaterial;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.inventory.list.AdvancedAsyncListInventory;
-import de.varoplugin.cfw.utils.item.BuildItem;
-import de.varoplugin.cfw.utils.item.BuildSkull;
+import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
+import de.varoplugin.cfw.utils.item.EmptySkullBuilder;
 import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,12 +60,12 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     @Override
     protected ItemStack getLoadingItem() {
-        return new BuildItem().material(XMaterial.SKELETON_SKULL).displayName("§cLoading...").build();
+        return new EmptyItemBuilder().material(XMaterial.SKELETON_SKULL).displayName("§cLoading...").build();
     }
 
     @Override
     protected ItemStack getItemStack(Player item) {
-        return new BuildSkull().player(item).build();
+        return new EmptySkullBuilder().player(item).build();
     }
 
     @Override

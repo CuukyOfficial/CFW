@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020-2022 CuukyOfficial
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,35 +22,33 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils;
+package de.varoplugin.cfw.utils.item;
 
-import de.varoplugin.cfw.version.VersionUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public final class BukkitUtils {
+public interface SkullBuilder extends ItemBuilder {
+    @Override
+    ItemStack build();
 
-    private BukkitUtils() {
-    }
+    /**
+     * Note: this won't have any effect
+     */
+    @Override
+    SkullBuilder itemStack(ItemStack stack);
 
-    public static void saveTeleport(Player player, Location location) {
-        while (!location.getChunk().isLoaded())
-            location.getChunk().load();
+    /**
+     * Note: this won't have any effect
+     */
+    @Override
+    SkullBuilder material(Material material);
 
-        Location blockUnder = location.clone().add(0, -1, 0);
-        VersionUtils.getVersionAdapter().sendBlockChange(player, blockUnder, blockUnder.getBlock().getType());
-        player.teleport(location.clone().add(0, 1, 0));
-    }
+    SkullBuilder player(UUID uuid);
 
-    public static Player getPlayer(String name) throws Exception {
-        return Bukkit.getPlayer(getUUID(name));
-    }
+    SkullBuilder fetchPlayer(String name);
 
-    public static UUID getUUID(String name) throws Exception {
-        Player player = Bukkit.getPlayer(name);
-        return player == null ? UUIDUtils.getUUID(name) : player.getUniqueId();
-    }
+    SkullBuilder player(Player player);
 }

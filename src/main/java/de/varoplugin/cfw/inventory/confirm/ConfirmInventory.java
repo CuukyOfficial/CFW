@@ -26,6 +26,7 @@ package de.varoplugin.cfw.inventory.confirm;
 
 import java.util.function.Consumer;
 
+import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 
 import com.cryptomorin.xseries.XMaterial;
@@ -33,7 +34,6 @@ import com.cryptomorin.xseries.XMaterial;
 import de.varoplugin.cfw.inventory.AdvancedInventory;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemInfo;
-import de.varoplugin.cfw.utils.item.BuildItem;
 
 public class ConfirmInventory extends AdvancedInventory {
 
@@ -52,11 +52,11 @@ public class ConfirmInventory extends AdvancedInventory {
     }
 
     protected ItemInfo getYesItem() {
-        return new ItemInfo(this.getCenter() - 2, new BuildItem().displayName("§2Yes").material(XMaterial.GREEN_DYE).build());
+        return new ItemInfo(this.getCenter() - 2, new EmptyItemBuilder().displayName("§2Yes").material(XMaterial.GREEN_DYE).build());
     }
 
     protected ItemInfo getNoItem() {
-        return new ItemInfo(this.getCenter() + 2, new BuildItem().displayName("§4No").material(XMaterial.RED_DYE).build());
+        return new ItemInfo(this.getCenter() + 2, new EmptyItemBuilder().displayName("§4No").material(XMaterial.RED_DYE).build());
     }
 
     @Override
