@@ -65,7 +65,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
 
     @Override
     protected ItemStack getItemStack(Player item) {
-        return new EmptySkullBuilder().player(item).build();
+        return new EmptySkullBuilder().displayName(item.getName()).build(item);
     }
 
     @Override

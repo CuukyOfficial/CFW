@@ -26,7 +26,10 @@ package de.varoplugin.cfw.utils.item;
 
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public interface ItemBuilder extends UnboundItemBuilder {
     ItemStack build();
@@ -36,4 +39,22 @@ public interface ItemBuilder extends UnboundItemBuilder {
     ItemBuilder material(XMaterial material);
 
     ItemBuilder itemStack(ItemStack stack);
+
+    ItemBuilder amount(int amount);
+
+    ItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
+
+    ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
+
+    ItemBuilder deleteDamageAnnotation();
+
+    ItemBuilder displayName(String displayName);
+
+    ItemBuilder addLore(String add);
+
+    ItemBuilder lore(List<String> lore);
+
+    ItemBuilder lore(String lore);
+
+    ItemBuilder lore(String... lore);
 }

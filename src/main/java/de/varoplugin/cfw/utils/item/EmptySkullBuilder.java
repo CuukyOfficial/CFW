@@ -65,48 +65,57 @@ public class EmptySkullBuilder implements SkullBuilder {
     }
 
     @Override
-    public ItemBuilder amount(int amount) {
-        return this.itemBuilder.amount(amount);
+    public SkullBuilder amount(int amount) {
+        this.itemBuilder.amount(amount);
+        return this;
     }
 
     @Override
-    public ItemBuilder addEnchantment(Enchantment enchantment, int amplifier) {
-        return this.itemBuilder.addEnchantment(enchantment, amplifier);
+    public SkullBuilder addEnchantment(Enchantment enchantment, int amplifier) {
+        this.itemBuilder.addEnchantment(enchantment, amplifier);
+        return this;
     }
 
     @Override
-    public ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations) {
-        return this.itemBuilder.deleteDamageAnnotation(deleteAnnotations);
+    public SkullBuilder deleteDamageAnnotation(boolean deleteAnnotations) {
+        this.itemBuilder.deleteDamageAnnotation(deleteAnnotations);
+        return this;
     }
 
     @Override
-    public ItemBuilder deleteDamageAnnotation() {
-        return this.itemBuilder.deleteDamageAnnotation();
+    public SkullBuilder deleteDamageAnnotation() {
+        this.itemBuilder.deleteDamageAnnotation();
+        return this;
     }
 
     @Override
-    public ItemBuilder displayName(String displayName) {
-        return this.itemBuilder.displayName(displayName);
+    public SkullBuilder displayName(String displayName) {
+        this.itemBuilder.displayName(displayName);
+        return this;
     }
 
     @Override
-    public ItemBuilder addLore(String add) {
-        return this.itemBuilder.addLore(add);
+    public SkullBuilder addLore(String add) {
+        this.itemBuilder.addLore(add);
+        return this;
     }
 
     @Override
-    public ItemBuilder lore(List<String> lore) {
-        return this.itemBuilder.lore(lore);
+    public SkullBuilder lore(List<String> lore) {
+        this.itemBuilder.lore(lore);
+        return this;
     }
 
     @Override
-    public ItemBuilder lore(String lore) {
-        return this.itemBuilder.lore(lore);
+    public SkullBuilder lore(String lore) {
+        this.itemBuilder.lore(lore);
+        return this;
     }
 
     @Override
-    public ItemBuilder lore(String... lore) {
-        return this.itemBuilder.lore(lore);
+    public SkullBuilder lore(String... lore) {
+        this.itemBuilder.lore(lore);
+        return this;
     }
 
     @Override

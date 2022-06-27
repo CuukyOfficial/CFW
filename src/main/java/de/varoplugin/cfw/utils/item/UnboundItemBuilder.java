@@ -32,23 +32,23 @@ import java.util.List;
 import java.util.Map;
 
 public interface UnboundItemBuilder {
-    ItemBuilder amount(int amount);
+    UnboundItemBuilder amount(int amount);
 
-    ItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
+    UnboundItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
 
-    ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
+    UnboundItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
 
-    ItemBuilder deleteDamageAnnotation();
+    UnboundItemBuilder deleteDamageAnnotation();
 
-    ItemBuilder displayName(String displayName);
+    UnboundItemBuilder displayName(String displayName);
 
-    ItemBuilder addLore(String add);
+    UnboundItemBuilder addLore(String add);
 
-    ItemBuilder lore(List<String> lore);
+    UnboundItemBuilder lore(List<String> lore);
 
-    ItemBuilder lore(String lore);
+    UnboundItemBuilder lore(String lore);
 
-    ItemBuilder lore(String... lore);
+    UnboundItemBuilder lore(String... lore);
 
     int getAmount();
 

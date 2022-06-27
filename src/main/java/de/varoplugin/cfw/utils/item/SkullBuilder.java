@@ -24,13 +24,33 @@
 
 package de.varoplugin.cfw.utils.item;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface SkullBuilder extends UnboundItemBuilder {
     ItemStack build(UUID uuid);
 
     ItemStack build(Player player);
+
+    SkullBuilder amount(int amount);
+
+    SkullBuilder addEnchantment(Enchantment enchantment, int amplifier);
+
+    SkullBuilder deleteDamageAnnotation(boolean deleteAnnotations);
+
+    SkullBuilder deleteDamageAnnotation();
+
+    SkullBuilder displayName(String displayName);
+
+    SkullBuilder addLore(String add);
+
+    SkullBuilder lore(List<String> lore);
+
+    SkullBuilder lore(String lore);
+
+    SkullBuilder lore(String... lore);
 }
