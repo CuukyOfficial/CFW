@@ -26,7 +26,7 @@ package de.varoplugin.cfw.player.hud;
 
 class Animation<T> {
 
-    private AnimationData<T> data;
+    private final AnimationData<T> data;
     private long ticksPassed;
 
     Animation(AnimationData<T> data) {
@@ -42,7 +42,7 @@ class Animation<T> {
     }
 
     boolean shouldUpdate() {
-        return this.data.delay == 0 ? false : this.ticksPassed % this.data.delay == 0;
+        return this.data.delay != 0 && this.ticksPassed % this.data.delay == 0;
     }
 
     T getCurrentFrame() {

@@ -52,13 +52,13 @@ public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
     }
 
     @Override
-    protected void initNetworkManager() throws IllegalArgumentException, IllegalAccessException {
+    protected void initNetworkManager() throws IllegalArgumentException {
         // TODO Implement this maybe? Or maybe not because the network manager itself should not
         // be used directly by any plugin
     }
 
     @Override
-    protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException {
         this.localeField = this.nmsPlayerClass.getDeclaredField("field_71148_cg");
         this.localeField.setAccessible(true);
     }

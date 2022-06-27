@@ -31,7 +31,7 @@ import java.util.Properties;
 public class OneFourteenVersionAdapter extends OneThirteenVersionAdapter {
 
     @Override
-    protected void initServerPropertys() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+    protected void initServerPropertys() throws SecurityException {
         // TODO implement this
     }
 

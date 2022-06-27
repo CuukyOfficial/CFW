@@ -32,8 +32,8 @@ import org.bukkit.scoreboard.Scoreboard;
 
 class DefaultScoreboardInstance implements ScoreboardInstance {
 
-    private Player player;
-    private Scoreboard scoreboard;
+    private final Player player;
+    private final Scoreboard scoreboard;
 
     DefaultScoreboardInstance(Player player) {
         this.player = player;

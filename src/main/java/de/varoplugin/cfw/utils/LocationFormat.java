@@ -28,7 +28,7 @@ import org.bukkit.Location;
 
 public class LocationFormat {
 
-    private Location location;
+    private final Location location;
 
     public LocationFormat(Location location) {
         this.location = location;

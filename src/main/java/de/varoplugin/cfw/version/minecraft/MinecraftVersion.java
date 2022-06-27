@@ -66,8 +66,8 @@ public enum MinecraftVersion {
     MINECRAFT_1_7_2(4, "1.7.2-1.7.5"),
     UNKNWON(-1, "Unknown");
 
-    private int protocolId;
-    private String name;
+    private final int protocolId;
+    private final String name;
 
     MinecraftVersion(int id, String name) {
         this.name = name;

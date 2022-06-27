@@ -24,11 +24,6 @@
 
 package de.varoplugin.cfw.version;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Properties;
-
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -37,14 +32,19 @@ import org.bukkit.block.data.type.Sign;
 import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
 class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
     @Override
-    protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+    protected void initPlayer() throws SecurityException {
     }
 
     @Override
-    protected void initRespawn() throws ClassNotFoundException {
+    protected void initRespawn() {
         // TODO implement this
     }
 

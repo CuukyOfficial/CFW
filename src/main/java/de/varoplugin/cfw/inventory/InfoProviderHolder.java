@@ -24,13 +24,7 @@
 
 package de.varoplugin.cfw.inventory;
 
-import java.util.AbstractMap;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
@@ -89,13 +83,11 @@ abstract class InfoProviderHolder {
     }
 
     private InfoProvider getProvider(Info<?> info) {
-        return this.provider.get(info).stream().max(Comparator.comparingInt(e -> e.getValue().get())).get().getKey();
+        return Objects.requireNonNull(this.provider.get(info).stream().max(
+            Comparator.comparingInt(e -> e.getValue().get())).orElse(null)).getKey();
     }
 
-//    public <T> T getInfo(Info<T> type) {
-//        return (T) this.cache.computeIfAbsent(type, (typ) -> typ.apply(this.getProvider(typ)));
-//    }
-
+    @SuppressWarnings("unchecked")
     public <T> T getInfo(Info<T> info) {
         T type = (T) this.cache.get(info);
         if (type == null) {

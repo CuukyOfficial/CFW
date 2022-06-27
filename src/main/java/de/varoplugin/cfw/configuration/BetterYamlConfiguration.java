@@ -24,17 +24,15 @@
 
 package de.varoplugin.cfw.configuration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
+import com.google.common.base.Charsets;
+import de.varoplugin.cfw.utils.JavaUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.google.common.base.Charsets;
-
-import de.varoplugin.cfw.utils.JavaUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.file.Files;
 
 public class BetterYamlConfiguration extends YamlConfiguration {
 
@@ -54,7 +52,7 @@ public class BetterYamlConfiguration extends YamlConfiguration {
     }
 
     private void loadParsed(File file) throws InvalidConfigurationException {
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(file), Charsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), Charsets.UTF_8)) {
             this.load(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -44,7 +44,7 @@ public enum ServerSoftware {
 
     private final String name;
     private final String[] versionnames;
-    private String identifierClass;
+    private final String identifierClass;
     private final Function<Supplier<VersionAdapter>, VersionAdapter> adapterFunction;
     private VersionAdapter adapter;
 

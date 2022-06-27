@@ -24,8 +24,9 @@
 
 package de.varoplugin.cfw.dependencies;
 
+import org.bukkit.plugin.Plugin;
+
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,12 +35,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.file.Files;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-
-import org.bukkit.plugin.Plugin;
 
 abstract class AbstractDependency implements Dependency {
 
@@ -89,7 +89,7 @@ abstract class AbstractDependency implements Dependency {
 
     public void checkSignature() throws IOException, InvalidSignatureException, NoSuchAlgorithmException {
         MessageDigest messageDigest = MessageDigest.getInstance("SHA-512");
-        try (InputStream inputStream = new FileInputStream(this.file); DigestInputStream digestInputStream = new DigestInputStream(inputStream, messageDigest)) {
+        try (InputStream inputStream = Files.newInputStream(this.file.toPath()); DigestInputStream digestInputStream = new DigestInputStream(inputStream, messageDigest)) {
             byte[] buffer = new byte[4096];
             while (digestInputStream.read(buffer) == buffer.length)
                 ;

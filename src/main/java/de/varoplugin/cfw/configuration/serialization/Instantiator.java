@@ -36,7 +36,7 @@ class Instantiator<T extends BasicSerializable> {
     }
 
     @SuppressWarnings("unchecked")
-    private Constructor<T> getInitConstructor(Class<?> current) throws NoSuchMethodException {
+    private Constructor<T> getInitConstructor(Class<?> current) {
         Constructor<?> objDef;
         try {
             objDef = current.getDeclaredConstructor();

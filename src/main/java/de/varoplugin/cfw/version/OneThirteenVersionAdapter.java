@@ -34,15 +34,15 @@ import net.md_5.bungee.api.chat.TextComponent;
 public class OneThirteenVersionAdapter extends OneTwelveVersionAdapter {
 
     @Override
-    protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
+    protected void initTablist() throws SecurityException {
     }
 
     @Override
-    protected void initChat() throws ClassNotFoundException, NoSuchMethodException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+    protected void initChat() throws SecurityException, IllegalArgumentException {
     }
 
     @Override
-    protected void initNetworkManager() throws IllegalArgumentException, IllegalAccessException {
+    protected void initNetworkManager() throws IllegalArgumentException {
     }
 
     @Override

@@ -29,6 +29,8 @@ import org.bukkit.scoreboard.Objective;
 import de.varoplugin.cfw.version.BukkitVersion;
 import de.varoplugin.cfw.version.VersionUtils;
 
+import java.util.Arrays;
+
 public class StaticScoreboard {
 
     private static final int TITLE_MAX = 32;
@@ -67,8 +69,7 @@ public class StaticScoreboard {
                 this.scoreboard.clearSideBar();
 
                 // clear buffer
-                for (int i = 0; i < this.buffer.length; i++)
-                    this.buffer[i] = null;
+                Arrays.fill(this.buffer, null);
             } else
                 this.scoreboard.registerSideBar();
 

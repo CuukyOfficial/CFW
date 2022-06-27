@@ -35,7 +35,7 @@ class PlayerNameTag {
 
     private static final VersionAdapter VERISON_ADAPTER = VersionUtils.getVersionAdapter();
 
-    private ScoreboardInstance scoreboard;
+    private final ScoreboardInstance scoreboard;
     private String name;
     private String prefix;
     private String suffix;

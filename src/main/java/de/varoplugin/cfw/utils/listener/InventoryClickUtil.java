@@ -29,7 +29,7 @@ import org.bukkit.inventory.Inventory;
 
 public class InventoryClickUtil {
 
-    private InventoryClickEvent event;
+    private final InventoryClickEvent event;
 
     public InventoryClickUtil(InventoryClickEvent event) {
         this.event = event;

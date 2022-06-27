@@ -24,23 +24,18 @@
 
 package de.varoplugin.cfw.inventory.list;
 
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Consumer;
-
+import de.varoplugin.cfw.inventory.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
-import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
-import de.varoplugin.cfw.inventory.EventNotifiable;
-import de.varoplugin.cfw.inventory.Info;
-import de.varoplugin.cfw.inventory.ItemClick;
-import de.varoplugin.cfw.inventory.PrioritisedInfo;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Consumer;
 
 public abstract class AdvancedEditInventory extends AdvancedItemShowInventory implements EventNotifiable {
 
@@ -68,10 +63,6 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
             i++;
         }
     }
-
-//    private void updatePage() {
-//        this.updated.add(this.getPage());
-//    }
 
     private void updateCurrentContent() {
         ItemStack[] content = this.getInventory().getContents();

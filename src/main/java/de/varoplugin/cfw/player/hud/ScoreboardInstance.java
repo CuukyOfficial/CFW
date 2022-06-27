@@ -40,7 +40,7 @@ public interface ScoreboardInstance {
 
     Scoreboard getScoreboard();
 
-    public static ScoreboardInstance newInstance(Player player) {
+    static ScoreboardInstance newInstance(Player player) {
         return new DefaultScoreboardInstance(player);
     }
 }

@@ -24,12 +24,7 @@
 
 package de.varoplugin.cfw.version;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Locale;
-
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -42,7 +37,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Locale;
 
 @SuppressWarnings("deprecation")
 class OneEightVersionAdapter extends OneSevenVersionAdapter {
@@ -74,11 +73,11 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
     }
 
     @Override
-    protected void initRespawn() throws ClassNotFoundException {
+    protected void initRespawn() {
         // TODO
     }
 
-    protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException, NoSuchMethodException {
+    protected void initTablist() throws NoSuchFieldException, SecurityException, ClassNotFoundException {
         this.tablistPacketClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayOutPlayerListHeaderFooter");
 
         this.headerField = this.tablistPacketClass.getDeclaredField("a");

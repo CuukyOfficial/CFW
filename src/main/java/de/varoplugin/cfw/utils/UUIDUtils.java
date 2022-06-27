@@ -24,17 +24,16 @@
 
 package de.varoplugin.cfw.utils;
 
-import java.io.UnsupportedEncodingException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.UUID;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 public final class UUIDUtils {
 
@@ -62,7 +61,7 @@ public final class UUIDUtils {
 
         JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(input);
         String uuidString = UUIDObject.get("id").toString();
-        String uuidSeperation = uuidString.replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
+        String uuidSeperation = uuidString.replaceFirst("([\\da-fA-F]{8})([\\da-fA-F]{4})([\\da-fA-F]{4})([\\da-fA-F]{4})([\\da-fA-F]+)", "$1-$2-$3-$4-$5");
         return UUID.fromString(uuidSeperation);
     }
 
@@ -90,7 +89,7 @@ public final class UUIDUtils {
         return getName(UUIDOld);
     }
 
-    public static UUID getCrackedUUID(String name) throws UnsupportedEncodingException {
+    public static UUID getCrackedUUID(String name) {
         return UUID.nameUUIDFromBytes(("OfflinePlayer:" + name).getBytes(StandardCharsets.UTF_8));
     }
 

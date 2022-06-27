@@ -32,8 +32,8 @@ import de.varoplugin.cfw.version.VersionUtils;
 
 public class PlayerVersionAdapter {
 
-    private Player player;
-    private VersionAdapter internal;
+    private final Player player;
+    private final VersionAdapter internal;
 
     public PlayerVersionAdapter(Player player) {
         this.player = player;

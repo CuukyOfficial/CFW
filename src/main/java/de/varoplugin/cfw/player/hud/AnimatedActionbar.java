@@ -32,7 +32,7 @@ public class AnimatedActionbar {
 
     private final StaticActionbar actionbar;
     private final int task;
-    private Animation<String> content;
+    private final Animation<String> content;
     private boolean contentChanged;
 
     public AnimatedActionbar(JavaPlugin javaPlugin, Player player, AnimationData<String> content) {

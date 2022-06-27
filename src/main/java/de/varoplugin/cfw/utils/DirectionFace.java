@@ -31,10 +31,11 @@ public enum DirectionFace {
     SOUTH("SOUTH", -45f, 45f),
     WEST("WEST", 45f, 135f);
 
-    private String identifier;
-    private float start, end;
+    private final String identifier;
+    private final float start;
+    private final float end;
 
-    private DirectionFace(String identifier, float start, float end) {
+    DirectionFace(String identifier, float start, float end) {
         this.identifier = identifier;
         this.start = start;
         this.end = end;

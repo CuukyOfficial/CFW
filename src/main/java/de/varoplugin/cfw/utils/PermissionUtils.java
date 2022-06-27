@@ -24,19 +24,21 @@
 
 package de.varoplugin.cfw.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
+
 public final class PermissionUtils {
 
-    private static Object luckPermsAPI, userManager, groupManager, queryOptions;
+    private static Object userManager;
+    private static Object groupManager;
+    private static Object queryOptions;
 
-    private static HashMap<String, Class<?>> clazzes;
+    private static final HashMap<String, Class<?>> clazzes;
 
     static {
         clazzes = new HashMap<>();
@@ -58,7 +60,7 @@ public final class PermissionUtils {
 
         try {
             RegisteredServiceProvider<?> provider = Bukkit.getServicesManager().getRegistration(clazzes.get("net.luckperms.api.LuckPerms"));
-            luckPermsAPI = null;
+            Object luckPermsAPI = null;
 
             if (provider != null)
                 luckPermsAPI = provider.getProvider();
@@ -72,7 +74,7 @@ public final class PermissionUtils {
 
     public static String getLuckPermsPrefix(Player player) {
         try {
-            Object user = userManager.getClass().getMethod("getUser", UUID.class).invoke(userManager, player);
+            Object user = userManager.getClass().getMethod("getUser", UUID.class).invoke(userManager, player.getUniqueId());
             String groupname = (String) user.getClass().getMethod("getPrimaryGroup").invoke(user);
 
             Object group = groupManager.getClass().getMethod("getGroup", String.class).invoke(groupManager, groupname);

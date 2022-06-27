@@ -24,14 +24,14 @@
 
 package de.varoplugin.cfw.player.hud;
 
+import org.bukkit.entity.Player;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.entity.Player;
-
 public class NameTagGroup {
 
-    private List<PlayerNameTag> nameTags;
+    private final List<PlayerNameTag> nameTags;
 
     public NameTagGroup() {
         this.nameTags = new ArrayList<>();

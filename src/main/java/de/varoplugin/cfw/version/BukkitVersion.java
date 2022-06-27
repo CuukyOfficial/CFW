@@ -68,7 +68,7 @@ public enum BukkitVersion {
     }
 
     public static BukkitVersion getVersion(String versionString) {
-        int versionNumber = Integer.valueOf(versionString.split("1_")[1].split("_")[0]);
+        int versionNumber = Integer.parseInt(versionString.split("1_")[1].split("_")[0]);
         BukkitVersion nextFound = BukkitVersion.ONE_7;
         for (BukkitVersion version : values()) {
             if (versionNumber == version.getIdentifier())
