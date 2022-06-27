@@ -25,71 +25,122 @@
 package de.varoplugin.cfw.utils.item;
 
 import com.cryptomorin.xseries.XMaterial;
-import de.varoplugin.cfw.utils.UUIDUtils;
 import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
-public class EmptySkullBuilder extends EmptyItemBuilder implements SkullBuilder {
+public class EmptySkullBuilder implements SkullBuilder {
 
-    private UUID uuid;
-    private String name;
+    private final ItemBuilder itemBuilder;
 
     public EmptySkullBuilder() {
-        super.itemStack(Objects.requireNonNull(XMaterial.PLAYER_HEAD.parseItem()));
+        this.itemBuilder = new EmptyItemBuilder().itemStack(Objects.requireNonNull(XMaterial.PLAYER_HEAD.parseItem()));
     }
 
-    @Override
-    public ItemStack build() {
-        if (this.getDisplayName() == null && this.name != null)
-            this.displayName(this.name);
-        return super.build();
-    }
-
-    @Override
-    protected ItemMeta applyMeta(ItemMeta meta, Material type) {
-        assert this.uuid != null;
+    private ItemMeta applyMeta(ItemMeta meta, UUID uuid) {
         SkullMeta sm = (SkullMeta) meta;
-        VersionUtils.getVersionAdapter().setOwningPlayer(sm, this.uuid);
-        return super.applyMeta(meta, type);
+        VersionUtils.getVersionAdapter().setOwningPlayer(sm, uuid);
+        return sm;
     }
 
     @Override
-    public SkullBuilder itemStack(ItemStack stack) {
-        return this;
+    public ItemStack build(UUID uuid) {
+        ItemStack built = this.itemBuilder.build();
+        built.setItemMeta(this.applyMeta(built.getItemMeta(), uuid));
+        return built;
     }
 
     @Override
-    public SkullBuilder material(Material material) {
-        return this;
+    public ItemStack build(Player player) {
+        return this.build(player.getUniqueId());
     }
 
     @Override
-    public SkullBuilder player(UUID uuid) {
-        this.uuid = uuid;
-        return this;
+    public ItemBuilder amount(int amount) {
+        return this.itemBuilder.amount(amount);
     }
 
     @Override
-    public SkullBuilder fetchPlayer(String name) {
-        this.name = name;
-        try {
-            this.player(UUIDUtils.getUUID(name));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-        return this;
+    public ItemBuilder addEnchantment(Enchantment enchantment, int amplifier) {
+        return this.itemBuilder.addEnchantment(enchantment, amplifier);
     }
 
     @Override
-    public SkullBuilder player(Player player) {
-        this.name = player.getName();
-        return this.player(player.getUniqueId());
+    public ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations) {
+        return this.itemBuilder.deleteDamageAnnotation(deleteAnnotations);
+    }
+
+    @Override
+    public ItemBuilder deleteDamageAnnotation() {
+        return this.itemBuilder.deleteDamageAnnotation();
+    }
+
+    @Override
+    public ItemBuilder displayName(String displayName) {
+        return this.itemBuilder.displayName(displayName);
+    }
+
+    @Override
+    public ItemBuilder addLore(String add) {
+        return this.itemBuilder.addLore(add);
+    }
+
+    @Override
+    public ItemBuilder lore(List<String> lore) {
+        return this.itemBuilder.lore(lore);
+    }
+
+    @Override
+    public ItemBuilder lore(String lore) {
+        return this.itemBuilder.lore(lore);
+    }
+
+    @Override
+    public ItemBuilder lore(String... lore) {
+        return this.itemBuilder.lore(lore);
+    }
+
+    @Override
+    public int getAmount() {
+        return this.itemBuilder.getAmount();
+    }
+
+    @Override
+    public String getDisplayName() {
+        return this.itemBuilder.getDisplayName();
+    }
+
+    @Override
+    public List<String> getLore() {
+        return this.itemBuilder.getLore();
+    }
+
+    @Override
+    public Map<Enchantment, Integer> getEnchantments() {
+        return this.itemBuilder.getEnchantments();
+    }
+
+    @Override
+    public boolean shallDeleteAnnotations() {
+        return this.itemBuilder.shallDeleteAnnotations();
+    }
+
+    @Override
+    public ItemStack getStack() {
+        return this.itemBuilder.getStack();
+    }
+
+    @Override
+    public Material getMaterial() {
+        return this.itemBuilder.getMaterial();
     }
 }

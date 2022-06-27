@@ -24,31 +24,13 @@
 
 package de.varoplugin.cfw.utils.item;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.UUID;
 
-public interface SkullBuilder extends ItemBuilder {
-    @Override
-    ItemStack build();
+public interface SkullBuilder extends UnboundItemBuilder {
+    ItemStack build(UUID uuid);
 
-    /**
-     * Note: this won't have any effect
-     */
-    @Override
-    SkullBuilder itemStack(ItemStack stack);
-
-    /**
-     * Note: this won't have any effect
-     */
-    @Override
-    SkullBuilder material(Material material);
-
-    SkullBuilder player(UUID uuid);
-
-    SkullBuilder fetchPlayer(String name);
-
-    SkullBuilder player(Player player);
+    ItemStack build(Player player);
 }
