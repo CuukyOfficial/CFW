@@ -6,13 +6,13 @@ apply plugin: 'checkstyle'
 group 'de.varoplugin'
 version '0.6.14'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+//sourceCompatibility = JavaVersion.VERSION_1_8
+//targetCompatibility = JavaVersion.VERSION_1_8
 compileJava.options.encoding = 'UTF-8'
 
 checkstyle {
 	configDirectory = '.' as File
-	toolVersion '9.3';
+	toolVersion '9.3'
 }
 
 repositories {
@@ -28,14 +28,15 @@ repositories {
 }
 	
 dependencies {
+	compileOnly 'org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT'
 	compileOnly 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
-	compileOnly 'com.googlecode.json-simple:json-simple:1.1'
+	compileOnly 'com.googlecode.json-simple:json-simple:1.1.1'
 	compileOnly 'com.github.cryptomorin:XSeries:8.8.0'
 }
 
 jar {
 	if (project.hasProperty('destinationDir'))
-		destinationDir = file(project.property('destinationDir').toString())
+		destinationDirectory = file(project.property('destinationDir').toString())
 
 	if (project.hasProperty('fileName'))
 		archiveFileName = project.property('fileName').toString()
