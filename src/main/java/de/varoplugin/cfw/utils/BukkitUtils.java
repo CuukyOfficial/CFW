@@ -24,6 +24,7 @@
 
 package de.varoplugin.cfw.utils;
 
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -40,7 +41,7 @@ public final class BukkitUtils {
             location.getChunk().load();
 
         Location blockunder = location.clone().add(0, -1, 0);
-        player.sendBlockChange(blockunder, blockunder.getBlock().getType(), (byte) 1);
+        VersionUtils.getVersionAdapter().sendBlockChange(player, blockunder, blockunder.getBlock().getType());
         player.teleport(location.clone().add(0, 1, 0));
     }
 

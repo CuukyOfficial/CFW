@@ -26,6 +26,7 @@ package de.varoplugin.cfw.player.hook.item;
 
 import de.varoplugin.cfw.player.hook.AbstractHookListener;
 import de.varoplugin.cfw.player.hook.HookListener;
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -71,7 +72,7 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> imple
 
     @EventHandler
     public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
-        if (this.ignoreEvent(event.getPlayer(), event.getPlayer().getItemInHand()))
+        if (this.ignoreEvent(event.getPlayer(), VersionUtils.getVersionAdapter().getItemInUse(event.getPlayer())))
             return;
         this.trigger.eventFired(new HookItemInteractEntityEvent(this.trigger, event));
     }
@@ -82,7 +83,7 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> imple
             return;
 
         Player damager = (Player) event.getDamager();
-        if (this.ignoreEvent(damager, damager.getItemInHand()))
+        if (this.ignoreEvent(damager, VersionUtils.getVersionAdapter().getItemInUse(damager)))
             return;
         this.trigger.eventFired(new HookItemHitEvent(this.trigger, event));
     }

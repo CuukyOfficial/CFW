@@ -24,19 +24,22 @@
 
 package de.varoplugin.cfw.version;
 
-import java.util.Collection;
-import java.util.Properties;
-
+import net.md_5.bungee.api.chat.ClickEvent;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
 
 public interface VersionAdapter {
 
@@ -60,6 +63,10 @@ public interface VersionAdapter {
 
     void sendTitle(Player player, String title, String subtitle);
 
+    void setOwningPlayer(SkullMeta skullMeta, UUID uuid);
+
+    void sendBlockChange(Player player, Location location, Material material);
+
     void setAttributeSpeed(Player player, double value);
 
     void setNametagVisibility(Team team, boolean shown);
@@ -71,6 +78,8 @@ public interface VersionAdapter {
     void setXpCooldown(Player player, int cooldown);
 
     void deleteItemAnnotations(ItemStack item);
+
+    ItemStack getItemInUse(Player player);
 
     BlockFace getSignAttachedFace(Block block);
 

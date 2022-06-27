@@ -24,27 +24,30 @@
 
 package de.varoplugin.cfw.version;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.function.Supplier;
-
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
+import java.util.function.Supplier;
 
 public class SpigotVersionAdapter implements VersionAdapter {
 
-    private VersionAdapter parent;
-    private Object spigot;
+    private final VersionAdapter parent;
+    private final Object spigot;
 
     public SpigotVersionAdapter(Supplier<VersionAdapter> parentSupplier) {
         this.parent = parentSupplier.get();
@@ -106,6 +109,16 @@ public class SpigotVersionAdapter implements VersionAdapter {
     }
 
     @Override
+    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
+        this.parent.setOwningPlayer(skullMeta, uuid);
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material) {
+        this.parent.sendBlockChange(player, location, material);
+    }
+
+    @Override
     public void setAttributeSpeed(Player player, double value) {
         this.parent.setAttributeSpeed(player, value);
     }
@@ -133,6 +146,11 @@ public class SpigotVersionAdapter implements VersionAdapter {
     @Override
     public void deleteItemAnnotations(ItemStack item) {
         this.parent.deleteItemAnnotations(item);
+    }
+
+    @Override
+    public ItemStack getItemInUse(Player player) {
+        return this.parent.getItemInUse(player);
     }
 
     @Override

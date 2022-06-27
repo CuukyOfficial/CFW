@@ -24,10 +24,15 @@
 
 package de.varoplugin.cfw.version;
 
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.SkullMeta;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import org.bukkit.entity.Player;
+import java.util.UUID;
 
 class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 
@@ -36,7 +41,7 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
     protected Object messageTypeGameInfo;
 
     @Override
-    protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    protected void initLocale() throws SecurityException, IllegalArgumentException {
         try {
             this.localeMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer").getDeclaredMethod("getLocale");
         } catch (NoSuchMethodException | SecurityException | ClassNotFoundException e) {
@@ -53,7 +58,7 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
     }
 
     @Override
-    protected void initTitle() throws ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, NoSuchMethodException {
+    protected void initTitle() throws IllegalArgumentException, SecurityException {
     }
 
     @Override
@@ -64,6 +69,16 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
     @Override
     protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return this.packetChatConstructor.newInstance(text, this.messageTypeSystem);
+    }
+
+    @Override
+    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
+        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material) {
+        player.sendBlockChange(location, material.createBlockData());
     }
 
     @Override

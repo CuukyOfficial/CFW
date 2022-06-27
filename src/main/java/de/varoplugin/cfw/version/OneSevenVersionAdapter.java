@@ -24,14 +24,10 @@
 
 package de.varoplugin.cfw.version;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Properties;
-
+import net.md_5.bungee.api.chat.ClickEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,13 +35,20 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Sign;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
 
 @SuppressWarnings("deprecation")
 class OneSevenVersionAdapter implements VersionAdapter {
@@ -101,7 +104,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
         this.packetPlayInClientCommandClass = Class.forName(VersionUtils.getNmsClass() + ".PacketPlayInClientCommand");
     }
 
-    protected void initNetworkManager() throws IllegalArgumentException, IllegalAccessException {
+    protected void initNetworkManager() throws IllegalArgumentException {
         for (Field field : this.connectionField.getType().getFields())
             if (field.getName().equals("networkManager")) {
                 this.networkManagerField = field;
@@ -110,7 +113,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
         throw new Error("[CFW] Failed to initalize 1.7+ networkManager! Are you using a modified version of Spigot/Bukkit?");
     }
 
-    protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
+    protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException {
         this.localeField = this.nmsPlayerClass.getDeclaredField("locale");
         this.localeField.setAccessible(true);
     }
@@ -234,6 +237,16 @@ class OneSevenVersionAdapter implements VersionAdapter {
     }
 
     @Override
+    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
+        skullMeta.setOwner(uuid.toString());
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material) {
+        player.sendBlockChange(location, material, (byte) 1);
+    }
+
+    @Override
     public void setAttributeSpeed(Player player, double value) {
         // 1.9+
     }
@@ -265,6 +278,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
     @Override
     public void deleteItemAnnotations(ItemStack item) {
         // 1.8+ (?)
+    }
+
+    @Override
+    public ItemStack getItemInUse(Player player) {
+        return player.getItemInHand();
     }
 
     @Override

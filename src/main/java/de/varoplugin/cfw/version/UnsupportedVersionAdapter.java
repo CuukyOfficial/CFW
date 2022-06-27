@@ -24,19 +24,22 @@
 
 package de.varoplugin.cfw.version;
 
-import java.util.Collection;
-import java.util.Properties;
-
+import net.md_5.bungee.api.chat.ClickEvent;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
 
 public class UnsupportedVersionAdapter implements VersionAdapter {
 
@@ -91,6 +94,16 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
     }
 
     @Override
+    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public void setAttributeSpeed(Player player, double value) {
         throw new UnsupportedOperationException();
     }
@@ -117,6 +130,11 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 
     @Override
     public void deleteItemAnnotations(ItemStack item) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public ItemStack getItemInUse(Player player) {
         throw new UnsupportedOperationException();
     }
 

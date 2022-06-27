@@ -24,18 +24,21 @@
 
 package de.varoplugin.cfw.utils.item;
 
+import com.cryptomorin.xseries.XMaterial;
+import de.varoplugin.cfw.utils.UUIDUtils;
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import com.cryptomorin.xseries.XMaterial;
-
 import java.util.Objects;
+import java.util.UUID;
 
 public class BuildSkull extends BuildItem {
 
+    private UUID uuid;
     private String name;
 
     public BuildSkull() {
@@ -51,9 +54,9 @@ public class BuildSkull extends BuildItem {
 
     @Override
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
-        assert this.name != null;
+        assert this.uuid != null;
         SkullMeta sm = (SkullMeta) meta;
-        sm.setOwner(this.name);
+        VersionUtils.getVersionAdapter().setOwningPlayer(sm, this.uuid);
         return super.applyMeta(meta, type);
     }
 
@@ -73,13 +76,24 @@ public class BuildSkull extends BuildItem {
         return this;
     }
 
-    public BuildSkull player(String name) {
+    public BuildSkull player(UUID uuid) {
+        this.uuid = uuid;
+        return this;
+    }
+
+    public BuildSkull fetchPlayer(String name) {
         this.name = name;
+        try {
+            this.player(UUIDUtils.getUUID(name));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return this;
     }
 
     public BuildSkull player(Player player) {
-        return this.player(player.getName());
+        this.name = player.getName();
+        return this.player(player.getUniqueId());
     }
 
     @Override

@@ -27,12 +27,13 @@ package de.varoplugin.cfw.version;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
 
 class OneNineVersionAdapter extends OneEightVersionAdapter {
 
     @Override
-    protected void initNbt() throws ClassNotFoundException, NoSuchMethodException, SecurityException {
+    protected void initNbt() throws SecurityException {
     }
 
     @Override
@@ -43,6 +44,11 @@ class OneNineVersionAdapter extends OneEightVersionAdapter {
     @Override
     public void setNametagVisibility(Team team, boolean shown) {
         team.setOption(Team.Option.NAME_TAG_VISIBILITY, shown ? Team.OptionStatus.ALWAYS : Team.OptionStatus.NEVER);
+    }
+
+    @Override
+    public ItemStack getItemInUse(Player player) {
+        return player.getItemInUse();
     }
 
     @Override
