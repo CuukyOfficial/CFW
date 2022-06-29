@@ -69,9 +69,9 @@ public interface VersionAdapter {
 
     void setAttributeSpeed(Player player, double value);
 
-    void setNametagVisibility(Team team, boolean shown);
+    void setNameTagVisibility(Team team, boolean shown);
 
-    void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
+    void setArmorStandAttributes(Entity armorStand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
 
     void removeAi(LivingEntity entity);
 

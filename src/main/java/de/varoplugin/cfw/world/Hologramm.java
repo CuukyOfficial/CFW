@@ -78,7 +78,7 @@ public class Hologramm extends BasicSerializable {
     }
 
     private void updateNameTag(Entity armorStand, String name) {
-        VersionUtils.getVersionAdapter().setArmorstandAttributes(armorStand, false, true, false, name);
+        VersionUtils.getVersionAdapter().setArmorStandAttributes(armorStand, false, true, false, name);
     }
 
     public void initialize(JavaPlugin plugin, String name) {

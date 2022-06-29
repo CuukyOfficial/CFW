@@ -124,13 +124,13 @@ public class SpigotVersionAdapter implements VersionAdapter {
     }
 
     @Override
-    public void setNametagVisibility(Team team, boolean shown) {
-        this.parent.setNametagVisibility(team, shown);
+    public void setNameTagVisibility(Team team, boolean shown) {
+        this.parent.setNameTagVisibility(team, shown);
     }
 
     @Override
-    public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
-        this.parent.setArmorstandAttributes(armorstand, visible, customNameVisible, gravity, customName);
+    public void setArmorStandAttributes(Entity armorStand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+        this.parent.setArmorStandAttributes(armorStand, visible, customNameVisible, gravity, customName);
     }
 
     @Override

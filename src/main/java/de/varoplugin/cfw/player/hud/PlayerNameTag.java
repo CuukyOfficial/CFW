@@ -70,7 +70,7 @@ class PlayerNameTag {
 
         team.setPrefix(prefix);
         team.setSuffix(suffix);
-        VERISON_ADAPTER.setNametagVisibility(team, visible);
+        VERISON_ADAPTER.setNameTagVisibility(team, visible);
     }
 
     void updatePlayer(PlayerNameTag nameTag) {

@@ -42,7 +42,7 @@ class OneNineVersionAdapter extends OneEightVersionAdapter {
     }
 
     @Override
-    public void setNametagVisibility(Team team, boolean shown) {
+    public void setNameTagVisibility(Team team, boolean shown) {
         team.setOption(Team.Option.NAME_TAG_VISIBILITY, shown ? Team.OptionStatus.ALWAYS : Team.OptionStatus.NEVER);
     }
 

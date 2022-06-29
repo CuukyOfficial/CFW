@@ -252,12 +252,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
     }
 
     @Override
-    public void setNametagVisibility(Team team, boolean shown) {
+    public void setNameTagVisibility(Team team, boolean shown) {
         // 1.8+
     }
 
     @Override
-    public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+    public void setArmorStandAttributes(Entity armorStand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
         // 1.8+
     }
 
