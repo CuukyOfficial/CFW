@@ -36,6 +36,8 @@ public interface Dependency {
 
     String getName();
 
+    String getLink();
+
     File getFile();
 
     URL getUrl() throws MalformedURLException;
