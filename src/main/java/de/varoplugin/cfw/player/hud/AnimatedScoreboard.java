@@ -35,7 +35,7 @@ public class AnimatedScoreboard {
     private Animation<String[]> content;
     private boolean contentChanged;
 
-    public AnimatedScoreboard(JavaPlugin javaPlugin, ScoreboardInstance scoreboard, AnimationData<String> title, ScoreboardAnimationData content) {
+    public AnimatedScoreboard(JavaPlugin javaPlugin, ScoreboardInstance scoreboard, AnimationData<String> title, AnimationData<String[]> content) {
         this.title = new Animation<>(title);
         this.content = new Animation<>(content);
 
@@ -82,7 +82,7 @@ public class AnimatedScoreboard {
         this.contentChanged = true;
     }
 
-    public void setContent(ScoreboardAnimationData content) {
+    public void setContent(AnimationData<String[]> content) {
         this.content = new Animation<>(content);
         this.contentChanged = true;
     }

@@ -78,6 +78,6 @@ class PlayerNameTag {
     }
 
     ScoreboardInstance getScoreboard() {
-        return scoreboard;
+        return this.scoreboard;
     }
 }

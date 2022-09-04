@@ -61,11 +61,11 @@ class DefaultScoreboardInstance implements ScoreboardInstance {
 
     @Override
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     @Override
     public Scoreboard getScoreboard() {
-        return scoreboard;
+        return this.scoreboard;
     }
 }
