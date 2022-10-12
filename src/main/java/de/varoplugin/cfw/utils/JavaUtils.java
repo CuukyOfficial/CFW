@@ -65,7 +65,7 @@ public final class JavaUtils {
 
         try {
             File parent = new File(file.getParent());
-            return parent.mkdirs() && file.createNewFile();
+            return parent.mkdirs() & file.createNewFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
