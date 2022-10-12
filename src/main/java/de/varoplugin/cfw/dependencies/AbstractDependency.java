@@ -24,8 +24,6 @@
 
 package de.varoplugin.cfw.dependencies;
 
-import org.bukkit.plugin.Plugin;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,6 +38,8 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+
+import org.bukkit.plugin.Plugin;
 
 abstract class AbstractDependency implements Dependency {
 
@@ -105,6 +105,11 @@ abstract class AbstractDependency implements Dependency {
     @Override
     public String getName() {
         return this.name;
+    }
+
+    @Override
+    public String getLink() {
+        return this.link;
     }
 
     @Override

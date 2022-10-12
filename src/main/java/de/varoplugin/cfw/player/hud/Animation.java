@@ -42,10 +42,10 @@ class Animation<T> {
     }
 
     boolean shouldUpdate() {
-        return this.data.delay != 0 && this.ticksPassed % this.data.delay == 0;
+        return this.data.getDelay() != 0 && this.ticksPassed % this.data.getDelay() == 0;
     }
 
     T getCurrentFrame() {
-        return this.data.delay == 0 ? this.data.frames[0] : this.data.frames[((int) (this.ticksPassed / this.data.delay)) % this.data.frames.length];
+        return this.data.getDelay() == 0 ? this.data.getFrame(0) : this.data.getFrame(((int) (this.ticksPassed / this.data.getDelay())) % this.data.getNumFrames());
     }
 }

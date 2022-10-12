@@ -24,12 +24,12 @@
 
 package de.varoplugin.cfw.player.hud;
 
+import java.util.Arrays;
+
 import org.bukkit.scoreboard.Objective;
 
 import de.varoplugin.cfw.version.BukkitVersion;
 import de.varoplugin.cfw.version.VersionUtils;
-
-import java.util.Arrays;
 
 public class StaticScoreboard {
 
@@ -86,7 +86,7 @@ public class StaticScoreboard {
 
     private void sendTitle(String title) {
         Objective objective = this.scoreboard.getSideBar();
-        String realTitle = this.limit(this.processString(title), TITLE_MAX);
+        String realTitle = limit(this.processString(title), TITLE_MAX);
 
         if (!objective.getDisplayName().equals(realTitle))
             objective.setDisplayName(realTitle);
@@ -99,7 +99,7 @@ public class StaticScoreboard {
             String prevLine = this.buffer[i];
 
             if (i < content.length) {
-                String line = this.limit(this.checkDuplicate(this.processString(content[i]), i), CONTENT_MAX);
+                String line = limit(this.checkDuplicate(this.processString(content[i]), i), CONTENT_MAX);
                 if (!line.equals(prevLine)) {
                     this.checkReset(objective, i);
                     objective.getScore(line).setScore(LINES_MAX - 1 - i);
@@ -127,15 +127,8 @@ public class StaticScoreboard {
     private String checkDuplicate(String input, int i) {
         for (int j = 0; j < i; j++)
             if (input.equals(this.buffer[j]))
-                return checkDuplicate(input += "§r", i);
+                return this.checkDuplicate(input += "§r", i);
         return input;
-    }
-
-    private String limit(String string, int max) {
-        if (string.length() > max)
-            return string.substring(0, max);
-        else
-            return string;
     }
 
     protected String processString(String input) {
@@ -153,6 +146,12 @@ public class StaticScoreboard {
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return this.enabled;
+    }
+
+    private static String limit(String string, int max) {
+        if (string.length() > max)
+            return string.substring(0, max);
+        return string;
     }
 }

@@ -24,23 +24,11 @@
 
 package de.varoplugin.cfw.player.hud;
 
-public class AnimationData<T> {
+public interface AnimationData<T> {
 
-    int delay;
-    T[] frames;
+    int getDelay();
 
-    public AnimationData(int delay, T[] frames) {
-        if (delay < 0)
-            throw new IllegalArgumentException("Delay < 0");
+    int getNumFrames();
 
-        if (frames == null || frames.length == 0)
-            throw new IllegalArgumentException("Frames are null or empty");
-
-        this.delay = delay;
-        this.frames = frames;
-        this.processFrames(frames);
-    }
-
-    protected void processFrames(T[] frames) {
-    }
+    T getFrame(int index);
 }

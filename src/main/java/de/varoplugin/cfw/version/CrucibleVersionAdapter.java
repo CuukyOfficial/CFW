@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
 
     @Override
-    protected void initServerPropertys() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+    protected void initServerProperties() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
         this.minecraftServerClass = Class.forName("net.minecraft.server.MinecraftServer");
         this.minecraftServerMethod = this.minecraftServerClass.getMethod("func_71276_C");
         this.propertyManagerMethod = this.minecraftServerClass.getDeclaredMethod("getPropertyManager");

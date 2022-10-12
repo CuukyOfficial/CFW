@@ -202,13 +202,13 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
     }
 
     @Override
-    public void setNametagVisibility(Team team, boolean shown) {
+    public void setNameTagVisibility(Team team, boolean shown) {
         team.setNameTagVisibility(shown ? NameTagVisibility.ALWAYS : NameTagVisibility.NEVER);
     }
 
     @Override
-    public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
-        ArmorStand stand = (ArmorStand) armorstand;
+    public void setArmorStandAttributes(Entity armorStand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+        ArmorStand stand = (ArmorStand) armorStand;
         stand.setVisible(visible);
         if (!visible)
             try {

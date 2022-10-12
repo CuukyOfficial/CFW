@@ -71,7 +71,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
     }
 
     protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-        this.initServerPropertys();
+        this.initServerProperties();
         this.initEntity();
         this.initPlayer();
         this.initRespawn();
@@ -80,7 +80,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
         this.initXp();
     }
 
-    protected void initServerPropertys() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+    protected void initServerProperties() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
         this.minecraftServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
         this.minecraftServerMethod = this.minecraftServerClass.getMethod("getServer");
         this.propertyManagerMethod = this.minecraftServerClass.getDeclaredMethod("getPropertyManager");
@@ -252,12 +252,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
     }
 
     @Override
-    public void setNametagVisibility(Team team, boolean shown) {
+    public void setNameTagVisibility(Team team, boolean shown) {
         // 1.8+
     }
 
     @Override
-    public void setArmorstandAttributes(Entity armorstand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
+    public void setArmorStandAttributes(Entity armorStand, boolean visible, boolean customNameVisible, boolean gravity, String customName) {
         // 1.8+
     }
 

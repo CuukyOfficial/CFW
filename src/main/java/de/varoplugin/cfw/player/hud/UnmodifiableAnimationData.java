@@ -24,22 +24,34 @@
 
 package de.varoplugin.cfw.player.hud;
 
-import java.util.Arrays;
-import java.util.List;
+public class UnmodifiableAnimationData<T> implements AnimationData<T> {
 
-public class TablistAnimationData extends AnimationData<String> {
+    private final int delay;
+    private final T[] frames;
 
-    private static final String NEW_LINE = "\n";
+    public UnmodifiableAnimationData(int delay, T[] frames) {
+        if (delay < 0)
+            throw new IllegalArgumentException("Delay < 0");
 
-    public TablistAnimationData(int delay, String[] frames) {
-        super(delay, frames);
+        if (frames == null || frames.length == 0)
+            throw new IllegalArgumentException("Frames are null or empty");
+
+        this.delay = delay;
+        this.frames = frames;
     }
 
-    public TablistAnimationData(int delay, String[][] frames) {
-        this(delay, Arrays.stream(frames).map(frame -> String.join(NEW_LINE, frame)).toArray(String[]::new));
+    @Override
+    public int getDelay() {
+        return this.delay;
     }
 
-    public TablistAnimationData(int delay, List<List<String>> frames) {
-        this(delay, frames.stream().map(frame -> String.join(NEW_LINE, frame)).toArray(String[]::new));
+    @Override
+    public int getNumFrames() {
+        return this.frames.length;
+    }
+
+    @Override
+    public T getFrame(int index) {
+        return this.frames[index];
     }
 }
