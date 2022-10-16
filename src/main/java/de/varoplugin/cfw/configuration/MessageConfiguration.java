@@ -15,7 +15,7 @@ public class MessageConfiguration extends BetterYamlConfiguration {
 
     @Override
     public String getString(String path) {
-        return Objects.requireNonNull(super.getString(path)).replace("§", "&")
+        return Objects.requireNonNull(super.getString(path)).replace("&", "§")
                 .replace("%n%", "\n");
     }
 }
