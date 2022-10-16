@@ -30,7 +30,7 @@ repositories {
 dependencies {
 	implementation 'org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT'
 	compileOnly 'com.googlecode.json-simple:json-simple:1.1.1'
-	compileOnly 'com.github.cryptomorin:XSeries:8.8.0'
+	compileOnly 'com.github.cryptomorin:XSeries:9.1.0'
 }
 
 jar {
