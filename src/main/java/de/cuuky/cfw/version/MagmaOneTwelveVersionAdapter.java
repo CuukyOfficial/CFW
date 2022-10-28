@@ -26,7 +26,7 @@ package de.cuuky.cfw.version;
 
 import java.lang.reflect.Field;
 
-public class MagmaVersionAdapter extends OneTwelveVersionAdapter {
+public class MagmaOneTwelveVersionAdapter extends OneTwelveVersionAdapter {
 
     @Override
     protected void initXp(String entityHumanName, String foodMetaName) {

@@ -29,7 +29,8 @@ import java.util.function.Supplier;
 
 public enum ServerSoftware {
 
-    MAGMA("Magma", versionSupplier -> new MagmaVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
+    MAGMA_1_18("Magma 1.18.2", versionSupplier -> new MagmaOneTwelveVersionAdapter(), "org.magmafoundation.magma.helpers.EnumJ17Helper", "Magma"),
+    MAGMA_1_12("Magma 1.12.2", versionSupplier -> new MagmaOneTwelveVersionAdapter(), "org.magmafoundation.magma.Magma", "Magma"),
     CRUCIBLE("Crucible", versionSupplier -> new CrucibleVersionAdapter(), "io.github.crucible.Crucible", "Crucible"),
     @Deprecated // Unused
     URANIUM("Uranium", null, null, "Uranium"),
