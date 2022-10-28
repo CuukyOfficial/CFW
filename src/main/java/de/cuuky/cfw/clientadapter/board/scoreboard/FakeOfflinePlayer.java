@@ -77,7 +77,7 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 
     @Override
     public String getName() {
-        return name;
+        return this.name;
     }
 
     @Override
@@ -195,6 +195,11 @@ public class FakeOfflinePlayer implements OfflinePlayer {
 
     @Override
     public PlayerProfile getPlayerProfile() {
+        return null;
+    }
+
+    @Override
+    public Location getLastDeathLocation() {
         return null;
     }
 }
