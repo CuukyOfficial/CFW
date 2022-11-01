@@ -45,7 +45,7 @@ public class CuukyFrameWork {
         ConfigurationSerialization.registerClass(CompatibleLocation.class);
     }
 
-    private static final String NAME = "CuukyFrameWork", VERSION = "0.6.14", AUTHOR = "Cuuky";
+    private static final String NAME = "CuukyFrameWork", VERSION = "0.6.15", AUTHOR = "Cuuky";
 
     /*
      * CFW - A Bukkit framework
@@ -93,22 +93,22 @@ public class CuukyFrameWork {
     }
 
     public HookManager getHookManager() {
-        return (HookManager) loadManager(FrameworkManagerType.HOOKING);
+        return (HookManager) this.loadManager(FrameworkManagerType.HOOKING);
     }
 
     public AdvancedInventoryManager getAdvancedInventoryManager() {
-        return (AdvancedInventoryManager) loadManager(FrameworkManagerType.ADVANCED_INVENTORY);
+        return (AdvancedInventoryManager) this.loadManager(FrameworkManagerType.ADVANCED_INVENTORY);
     }
 
     public LanguageManager getLanguageManager() {
-        return (LanguageManager) loadManager(FrameworkManagerType.LANGUAGE);
+        return (LanguageManager) this.loadManager(FrameworkManagerType.LANGUAGE);
     }
 
     public MessagePlaceholderManager getPlaceholderManager() {
-        return (MessagePlaceholderManager) loadManager(FrameworkManagerType.PLACEHOLDER);
+        return (MessagePlaceholderManager) this.loadManager(FrameworkManagerType.PLACEHOLDER);
     }
 
     public CFWSerializeManager getSerializeManager() {
-        return (CFWSerializeManager) loadManager(FrameworkManagerType.SERIALIZE);
+        return (CFWSerializeManager) this.loadManager(FrameworkManagerType.SERIALIZE);
     }
 }
