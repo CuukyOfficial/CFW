@@ -26,7 +26,7 @@ package de.varoplugin.cfw.version;
 
 import java.lang.reflect.Field;
 
-public class MagmaVersionAdapter extends OneTwelveVersionAdapter {
+class MagmaOneTwelveVersionAdapter extends OneTwelveVersionAdapter {
 
     @Override
     protected void initXp(String entityHumanName, String foodMetaName) {
