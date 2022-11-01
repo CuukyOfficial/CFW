@@ -27,7 +27,7 @@ package de.varoplugin.cfw.world;
 import de.varoplugin.cfw.configuration.serialization.BasicSerializable;
 import de.varoplugin.cfw.configuration.serialization.SerializableLocation;
 import de.varoplugin.cfw.configuration.serialization.Serialize;
-import de.varoplugin.cfw.version.BukkitVersion;
+import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.ServerSoftware;
 import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Bukkit;
@@ -65,7 +65,7 @@ public class Hologramm extends BasicSerializable {
     }
 
     private Optional<Entity> findNameTag() {
-        if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(BukkitVersion.ONE_8))
+        if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_8))
             return Optional.empty();
 
         return Arrays.stream(this.location.getChunk().getEntities()).filter(entity -> this.nameTagUuid.equals(entity.getUniqueId())).findAny();
@@ -82,7 +82,7 @@ public class Hologramm extends BasicSerializable {
     }
 
     public void initialize(JavaPlugin plugin, String name) {
-        if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(BukkitVersion.ONE_16))
+        if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_16))
             // temporary paper 1.17+ workaround
             try {
                 Method forceLoadMethod = Chunk.class.getMethod("setForceLoaded", boolean.class);

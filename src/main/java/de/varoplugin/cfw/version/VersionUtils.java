@@ -42,7 +42,7 @@ public class VersionUtils {
     private static final String nmsVersion;
     private static final boolean forgeSupport;
 
-    private final static BukkitVersion version;
+    private final static ServerVersion version;
     private final static ServerSoftware serverSoftware;
     private final static VersionAdapter versionAdapter;
     private final static Map<Player, MinecraftVersion> playerVersions;
@@ -52,7 +52,7 @@ public class VersionUtils {
         playerVersions = new HashMap<>();
 
         if (Bukkit.getServer() == null) {
-            version = BukkitVersion.UNSUPPORTED;
+            version = ServerVersion.UNSUPPORTED;
             serverSoftware = ServerSoftware.UNKNOWN;
             nmsClass = null;
             nmsVersion = null;
@@ -67,7 +67,7 @@ public class VersionUtils {
                 // Thermos (1.17+ does not use this string at all)
                 nmsClass = base + ".server";
             }
-            version = BukkitVersion.getVersion(nmsVersion);
+            version = ServerVersion.getVersion(nmsVersion);
             serverSoftware = ServerSoftware.getServerSoftware();
         }
         versionAdapter = serverSoftware.getVersionAdapter(version.getAdapterSupplier());
@@ -118,7 +118,7 @@ public class VersionUtils {
         return version;
     }
 
-    public static BukkitVersion getVersion() {
+    public static ServerVersion getVersion() {
         return version;
     }
 

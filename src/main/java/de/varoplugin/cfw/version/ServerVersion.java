@@ -26,7 +26,7 @@ package de.varoplugin.cfw.version;
 
 import java.util.function.Supplier;
 
-public enum BukkitVersion {
+public enum ServerVersion {
 
     ONE_19(19, OneSeventeenVersionAdapter::new),
     ONE_18(18, OneSeventeenVersionAdapter::new),
@@ -46,16 +46,16 @@ public enum BukkitVersion {
     private final int identifier;
     private final Supplier<VersionAdapter> adapterSupplier;
 
-    BukkitVersion(int identifier, Supplier<VersionAdapter> adapterSupplier) {
+    ServerVersion(int identifier, Supplier<VersionAdapter> adapterSupplier) {
         this.identifier = identifier;
         this.adapterSupplier = adapterSupplier;
     }
 
-    public boolean isHigherThan(BukkitVersion ver) {
+    public boolean isHigherThan(ServerVersion ver) {
         return this.identifier > ver.getIdentifier();
     }
 
-    public boolean isLowerThan(BukkitVersion ver) {
+    public boolean isLowerThan(ServerVersion ver) {
         return this.identifier < ver.getIdentifier();
     }
 
@@ -67,10 +67,10 @@ public enum BukkitVersion {
         return this.adapterSupplier;
     }
 
-    public static BukkitVersion getVersion(String versionString) {
+    public static ServerVersion getVersion(String versionString) {
         int versionNumber = Integer.parseInt(versionString.split("1_")[1].split("_")[0]);
-        BukkitVersion nextFound = BukkitVersion.ONE_7;
-        for (BukkitVersion version : values()) {
+        ServerVersion nextFound = ServerVersion.ONE_7;
+        for (ServerVersion version : values()) {
             if (versionNumber == version.getIdentifier())
                 return version;
 
