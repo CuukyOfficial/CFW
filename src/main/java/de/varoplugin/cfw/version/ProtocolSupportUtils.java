@@ -22,35 +22,39 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.version.minecraft.utils;
+package de.varoplugin.cfw.version;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.bukkit.entity.Player;
 
-public class ViaVersionUtils {
+public class ProtocolSupportUtils {
 
-    // Plugin Name: ViaVersion
+    // Plugin Name: ProtocolSupport
 
-    private static Object api;
-    private static Method getPlayerVersionMethod;
+    private static Method getProtocolVersionMethod, getIdMethod;
 
     static {
         try {
-            api = Class.forName("us.myles.ViaVersion.api.Via").getMethod("getAPI").invoke(null);
-            getPlayerVersionMethod = api.getClass().getMethod("getPlayerVersion", Player.class);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            getProtocolVersionMethod = Class.forName("protocolsupport.api.ProtocolSupportAPI").getMethod("getProtocolVersion", Player.class);
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
         }
     }
 
     public static int getVersion(Player player) {
-        if (getPlayerVersionMethod == null)
-            throw new NullPointerException("Could not find VIA API");
+        if (getProtocolVersionMethod == null)
+            throw new NullPointerException("Could not find ProtocolSupportAPI");
 
+        Object version;
         try {
-            return (int) getPlayerVersionMethod.invoke(api, player);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+            version = getProtocolVersionMethod.invoke(null, player);
+
+            if (getIdMethod == null)
+                getIdMethod = version.getClass().getMethod("getId");
+
+            return (int) getIdMethod.invoke(version);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
             e.printStackTrace();
         }
 
@@ -58,6 +62,6 @@ public class ViaVersionUtils {
     }
 
     public static boolean isAvailable() {
-        return getPlayerVersionMethod != null;
+        return getProtocolVersionMethod != null;
     }
 }

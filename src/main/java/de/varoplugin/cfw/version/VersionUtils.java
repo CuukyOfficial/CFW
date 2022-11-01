@@ -30,10 +30,6 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import de.varoplugin.cfw.version.minecraft.MinecraftVersion;
-import de.varoplugin.cfw.version.minecraft.utils.ProtocolSupportUtils;
-import de.varoplugin.cfw.version.minecraft.utils.ViaVersionUtils;
-
 public class VersionUtils {
 
     private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";

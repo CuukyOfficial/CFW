@@ -22,39 +22,35 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.version.minecraft.utils;
+package de.varoplugin.cfw.version;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.bukkit.entity.Player;
 
-public class ProtocolSupportUtils {
+public class ViaVersionUtils {
 
-    // Plugin Name: ProtocolSupport
+    // Plugin Name: ViaVersion
 
-    private static Method getProtocolVersionMethod, getIdMethod;
+    private static Object api;
+    private static Method getPlayerVersionMethod;
 
     static {
         try {
-            getProtocolVersionMethod = Class.forName("protocolsupport.api.ProtocolSupportAPI").getMethod("getProtocolVersion", Player.class);
-        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            api = Class.forName("us.myles.ViaVersion.api.Via").getMethod("getAPI").invoke(null);
+            getPlayerVersionMethod = api.getClass().getMethod("getPlayerVersion", Player.class);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
         }
     }
 
     public static int getVersion(Player player) {
-        if (getProtocolVersionMethod == null)
-            throw new NullPointerException("Could not find ProtocolSupportAPI");
+        if (getPlayerVersionMethod == null)
+            throw new NullPointerException("Could not find VIA API");
 
-        Object version;
         try {
-            version = getProtocolVersionMethod.invoke(null, player);
-
-            if (getIdMethod == null)
-                getIdMethod = version.getClass().getMethod("getId");
-
-            return (int) getIdMethod.invoke(version);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+            return (int) getPlayerVersionMethod.invoke(api, player);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
             e.printStackTrace();
         }
 
@@ -62,6 +58,6 @@ public class ProtocolSupportUtils {
     }
 
     public static boolean isAvailable() {
-        return getProtocolVersionMethod != null;
+        return getPlayerVersionMethod != null;
     }
 }

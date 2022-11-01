@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.version.minecraft;
+package de.varoplugin.cfw.version;
 
 import java.util.Arrays;
 
@@ -30,6 +30,7 @@ public enum MinecraftVersion {
 
     // Protocol version numbers: https://wiki.vg/Protocol_version_numbers
 
+    MINECRAFT_1_19_2(760, "1.19.1-1.19.2"),
     MINECRAFT_1_19(759, "1.19"),
     MINECRAFT_1_18_2(758, "1.18.2"),
     MINECRAFT_1_18_1(757, "1.18-1.18.1"),
@@ -83,11 +84,11 @@ public enum MinecraftVersion {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public int getProtocolId() {
-        return protocolId;
+        return this.protocolId;
     }
 
     public static MinecraftVersion getMinecraftVersion(int protocolId) {
