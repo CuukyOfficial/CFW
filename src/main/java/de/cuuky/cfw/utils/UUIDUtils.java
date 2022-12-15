@@ -58,7 +58,7 @@ public final class UUIDUtils {
         Scanner scanner = new Scanner(connection.getInputStream());
 
         StringBuilder input = new StringBuilder();
-        while (scanner.hasNext()){
+        while (scanner.hasNext()) {
             input.append(scanner.nextLine());
         }
         scanner.close();
