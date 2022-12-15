@@ -57,13 +57,13 @@ public final class UUIDUtils {
 
         Scanner scanner = new Scanner(connection.getInputStream());
 
-        String input = "";
+        StringBuilder input = new StringBuilder();
         while (scanner.hasNext()){
-            input += scanner.nextLine();
+            input.append(scanner.nextLine());
         }
         scanner.close();
 
-        JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(input);
+        JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(input.toString());
         String uuidString = UUIDObject.get("id").toString();
         String uuidSeperation = uuidString.replaceFirst("([0-9a-fA-F]{8})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]{4})([0-9a-fA-F]+)", "$1-$2-$3-$4-$5");
         return UUID.fromString(uuidSeperation);
