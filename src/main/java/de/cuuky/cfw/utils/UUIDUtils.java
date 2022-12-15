@@ -57,7 +57,10 @@ public final class UUIDUtils {
 
         Scanner scanner = new Scanner(connection.getInputStream());
 
-        String input = scanner.nextLine();
+        String input = "";
+        while (scanner.hasNext()){
+            input += scanner.nextLine();
+        }
         scanner.close();
 
         JSONObject UUIDObject = (JSONObject) JSONValue.parseWithException(input);
