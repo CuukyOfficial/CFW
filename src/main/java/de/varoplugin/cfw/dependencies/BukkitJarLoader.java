@@ -78,7 +78,7 @@ class BukkitJarLoader implements JarLoader {
         private final Map<K, V> parent;
         private final HackClassLoader classLoader;
 
-        private HackMap(Map<K, V> parent, HackClassLoader classLoader) {
+        HackMap(Map<K, V> parent, HackClassLoader classLoader) {
             this.parent = parent;
             this.classLoader = classLoader;
         }
@@ -109,12 +109,11 @@ class BukkitJarLoader implements JarLoader {
             V parentObject = this.parent.get(key);
             if (parentObject != null)
                 return parentObject;
-            else
-                try {
-                    return (V) this.classLoader.loadClass((String) key);
-                } catch (ClassNotFoundException e) {
-                    return null;
-                }
+            try {
+                return (V) this.classLoader.loadClass((String) key);
+            } catch (ClassNotFoundException e) {
+                return null;
+            }
         }
 
         @Override

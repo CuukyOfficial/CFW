@@ -24,14 +24,16 @@
 
 package de.varoplugin.cfw.player.hook.item;
 
-import de.varoplugin.cfw.player.hook.HookBuilder;
-import de.varoplugin.cfw.player.hook.AbstractHookEvent;
+import java.util.function.Consumer;
+
 import org.bukkit.inventory.ItemStack;
 
-import java.util.function.Consumer;
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
+import de.varoplugin.cfw.player.hook.HookBuilder;
 
 public interface ItemHookBuilder extends HookBuilder<ItemHook> {
 
+    @Override
     <E extends AbstractHookEvent<?, ?>> ItemHookBuilder subscribe(Class<E> eventType, Consumer<E> eventConsumer);
 
     ItemHookBuilder item(ItemStack stack);

@@ -39,6 +39,7 @@ public class ProtocolSupportUtils {
         try {
             getProtocolVersionMethod = Class.forName("protocolsupport.api.ProtocolSupportAPI").getMethod("getProtocolVersion", Player.class);
         } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            // nop
         }
     }
 

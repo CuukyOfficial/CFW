@@ -24,18 +24,23 @@
 
 package de.varoplugin.cfw.inventory.list;
 
-import de.varoplugin.cfw.inventory.*;
+import java.util.AbstractMap;
+import java.util.Collection;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.function.Consumer;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.AbstractMap;
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.function.Consumer;
+import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
+import de.varoplugin.cfw.inventory.EventNotifiable;
+import de.varoplugin.cfw.inventory.Info;
+import de.varoplugin.cfw.inventory.ItemClick;
+import de.varoplugin.cfw.inventory.PrioritisedInfo;
 
 public abstract class AdvancedEditInventory extends AdvancedItemShowInventory implements EventNotifiable {
 
@@ -102,7 +107,7 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
     protected abstract Collection<ItemStack> getInitialItems();
 
     public Map<Integer, ItemStack> getContents() {
-        return contents;
+        return this.contents;
     }
 
     public Collection<ItemStack> getItems() {
@@ -134,9 +139,11 @@ public abstract class AdvancedEditInventory extends AdvancedItemShowInventory im
 
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
+        // nop
     }
 
     @Override
     public void onInventoryClose(InventoryCloseEvent event) {
+        // nop
     }
 }

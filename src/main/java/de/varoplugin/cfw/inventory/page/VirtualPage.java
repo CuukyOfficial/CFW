@@ -46,9 +46,9 @@ class VirtualPage implements Page<AdvancedPageInventory> {
 
     private void generateInfoList() {
         if (this.size != null)
-            infos.add(Info.SIZE);
+            this.infos.add(Info.SIZE);
         if (this.title != null)
-            infos.add(Info.TITLE);
+            this.infos.add(Info.TITLE);
     }
 
     @Override
@@ -58,7 +58,7 @@ class VirtualPage implements Page<AdvancedPageInventory> {
 
     @Override
     public void refreshContent() {
-        runnable.run();
+        this.runnable.run();
     }
 
     @Override

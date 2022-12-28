@@ -48,7 +48,7 @@ class AdvancedItemLink {
     boolean run(InventoryClickEvent event) {
         if (this.link == null)
             return false;
-        link.onItemClick(event);
+        this.link.onItemClick(event);
         return true;
     }
 }

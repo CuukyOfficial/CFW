@@ -24,13 +24,13 @@
 
 package de.varoplugin.cfw.player.hook.chat;
 
-import de.varoplugin.cfw.player.hook.AbstractHookListener;
-import de.varoplugin.cfw.player.hook.HookListener;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook> implements HookListener<PlayerChatHook> {
+import de.varoplugin.cfw.player.hook.AbstractHookListener;
+
+public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook> {
 
     @Override
     public void register(PlayerChatHook trigger) {

@@ -24,7 +24,12 @@
 
 package de.varoplugin.cfw.version;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Locale;
+
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -37,11 +42,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Locale;
+import net.md_5.bungee.api.chat.ClickEvent;
 
 @SuppressWarnings("deprecation")
 class OneEightVersionAdapter extends OneSevenVersionAdapter {
@@ -64,7 +65,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
     private Method nbtSetByteMethod, initNbtMethod, loadNbtMethod;
 
     @Override
-    protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+    protected void init() throws IllegalArgumentException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException, IllegalAccessException {
         super.init();
         this.initTablist();
         this.initChat();
@@ -97,7 +98,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
         this.initPacketChatArgConstructor();
     }
 
-    protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException {
+    protected void initPacketChatArgConstructor() throws NoSuchMethodException, SecurityException, IllegalArgumentException, ClassNotFoundException, IllegalAccessException, NoSuchFieldException {
         this.packetChatConstructor = this.packetChatClass.getConstructor(this.chatBaseComponentInterface, byte.class);
     }
 

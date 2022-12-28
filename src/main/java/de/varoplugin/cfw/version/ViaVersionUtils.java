@@ -41,6 +41,7 @@ public class ViaVersionUtils {
             api = Class.forName("us.myles.ViaVersion.api.Via").getMethod("getAPI").invoke(null);
             getPlayerVersionMethod = api.getClass().getMethod("getPlayerVersion", Player.class);
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException e) {
+            // nop
         }
     }
 

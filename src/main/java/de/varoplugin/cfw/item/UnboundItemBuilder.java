@@ -24,14 +24,15 @@
 
 package de.varoplugin.cfw.item;
 
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-import java.util.Map;
-
 public interface UnboundItemBuilder {
+
     UnboundItemBuilder amount(int amount);
 
     UnboundItemBuilder addEnchantment(Enchantment enchantment, int amplifier);

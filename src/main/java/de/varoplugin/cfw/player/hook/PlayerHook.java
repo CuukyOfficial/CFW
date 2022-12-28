@@ -30,6 +30,6 @@ public interface PlayerHook extends PlayerRegistrable {
 
     <E extends AbstractHookEvent<?, ?>> void eventFired(E event);
 
+    @Override
     Player getPlayer();
-
 }

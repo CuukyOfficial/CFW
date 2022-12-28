@@ -52,6 +52,6 @@ public enum InventoryColor {
     }
 
     public ItemStack getColorPane() {
-        return colorPane;
+        return this.colorPane;
     }
 }

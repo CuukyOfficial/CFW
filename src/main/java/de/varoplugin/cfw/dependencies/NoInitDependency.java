@@ -34,5 +34,6 @@ public class NoInitDependency extends AbstractDependency {
 
     @Override
     protected void init(Plugin varo) {
+        // nop
     }
 }

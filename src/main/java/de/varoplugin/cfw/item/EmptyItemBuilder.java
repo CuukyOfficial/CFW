@@ -24,19 +24,21 @@
 
 package de.varoplugin.cfw.item;
 
-import com.cryptomorin.xseries.XMaterial;
-import de.varoplugin.cfw.version.VersionUtils;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import com.cryptomorin.xseries.XMaterial;
+
+import de.varoplugin.cfw.version.VersionUtils;
 
 public class EmptyItemBuilder implements ItemBuilder {
 
@@ -53,9 +55,9 @@ public class EmptyItemBuilder implements ItemBuilder {
     }
 
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
-        if (displayName != null && type != Material.AIR)
-            meta.setDisplayName(displayName);
-        enchantments.keySet().forEach(ent -> meta.addEnchant(ent, enchantments.get(ent), true));
+        if (this.displayName != null && type != Material.AIR)
+            meta.setDisplayName(this.displayName);
+        this.enchantments.keySet().forEach(ent -> meta.addEnchant(ent, this.enchantments.get(ent), true));
         meta.setLore(this.lore);
         return meta;
     }
@@ -68,7 +70,7 @@ public class EmptyItemBuilder implements ItemBuilder {
             stack.setItemMeta(this.applyMeta(meta, stack.getType()));
         if (this.deleteAnnotations)
             VersionUtils.getVersionAdapter().deleteItemAnnotations(stack);
-        stack.setAmount(amount);
+        stack.setAmount(this.amount);
         return stack;
     }
 
@@ -82,7 +84,7 @@ public class EmptyItemBuilder implements ItemBuilder {
     public ItemBuilder addEnchantment(Enchantment enchantment, int amplifier) {
         if (enchantment == null)
             return this;
-        enchantments.put(enchantment, amplifier);
+        this.enchantments.put(enchantment, amplifier);
         return this;
     }
 
@@ -146,36 +148,36 @@ public class EmptyItemBuilder implements ItemBuilder {
 
     @Override
     public int getAmount() {
-        return amount;
+        return this.amount;
     }
 
     @Override
     public String getDisplayName() {
-        return displayName;
+        return this.displayName;
     }
 
     @Override
     public List<String> getLore() {
-        return lore;
+        return this.lore;
     }
 
     @Override
     public Map<Enchantment, Integer> getEnchantments() {
-        return enchantments;
+        return this.enchantments;
     }
 
     @Override
     public boolean shallDeleteAnnotations() {
-        return deleteAnnotations;
+        return this.deleteAnnotations;
     }
 
     @Override
     public ItemStack getStack() {
-        return stack;
+        return this.stack;
     }
 
     @Override
     public Material getMaterial() {
-        return material;
+        return this.material;
     }
 }

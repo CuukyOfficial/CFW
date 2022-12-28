@@ -35,14 +35,17 @@ public class OneThirteenVersionAdapter extends OneTwelveVersionAdapter {
 
     @Override
     protected void initTablist() throws SecurityException {
+        // nop
     }
 
     @Override
     protected void initChat() throws SecurityException, IllegalArgumentException {
+        // nop
     }
 
     @Override
     protected void initNetworkManager() throws IllegalArgumentException {
+        // nop
     }
 
     @Override

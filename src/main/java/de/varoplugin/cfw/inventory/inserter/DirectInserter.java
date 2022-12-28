@@ -39,7 +39,7 @@ public class DirectInserter implements ItemInserter {
 
     @Override
     public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
-        started = true;
+        this.started = true;
         items.keySet().forEach(index -> this.setItem(inventory, index, items.get(index), false));
         if (!inventory.isUpdating())
             player.updateInventory();
@@ -47,6 +47,7 @@ public class DirectInserter implements ItemInserter {
 
     @Override
     public void stopInserting() {
+        // nop
     }
 
     @Override

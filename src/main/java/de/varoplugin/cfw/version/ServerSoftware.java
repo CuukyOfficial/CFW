@@ -88,8 +88,7 @@ public enum ServerSoftware {
     VersionAdapter getVersionAdapter(Supplier<VersionAdapter> bukkitVersionSupplier) {
         if (this.adapter == null)
             return this.adapter = this.adapterFunction.apply(bukkitVersionSupplier);
-        else
-            return this.adapter;
+        return this.adapter;
     }
 
     /**

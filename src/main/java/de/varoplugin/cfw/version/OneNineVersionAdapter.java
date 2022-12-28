@@ -34,6 +34,7 @@ class OneNineVersionAdapter extends OneEightVersionAdapter {
 
     @Override
     protected void initNbt() throws SecurityException {
+        // nop
     }
 
     @Override

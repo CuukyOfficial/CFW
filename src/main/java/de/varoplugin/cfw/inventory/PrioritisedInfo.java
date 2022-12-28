@@ -37,10 +37,10 @@ public class PrioritisedInfo {
     }
 
     public Info<?> getInfo() {
-        return info;
+        return this.info;
     }
 
     public Supplier<Integer> getPriority() {
-        return priority;
+        return this.priority;
     }
 }

@@ -42,7 +42,7 @@ public class ItemInfo {
     }
 
     public int getIndex() {
-        return index;
+        return this.index;
     }
 
     public ItemInfo setStack(ItemStack stack) {
@@ -51,6 +51,6 @@ public class ItemInfo {
     }
 
     public ItemStack getStack() {
-        return stack;
+        return this.stack;
     }
 }

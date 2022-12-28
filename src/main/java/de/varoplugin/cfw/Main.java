@@ -27,4 +27,5 @@ package de.varoplugin.cfw;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
+    // Do nothing
 }

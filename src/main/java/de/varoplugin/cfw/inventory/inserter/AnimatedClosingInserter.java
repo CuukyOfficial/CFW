@@ -39,14 +39,14 @@ public class AnimatedClosingInserter implements ItemInserter {
 
     private boolean cancelled, started;
 
-    private boolean setItem(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int index, int delay) {
+    boolean setItem(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int index, int delay) {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        if (cancelled)
+        if (this.cancelled)
             return false;
         this.setItem(inventory, index, items.get(index), false);
         if (!inventory.isUpdating())
@@ -56,7 +56,7 @@ public class AnimatedClosingInserter implements ItemInserter {
 
     @Override
     public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
-        started = true;
+        this.started = true;
         int delay = 300 / (inventory.getInfo(Info.SIZE));
         int middle = (size - 1) / 2;
 
@@ -68,10 +68,10 @@ public class AnimatedClosingInserter implements ItemInserter {
             public void run() {
                 for (int index = 0; index <= middle * 2 + 1; index++) {
                     int tempIndex = (int) Math.floor((float) index / 2);
-                    if (!setItem(inventory, items, player, (end ? size - tempIndex - 1 : tempIndex), delay))
+                    if (!AnimatedClosingInserter.this.setItem(inventory, items, player, (this.end ? size - tempIndex - 1 : tempIndex), delay))
                         return;
 
-                    end = !end;
+                    this.end = !this.end;
                 }
             }
         }.runTaskAsynchronously(plugin);

@@ -24,17 +24,22 @@
 
 package de.varoplugin.cfw.inventory.page;
 
-import de.varoplugin.cfw.inventory.AdvancedInventory;
-import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
-import de.varoplugin.cfw.inventory.EventNotifiable;
-import de.varoplugin.cfw.inventory.InfoProvider;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Supplier;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
-import java.util.*;
-import java.util.function.Supplier;
+import de.varoplugin.cfw.inventory.AdvancedInventory;
+import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
+import de.varoplugin.cfw.inventory.EventNotifiable;
+import de.varoplugin.cfw.inventory.InfoProvider;
 
 public abstract class AdvancedPageInventory extends AdvancedInventory implements EventNotifiable {
 
@@ -61,8 +66,8 @@ public abstract class AdvancedPageInventory extends AdvancedInventory implements
 
     protected void registerPage(int page, Supplier<Page<?>> info) {
         this.pages.put(page, info);
-        this.max = Math.max(max, page);
-        this.min = Math.min(min, page);
+        this.max = Math.max(this.max, page);
+        this.min = Math.min(this.min, page);
         if (this.loaded.get(page) != null)
             this.loaded.put(page, info.get());
     }

@@ -40,8 +40,8 @@ public abstract class AdvancedInfiniteInventory extends AdvancedInventory {
     }
 
     private void checkMax(int test) {
-        if (test > max)
-            max = test;
+        if (test > this.max)
+            this.max = test;
     }
 
     protected int getIndex() {
@@ -54,7 +54,7 @@ public abstract class AdvancedInfiniteInventory extends AdvancedInventory {
 
     @Override
     protected final int getMaxPage() {
-        return (int) Math.ceil((double) max / (double) this.getUsableSize());
+        return (int) Math.ceil((double) this.max / (double) this.getUsableSize());
     }
 
     @Override

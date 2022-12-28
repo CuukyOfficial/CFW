@@ -32,6 +32,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 
+@SuppressWarnings("unused")
 public class SerializableLocation extends Location implements ConfigurationSerializable {
 
     public SerializableLocation(World world, double x, double y, double z) {

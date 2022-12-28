@@ -47,7 +47,7 @@ class Instantiator<T extends BasicSerializable> {
         return (Constructor<T>) objDef;
     }
 
-    T instantiate() throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    T instantiate() throws InvocationTargetException, InstantiationException, IllegalAccessException {
         Constructor<T> intConstr = this.getInitConstructor(this.clazz);
         return this.clazz.cast(intConstr.newInstance());
     }

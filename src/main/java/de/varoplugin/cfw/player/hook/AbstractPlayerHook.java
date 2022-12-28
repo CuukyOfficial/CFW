@@ -88,6 +88,8 @@ public abstract class AbstractPlayerHook<T extends HookListener<?>> extends Abst
 
     public static class HookSubscriber<T extends AbstractHookEvent<?, ?>> extends AbstractMap.SimpleEntry<Class<T>, Consumer<T>> {
 
+        private static final long serialVersionUID = 9176875053766041148L;
+
         public HookSubscriber(Class<T> tClass, Consumer<T> consumer) {
             super(tClass, consumer);
         }

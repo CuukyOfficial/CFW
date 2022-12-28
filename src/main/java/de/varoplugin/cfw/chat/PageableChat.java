@@ -72,10 +72,10 @@ public class PageableChat<T> {
 
         StringBuilder message = new StringBuilder();
         if (this.title != null)
-            message.append(title).append("\n");
-        int start = (this.page - 1) * this.entriesPerPage, max = Math.min(start + this.entriesPerPage, list.size());
+            message.append(this.title).append("\n");
+        int start = (this.page - 1) * this.entriesPerPage, max = Math.min(start + this.entriesPerPage, this.list.size());
         for (int i = start; i < max; i++)
-            message.append(this.messages.getEntry(list.get(i))).append("\n");
+            message.append(this.messages.getEntry(this.list.get(i))).append("\n");
         if (this.footer != null)
             message.append(this.footer);
 
@@ -87,10 +87,10 @@ public class PageableChat<T> {
     }
 
     public int getPage() {
-        return page;
+        return this.page;
     }
 
     public int getEntriesPerPage() {
-        return entriesPerPage;
+        return this.entriesPerPage;
     }
 }

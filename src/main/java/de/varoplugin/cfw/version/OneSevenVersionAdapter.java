@@ -66,12 +66,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
     OneSevenVersionAdapter() {
         try {
             this.init();
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException e) {
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
 
-    protected void init() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
+    protected void init() throws IllegalArgumentException, NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException, IllegalAccessException {
         this.initServerProperties();
         this.initEntity();
         this.initPlayer();

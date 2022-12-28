@@ -46,20 +46,22 @@ import de.varoplugin.cfw.inventory.inserter.DirectInserter;
 public abstract class AdvancedInventory extends InfoProviderHolder implements ContentRefreshable, DefaultInfoProvider {
 
     private final Map<Supplier<ItemInfo>, Supplier<ItemClick>> selectors = new HashMap<Supplier<ItemInfo>, Supplier<ItemClick>>() {
+
+        private static final long serialVersionUID = 1626277940088516063L;
+
         {
-            put(() -> AdvancedInventory.this.getInfo(Info.BACKWARDS_INFO), () -> generateNavigator(AdvancedInventory.this::getCachedMin, -1));
-            put(() -> AdvancedInventory.this.getInfo(Info.FORWARDS_INFO), () -> generateNavigator(AdvancedInventory.this::getCachedMax, 1));
-            put(() -> {
+            this.put(() -> AdvancedInventory.this.getInfo(Info.BACKWARDS_INFO), () -> AdvancedInventory.this.generateNavigator(AdvancedInventory.this::getCachedMin, -1));
+            this.put(() -> AdvancedInventory.this.getInfo(Info.FORWARDS_INFO), () -> AdvancedInventory.this.generateNavigator(AdvancedInventory.this::getCachedMax, 1));
+            this.put(() -> {
                 if (AdvancedInventory.this.previous == null)
                     return null;
-                else
-                    return AdvancedInventory.this.getInfo(Info.BACK_INFO);
+                return AdvancedInventory.this.getInfo(Info.BACK_INFO);
             }, () -> event -> AdvancedInventory.this.back());
-            put(() -> AdvancedInventory.this.getInfo(Info.CLOSE_INFO), () -> event -> close());
+            this.put(() -> AdvancedInventory.this.getInfo(Info.CLOSE_INFO), () -> event -> AdvancedInventory.this.close());
         }
     };
 
-    private AdvancedInventory previous;
+    AdvancedInventory previous;
 
     private final AdvancedInventoryManager manager;
     private final Player player;
@@ -81,11 +83,11 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.open();
     }
 
-    private int getCachedMin() {
+    int getCachedMin() {
         return this.minPage;
     }
 
-    private int getCachedMax() {
+    int getCachedMax() {
         return this.maxPage;
     }
 
@@ -99,7 +101,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.page = Math.min(Math.max(this.page, this.minPage), this.maxPage);
     }
 
-    private ItemClick generateNavigator(Supplier<Integer> maxSup, int add) {
+    ItemClick generateNavigator(Supplier<Integer> maxSup, int add) {
         int max = maxSup.get();
         if ((add < 0 && this.page <= max) || (add > 0 && this.page >= max))
             return null;
@@ -147,28 +149,28 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     }
 
     private boolean needsOpen() {
-        InventoryView view = player.getOpenInventory();
+        InventoryView view = this.player.getOpenInventory();
         AdvancedInventory ai = this.manager.getInventory(view.getTopInventory());
         if (ai == null || !(view.getTitle().equals(ai.getInfo(Info.TITLE)) && view.getTopInventory().getSize() == ai.getInfo(Info.SIZE))) {
             this.createInventory();
             return true;
-        } else
-            this.inventory = view.getTopInventory();
+        }
 
+        this.inventory = view.getTopInventory();
         this.inventory.clear();
         return false;
     }
 
-    private void startTask() {
+    void startTask() {
         if (this.interval == -1)
             return;
 
         this.autoTask = new BukkitRunnable() {
             @Override
             public void run() {
-                update();
+                AdvancedInventory.this.update();
             }
-        }.runTaskTimerAsynchronously(this.getManager().getPlugin(), interval, interval);
+        }.runTaskTimerAsynchronously(this.getManager().getPlugin(), this.interval, this.interval);
     }
 
     private void updateInformation() {
@@ -251,7 +253,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     protected void playSound() {
         Consumer<Player> soundPlayer = this.getInfo(Info.PLAY_SOUND);
         if (soundPlayer != null)
-            soundPlayer.accept(getPlayer());
+            soundPlayer.accept(this.getPlayer());
     }
 
     protected void updateOthers(Function<AdvancedInventory, Boolean> filter) {
@@ -299,22 +301,22 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     public void open() {
         if (this.open)
             throw new IllegalStateException("Cannot reopen already opened inventory");
-        manager.registerInventory(this);
+        this.manager.registerInventory(this);
         new BukkitRunnable() {
 
             @Override
             public void run() {
-                startTask();
-                updateProvider();
-                update();
+                AdvancedInventory.this.startTask();
+                AdvancedInventory.this.updateProvider();
+                AdvancedInventory.this.update();
             }
-        }.runTaskLater(manager.getPlugin(), 0L);
+        }.runTaskLater(this.manager.getPlugin(), 0L);
     }
 
     public void close(boolean close) {
-        if (autoTask != null) {
+        if (this.autoTask != null) {
             this.autoTask.cancel();
-            autoTask = null;
+            this.autoTask = null;
         }
 
         this.inserter.stopInserting();
@@ -342,7 +344,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.updateInformation();
         this.setSelector();
         int size = this.getInfo(Info.SIZE);
-        this.inserter.setItems(manager.getPlugin(), this, this.getContent(size), player, size);
+        this.inserter.setItems(this.manager.getPlugin(), this, this.getContent(size), this.player, size);
         if (!needsOpen)
             this.player.updateInventory();
         else
@@ -383,11 +385,11 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     }
 
     public Player getPlayer() {
-        return player;
+        return this.player;
     }
 
     public Inventory getInventory() {
-        return inventory;
+        return this.inventory;
     }
 
     public AdvancedInventoryManager getManager() {
