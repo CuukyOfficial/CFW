@@ -22,19 +22,20 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils;
+package de.varoplugin.cfw.player;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.varoplugin.cfw.version.VersionUtils;
 
-public final class BukkitUtils {
+public final class SaveTeleport {
 
-    private BukkitUtils() {
+    private SaveTeleport() {
+        // nop
     }
 
-    public static void saveTeleport(Player player, Location location) {
+    public static void tp(Player player, Location location) {
         while (!location.getChunk().isLoaded())
             location.getChunk().load();
 
