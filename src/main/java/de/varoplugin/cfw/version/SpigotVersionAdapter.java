@@ -24,8 +24,11 @@
 
 package de.varoplugin.cfw.version;
 
-import net.md_5.bungee.api.chat.ClickEvent;
-import org.bukkit.Bukkit;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
+import java.util.function.Supplier;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -38,24 +41,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.UUID;
-import java.util.function.Supplier;
+import net.md_5.bungee.api.chat.ClickEvent;
 
 public class SpigotVersionAdapter implements VersionAdapter {
 
     private final VersionAdapter parent;
-    private final Object spigot;
 
     public SpigotVersionAdapter(Supplier<VersionAdapter> parentSupplier) {
         this.parent = parentSupplier.get();
-        try {
-            this.spigot = Bukkit.getServer().getClass().getDeclaredMethod("spigot").invoke(Bukkit.getServer());
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override
@@ -181,15 +174,5 @@ public class SpigotVersionAdapter implements VersionAdapter {
     @Override
     public void setServerProperty(String key, Object value) {
         this.parent.setServerProperty(key, value);
-    }
-
-    @Override
-    public boolean supportsAntiXray() {
-        return false;
-    }
-
-    @Override
-    public void setAntiXrayEnabled(boolean enabled) {
-        // TODO Auto-generated method stub
     }
 }

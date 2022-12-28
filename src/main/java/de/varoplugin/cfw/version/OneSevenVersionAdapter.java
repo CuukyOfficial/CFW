@@ -24,7 +24,14 @@
 
 package de.varoplugin.cfw.version;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,13 +49,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.UUID;
+import net.md_5.bungee.api.chat.ClickEvent;
 
 @SuppressWarnings("deprecation")
 class OneSevenVersionAdapter implements VersionAdapter {
@@ -341,15 +342,5 @@ class OneSevenVersionAdapter implements VersionAdapter {
     @Override
     public void setServerProperty(String key, Object value) {
         this.getServerProperties().setProperty(key, String.valueOf(value));
-    }
-
-    @Override
-    public boolean supportsAntiXray() {
-        return false;
-    }
-
-    @Override
-    public void setAntiXrayEnabled(boolean enabled) {
-        throw new UnsupportedOperationException();
     }
 }

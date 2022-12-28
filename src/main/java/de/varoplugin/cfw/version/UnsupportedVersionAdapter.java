@@ -24,7 +24,10 @@
 
 package de.varoplugin.cfw.version;
 
-import net.md_5.bungee.api.chat.ClickEvent;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.UUID;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -37,9 +40,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
-import java.util.Collection;
-import java.util.Properties;
-import java.util.UUID;
+import net.md_5.bungee.api.chat.ClickEvent;
 
 public class UnsupportedVersionAdapter implements VersionAdapter {
 
@@ -165,16 +166,6 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 
     @Override
     public void setServerProperty(String key, Object value) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean supportsAntiXray() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setAntiXrayEnabled(boolean enabled) {
         throw new UnsupportedOperationException();
     }
 }
