@@ -26,7 +26,6 @@ package de.varoplugin.cfw.inventory.confirm;
 
 import java.util.function.Consumer;
 
-import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 
 import com.cryptomorin.xseries.XMaterial;
@@ -34,6 +33,7 @@ import com.cryptomorin.xseries.XMaterial;
 import de.varoplugin.cfw.inventory.AdvancedInventory;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemInfo;
+import de.varoplugin.cfw.item.EmptyItemBuilder;
 
 public class ConfirmInventory extends AdvancedInventory {
 

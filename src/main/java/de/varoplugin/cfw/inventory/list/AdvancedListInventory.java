@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,6 +38,7 @@ import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.Info;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.inventory.ItemInfo;
+import de.varoplugin.cfw.item.EmptyItemBuilder;
 import de.varoplugin.cfw.player.hook.chat.ChatHookTriggerEvent;
 import de.varoplugin.cfw.player.hook.chat.PlayerChatHookBuilder;
 

@@ -22,40 +22,45 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.chat;
+package de.varoplugin.cfw.item;
 
-import java.util.function.Function;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 
-public class DefaultChatMessageSupplier<T> implements ChatMessageSupplier<T> {
+import java.util.List;
+import java.util.Map;
 
-    private final Function<T, String> entryFunction;
+public interface UnboundItemBuilder {
+    UnboundItemBuilder amount(int amount);
 
-    public DefaultChatMessageSupplier(Function<T, String> entryFunction) {
-        this.entryFunction = entryFunction;
-    }
+    UnboundItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
 
-    @Override
-    public String getTitle(PageableChat<T> chat) {
-        return "§8--- §fPage §7(§f" + chat.getPage() + "§7/§f" + chat.getMaxPage() + "§7) §8---";
-    }
+    UnboundItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
 
-    @Override
-    public String getFooter(PageableChat<T> chat) {
-        return null;
-    }
+    UnboundItemBuilder deleteDamageAnnotation();
 
-    @Override
-    public String getEntry(T item) {
-        return this.entryFunction.apply(item);
-    }
+    UnboundItemBuilder displayName(String displayName);
 
-    @Override
-    public String getNoEntriesFound() {
-        return "No entries found!";
-    }
+    UnboundItemBuilder addLore(String add);
 
-    @Override
-    public String getInvalidPage(int wrongPage) {
-        return "Invalid page number!";
-    }
+    UnboundItemBuilder lore(List<String> lore);
+
+    UnboundItemBuilder lore(String lore);
+
+    UnboundItemBuilder lore(String... lore);
+
+    int getAmount();
+
+    String getDisplayName();
+
+    List<String> getLore();
+
+    Map<Enchantment, Integer> getEnchantments();
+
+    boolean shallDeleteAnnotations();
+
+    ItemStack getStack();
+
+    Material getMaterial();
 }

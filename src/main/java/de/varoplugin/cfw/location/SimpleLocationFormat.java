@@ -22,10 +22,20 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.location;
+package de.varoplugin.cfw.location;
 
 import org.bukkit.Location;
 
-public interface LocationFormat {
-    String format(Location location);
+public class SimpleLocationFormat implements LocationFormat {
+
+    private final String format;
+
+    public SimpleLocationFormat(String format) {
+        this.format = format;
+    }
+
+    @Override
+    public String format(Location location) {
+        return this.format.replace("x", String.valueOf(location.getBlockX())).replace("y", String.valueOf(location.getBlockY())).replace("z", String.valueOf(location.getBlockZ())).replace("world", location.getWorld().getName());
+    }
 }

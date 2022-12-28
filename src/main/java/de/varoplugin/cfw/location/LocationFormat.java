@@ -22,17 +22,10 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.chat;
+package de.varoplugin.cfw.location;
 
-public interface ChatMessageSupplier<T> {
+import org.bukkit.Location;
 
-    String getTitle(PageableChat<T> chat);
-
-    String getFooter(PageableChat<T> chat);
-
-    String getInvalidPage(int wrongPage);
-
-    String getEntry(T item);
-
-    String getNoEntriesFound();
+public interface LocationFormat {
+    String format(Location location);
 }

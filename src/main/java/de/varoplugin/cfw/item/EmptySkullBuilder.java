@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.item;
+package de.varoplugin.cfw.item;
 
 import com.cryptomorin.xseries.XMaterial;
 import de.varoplugin.cfw.version.VersionUtils;

@@ -22,36 +22,40 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.inventory.util;
+package de.varoplugin.cfw.chat;
 
-import org.bukkit.inventory.ItemStack;
+import java.util.function.Function;
 
-import com.cryptomorin.xseries.XMaterial;
+public class DefaultChatMessageSupplier<T> implements ChatMessageSupplier<T> {
 
-public enum InventoryColor {
+    private final Function<T, String> entryFunction;
 
-    GRAY(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()),
-    WHITE(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()),
-    BROWN(XMaterial.BROWN_STAINED_GLASS_PANE.parseItem()),
-    BLACK(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem()),
-    RED(XMaterial.RED_STAINED_GLASS_PANE.parseItem()),
-    GREEN(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem()),
-    BLUE(XMaterial.BLUE_STAINED_GLASS_PANE.parseItem()),
-    YELLOW(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()),
-    MAGENTA(XMaterial.MAGENTA_STAINED_GLASS_PANE.parseItem()),
-    ORANGE(XMaterial.ORANGE_STAINED_GLASS_PANE.parseItem()),
-    PINK(XMaterial.PINK_STAINED_GLASS_PANE.parseItem()),
-    PURPLE(XMaterial.PURPLE_STAINED_GLASS_PANE.parseItem()),
-    LIME(XMaterial.LIME_STAINED_GLASS_PANE.parseItem()),
-    CYAN(XMaterial.CYAN_STAINED_GLASS_PANE.parseItem());
-
-    private final ItemStack colorPane;
-
-    InventoryColor(ItemStack colorPane) {
-        this.colorPane = colorPane;
+    public DefaultChatMessageSupplier(Function<T, String> entryFunction) {
+        this.entryFunction = entryFunction;
     }
 
-    public ItemStack getColorPane() {
-        return colorPane;
+    @Override
+    public String getTitle(PageableChat<T> chat) {
+        return "§8--- §fPage §7(§f" + chat.getPage() + "§7/§f" + chat.getMaxPage() + "§7) §8---";
+    }
+
+    @Override
+    public String getFooter(PageableChat<T> chat) {
+        return null;
+    }
+
+    @Override
+    public String getEntry(T item) {
+        return this.entryFunction.apply(item);
+    }
+
+    @Override
+    public String getNoEntriesFound() {
+        return "No entries found!";
+    }
+
+    @Override
+    public String getInvalidPage(int wrongPage) {
+        return "Invalid page number!";
     }
 }

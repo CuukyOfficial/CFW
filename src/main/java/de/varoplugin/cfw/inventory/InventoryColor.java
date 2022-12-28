@@ -22,20 +22,36 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.location;
+package de.varoplugin.cfw.inventory;
 
-import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
 
-public class SimpleLocationFormat implements LocationFormat {
+import com.cryptomorin.xseries.XMaterial;
 
-    private final String format;
+public enum InventoryColor {
 
-    public SimpleLocationFormat(String format) {
-        this.format = format;
+    GRAY(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()),
+    WHITE(XMaterial.WHITE_STAINED_GLASS_PANE.parseItem()),
+    BROWN(XMaterial.BROWN_STAINED_GLASS_PANE.parseItem()),
+    BLACK(XMaterial.BLACK_STAINED_GLASS_PANE.parseItem()),
+    RED(XMaterial.RED_STAINED_GLASS_PANE.parseItem()),
+    GREEN(XMaterial.GREEN_STAINED_GLASS_PANE.parseItem()),
+    BLUE(XMaterial.BLUE_STAINED_GLASS_PANE.parseItem()),
+    YELLOW(XMaterial.YELLOW_STAINED_GLASS_PANE.parseItem()),
+    MAGENTA(XMaterial.MAGENTA_STAINED_GLASS_PANE.parseItem()),
+    ORANGE(XMaterial.ORANGE_STAINED_GLASS_PANE.parseItem()),
+    PINK(XMaterial.PINK_STAINED_GLASS_PANE.parseItem()),
+    PURPLE(XMaterial.PURPLE_STAINED_GLASS_PANE.parseItem()),
+    LIME(XMaterial.LIME_STAINED_GLASS_PANE.parseItem()),
+    CYAN(XMaterial.CYAN_STAINED_GLASS_PANE.parseItem());
+
+    private final ItemStack colorPane;
+
+    InventoryColor(ItemStack colorPane) {
+        this.colorPane = colorPane;
     }
 
-    @Override
-    public String format(Location location) {
-        return this.format.replace("x", String.valueOf(location.getBlockX())).replace("y", String.valueOf(location.getBlockY())).replace("z", String.valueOf(location.getBlockZ())).replace("world", location.getWorld().getName());
+    public ItemStack getColorPane() {
+        return colorPane;
     }
 }

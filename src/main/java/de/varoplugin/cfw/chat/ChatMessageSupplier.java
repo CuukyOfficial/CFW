@@ -22,45 +22,17 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.item;
+package de.varoplugin.cfw.chat;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemStack;
+public interface ChatMessageSupplier<T> {
 
-import java.util.List;
-import java.util.Map;
+    String getTitle(PageableChat<T> chat);
 
-public interface UnboundItemBuilder {
-    UnboundItemBuilder amount(int amount);
+    String getFooter(PageableChat<T> chat);
 
-    UnboundItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
+    String getInvalidPage(int wrongPage);
 
-    UnboundItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
+    String getEntry(T item);
 
-    UnboundItemBuilder deleteDamageAnnotation();
-
-    UnboundItemBuilder displayName(String displayName);
-
-    UnboundItemBuilder addLore(String add);
-
-    UnboundItemBuilder lore(List<String> lore);
-
-    UnboundItemBuilder lore(String lore);
-
-    UnboundItemBuilder lore(String... lore);
-
-    int getAmount();
-
-    String getDisplayName();
-
-    List<String> getLore();
-
-    Map<Enchantment, Integer> getEnchantments();
-
-    boolean shallDeleteAnnotations();
-
-    ItemStack getStack();
-
-    Material getMaterial();
+    String getNoEntriesFound();
 }

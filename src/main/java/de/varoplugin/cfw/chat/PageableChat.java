@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.chat;
+package de.varoplugin.cfw.chat;
 
 import java.util.List;
 

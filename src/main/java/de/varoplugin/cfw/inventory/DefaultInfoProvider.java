@@ -26,7 +26,6 @@ package de.varoplugin.cfw.inventory;
 
 import java.util.function.Consumer;
 
-import de.varoplugin.cfw.utils.item.EmptyItemBuilder;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,6 +33,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 
 import de.varoplugin.cfw.inventory.inserter.DirectInserter;
+import de.varoplugin.cfw.item.EmptyItemBuilder;
 
 public interface DefaultInfoProvider extends InfoProvider {
 

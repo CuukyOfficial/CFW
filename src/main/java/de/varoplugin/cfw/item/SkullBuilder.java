@@ -22,39 +22,35 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.item;
+package de.varoplugin.cfw.item;
 
-import com.cryptomorin.xseries.XMaterial;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.UUID;
 
-public interface ItemBuilder extends UnboundItemBuilder {
-    ItemStack build();
+public interface SkullBuilder extends UnboundItemBuilder {
+    ItemStack build(UUID uuid);
 
-    ItemBuilder material(Material material);
+    ItemStack build(Player player);
 
-    ItemBuilder material(XMaterial material);
+    SkullBuilder amount(int amount);
 
-    ItemBuilder itemStack(ItemStack stack);
+    SkullBuilder addEnchantment(Enchantment enchantment, int amplifier);
 
-    ItemBuilder amount(int amount);
+    SkullBuilder deleteDamageAnnotation(boolean deleteAnnotations);
 
-    ItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
+    SkullBuilder deleteDamageAnnotation();
 
-    ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
+    SkullBuilder displayName(String displayName);
 
-    ItemBuilder deleteDamageAnnotation();
+    SkullBuilder addLore(String add);
 
-    ItemBuilder displayName(String displayName);
+    SkullBuilder lore(List<String> lore);
 
-    ItemBuilder addLore(String add);
+    SkullBuilder lore(String lore);
 
-    ItemBuilder lore(List<String> lore);
-
-    ItemBuilder lore(String lore);
-
-    ItemBuilder lore(String... lore);
+    SkullBuilder lore(String... lore);
 }
