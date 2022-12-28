@@ -41,7 +41,7 @@ public class VersionUtils {
     private final static ServerVersion version;
     private final static ServerSoftware serverSoftware;
     private final static VersionAdapter versionAdapter;
-    private final static Map<Player, MinecraftVersion> playerVersions;
+    private final static Map<Player, ProtocolVersion> playerVersions;
 
     static {
         forgeSupport = isClassPresent(FORGE_CLASS);
@@ -97,8 +97,8 @@ public class VersionUtils {
         return forgeSupport;
     }
 
-    public static MinecraftVersion getMinecraftVersion(Player player) {
-        MinecraftVersion version = playerVersions.get(player);
+    public static ProtocolVersion getMinecraftVersion(Player player) {
+        ProtocolVersion version = playerVersions.get(player);
         if (version != null)
             return version;
 
@@ -110,7 +110,7 @@ public class VersionUtils {
         else
             System.err.println("[CFW] Cannot get version of player without protocolsupport or viaversion installed");
 
-        playerVersions.put(player, version = MinecraftVersion.getMinecraftVersion(protocolId));
+        playerVersions.put(player, version = ProtocolVersion.getMinecraftVersion(protocolId));
         return version;
     }
 

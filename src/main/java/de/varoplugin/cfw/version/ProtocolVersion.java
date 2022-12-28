@@ -26,10 +26,11 @@ package de.varoplugin.cfw.version;
 
 import java.util.Arrays;
 
-public enum MinecraftVersion {
+public enum ProtocolVersion {
 
     // Protocol version numbers: https://wiki.vg/Protocol_version_numbers
 
+    MINECRAFT_1_19_3(761, "1.19.3"),
     MINECRAFT_1_19_2(760, "1.19.1-1.19.2"),
     MINECRAFT_1_19(759, "1.19"),
     MINECRAFT_1_18_2(758, "1.18.2"),
@@ -70,16 +71,16 @@ public enum MinecraftVersion {
     private final int protocolId;
     private final String name;
 
-    MinecraftVersion(int id, String name) {
+    ProtocolVersion(int id, String name) {
         this.name = name;
         this.protocolId = id;
     }
 
-    public boolean isHigherThan(MinecraftVersion version) {
+    public boolean isHigherThan(ProtocolVersion version) {
         return this.protocolId > version.getProtocolId();
     }
 
-    public boolean isLowerThan(MinecraftVersion version) {
+    public boolean isLowerThan(ProtocolVersion version) {
         return this.protocolId < version.getProtocolId();
     }
 
@@ -91,16 +92,16 @@ public enum MinecraftVersion {
         return this.protocolId;
     }
 
-    public static MinecraftVersion getMinecraftVersion(int protocolId) {
-        MinecraftVersion version = MINECRAFT_1_7_2;
-        for (MinecraftVersion mcver : MinecraftVersion.values())
+    public static ProtocolVersion getMinecraftVersion(int protocolId) {
+        ProtocolVersion version = MINECRAFT_1_7_2;
+        for (ProtocolVersion mcver : ProtocolVersion.values())
             if (protocolId >= mcver.getProtocolId() && mcver.isHigherThan(version))
                 version = mcver;
 
         return version;
     }
 
-    public static MinecraftVersion getMinecraftVersion(String versionname) {
-        return Arrays.stream(MinecraftVersion.values()).filter(ver -> ver.getName().equals(versionname)).findFirst().orElse(null);
+    public static ProtocolVersion getMinecraftVersion(String versionname) {
+        return Arrays.stream(ProtocolVersion.values()).filter(ver -> ver.getName().equals(versionname)).findFirst().orElse(null);
     }
 }
