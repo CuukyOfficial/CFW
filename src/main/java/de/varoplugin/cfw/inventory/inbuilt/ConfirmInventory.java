@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.inventory.confirm;
+package de.varoplugin.cfw.inventory.inbuilt;
 
 import java.util.function.Consumer;
 

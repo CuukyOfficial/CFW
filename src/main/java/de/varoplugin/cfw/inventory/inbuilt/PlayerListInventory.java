@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.inventory.list.player;
+package de.varoplugin.cfw.inventory.inbuilt;
 
 import com.cryptomorin.xseries.XMaterial;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
