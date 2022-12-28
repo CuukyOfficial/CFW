@@ -22,34 +22,32 @@
  * SOFTWARE.
  */
 
-package de.varoplugin.cfw.utils.listener;
+package de.varoplugin.cfw.utils;
 
 import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.projectiles.ProjectileSource;
 
-public class EntityDamageByEntityUtil {
-
-    private final Player damager;
-
-    public EntityDamageByEntityUtil(EntityDamageByEntityEvent event) {
-
-        if (event.getDamager() instanceof Arrow) {
-            if ((((Arrow) event.getDamager()).getShooter() instanceof Player))
-                this.damager = ((Player) ((Arrow) event.getDamager()).getShooter());
-            else
-                this.damager = null;
-        } else if (event.getDamager() instanceof Player)
-            this.damager = (Player) event.getDamager();
-        else
-            this.damager = null;
-    }
+public class EventUtils {
 
     /**
-     *
-     * @return Returns the player who damaged another player regardless the weapon he used
+     * Returns the {@link Player} who damaged another {@link Entity}, regardless of the weapon used.
+     * 
+     * @param event The event
+     * @return The player (possibly {@code null})
      */
-    public Player getDamager() {
-        return this.damager;
+    public static Player getDamager(EntityDamageByEntityEvent event) {
+        Entity eventDamager = event.getDamager();
+        if (eventDamager instanceof Player)
+            return (Player) eventDamager;
+        if (eventDamager instanceof Arrow) {
+            ProjectileSource projectileSource = ((Arrow) eventDamager).getShooter();
+            if (projectileSource instanceof Player)
+                return (Player) projectileSource;
+            return null;
+        }
+        return null;
     }
 }
