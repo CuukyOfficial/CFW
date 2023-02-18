@@ -24,6 +24,8 @@
 
 package de.cuuky.cfw.player.hud;
 
+import org.bukkit.entity.Player;
+
 import de.cuuky.cfw.player.CustomPlayer;
 import de.cuuky.cfw.version.VersionAdapter;
 import de.cuuky.cfw.version.VersionUtils;
@@ -66,7 +68,10 @@ public class StaticTablist {
         this.headerBuffer = this.headerEnabled ? header == null ? this.headerBuffer : this.processString(header) : "";
         this.footerBuffer = this.footerEnabled ? footer == null ? this.footerBuffer : this.processString(footer) : "";
 
-        VERISON_ADAPTER.sendTablist(this.player.getPlayer(), this.headerBuffer, this.footerBuffer);
+        Player player = this.player.getPlayer();
+
+        if (player != null)
+            VERISON_ADAPTER.sendTablist(player, this.headerBuffer, this.footerBuffer);
     }
 
     protected String processString(String input) {
