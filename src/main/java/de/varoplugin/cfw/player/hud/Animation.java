@@ -24,12 +24,15 @@
 
 package de.varoplugin.cfw.player.hud;
 
+import java.util.Objects;
+
 class Animation<T> {
 
     private final AnimationData<T> data;
     private long ticksPassed;
 
     Animation(AnimationData<T> data) {
+        Objects.requireNonNull(data);
         this.data = data;
     }
 

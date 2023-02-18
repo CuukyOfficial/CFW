@@ -24,6 +24,8 @@
 
 package de.varoplugin.cfw.player.hud;
 
+import java.util.Objects;
+
 import org.bukkit.entity.Player;
 
 import de.varoplugin.cfw.version.VersionAdapter;
@@ -40,6 +42,7 @@ public class StaticTablist {
     private boolean footerEnabled;
 
     public StaticTablist(Player player, String header, String footer) {
+        Objects.requireNonNull(player);
         this.player = player;
         this.headerEnabled = true;
         this.footerEnabled = true;
@@ -48,6 +51,7 @@ public class StaticTablist {
     }
 
     public StaticTablist(Player player) {
+        Objects.requireNonNull(player);
         this.player = player;
         this.headerEnabled = false;
         this.footerEnabled = false;
