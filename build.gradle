@@ -65,6 +65,8 @@ publishing {
                 description = 'A powerful bukkit framework that runs on 1.7+ and makes coding with bukkit less painful'
                 url = 'https://github.com/CuukyOfficial/CFW'
 			}
+
+			artifactId = "cfw"
 		}
 	}
 
