@@ -1,6 +1,4 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import java.security.MessageDigest
-import java.util.*
 
 plugins {
     id("java-library")
@@ -105,7 +103,3 @@ publishing {
         }
     }
 }
-
-val mdSha512: MessageDigest = MessageDigest.getInstance("SHA-512")
-fun File.sha512() : ByteArray = mdSha512.digest(this.readBytes())
-fun ByteArray.base64() : String = Base64.getEncoder().encodeToString(this)
