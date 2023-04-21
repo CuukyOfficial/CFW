@@ -1,4 +1,4 @@
-name: @name@
-author: @author@
-version: @version@
+name: ${name}
+author: ${author}
+version: ${version}
 main: de.varoplugin.cfw.Main
