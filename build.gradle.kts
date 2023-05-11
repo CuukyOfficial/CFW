@@ -26,24 +26,8 @@ repositories {
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
 }
 
-val internal: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
-}
-
-val runtimeDownload: Configuration by configurations.creating {
-    configurations.implementation.get().extendsFrom(this)
-}
-
-fun DependencyHandler.modularInternal(dependencyNotation: Any, localFileName: String) : Dependency? {
-    val file = file("${rootDir}/libs/${localFileName}.jar")
-    return if (file.exists())
-        this.add("internal", files(file))
-    else
-        this.add("internal", dependencyNotation)
-}
-
 dependencies {
-    modularInternal("com.github.cryptomorin:XSeries:9.3.1", "XSeries")
+    implementation("com.github.cryptomorin:XSeries:9.3.1", "XSeries")
     implementation("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("com.googlecode.json-simple:json-simple:1.1.1")
 
@@ -56,9 +40,6 @@ tasks.jar {
         destinationDirectory.set(file(project.property("destinationDir").toString()))
     if (project.hasProperty("fileName"))
         archiveFileName.set(project.property("fileName").toString())
-
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from(internal.map { if (it.isDirectory) it else zipTree(it) })
 }
 
 tasks.test {
