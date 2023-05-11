@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 plugins {
     id("java-library")
     id("maven-publish")
-//    id("checkstyle")
+    id("checkstyle")
 }
 
 group = "de.varoplugin"
@@ -59,6 +59,11 @@ tasks.processResources {
         include("**/plugin.yml")
         expand("name" to project.name, "version" to project.version, "author" to "Cuuky")
     }
+}
+
+checkstyle {
+    configDirectory.set(File("./checkstyle"))
+    toolVersion = "9.3"
 }
 
 publishing {
