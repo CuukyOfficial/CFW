@@ -28,14 +28,8 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class OneNineteenVersionAdapter extends OneSeventeenVersionAdapter {
-
-    @Override
-    public void setXpCooldown(Player player, int cooldown) {
-        player.setExpCooldown(cooldown);
-    }
 
     @Override
     public void forceClearWorlds() {
