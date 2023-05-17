@@ -28,12 +28,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.Team;
 
+import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.VersionAdapter;
 import de.varoplugin.cfw.version.VersionUtils;
 
 class PlayerNameTag {
 
     private static final VersionAdapter VERISON_ADAPTER = VersionUtils.getVersionAdapter();
+    private static final boolean ONE_SEVEN = VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_8);
 
     private final ScoreboardInstance scoreboard;
     private String name;
@@ -54,7 +56,8 @@ class PlayerNameTag {
 
     void updatePlayer(Player player, boolean visible, String name, String prefix, String suffix) {
         Scoreboard scoreboard = this.scoreboard.getScoreboard();
-        Team team = scoreboard.getEntryTeam(player.getName());
+        @SuppressWarnings("deprecation")
+        Team team = ONE_SEVEN ? scoreboard.getPlayerTeam(player) : scoreboard.getEntryTeam(player.getName());
 
         if (team != null && !team.getName().equals(name)) {
             team.removeEntry(player.getName());
