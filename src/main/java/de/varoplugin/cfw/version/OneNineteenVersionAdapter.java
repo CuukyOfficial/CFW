@@ -47,6 +47,6 @@ public class OneNineteenVersionAdapter extends OneSeventeenVersionAdapter {
 
     @Override
     protected String getWorldServerFieldName() {
-        return "O";
+        return "v1_19_R3".equals(VersionUtils.getNmsVersion()) ? "P" : "O";
     }
 }

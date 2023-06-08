@@ -32,4 +32,9 @@ public class OneTwentyVersionAdapter extends OneNineteenVersionAdapter {
     public void setXpCooldown(Player player, int cooldown) {
         player.setExpCooldown(cooldown);
     }
+
+    @Override
+    protected String getWorldServerFieldName() {
+        return "P";
+    }
 }
