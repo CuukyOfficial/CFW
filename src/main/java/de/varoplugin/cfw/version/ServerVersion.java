@@ -28,7 +28,7 @@ import java.util.function.Supplier;
 
 public enum ServerVersion {
 
-    ONE_20(20, OneNineteenVersionAdapter::new),
+    ONE_20(20, OneTwentyVersionAdapter::new),
     ONE_19(19, OneNineteenVersionAdapter::new),
     ONE_18(18, OneSeventeenVersionAdapter::new),
     ONE_17(17, OneSeventeenVersionAdapter::new),
