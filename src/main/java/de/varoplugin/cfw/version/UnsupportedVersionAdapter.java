@@ -26,7 +26,6 @@ package de.varoplugin.cfw.version;
 
 import java.util.Collection;
 import java.util.Properties;
-import java.util.UUID;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -36,7 +35,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Team;
 
@@ -91,11 +89,6 @@ public class UnsupportedVersionAdapter implements VersionAdapter {
 
     @Override
     public void sendTitle(Player player, String title, String subtitle) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
         throw new UnsupportedOperationException();
     }
 

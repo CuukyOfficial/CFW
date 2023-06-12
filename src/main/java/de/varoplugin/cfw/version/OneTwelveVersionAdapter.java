@@ -26,13 +26,10 @@ package de.varoplugin.cfw.version;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.SkullMeta;
 
 class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 
@@ -70,11 +67,6 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
     @Override
     protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return this.packetChatConstructor.newInstance(text, this.messageTypeSystem);
-    }
-
-    @Override
-    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
-        skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
     }
 
     @Override

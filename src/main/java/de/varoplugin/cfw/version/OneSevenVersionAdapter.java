@@ -30,7 +30,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Properties;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -42,7 +41,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Sign;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -235,11 +233,6 @@ class OneSevenVersionAdapter implements VersionAdapter {
     @Override
     public void sendTitle(Player player, String title, String subtitle) {
         // 1.8+
-    }
-
-    @Override
-    public void setOwningPlayer(SkullMeta skullMeta, UUID uuid) {
-        skullMeta.setOwner(uuid.toString());
     }
 
     @Override

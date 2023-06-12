@@ -24,19 +24,19 @@
 
 package de.varoplugin.cfw.item;
 
-import com.cryptomorin.xseries.XMaterial;
-import de.varoplugin.cfw.version.VersionUtils;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+
+import com.cryptomorin.xseries.XMaterial;
 
 public class EmptySkullBuilder implements SkullBuilder {
 
@@ -46,22 +46,28 @@ public class EmptySkullBuilder implements SkullBuilder {
         this.itemBuilder = new EmptyItemBuilder().itemStack(Objects.requireNonNull(XMaterial.PLAYER_HEAD.parseItem()));
     }
 
-    private ItemMeta applyMeta(ItemMeta meta, UUID uuid) {
-        SkullMeta sm = (SkullMeta) meta;
-        VersionUtils.getVersionAdapter().setOwningPlayer(sm, uuid);
-        return sm;
-    }
-
     @Override
     public ItemStack build(UUID uuid) {
-        ItemStack built = this.itemBuilder.build();
-        built.setItemMeta(this.applyMeta(built.getItemMeta(), uuid));
-        return built;
+        ItemStack item = this.itemBuilder.build();
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
+        item.setItemMeta(meta);
+        return item;
     }
 
     @Override
     public ItemStack build(Player player) {
         return this.build(player.getUniqueId());
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public ItemStack build(String name) {
+        ItemStack item = this.itemBuilder.build();
+        SkullMeta meta = (SkullMeta) item.getItemMeta();
+        meta.setOwner(name);
+        item.setItemMeta(meta);
+        return item;
     }
 
     @Override

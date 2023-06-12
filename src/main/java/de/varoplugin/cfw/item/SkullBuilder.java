@@ -37,6 +37,8 @@ public interface SkullBuilder extends UnboundItemBuilder {
 
     ItemStack build(Player player);
 
+    ItemStack build(String name);
+
     @Override
     SkullBuilder amount(int amount);
 
