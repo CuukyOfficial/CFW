@@ -29,9 +29,9 @@ import org.bukkit.entity.Player;
 
 import de.varoplugin.cfw.version.VersionUtils;
 
-public final class SaveTeleport {
+public final class SafeTeleport {
 
-    private SaveTeleport() {
+    private SafeTeleport() {
         // nop
     }
 
