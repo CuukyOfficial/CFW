@@ -38,7 +38,7 @@ import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.Info;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.inventory.ItemInfo;
-import de.varoplugin.cfw.item.EmptyItemBuilder;
+import de.varoplugin.cfw.item.ItemBuilder;
 import de.varoplugin.cfw.player.hook.chat.ChatHookTriggerEvent;
 import de.varoplugin.cfw.player.hook.chat.PlayerChatHookBuilder;
 
@@ -102,7 +102,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
     }
 
     protected ItemInfo getEmptyInfoStack() {
-        return new ItemInfo(this.getCenter(), new EmptyItemBuilder().displayName(this.getEmptyName()).material(XMaterial.POPPY).lore(this.emptyClicked < 30 ? "§f:(" : "§f>:(").build());
+        return new ItemInfo(this.getCenter(), ItemBuilder.material(XMaterial.POPPY).displayName(this.getEmptyName()).lore(this.emptyClicked < 30 ? "§f:(" : "§f>:(").build());
     }
 
     protected ItemClick getEmptyInfoClick() {
@@ -122,7 +122,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
     protected ItemInfo getJumpToItemInfo() {
         if (this.getInfo(Info.HOTBAR_SIZE) == 0)
             return null;
-        return new ItemInfo(this.getUsableSize() + 5, new EmptyItemBuilder().displayName("§2Jump to...").material(XMaterial.MAP).build());
+        return new ItemInfo(this.getUsableSize() + 5, ItemBuilder.material(XMaterial.MAP).displayName("§2Jump to...").build());
     }
 
     protected ItemClick getJumpToClick() {

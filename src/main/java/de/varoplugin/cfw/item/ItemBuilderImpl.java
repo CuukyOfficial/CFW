@@ -40,18 +40,25 @@ import com.cryptomorin.xseries.XMaterial;
 
 import de.varoplugin.cfw.version.VersionUtils;
 
-public class EmptyItemBuilder implements ItemBuilder {
+class ItemBuilderImpl implements ItemBuilder {
 
-    private ItemStack stack;
-    private Material material;
+    private final ItemStack itemStack;
     private String displayName;
     private List<String> lore;
-    private final Map<Enchantment, Integer> enchantments;
+    private final Map<Enchantment, Integer> enchantments = new HashMap<>();
     private int amount = 1;
     private boolean deleteAnnotations;
 
-    public EmptyItemBuilder() {
-        this.enchantments = new HashMap<>();
+    ItemBuilderImpl(ItemStack itemStack) {
+        this.itemStack = itemStack;
+    }
+
+    ItemBuilderImpl(Material material) {
+        this(new ItemStack(material));
+    }
+
+    ItemBuilderImpl(XMaterial material) {
+        this(Objects.requireNonNull(material.parseItem()));
     }
 
     protected ItemMeta applyMeta(ItemMeta meta, Material type) {
@@ -64,7 +71,7 @@ public class EmptyItemBuilder implements ItemBuilder {
 
     @Override
     public ItemStack build() {
-        ItemStack stack = this.stack != null ? this.stack : new ItemStack(this.material);
+        ItemStack stack = this.itemStack;
         ItemMeta meta = stack.getItemMeta();
         if (meta != null)
             stack.setItemMeta(this.applyMeta(meta, stack.getType()));
@@ -95,30 +102,8 @@ public class EmptyItemBuilder implements ItemBuilder {
     }
 
     @Override
-    public ItemBuilder deleteDamageAnnotation() {
-        return this.deleteDamageAnnotation(true);
-    }
-
-    @Override
-    public ItemBuilder material(Material material) {
-        this.material = material;
-        return this;
-    }
-
-    @Override
-    public ItemBuilder material(XMaterial material) {
-        return this.itemStack(Objects.requireNonNull(material.parseItem()));
-    }
-
-    @Override
     public ItemBuilder displayName(String displayName) {
         this.displayName = displayName;
-        return this;
-    }
-
-    @Override
-    public ItemBuilder itemStack(ItemStack stack) {
-        this.stack = stack.clone();
         return this;
     }
 
@@ -134,11 +119,6 @@ public class EmptyItemBuilder implements ItemBuilder {
     public ItemBuilder lore(List<String> lore) {
         this.lore = lore;
         return this;
-    }
-
-    @Override
-    public ItemBuilder lore(String lore) {
-        return this.lore(lore == null || lore.isEmpty() ? null : lore.split("\n"));
     }
 
     @Override
@@ -173,11 +153,11 @@ public class EmptyItemBuilder implements ItemBuilder {
 
     @Override
     public ItemStack getStack() {
-        return this.stack;
+        return this.itemStack;
     }
 
     @Override
     public Material getMaterial() {
-        return this.material;
+        return this.itemStack.getType();
     }
 }

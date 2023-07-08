@@ -34,7 +34,7 @@ import com.cryptomorin.xseries.XMaterial;
 
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
-import de.varoplugin.cfw.item.EmptyItemBuilder;
+import de.varoplugin.cfw.item.ItemBuilder;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 
@@ -43,7 +43,7 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
     }
 
     protected ItemStack getLoadingItem() {
-        return new EmptyItemBuilder().displayName("§cLoading...").material(XMaterial.COAL).build();
+        return ItemBuilder.material(XMaterial.COAL).displayName("§cLoading...").build();
     }
 
     @Override

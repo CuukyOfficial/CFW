@@ -25,47 +25,78 @@
 package de.varoplugin.cfw.item;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.cryptomorin.xseries.XMaterial;
 
-public interface ItemBuilder extends UnboundItemBuilder {
+import de.varoplugin.cfw.version.ServerVersion;
+import de.varoplugin.cfw.version.VersionUtils;
+
+public interface ItemBuilder {
 
     ItemStack build();
 
-    ItemBuilder material(Material material);
-
-    ItemBuilder material(XMaterial material);
-
-    ItemBuilder itemStack(ItemStack stack);
-
-    @Override
     ItemBuilder amount(int amount);
 
-    @Override
     ItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
 
-    @Override
     ItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
 
-    @Override
-    ItemBuilder deleteDamageAnnotation();
+    default ItemBuilder deleteDamageAnnotation() {
+        return this.deleteDamageAnnotation(true);
+    }
 
-    @Override
     ItemBuilder displayName(String displayName);
 
-    @Override
     ItemBuilder addLore(String add);
 
-    @Override
     ItemBuilder lore(List<String> lore);
 
-    @Override
-    ItemBuilder lore(String lore);
-
-    @Override
     ItemBuilder lore(String... lore);
+
+    int getAmount();
+
+    String getDisplayName();
+
+    List<String> getLore();
+
+    Map<Enchantment, Integer> getEnchantments();
+
+    boolean shallDeleteAnnotations();
+
+    ItemStack getStack();
+
+    Material getMaterial();
+
+    public static ItemBuilder material(Material material) {
+        return new ItemBuilderImpl(material);
+    }
+
+    public static ItemBuilder material(XMaterial material) {
+        return new ItemBuilderImpl(material);
+    }
+
+    public static ItemBuilder itemStack(ItemStack itemStack) {
+        return new ItemBuilderImpl(itemStack);
+    }
+
+    public static ItemBuilder skull(UUID uuid) {
+        if (VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_12))
+            return skull(uuid.toString());
+        return SkullBuilderImpl.uuid(uuid);
+    }
+
+    public static ItemBuilder skull(String name) {
+        return SkullBuilderImpl.name(name);
+    }
+
+    public static ItemBuilder skull(Player player) {
+        return skull(player.getUniqueId());
+    }
 }

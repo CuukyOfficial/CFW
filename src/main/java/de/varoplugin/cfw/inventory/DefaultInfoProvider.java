@@ -33,7 +33,7 @@ import com.cryptomorin.xseries.XMaterial;
 import com.cryptomorin.xseries.XSound;
 
 import de.varoplugin.cfw.inventory.inserter.DirectInserter;
-import de.varoplugin.cfw.item.EmptyItemBuilder;
+import de.varoplugin.cfw.item.ItemBuilder;
 
 public interface DefaultInfoProvider extends InfoProvider {
 
@@ -75,27 +75,27 @@ public interface DefaultInfoProvider extends InfoProvider {
 
     @Override
     default ItemInfo getBackwardsInfo() {
-        return new ItemInfo(this.getUser().getUsableSize(), new EmptyItemBuilder().material(XMaterial.ARROW).displayName("§cBackwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
+        return new ItemInfo(this.getUser().getUsableSize(), ItemBuilder.material(XMaterial.ARROW).displayName("§cBackwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
     }
 
     @Override
     default ItemInfo getForwardsInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 8, new EmptyItemBuilder().material(XMaterial.ARROW).displayName("§aForwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
+        return new ItemInfo(this.getUser().getUsableSize() + 8, ItemBuilder.material(XMaterial.ARROW).displayName("§aForwards " + this.getUser().getInfo(Info.PAGE_VIEWER)).build());
     }
 
     @Override
     default ItemInfo getCloseInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 4, new EmptyItemBuilder().material(XMaterial.REDSTONE).displayName("§4Close").build());
+        return new ItemInfo(this.getUser().getUsableSize() + 4, ItemBuilder.material(XMaterial.REDSTONE).displayName("§4Close").build());
     }
 
     @Override
     default ItemInfo getBackInfo() {
-        return new ItemInfo(this.getUser().getUsableSize() + 3, new EmptyItemBuilder().material(XMaterial.STONE_BUTTON).displayName("§cBack").build());
+        return new ItemInfo(this.getUser().getUsableSize() + 3, ItemBuilder.material(XMaterial.STONE_BUTTON).displayName("§cBack").build());
     }
 
     @Override
     default ItemStack getFillerStack() {
-        return new EmptyItemBuilder().displayName("§c").material(XMaterial.BLACK_STAINED_GLASS_PANE).build();
+        return ItemBuilder.material(XMaterial.BLACK_STAINED_GLASS_PANE).displayName("§c").build();
     }
 
     @Override

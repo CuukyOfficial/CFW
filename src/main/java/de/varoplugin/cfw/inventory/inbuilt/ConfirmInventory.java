@@ -33,7 +33,7 @@ import com.cryptomorin.xseries.XMaterial;
 import de.varoplugin.cfw.inventory.AdvancedInventory;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemInfo;
-import de.varoplugin.cfw.item.EmptyItemBuilder;
+import de.varoplugin.cfw.item.ItemBuilder;
 
 public class ConfirmInventory extends AdvancedInventory {
 
@@ -52,11 +52,11 @@ public class ConfirmInventory extends AdvancedInventory {
     }
 
     protected ItemInfo getYesItem() {
-        return new ItemInfo(this.getCenter() - 2, new EmptyItemBuilder().displayName("§2Yes").material(XMaterial.GREEN_DYE).build());
+        return new ItemInfo(this.getCenter() - 2, ItemBuilder.material(XMaterial.GREEN_DYE).displayName("§2Yes").build());
     }
 
     protected ItemInfo getNoItem() {
-        return new ItemInfo(this.getCenter() + 2, new EmptyItemBuilder().displayName("§4No").material(XMaterial.RED_DYE).build());
+        return new ItemInfo(this.getCenter() + 2, ItemBuilder.material(XMaterial.RED_DYE).displayName("§4No").build());
     }
 
     @Override

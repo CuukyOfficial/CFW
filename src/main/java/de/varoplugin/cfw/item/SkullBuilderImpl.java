@@ -24,44 +24,39 @@
 
 package de.varoplugin.cfw.item;
 
-import java.util.List;
-import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
+import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
-public interface UnboundItemBuilder {
+import com.cryptomorin.xseries.XMaterial;
 
-    UnboundItemBuilder amount(int amount);
+class SkullBuilderImpl extends ItemBuilderImpl {
 
-    UnboundItemBuilder addEnchantment(Enchantment enchantment, int amplifier);
+    private final Consumer<SkullMeta> callback;
 
-    UnboundItemBuilder deleteDamageAnnotation(boolean deleteAnnotations);
+    SkullBuilderImpl(Consumer<SkullMeta> callback) {
+        super(XMaterial.PLAYER_HEAD);
+        this.callback = callback;
+    }
 
-    UnboundItemBuilder deleteDamageAnnotation();
+    @Override
+    public ItemStack build() {
+        ItemStack itemStack = super.build();
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        this.callback.accept(meta);
+        itemStack.setItemMeta(meta);
+        return itemStack;
+    }
 
-    UnboundItemBuilder displayName(String displayName);
+    static SkullBuilderImpl uuid(UUID uuid) {
+        return new SkullBuilderImpl(meta -> meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid)));
+    }
 
-    UnboundItemBuilder addLore(String add);
-
-    UnboundItemBuilder lore(List<String> lore);
-
-    UnboundItemBuilder lore(String lore);
-
-    UnboundItemBuilder lore(String... lore);
-
-    int getAmount();
-
-    String getDisplayName();
-
-    List<String> getLore();
-
-    Map<Enchantment, Integer> getEnchantments();
-
-    boolean shallDeleteAnnotations();
-
-    ItemStack getStack();
-
-    Material getMaterial();
+    @SuppressWarnings("deprecation")
+    static SkullBuilderImpl name(String name) {
+        return new SkullBuilderImpl(meta -> meta.setOwner(name));
+    }
 }
