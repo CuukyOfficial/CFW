@@ -49,7 +49,7 @@ public class PlayerProfileUtils {
      * Blocks the current thread and sends a request to Mojang's API in order to fetch the {@link UUID} that belongs to the player with the given name.
      * 
      * @param name    The name of the player.
-     * @param timeout The connection timeout in milliseconds. Should be &gt= 0.
+     * @param timeout The connection timeout in milliseconds. Should be &gt;= 0.
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the name is {@code null} or if timeout is negative.
      */
@@ -90,7 +90,7 @@ public class PlayerProfileUtils {
      * Blocks the current thread and sends a request to Mojang's API in order to fetch the name that belongs to the player with the given {@link UUID}.
      * 
      * @param uuid    The uuid of the player.
-     * @param timeout The connection timeout in milliseconds. Should be &gt=0.
+     * @param timeout The connection timeout in milliseconds. Should be &gt;=0.
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the uuid is {@code null} or if timeout is negative.
      */
@@ -162,7 +162,7 @@ public class PlayerProfileUtils {
      * given name.
      * 
      * @param name    The name of the player.
-     * @param timeout The connection timeout in milliseconds. Should be &gt= 0.
+     * @param timeout The connection timeout in milliseconds. Should be &gt;= 0.
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the name is {@code null} or if timeout is negative.
      */
@@ -193,7 +193,7 @@ public class PlayerProfileUtils {
      * {@link UUID}.
      * 
      * @param uuid    The uuid of the player.
-     * @param timeout The connection timeout in milliseconds. Should be &gt= 0.
+     * @param timeout The connection timeout in milliseconds. Should be &gt;= 0.
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the name is {@code null} or if timeout is negative.
      */
