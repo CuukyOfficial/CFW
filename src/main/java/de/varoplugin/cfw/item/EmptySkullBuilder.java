@@ -38,6 +38,9 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.cryptomorin.xseries.XMaterial;
 
+import de.varoplugin.cfw.version.ServerVersion;
+import de.varoplugin.cfw.version.VersionUtils;
+
 public class EmptySkullBuilder implements SkullBuilder {
 
     private final ItemBuilder itemBuilder;
@@ -48,6 +51,9 @@ public class EmptySkullBuilder implements SkullBuilder {
 
     @Override
     public ItemStack build(UUID uuid) {
+        if (VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_12)) {
+            return this.build(uuid.toString());
+        }
         ItemStack item = this.itemBuilder.build();
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         meta.setOwningPlayer(Bukkit.getOfflinePlayer(uuid));
