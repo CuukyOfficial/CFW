@@ -30,6 +30,9 @@ public enum ProtocolVersion {
 
     // Protocol version numbers: https://wiki.vg/Protocol_version_numbers
 
+    MINECRAFT_1_20_1(764, "1.20.1"),
+    MINECRAFT_1_20(763, "1.20.0"),
+    MINECRAFT_1_19_4(762, "1.19.4"),
     MINECRAFT_1_19_3(761, "1.19.3"),
     MINECRAFT_1_19_2(760, "1.19.1-1.19.2"),
     MINECRAFT_1_19(759, "1.19"),
