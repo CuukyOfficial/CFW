@@ -27,12 +27,12 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.cryptomorin:XSeries:9.3.1")
-    implementation("org.spigotmc:spigot-api:1.20-R0.1-SNAPSHOT")
+    implementation("com.github.cryptomorin:XSeries:9.6.0")
+    implementation("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
     compileOnly("com.googlecode.json-simple:json-simple:1.1.1")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.0")
 }
 
 tasks.jar {
