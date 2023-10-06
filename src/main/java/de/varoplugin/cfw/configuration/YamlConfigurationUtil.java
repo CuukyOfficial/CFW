@@ -24,18 +24,22 @@
 
 package de.varoplugin.cfw.configuration;
 
-import com.google.common.base.Charsets;
-import de.varoplugin.cfw.utils.JavaUtils;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.*;
-import java.nio.file.Files;
+import de.varoplugin.cfw.utils.JavaUtils;
 
 public class YamlConfigurationUtil {
 
     public static YamlConfiguration loadConfiguration(File file) {
         JavaUtils.createFile(file);
-        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), Charsets.UTF_8)) {
+        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(file.toPath()), StandardCharsets.UTF_8)) {
             return YamlConfiguration.loadConfiguration(reader);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -45,7 +49,7 @@ public class YamlConfigurationUtil {
     public static void save(YamlConfiguration configuration, File file) {
         JavaUtils.createFile(file);
         try {
-            try (OutputStreamWriter oos = new OutputStreamWriter(Files.newOutputStream(file.toPath()), Charsets.UTF_8)) {
+            try (OutputStreamWriter oos = new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8)) {
                 oos.write(configuration.saveToString());
             }
         } catch (Throwable t) {
