@@ -29,6 +29,11 @@ import org.bukkit.entity.Player;
 public class OneTwentyVersionAdapter extends OneNineteenVersionAdapter {
 
     @Override
+    protected void initXp() {
+        // nop
+    }
+
+    @Override
     public void setXpCooldown(Player player, int cooldown) {
         player.setExpCooldown(cooldown);
     }

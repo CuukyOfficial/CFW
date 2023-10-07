@@ -39,7 +39,7 @@ public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
 
     @Override
     protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {
-        this.nmsPlayerClass = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer").getMethod("getHandle").getReturnType();
+        this.nmsPlayerClass = Class.forName(VersionUtils.getCraftBukkitPackage() + ".entity.CraftPlayer").getMethod("getHandle").getReturnType();
         this.pingField = this.nmsPlayerClass.getField("field_71138_i");
         this.connectionField = this.nmsPlayerClass.getField("field_71135_a");
         this.sendPacketMethod = this.connectionField.getType().getMethod("func_147359_a", Class.forName("net.minecraft.network.Packet"));

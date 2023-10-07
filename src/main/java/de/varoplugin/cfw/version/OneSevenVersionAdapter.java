@@ -88,7 +88,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
     }
 
     protected void initEntity() throws NoSuchMethodException, SecurityException, ClassNotFoundException {
-        this.entityHandleMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftEntity").getMethod("getHandle");
+        this.entityHandleMethod = Class.forName(VersionUtils.getCraftBukkitPackage() + ".entity.CraftEntity").getMethod("getHandle");
     }
 
     protected void initPlayer() throws NoSuchMethodException, SecurityException, NoSuchFieldException, ClassNotFoundException {

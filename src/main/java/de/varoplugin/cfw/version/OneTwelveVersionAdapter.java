@@ -40,7 +40,7 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
     @Override
     protected void initLocale() throws SecurityException, IllegalArgumentException {
         try {
-            this.localeMethod = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".entity.CraftPlayer").getDeclaredMethod("getLocale");
+            this.localeMethod = Class.forName(VersionUtils.getCraftBukkitPackage() + ".entity.CraftPlayer").getDeclaredMethod("getLocale");
         } catch (NoSuchMethodException | SecurityException | ClassNotFoundException e) {
             e.printStackTrace();
         }

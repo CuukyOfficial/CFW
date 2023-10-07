@@ -34,6 +34,7 @@ public class VersionUtils {
 
     private static final String FORGE_CLASS = "net.minecraftforge.common.MinecraftForge";
 
+    private static final String craftBukkitPackage;
     private static final String nmsClass;
     private static final String nmsVersion;
     private static final boolean forgeSupport;
@@ -50,18 +51,24 @@ public class VersionUtils {
         if (Bukkit.getServer() == null) {
             version = ServerVersion.UNSUPPORTED;
             serverSoftware = ServerSoftware.UNKNOWN;
+            craftBukkitPackage = null;
             nmsClass = null;
             nmsVersion = null;
         } else {
-
             String base = "net.minecraft";
-            nmsVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-            if (nmsVersion.startsWith("v1")) {
-                // 1.7 - 1.16
-                nmsClass = base + ".server." + nmsVersion;
+            craftBukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
+            String[] packageSplit = craftBukkitPackage.split("\\.");
+            if (packageSplit.length > 3) {
+                nmsVersion = packageSplit[3];
+                if (nmsVersion.startsWith("v1")) {
+                    // 1.7 - 1.16
+                    nmsClass = base + ".server." + nmsVersion;
+                } else
+                    // Thermos (1.17+ does not use this string at all)
+                    nmsClass = base + ".server";
             } else {
-                // Thermos (1.17+ does not use this string at all)
                 nmsClass = base + ".server";
+                nmsVersion = Bukkit.getServer().getBukkitVersion().split("-")[0].replace('.', '_');
             }
             version = ServerVersion.getVersion(nmsVersion);
             serverSoftware = ServerSoftware.getServerSoftware();
@@ -82,11 +89,15 @@ public class VersionUtils {
         }
     }
 
+    static String getCraftBukkitPackage() {
+        return craftBukkitPackage;
+    }
+
     static String getNmsClass() {
         return nmsClass;
     }
 
-    public static String getNmsVersion() {
+    static String getNmsVersion() {
         return nmsVersion;
     }
 

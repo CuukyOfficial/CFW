@@ -34,7 +34,7 @@ public class OneSixteenVersionAdapter extends OneFourteenVersionAdapter {
     @Override
     public void forceClearWorlds() {
         try {
-            Field dedicatedServerField = Class.forName("org.bukkit.craftbukkit." + VersionUtils.getNmsVersion() + ".CraftServer").getDeclaredField("console");
+            Field dedicatedServerField = Class.forName(VersionUtils.getCraftBukkitPackage() + ".CraftServer").getDeclaredField("console");
             dedicatedServerField.setAccessible(true);
             Object dedicatedServer = dedicatedServerField.get(Bukkit.getServer());
             Map<?, ?> worldServer = (Map<?, ?>) dedicatedServer.getClass().getField(this.getWorldServerFieldName()).get(dedicatedServer);
