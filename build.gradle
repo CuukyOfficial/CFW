@@ -71,8 +71,8 @@ publishing {
 		maven {
 			url 'https://repo.varoplugin.de/repository/maven-releases/'
 			credentials {
-                username project.hasProperty('repouser') ? project.property('repouser').toString() : null
-                password project.hasProperty('repopassword') ? project.property('repopassword').toString() : null
+                username = System.getenv("REPO_USER")
+                password = System.getenv("REPO_PASSWORD")
             }
 		}
 	}
