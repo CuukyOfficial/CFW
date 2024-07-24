@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 
 public enum ServerVersion {
 
+    ONE_21(21, OneTwentyVersionAdapter::new),
     ONE_20(20, OneTwentyVersionAdapter::new),
     ONE_19(19, OneNineteenVersionAdapter::new),
     ONE_18(18, OneSeventeenVersionAdapter::new),
@@ -69,7 +70,7 @@ public enum ServerVersion {
     }
 
     public static ServerVersion getVersion(String versionString) {
-        int versionNumber = Integer.parseInt(versionString.split("1_")[1].split("_")[0]);
+        int versionNumber = Integer.parseInt(versionString.split("1_", 2)[1].split("_")[0]);
         ServerVersion nextFound = ServerVersion.ONE_7;
         for (ServerVersion version : values()) {
             if (versionNumber == version.getIdentifier())
