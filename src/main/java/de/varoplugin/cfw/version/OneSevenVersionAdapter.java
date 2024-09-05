@@ -44,8 +44,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Sign;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Team;
+
+import com.cryptomorin.xseries.XPotion;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 
@@ -257,7 +258,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
     @Override
     public void removeAi(LivingEntity entity) {
-        entity.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, Integer.MAX_VALUE, 255));
+        entity.addPotionEffect(new PotionEffect(XPotion.SLOWNESS.getPotionEffectType(), Integer.MAX_VALUE, 255));
     }
 
     @Override
