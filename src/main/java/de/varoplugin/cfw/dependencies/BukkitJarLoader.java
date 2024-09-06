@@ -68,6 +68,19 @@ class BukkitJarLoader implements JarLoader {
         }
 
         @Override
+        public Class<?> loadClass(String name, boolean resolve) throws ClassNotFoundException {
+            try {
+                return super.loadClass(name, resolve);
+            } catch (ClassNotFoundException e) {
+                return HackClassLoader.class.getClassLoader().loadClass(name);
+            }
+        }
+
+        public Class<?> superLoadClass(String name, boolean resolve) throws ClassNotFoundException {
+            return super.loadClass(name, resolve);
+        }
+
+        @Override
         protected void addURL(URL url) {
             super.addURL(url);
         }
@@ -110,7 +123,7 @@ class BukkitJarLoader implements JarLoader {
             if (parentObject != null)
                 return parentObject;
             try {
-                return (V) this.classLoader.loadClass((String) key);
+                return (V) this.classLoader.superLoadClass((String) key, false);
             } catch (ClassNotFoundException e) {
                 return null;
             }
