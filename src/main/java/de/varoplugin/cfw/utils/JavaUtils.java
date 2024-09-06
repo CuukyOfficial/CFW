@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
+import java.util.function.IntFunction;
 import java.util.stream.IntStream;
 
 public final class JavaUtils {
@@ -45,6 +46,12 @@ public final class JavaUtils {
         return Arrays.stream(strings).map(Arrays::asList).flatMap(List::stream).toArray(String[]::new);
     }
 
+    public static <T> T[] removeIndex(T[] array, IntFunction<T[]> generator, int index) {
+        if (array.length == 0)
+            return array;
+        return IntStream.rangeClosed(0, array.length - 1).filter(i -> i != index).mapToObj(i -> array[i]).toArray(generator);
+    }
+
     /**
      * @param min The minimum Range
      * @param max The maximum Range
@@ -53,10 +60,6 @@ public final class JavaUtils {
     public static int randomInt(int min, int max) {
         Random rand = new Random();
         return rand.nextInt((max - min) + 1) + min;
-    }
-
-    public static String[] removeString(String[] string, int loc) {
-        return IntStream.rangeClosed(0, string.length).filter(i -> i != loc).mapToObj(i -> string[i]).toArray(String[]::new);
     }
 
     public static boolean createFile(File file) {
