@@ -24,8 +24,10 @@
 
 package de.cuuky.cfw.inventory;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -46,13 +48,20 @@ class AdvancedInventoryListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Inventory clicked = event.getClickedInventory();
-        if (clicked == null || event.getCurrentItem() == null)
+        if (clicked == null || event.getCurrentItem() == null || !(event.getWhoClicked() instanceof Player))
             return;
 
         AdvancedInventory inv = this.manager.getInventory(clicked);
         if (inv == null) {
-            if (this.manager.getPrevInventory(clicked) != null)
+            if (this.manager.getPrevInventory(clicked) != null) {
                 event.setCancelled(true);
+                return;
+            }
+            if (event.getClick() == ClickType.DOUBLE_CLICK) {
+                AdvancedInventory invOpen = this.manager.getInventory((Player) event.getWhoClicked());
+                if (invOpen != null)
+                    event.setCancelled(true);
+            }
             return;
         }
         inv.slotClicked(event.getSlot(), event);
