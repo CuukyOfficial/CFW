@@ -24,12 +24,17 @@
 
 package de.varoplugin.cfw.player.hook.chat;
 
-import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 
 public class ChatHookTriggerEvent extends AbstractHookEvent<ChatHook, AsyncPlayerChatEvent> {
 
     public ChatHookTriggerEvent(ChatHook chatHook, AsyncPlayerChatEvent source) {
         super(chatHook, source);
+    }
+
+    public String getMessage() {
+        return this.getSource().getMessage();
     }
 }
