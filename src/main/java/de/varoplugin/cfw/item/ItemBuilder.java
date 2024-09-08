@@ -90,7 +90,7 @@ public interface ItemBuilder {
 
     public static ItemBuilder skull(UUID uuid) {
         if (VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_12))
-            return skull(uuid.toString());
+            throw new UnsupportedOperationException("Not available on Minecraft versions < 1.12");
         return SkullBuilderImpl.uuid(uuid);
     }
 
@@ -99,6 +99,8 @@ public interface ItemBuilder {
     }
 
     public static ItemBuilder skull(Player player) {
+        if (VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_12))
+            return skull(player.getName());
         return skull(player.getUniqueId());
     }
 }
