@@ -54,7 +54,7 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
         new BukkitRunnable() {
             @Override
             public void run() {
-                AdvancedAsyncListInventory.this.addShowItem(index, item, click);
+                AdvancedAsyncListInventory.super.addShowItem(index, item, click);
                 AdvancedAsyncListInventory.this.getPlayer().updateInventory();
             }
         }.runTaskLaterAsynchronously(this.getManager().getPlugin(), 0L);
