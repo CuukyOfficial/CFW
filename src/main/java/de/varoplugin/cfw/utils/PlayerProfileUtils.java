@@ -67,7 +67,7 @@ public class PlayerProfileUtils {
 
             try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 JSONObject jsonObject = (JSONObject) JSONValue.parseWithException(reader);
-                return new PlayerLookup(Result.SUCCESS, stringToUUID(jsonObject.get("id").toString()), (String) jsonObject.get("name"), null);
+                return new PlayerLookup(Result.SUCCESS, stringToUuid(jsonObject.get("id").toString()), (String) jsonObject.get("name"), null);
             }
         } catch (Throwable t) {
             t.printStackTrace();
@@ -94,7 +94,7 @@ public class PlayerProfileUtils {
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the uuid is {@code null} or if timeout is negative.
      */
-    public static PlayerLookup fetchByUUID(UUID uuid, int timeout) {
+    public static PlayerLookup fetchByUuid(UUID uuid, int timeout) {
         if (uuid == null || timeout < 0)
             throw new IllegalArgumentException();
 
@@ -122,8 +122,8 @@ public class PlayerProfileUtils {
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the uuid is {@code null}.
      */
-    public static PlayerLookup fetchByUUID(UUID uuid) {
-        return fetchByUUID(uuid, TIMEOUT_DEFAULT_MILLIS);
+    public static PlayerLookup fetchByUuid(UUID uuid) {
+        return fetchByUuid(uuid, TIMEOUT_DEFAULT_MILLIS);
     }
 
     /**
@@ -148,7 +148,7 @@ public class PlayerProfileUtils {
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the uuid is {@code null}.
      */
-    public static PlayerLookup getByUUID(UUID uuid) {
+    public static PlayerLookup getByUuid(UUID uuid) {
         if (uuid == null)
             throw new IllegalArgumentException();
 
@@ -197,12 +197,12 @@ public class PlayerProfileUtils {
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the name is {@code null} or if timeout is negative.
      */
-    public static PlayerLookup getOrFetchByUUID(UUID uuid, int timeout) {
+    public static PlayerLookup getOrFetchByUuid(UUID uuid, int timeout) {
         if (uuid == null || timeout < 0)
             throw new IllegalArgumentException();
 
-        PlayerLookup player = getByUUID(uuid);
-        return player.getResult() == Result.SUCCESS ? player : fetchByUUID(uuid, timeout);
+        PlayerLookup player = getByUuid(uuid);
+        return player.getResult() == Result.SUCCESS ? player : fetchByUuid(uuid, timeout);
     }
 
     /**
@@ -214,8 +214,8 @@ public class PlayerProfileUtils {
      * @return A {@link PlayerLookup} element containing the name and uuid.
      * @throws IllegalArgumentException If the name is {@code null}.
      */
-    public static PlayerLookup getOrFetchByUUID(UUID uuid) {
-        return getOrFetchByUUID(uuid, TIMEOUT_DEFAULT_MILLIS);
+    public static PlayerLookup getOrFetchByUuid(UUID uuid) {
+        return getOrFetchByUuid(uuid, TIMEOUT_DEFAULT_MILLIS);
     }
 
     /**
@@ -233,7 +233,7 @@ public class PlayerProfileUtils {
         return new PlayerLookup(Result.SUCCESS, offlineUUID, name, null);
     }
 
-    private static UUID stringToUUID(String string) {
+    private static UUID stringToUuid(String string) {
         if (string.length() != 32)
             throw new IllegalArgumentException();
         return UUID.fromString(string.substring(0, 8) + "-" + string.substring(8, 12) + "-" + string.substring(12, 16) + "-" + string.substring(16, 20) + "-" + string.substring(20, 32));
