@@ -127,6 +127,11 @@ class ItemBuilderImpl implements ItemBuilder {
     }
 
     @Override
+    public ItemBuilder lore(String lore) {
+        return this.lore(lore == null ? null : new String[] { lore });
+    }
+
+    @Override
     public int getAmount() {
         return this.amount;
     }

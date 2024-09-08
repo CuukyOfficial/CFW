@@ -60,6 +60,8 @@ public interface ItemBuilder {
 
     ItemBuilder lore(String... lore);
 
+    ItemBuilder lore(String lore);
+
     int getAmount();
 
     String getDisplayName();
