@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020-2022 CuukyOfficial
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,8 +28,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Properties;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,9 +36,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Sign;
 import org.bukkit.plugin.Plugin;
@@ -65,7 +62,8 @@ class OneSevenVersionAdapter implements VersionAdapter {
     OneSevenVersionAdapter() {
         try {
             this.init();
-        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException | NoSuchFieldException | IllegalAccessException e) {
+        } catch (IllegalArgumentException | NoSuchMethodException | SecurityException | ClassNotFoundException |
+                 NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -122,6 +120,46 @@ class OneSevenVersionAdapter implements VersionAdapter {
         this.initXp(VersionUtils.getNmsClass() + ".EntityHuman", VersionUtils.getNmsClass() + ".FoodMetaData");
     }
 
+    protected void initXpField(Player player) {
+        try {
+            Class<?> entHuman = Class.forName(VersionUtils.getNmsClass() + ".EntityHuman");
+            Map<Field, Integer> values = new HashMap<>();
+
+            // Get values of all int fields of player
+            for (Field field : entHuman.getDeclaredFields()) {
+                if (field.getType() == int.class) {
+                    field.setAccessible(true);
+                    values.put(field, field.getInt(player));
+                }
+            }
+
+
+            // Invoke method which sets the value of xp cooldown to 2
+            Class<?> experienceOrbClass = Class.forName(VersionUtils.getNmsClass() + ".EntityExperienceOrb");
+            Location randomLoc = new Location(player.getWorld(), 0, 0, 0);
+            Object orb = player.getWorld().spawnEntity(randomLoc, EntityType.EXPERIENCE_ORB);
+            for (Method method : experienceOrbClass.getDeclaredMethods()) {
+                if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == entHuman) {
+                    method.setAccessible(true);
+                    method.invoke(orb, player);
+                }
+            }
+
+            // Compare values and use the field with changed value
+            for (Field field : values.keySet()) {
+                if (field.getInt(player) != values.get(field)) {
+                    this.xpCooldownField = field;
+                    return;
+                }
+            }
+
+
+            throw new Error("Unable to find xp cooldown field");
+        } catch (SecurityException | IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
+            throw new Error(e);
+        }
+    }
+
     protected void initXp(String entityHumanName, String foodMetaName) {
         // this is EXTREMELY unsafe
         try {
@@ -129,7 +167,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
             for (Field field : Class.forName(entityHumanName).getDeclaredFields())
                 if (fieldNum == 0 && field.getType() == Class.forName(foodMetaName))
                     fieldNum = 1;
-                // This is for 1.19+, but I don't want to create a new version adapter class for one single line of code (Yes, I am lazy)
+                    // This is for 1.19+, but I don't want to create a new version adapter class for one single line of code (Yes, I am lazy)
                 else if (fieldNum == 1 && field.getType().getName().equals("net.minecraft.world.entity.monster.warden.WardenSpawnTracker"))
                     ;
                 else if (fieldNum == 1 && field.getType() == int.class)
@@ -263,6 +301,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
     @Override
     public void setXpCooldown(Player player, int cooldown) {
+        if (this.xpCooldownField == null) {
+
+            Objects.requireNonNull(player.getLocation().getWorld()).spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
+
+        }
+
         try {
             this.xpCooldownField.set(this.getHandle(player), cooldown);
         } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
@@ -317,7 +361,8 @@ class OneSevenVersionAdapter implements VersionAdapter {
                     if (!Bukkit.unloadWorld(world, false))
                         throw new Error("Unable to unload world " + world.getName());
                 }
-        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException |
+                 InvocationTargetException | NoSuchMethodException e) {
             throw new Error(e);
         }
     }
