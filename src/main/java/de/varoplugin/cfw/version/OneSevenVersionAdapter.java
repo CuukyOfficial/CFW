@@ -75,7 +75,6 @@ class OneSevenVersionAdapter implements VersionAdapter {
         this.initRespawn();
         this.initNetworkManager();
         this.initLocale();
-        this.initXp();
     }
 
     protected void initServerProperties() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
@@ -116,11 +115,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
         this.localeField.setAccessible(true);
     }
 
-    protected void initXp() {
-        this.initXp(VersionUtils.getNmsClass() + ".EntityHuman", VersionUtils.getNmsClass() + ".FoodMetaData");
-    }
-
-    protected void initXpField(Player player) {
+    protected Field searchXpField(Player player) {
         try {
             Class<?> entHuman = Class.forName(VersionUtils.getNmsClass() + ".EntityHuman");
             Map<Field, Integer> values = new HashMap<>();
@@ -137,7 +132,8 @@ class OneSevenVersionAdapter implements VersionAdapter {
             // Invoke method which sets the value of xp cooldown to 2
             Class<?> experienceOrbClass = Class.forName(VersionUtils.getNmsClass() + ".EntityExperienceOrb");
             Location randomLoc = new Location(player.getWorld(), 0, 0, 0);
-            Object orb = player.getWorld().spawnEntity(randomLoc, EntityType.EXPERIENCE_ORB);
+            ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(randomLoc, EntityType.EXPERIENCE_ORB);
+            orb.setExperience(0);
             for (Method method : experienceOrbClass.getDeclaredMethods()) {
                 if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == entHuman) {
                     method.setAccessible(true);
@@ -145,45 +141,18 @@ class OneSevenVersionAdapter implements VersionAdapter {
                 }
             }
 
+            orb.remove();
+
             // Compare values and use the field with changed value
             for (Field field : values.keySet()) {
                 if (field.getInt(player) != values.get(field)) {
                     this.xpCooldownField = field;
-                    return;
+                    return field;
                 }
             }
 
-
-            throw new Error("Unable to find xp cooldown field");
+            return null;
         } catch (SecurityException | IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
-            throw new Error(e);
-        }
-    }
-
-    protected void initXp(String entityHumanName, String foodMetaName) {
-        // this is EXTREMELY unsafe
-        try {
-            int fieldNum = 0;
-            for (Field field : Class.forName(entityHumanName).getDeclaredFields())
-                if (fieldNum == 0 && field.getType() == Class.forName(foodMetaName))
-                    fieldNum = 1;
-                    // This is for 1.19+, but I don't want to create a new version adapter class for one single line of code (Yes, I am lazy)
-                else if (fieldNum == 1 && field.getType().getName().equals("net.minecraft.world.entity.monster.warden.WardenSpawnTracker"))
-                    ;
-                else if (fieldNum == 1 && field.getType() == int.class)
-                    fieldNum = 2;
-                else if (fieldNum == 2 && field.getType() == float.class)
-                    fieldNum = 3;
-                else if (fieldNum == 3 && field.getType() == float.class)
-                    fieldNum = 4;
-                else if (fieldNum == 4 && field.getType() == int.class) {
-                    this.xpCooldownField = field;
-                    return;
-                } else
-                    fieldNum = 0;
-
-            throw new Error("Unable to find xp cooldown field");
-        } catch (SecurityException | ClassNotFoundException e) {
             throw new Error(e);
         }
     }
@@ -302,9 +271,10 @@ class OneSevenVersionAdapter implements VersionAdapter {
     @Override
     public void setXpCooldown(Player player, int cooldown) {
         if (this.xpCooldownField == null) {
-
-            Objects.requireNonNull(player.getLocation().getWorld()).spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);
-
+            this.xpCooldownField = this.searchXpField(player);
+            if (this.xpCooldownField == null) {
+                throw new Error("Unable to find xp cooldown field");
+            }
         }
 
         try {
