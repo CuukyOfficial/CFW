@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020-2022 CuukyOfficial
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -50,8 +50,10 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
     }
 
     @Override
-    protected void initXp() {
-        this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
+    protected void initXp(Player player) {
+        String entityHumanClass = VersionUtils.getNmsClass() + ".world.entity.player.EntityHuman";
+        String entityExperienceOrbClass = VersionUtils.getNmsClass() + ".world.entity.EntityExperienceOrb";
+        this.xpCooldownField = this.searchXpField(player, entityHumanClass, entityExperienceOrbClass);
     }
 
     @Override
@@ -95,7 +97,8 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
                 return (Properties) field.get(dedicatedServerProp);
             }
             throw new Error("missing properties field");
-        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | IllegalArgumentException | IllegalAccessException |
+                 InvocationTargetException e) {
             throw new Error(e);
         }
     }

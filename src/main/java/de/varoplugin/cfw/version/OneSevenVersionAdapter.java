@@ -77,6 +77,52 @@ class OneSevenVersionAdapter implements VersionAdapter {
         this.initLocale();
     }
 
+    protected void initXp(Player player) {
+        this.xpCooldownField = this.searchXpField(player, VersionUtils.getNmsClass() + ".EntityHuman", VersionUtils.getNmsClass() + ".EntityExperienceOrb");
+    }
+
+    protected Field searchXpField(Player player, String humanClassName, String experienceOrbClassName) {
+        try {
+            Class<?> entityHumanClass = Class.forName(humanClassName);
+            Map<Field, Integer> values = new HashMap<>();
+
+            // Get values of all int fields of player
+            for (Field field : entityHumanClass.getDeclaredFields()) {
+                if (field.getType() == int.class) {
+                    field.setAccessible(true);
+                    values.put(field, field.getInt(player));
+                }
+            }
+
+
+            // Invoke method which sets the value of xp cooldown to 2
+            Location randomLoc = new Location(player.getWorld(), 0, 0, 0);
+            ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(randomLoc, EntityType.EXPERIENCE_ORB);
+            orb.setExperience(0);
+            Class<?> entityExperienceOrbClass = Class.forName(experienceOrbClassName);
+            for (Method method : entityExperienceOrbClass.getDeclaredMethods()) {
+                if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == entityHumanClass) {
+                    method.setAccessible(true);
+                    method.invoke(orb, player);
+                }
+            }
+
+            orb.remove();
+
+            // Compare values and use the field with changed value
+            for (Field field : values.keySet()) {
+                if (field.getInt(player) != values.get(field)) {
+                    this.xpCooldownField = field;
+                    return field;
+                }
+            }
+
+            return null;
+        } catch (SecurityException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
+            throw new Error(e);
+        }
+    }
+
     protected void initServerProperties() throws ClassNotFoundException, NoSuchMethodException, SecurityException, NoSuchFieldException {
         this.minecraftServerClass = Class.forName(VersionUtils.getNmsClass() + ".MinecraftServer");
         this.minecraftServerMethod = this.minecraftServerClass.getMethod("getServer");
@@ -113,48 +159,6 @@ class OneSevenVersionAdapter implements VersionAdapter {
     protected void initLocale() throws NoSuchFieldException, SecurityException, IllegalArgumentException {
         this.localeField = this.nmsPlayerClass.getDeclaredField("locale");
         this.localeField.setAccessible(true);
-    }
-
-    protected Field searchXpField(Player player) {
-        try {
-            Class<?> entHuman = Class.forName(VersionUtils.getNmsClass() + ".EntityHuman");
-            Map<Field, Integer> values = new HashMap<>();
-
-            // Get values of all int fields of player
-            for (Field field : entHuman.getDeclaredFields()) {
-                if (field.getType() == int.class) {
-                    field.setAccessible(true);
-                    values.put(field, field.getInt(player));
-                }
-            }
-
-
-            // Invoke method which sets the value of xp cooldown to 2
-            Class<?> experienceOrbClass = Class.forName(VersionUtils.getNmsClass() + ".EntityExperienceOrb");
-            Location randomLoc = new Location(player.getWorld(), 0, 0, 0);
-            ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(randomLoc, EntityType.EXPERIENCE_ORB);
-            orb.setExperience(0);
-            for (Method method : experienceOrbClass.getDeclaredMethods()) {
-                if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == entHuman) {
-                    method.setAccessible(true);
-                    method.invoke(orb, player);
-                }
-            }
-
-            orb.remove();
-
-            // Compare values and use the field with changed value
-            for (Field field : values.keySet()) {
-                if (field.getInt(player) != values.get(field)) {
-                    this.xpCooldownField = field;
-                    return field;
-                }
-            }
-
-            return null;
-        } catch (SecurityException | IllegalAccessException | ClassNotFoundException | InvocationTargetException e) {
-            throw new Error(e);
-        }
     }
 
     protected Object getHandle(Entity entity) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
@@ -271,7 +275,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
     @Override
     public void setXpCooldown(Player player, int cooldown) {
         if (this.xpCooldownField == null) {
-            this.xpCooldownField = this.searchXpField(player);
+            this.initXp(player);
             if (this.xpCooldownField == null) {
                 throw new Error("Unable to find xp cooldown field");
             }
