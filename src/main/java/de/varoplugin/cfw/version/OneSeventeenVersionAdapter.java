@@ -53,7 +53,7 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
     protected void initXp(Player player) {
         String entityHumanClass = VersionUtils.getNmsClass() + ".world.entity.player.EntityHuman";
         String entityExperienceOrbClass = VersionUtils.getNmsClass() + ".world.entity.EntityExperienceOrb";
-        this.xpCooldownField = this.searchXpField(player, entityHumanClass, entityExperienceOrbClass);
+        this.searchXpField(player, entityHumanClass, entityExperienceOrbClass);
     }
 
     @Override

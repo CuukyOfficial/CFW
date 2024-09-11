@@ -78,10 +78,10 @@ class OneSevenVersionAdapter implements VersionAdapter {
     }
 
     protected void initXp(Player player) {
-        this.xpCooldownField = this.searchXpField(player, VersionUtils.getNmsClass() + ".EntityHuman", VersionUtils.getNmsClass() + ".EntityExperienceOrb");
+        this.searchXpField(player, VersionUtils.getNmsClass() + ".EntityHuman", VersionUtils.getNmsClass() + ".EntityExperienceOrb");
     }
 
-    protected Field searchXpField(Player player, String humanClassName, String experienceOrbClassName) {
+    protected void searchXpField(Player player, String humanClassName, String experienceOrbClassName) {
         try {
             Class<?> entityHumanClass = Class.forName(humanClassName);
             Map<Field, Integer> values = new HashMap<>();
@@ -113,11 +113,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
             for (Field field : values.keySet()) {
                 if (field.getInt(player) != values.get(field)) {
                     this.xpCooldownField = field;
-                    return field;
+                    return;
                 }
             }
 
-            return null;
+            throw new Error("Unable to find xp cooldown field");
         } catch (SecurityException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
             throw new Error(e);
         }
@@ -276,9 +276,6 @@ class OneSevenVersionAdapter implements VersionAdapter {
     public void setXpCooldown(Player player, int cooldown) {
         if (this.xpCooldownField == null) {
             this.initXp(player);
-            if (this.xpCooldownField == null) {
-                throw new Error("Unable to find xp cooldown field");
-            }
         }
 
         try {
