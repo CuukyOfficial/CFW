@@ -85,12 +85,13 @@ class OneSevenVersionAdapter implements VersionAdapter {
         try {
             Class<?> entityHumanClass = Class.forName(humanClassName);
             Map<Field, Integer> values = new HashMap<>();
+            Object craftPlayer = this.getHandle(player);
 
             // Get values of all int fields of player
             for (Field field : entityHumanClass.getDeclaredFields()) {
                 if (field.getType() == int.class) {
                     field.setAccessible(true);
-                    values.put(field, field.getInt(player));
+                    values.put(field, field.getInt(craftPlayer));
                 }
             }
 
@@ -103,7 +104,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
             for (Method method : entityExperienceOrbClass.getDeclaredMethods()) {
                 if (method.getParameterTypes().length == 1 && method.getParameterTypes()[0] == entityHumanClass) {
                     method.setAccessible(true);
-                    method.invoke(orb, player);
+                    method.invoke(this.getHandle(orb), craftPlayer);
                 }
             }
 
@@ -111,7 +112,7 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
             // Compare values and use the field with changed value
             for (Field field : values.keySet()) {
-                if (field.getInt(player) != values.get(field)) {
+                if (field.getInt(craftPlayer) != values.get(field)) {
                     this.xpCooldownField = field;
                     return;
                 }
