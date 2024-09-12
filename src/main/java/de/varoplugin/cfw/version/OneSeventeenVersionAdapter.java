@@ -51,8 +51,8 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
 
     @Override
     protected void initXp(Player player) {
-        String entityHumanClass = VersionUtils.getNmsClass() + ".world.entity.player.EntityHuman";
-        String entityExperienceOrbClass = VersionUtils.getNmsClass() + ".world.entity.EntityExperienceOrb";
+        String entityHumanClass = "net.minecraft.world.entity.player.EntityHuman";
+        String entityExperienceOrbClass = "net.minecraft.world.entity.EntityExperienceOrb";
         this.searchXpField(player, entityHumanClass, entityExperienceOrbClass);
     }
 
