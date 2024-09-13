@@ -24,8 +24,6 @@
 
 package de.varoplugin.cfw.dependencies;
 
-import java.net.URLClassLoader;
-
 import org.bukkit.plugin.Plugin;
 
 public class JarDependency extends AbstractDependency {
@@ -39,15 +37,7 @@ public class JarDependency extends AbstractDependency {
     @Override
     protected void init(Plugin varo) throws Throwable {
         if (jarLoader == null) {
-            if (System.getProperty("java.version").startsWith("1.")) {
-                // java 8 or lower
-                if (this.getClass().getClassLoader() instanceof URLClassLoader)
-                    jarLoader = new UrlJarLoader();
-                else
-                    throw new Error("Unknown ClassLoader");
-            } else
-                // java 9+
-                jarLoader = new BukkitJarLoader();
+            jarLoader = new BukkitJarLoader();
         }
 
         jarLoader.load(this.getFile());

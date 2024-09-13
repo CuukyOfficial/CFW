@@ -64,7 +64,7 @@ class BukkitJarLoader implements JarLoader {
     private static class HackClassLoader extends URLClassLoader {
 
         public HackClassLoader() {
-            super(new URL[0]);
+            super(new URL[0], null);
         }
 
         @Override
