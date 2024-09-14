@@ -50,8 +50,10 @@ class OneSeventeenVersionAdapter extends OneSixteenVersionAdapter {
     }
 
     @Override
-    protected void initXp() {
-        this.initXp("net.minecraft.world.entity.player.EntityHuman", "net.minecraft.world.food.FoodMetaData");
+    protected void initXp(Player player) {
+        String entityHumanClass = "net.minecraft.world.entity.player.EntityHuman";
+        String entityExperienceOrbClass = "net.minecraft.world.entity.EntityExperienceOrb";
+        this.searchXpField(player, entityHumanClass, entityExperienceOrbClass);
     }
 
     @Override
