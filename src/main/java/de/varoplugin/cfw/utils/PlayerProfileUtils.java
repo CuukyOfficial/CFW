@@ -62,7 +62,7 @@ public class PlayerProfileUtils {
             connection.setConnectTimeout(timeout);
             connection.setReadTimeout(timeout);
 
-            if (connection.getResponseCode() == 204)
+            if (connection.getResponseCode() == 204 || connection.getResponseCode() == 400 || connection.getResponseCode() == 404)
                 return new PlayerLookup(Result.UNKNOWN_PLAYER, null, null, null);
 
             try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
@@ -70,7 +70,6 @@ public class PlayerProfileUtils {
                 return new PlayerLookup(Result.SUCCESS, stringToUuid(jsonObject.get("id").toString()), (String) jsonObject.get("name"), null);
             }
         } catch (Throwable t) {
-            t.printStackTrace();
             return new PlayerLookup(Result.ERROR, null, null, t);
         }
     }
@@ -103,7 +102,7 @@ public class PlayerProfileUtils {
             connection.setConnectTimeout(timeout);
             connection.setReadTimeout(timeout);
 
-            if (connection.getResponseCode() == 400)
+            if (connection.getResponseCode() == 204 || connection.getResponseCode() == 400 || connection.getResponseCode() == 404)
                 return new PlayerLookup(Result.UNKNOWN_PLAYER, null, null, null);
 
             try (Reader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
