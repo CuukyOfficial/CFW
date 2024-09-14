@@ -24,6 +24,8 @@
 
 package de.varoplugin.cfw.version;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -63,5 +65,10 @@ public class OneThirteenVersionAdapter extends OneTwelveVersionAdapter {
     @Override
     public void sendTablist(Player player, String header, String footer) {
         player.setPlayerListHeaderFooter(header, footer);
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material) {
+        player.sendBlockChange(location, material.createBlockData());
     }
 }

@@ -27,8 +27,6 @@ package de.varoplugin.cfw.version;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 class OneTwelveVersionAdapter extends OneNineVersionAdapter {
@@ -67,11 +65,6 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
     @Override
     protected Object getMessagePacket(Player player, Object text) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         return this.packetChatConstructor.newInstance(text, this.messageTypeSystem);
-    }
-
-    @Override
-    public void sendBlockChange(Player player, Location location, Material material) {
-        player.sendBlockChange(location, material.createBlockData());
     }
 
     @Override
