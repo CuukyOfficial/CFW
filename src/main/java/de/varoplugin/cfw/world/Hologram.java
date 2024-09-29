@@ -43,7 +43,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
-public class Hologramm extends BasicSerializable {
+public class Hologram extends BasicSerializable {
 
     @Serialize("location")
     private final SerializableLocation location;
@@ -51,7 +51,7 @@ public class Hologramm extends BasicSerializable {
     @Serialize("nameTagUuid")
     private UUID nameTagUuid;
 
-    public Hologramm(JavaPlugin plugin, Location location, String name) {
+    public Hologram(JavaPlugin plugin, Location location, String name) {
         this.location = new SerializableLocation(location);
         this.initialize(plugin, name);
     }
