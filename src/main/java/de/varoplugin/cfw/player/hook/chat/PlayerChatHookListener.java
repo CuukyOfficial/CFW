@@ -37,7 +37,7 @@ public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook>
         this.trigger = trigger;
     }
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (this.ignoreEvent(event))
             return;
