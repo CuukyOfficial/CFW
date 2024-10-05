@@ -29,8 +29,8 @@ import org.bukkit.entity.Player;
 public class OneTwentyVersionAdapter extends OneNineteenVersionAdapter {
 
     @Override
-    protected void initXp(Player player) {
-        // Not needed, since Player#setExpCooldown is available
+    protected void initXp() {
+        // nop
     }
 
     @Override

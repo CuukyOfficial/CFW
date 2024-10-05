@@ -64,10 +64,10 @@ public class CrucibleVersionAdapter extends OneSevenVersionAdapter {
     }
 
     @Override
-    protected void initXp(Player player) {
+    protected void initXp() {
         try {
-            Class<?> entityHumanClass = Class.forName("net.minecraft.entity.player.EntityPlayer");
-            this.xpCooldownField = entityHumanClass.getDeclaredField("field_71090_bL");
+            Class<?> entityHuman = Class.forName("net.minecraft.entity.player.EntityPlayer");
+            this.xpCooldownField = entityHuman.getDeclaredField("field_71090_bL");
         } catch (Throwable t) {
             t.printStackTrace();
         }
