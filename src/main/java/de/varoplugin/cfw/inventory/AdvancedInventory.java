@@ -187,7 +187,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         this.playSound();
         if (this.open && (link != null && link.hasLink()))
             this.update();
-        if (this.getInfo(Info.CANCEL_CLICK))
+        if ((link == null && this.getFiller(slot) != null) || this.getInfo(Info.CANCEL_CLICK))
             event.setCancelled(true);
     }
 
