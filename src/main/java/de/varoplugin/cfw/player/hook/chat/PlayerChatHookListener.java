@@ -24,6 +24,7 @@
 
 package de.varoplugin.cfw.player.hook.chat;
 
+import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -41,7 +42,9 @@ public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook>
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (this.ignoreEvent(event))
             return;
-        this.trigger.eventFired(new ChatHookTriggerEvent(this.trigger, event));
+        Bukkit.getScheduler().scheduleSyncDelayedTask(this.trigger.getPlugin(), () -> {
+            this.trigger.eventFired(new ChatHookTriggerEvent(this.trigger, event));
+        });
         event.setCancelled(true);
     }
 }

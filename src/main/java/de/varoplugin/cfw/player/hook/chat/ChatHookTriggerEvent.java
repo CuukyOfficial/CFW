@@ -28,6 +28,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import de.varoplugin.cfw.player.hook.AbstractHookEvent;
 
+// TODO rework this shit
 public class ChatHookTriggerEvent extends AbstractHookEvent<ChatHook, AsyncPlayerChatEvent> {
 
     public ChatHookTriggerEvent(ChatHook chatHook, AsyncPlayerChatEvent source) {
@@ -36,5 +37,10 @@ public class ChatHookTriggerEvent extends AbstractHookEvent<ChatHook, AsyncPlaye
 
     public String getMessage() {
         return this.getSource().getMessage();
+    }
+
+    @Override
+    public void setCancelled(boolean cancel) {
+        // nop
     }
 }
