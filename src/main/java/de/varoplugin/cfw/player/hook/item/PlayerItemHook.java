@@ -24,16 +24,28 @@
 
 package de.varoplugin.cfw.player.hook.item;
 
-import de.varoplugin.cfw.player.hook.AbstractPlayerHook;
-import de.varoplugin.cfw.player.hook.AbstractHookEvent;
+import java.util.Collection;
+import java.util.Random;
+
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-import java.util.Collection;
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
+import de.varoplugin.cfw.player.hook.AbstractPlayerHook;
+import de.varoplugin.cfw.version.ServerVersion;
+import de.varoplugin.cfw.version.VersionUtils;
 
 public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> implements ItemHook {
 
+    private static final Random RANDOM = new Random();
+
+    static final Object KEY;
+
+    private final long key = KEY != null ? RANDOM.nextLong() : 0;
     private final ItemStack item;
     private final int slot;
     private final boolean movable;
@@ -44,6 +56,12 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
 
         if (item == null)
             throw new IllegalArgumentException("Missing item");
+
+        if (KEY != null) {
+            ItemMeta meta = item.getItemMeta();
+            meta.getPersistentDataContainer().set((NamespacedKey) KEY, PersistentDataType.LONG, this.key);
+            item.setItemMeta(meta);
+        }
 
         this.item = item;
         this.slot = slot;
@@ -69,6 +87,10 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
         super.onUnregister();
     }
 
+    Long getKey() {
+        return this.key;
+    }
+
     @Override
     public ItemStack getItem() {
         return this.item;
@@ -87,5 +109,9 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
     @Override
     public boolean isDroppable() {
         return this.droppable;
+    }
+
+    static {
+        KEY = VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_13) ? new NamespacedKey("cfw", "item_hook") : null;
     }
 }

@@ -24,6 +24,7 @@
 
 package de.varoplugin.cfw.player.hook.item;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -36,6 +37,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import de.varoplugin.cfw.player.hook.AbstractHookListener;
 import de.varoplugin.cfw.version.VersionUtils;
@@ -47,6 +49,8 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> {
     }
 
     private boolean ignoreEvent(ItemStack stack) {
+        if (PlayerItemHook.KEY != null)
+            return stack == null || stack.getItemMeta() == null || !((PlayerItemHook) this.trigger).getKey().equals(stack.getItemMeta().getPersistentDataContainer().get((NamespacedKey) PlayerItemHook.KEY, PersistentDataType.LONG));
         return !this.trigger.getItem().equals(stack);
     }
 
