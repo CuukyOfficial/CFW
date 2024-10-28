@@ -42,6 +42,7 @@ public class VersionUtils {
     private final static ServerVersion version;
     private final static ServerSoftware serverSoftware;
     private final static VersionAdapter versionAdapter;
+    @Deprecated
     private final static Map<Player, ProtocolVersion> playerVersions;
 
     static {
@@ -108,6 +109,7 @@ public class VersionUtils {
         return forgeSupport;
     }
 
+    @Deprecated
     public static ProtocolVersion getMinecraftVersion(Player player) {
         ProtocolVersion version = playerVersions.get(player);
         if (version != null)

@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 
 import org.bukkit.entity.Player;
 
+@Deprecated
 public class ViaVersionUtils {
 
     // Plugin Name: ViaVersion

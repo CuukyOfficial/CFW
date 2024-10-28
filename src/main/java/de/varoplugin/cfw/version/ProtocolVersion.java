@@ -26,6 +26,7 @@ package de.varoplugin.cfw.version;
 
 import java.util.Arrays;
 
+@Deprecated
 public enum ProtocolVersion {
 
     // Protocol version numbers: https://wiki.vg/Protocol_version_numbers
