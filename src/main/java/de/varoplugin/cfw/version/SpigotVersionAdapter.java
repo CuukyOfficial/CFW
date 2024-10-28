@@ -154,6 +154,7 @@ public class SpigotVersionAdapter implements VersionAdapter {
         return this.parent.getLocale(player);
     }
 
+    @Deprecated
     @Override
     public void forceClearWorlds() {
         this.parent.forceClearWorlds();

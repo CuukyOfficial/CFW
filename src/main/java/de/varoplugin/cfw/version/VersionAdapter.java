@@ -84,6 +84,7 @@ public interface VersionAdapter {
 
     String getLocale(Player player);
 
+    @Deprecated
     void forceClearWorlds();
 
     Properties getServerProperties();
