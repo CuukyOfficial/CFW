@@ -1,18 +1,18 @@
 /*
  * MIT License
- * 
+ *
  * Copyright (c) 2020-2022 CuukyOfficial
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -93,11 +93,12 @@ class OneSevenVersionAdapter implements VersionAdapter {
             Map<Field, Integer> values = new HashMap<>();
             Object craftPlayer = this.getHandle(player);
 
-            // Get values of all int fields of player
+            // Get values of all int fields of player and set to 0
             for (Field field : entityHumanClass.getDeclaredFields()) {
                 if (field.getType() == int.class) {
                     field.setAccessible(true);
                     values.put(field, field.getInt(craftPlayer));
+                    field.set(craftPlayer, 0);
                 }
             }
 
@@ -117,13 +118,18 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
             // Compare values and use the field with changed value
             for (Field field : values.keySet()) {
-                if (field.getInt(craftPlayer) != values.get(field)) {
+                if (field.getInt(craftPlayer) != 0) {
                     this.xpCooldownField = field;
-                    return;
+                    break;
                 }
             }
 
-            throw new Error("Unable to find xp cooldown field");
+            // Restore all previous values
+            for (Field field : values.keySet())
+                field.set(craftPlayer, values.get(field));
+
+            if (this.xpCooldownField == null)
+                throw new Error("Unable to find xp cooldown field");
         } catch (SecurityException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
             throw new Error(e);
         }
