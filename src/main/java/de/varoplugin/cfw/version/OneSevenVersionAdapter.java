@@ -208,13 +208,11 @@ class OneSevenVersionAdapter implements VersionAdapter {
 
     @Override
     public void sendClickableMessage(Player player, String message, ClickEvent.Action action, String value) {
-        // 1.8+
         player.sendMessage(message);
     }
 
     @Override
     public void sendLinkedMessage(Player player, String message, String link) {
-        // 1.8+
         this.sendClickableMessage(player, message, ClickEvent.Action.OPEN_URL, link);
     }
 
