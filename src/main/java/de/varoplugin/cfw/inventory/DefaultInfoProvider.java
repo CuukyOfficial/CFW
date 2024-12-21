@@ -68,8 +68,8 @@ public interface DefaultInfoProvider extends InfoProvider {
     default Consumer<Player> getSoundPlayer() {
         return (player) -> {
             ItemStack clicked = this.getUser().getInventory().getItem(this.getUser().getLastClickedSlot());
-            if (clicked != null && clicked.getType() != XMaterial.AIR.parseMaterial())
-                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.parseSound(), 1, 1);
+            if (clicked != null && clicked.getType() != XMaterial.AIR.get())
+                player.playSound(player.getLocation(), XSound.UI_BUTTON_CLICK.get(), 1, 1);
         };
     }
 
