@@ -57,8 +57,6 @@ public class StaticTablist {
         this.footerEnabled = false;
         this.headerBuffer = "";
         this.footerBuffer = "";
-
-        this.update(null, null);
     }
 
     /**

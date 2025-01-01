@@ -49,7 +49,6 @@ public class AnimatedTablist {
                 return AnimatedTablist.this.processString(input);
             }
         };
-        this.update();
         this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(javaPlugin, this::update, 0, 0);
     }
 
