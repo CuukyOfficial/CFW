@@ -83,7 +83,7 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> {
 
     @EventHandler
     public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
-        if (!(event.getEntity() instanceof Player))
+        if (!(event.getDamager() instanceof Player))
             return;
 
         Player damager = (Player) event.getDamager();
