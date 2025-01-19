@@ -27,7 +27,7 @@ repositories {
 }
 
 dependencies {
-    implementation("com.github.cryptomorin:XSeries:12.1.0")
+    implementation("com.github.cryptomorin:XSeries:13.0.0")
     implementation("org.spigotmc:spigot-api:1.20.2-R0.1-SNAPSHOT")
     compileOnly("com.googlecode.json-simple:json-simple:1.1.1")
 
