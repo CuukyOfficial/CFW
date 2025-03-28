@@ -24,11 +24,12 @@
 
 package de.varoplugin.cfw.version;
 
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Team;
+
+import com.cryptomorin.xseries.XAttribute;
 
 class OneNineVersionAdapter extends OneEightVersionAdapter {
 
@@ -39,7 +40,7 @@ class OneNineVersionAdapter extends OneEightVersionAdapter {
 
     @Override
     public void setAttributeSpeed(Player player, double value) {
-        player.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(value);
+        player.getAttribute(XAttribute.ATTACK_SPEED.get()).setBaseValue(value);
     }
 
     @Override

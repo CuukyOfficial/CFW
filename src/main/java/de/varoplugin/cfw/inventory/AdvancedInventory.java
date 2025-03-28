@@ -36,10 +36,12 @@ import java.util.function.Supplier;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+
+import com.cryptomorin.xseries.inventory.BukkitInventoryView;
+import com.cryptomorin.xseries.inventory.XInventoryView;
 
 import de.varoplugin.cfw.inventory.inserter.DirectInserter;
 
@@ -149,7 +151,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     }
 
     private boolean needsOpen() {
-        InventoryView view = this.player.getOpenInventory();
+        BukkitInventoryView view = XInventoryView.of(this.player.getOpenInventory());
         AdvancedInventory ai = this.manager.getInventory(view.getTopInventory());
         if (ai == null || !(view.getTitle().equals(ai.getInfo(Info.TITLE)) && view.getTopInventory().getSize() == ai.getInfo(Info.SIZE))) {
             this.createInventory();
