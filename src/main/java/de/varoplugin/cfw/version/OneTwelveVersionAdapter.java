@@ -25,23 +25,17 @@
 package de.varoplugin.cfw.version;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 import org.bukkit.entity.Player;
 
 class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 
-    private Method localeMethod;
     protected Object messageTypeSystem;
     protected Object messageTypeGameInfo;
 
     @Override
     protected void initLocale() throws SecurityException, IllegalArgumentException {
-        try {
-            this.localeMethod = Class.forName(VersionUtils.getCraftBukkitPackage() + ".entity.CraftPlayer").getDeclaredMethod("getLocale");
-        } catch (NoSuchMethodException | SecurityException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        // nop
     }
 
     @Override
@@ -74,10 +68,6 @@ class OneTwelveVersionAdapter extends OneNineVersionAdapter {
 
     @Override
     public String getLocale(Player player) {
-        try {
-            return (String) this.localeMethod.invoke(player);
-        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            throw new Error();
-        }
+        return player.getLocale();
     }
 }
