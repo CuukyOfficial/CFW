@@ -172,7 +172,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
             public void run() {
                 AdvancedInventory.this.update();
             }
-        }.runTaskTimerAsynchronously(this.getManager().getPlugin(), this.interval, this.interval);
+        }.runTaskTimer(this.getManager().getPlugin(), this.interval, this.interval);
     }
 
     private void updateInformation() {

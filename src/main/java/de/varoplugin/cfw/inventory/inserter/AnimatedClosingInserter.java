@@ -26,60 +26,63 @@ package de.varoplugin.cfw.inventory.inserter;
 
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import de.varoplugin.cfw.inventory.AdvancedInventory;
-import de.varoplugin.cfw.inventory.Info;
 import de.varoplugin.cfw.inventory.ItemInserter;
 
 public class AnimatedClosingInserter implements ItemInserter {
 
-    private boolean cancelled, started;
+    private static final int DELAY = 1;
+    private static final int AMOUNT = 4;
 
-    boolean setItem(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int index, int delay) {
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+    private boolean started;
+    private BukkitTask scheduler;
+    private boolean end;
+    private int index;
 
-        if (this.cancelled)
-            return false;
+    protected void setItem(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int index) {
         this.setItem(inventory, index, items.get(index), false);
         if (!inventory.isUpdating())
             player.updateInventory();
-        return true;
+    }
+
+    protected void insertNext(AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size, int middle) {
+        if (this.index > middle * 2 + 1) {
+            if (this.scheduler != null)
+                this.stopInserting();
+            return;
+        }
+
+        int tempIndex = (int) Math.floor(this.index / 2F);
+        this.setItem(inventory, items, player, (this.end ? size - tempIndex - 1 : tempIndex));
+
+        this.end = !this.end;
+
+        this.index++;
     }
 
     @Override
     public void setItems(JavaPlugin plugin, AdvancedInventory inventory, Map<Integer, ItemStack> items, Player player, int size) {
         this.started = true;
-        int delay = 300 / (inventory.getInfo(Info.SIZE));
         int middle = (size - 1) / 2;
 
-        new BukkitRunnable() {
-
-            boolean end = false;
-
-            @Override
-            public void run() {
-                for (int index = 0; index <= middle * 2 + 1; index++) {
-                    int tempIndex = (int) Math.floor((float) index / 2);
-                    if (!AnimatedClosingInserter.this.setItem(inventory, items, player, (this.end ? size - tempIndex - 1 : tempIndex), delay))
-                        return;
-
-                    this.end = !this.end;
-                }
-            }
-        }.runTaskAsynchronously(plugin);
+        this.scheduler = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+            for (int i = 0; i < AMOUNT; i++)
+                this.insertNext(inventory, items, player, size, middle);
+        }, 0, DELAY);
     }
 
     @Override
     public void stopInserting() {
-        this.cancelled = true;
+        if (this.scheduler != null) {
+            this.scheduler.cancel();
+            this.scheduler = null;
+        }
     }
 
     @Override
