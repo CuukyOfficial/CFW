@@ -81,7 +81,7 @@ publishing {
 
     repositories {
         maven {
-            setUrl("https://repo.varoplugin.de/repository/maven-releases/")
+            setUrl("https://repo.varoplugin.de/releases/")
             credentials {
                 username = System.getenv("REPO_USER")
                 password = System.getenv("REPO_PASSWORD")
