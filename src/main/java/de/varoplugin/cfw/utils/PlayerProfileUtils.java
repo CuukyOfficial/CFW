@@ -249,7 +249,7 @@ public class PlayerProfileUtils {
         private final String name;
         private final Throwable exception;
 
-        PlayerLookup(Result result, UUID uuid, String name, Throwable exception) {
+        public PlayerLookup(Result result, UUID uuid, String name, Throwable exception) {
             if (result == null)
                 throw new IllegalArgumentException();
 
