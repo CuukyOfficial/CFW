@@ -148,7 +148,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
         if (this.list.size() <= index)
             return null;
         T item = this.list.get(index);
-        return new AbstractMap.SimpleEntry<>(this.getItemStack(item), this.getClick(item));
+        return new AbstractMap.SimpleEntry<>(this.getItemStack(index, item), this.getClick(item));
     }
 
     @Override
@@ -156,7 +156,7 @@ public abstract class AdvancedListInventory<T> extends AdvancedItemShowInventory
         return Math.max(27, this.list.size());
     }
 
-    protected abstract ItemStack getItemStack(T item);
+    protected abstract ItemStack getItemStack(int index, T item);
 
     protected abstract ItemClick getClick(T item);
 
