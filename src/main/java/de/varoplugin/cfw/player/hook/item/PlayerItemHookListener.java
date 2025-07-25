@@ -24,6 +24,7 @@
 
 package de.varoplugin.cfw.player.hook.item;
 
+import de.varoplugin.cfw.version.ServerVersion;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -81,13 +82,16 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> {
         this.trigger.eventFired(new HookItemInteractEntityEvent(this.trigger, event));
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onPlayerDamageEntity(EntityDamageByEntityEvent event) {
         if (!(event.getDamager() instanceof Player))
             return;
 
         Player damager = (Player) event.getDamager();
-        if (this.ignoreEvent(damager, VersionUtils.getVersionAdapter().getItemInUse(damager)))
+        ItemStack item = VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_8) ? damager.getInventory().getItemInMainHand()
+                : damager.getItemInHand();
+        if (this.ignoreEvent(damager, item))
             return;
         this.trigger.eventFired(new HookItemHitEvent(this.trigger, event));
     }
