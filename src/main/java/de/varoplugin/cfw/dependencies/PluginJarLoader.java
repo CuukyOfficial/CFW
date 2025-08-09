@@ -24,22 +24,16 @@
 
 package de.varoplugin.cfw.dependencies;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-public class JarDependency extends AbstractDependency {
+import java.io.File;
 
-    private static JarLoader jarLoader;
-
-    public JarDependency(String name, String folder, String link, String hash) {
-        super(name, folder, link, hash);
-    }
+public class PluginJarLoader implements JarLoader {
 
     @Override
-    protected void init(Plugin plugin) throws Throwable {
-        if (jarLoader == null) {
-            jarLoader = new BukkitJarLoader();
-        }
-
-        jarLoader.load(this.getFile());
+    public void load(File jar) throws Exception {
+        Plugin plugin = Bukkit.getPluginManager().loadPlugin(jar);
+        Bukkit.getPluginManager().enablePlugin(plugin);
     }
 }

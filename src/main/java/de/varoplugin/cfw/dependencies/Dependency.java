@@ -28,11 +28,9 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.bukkit.plugin.Plugin;
-
 public interface Dependency {
 
-    void load(Plugin plugin) throws Throwable;
+    void load() throws Throwable;
 
     String getName();
 
@@ -44,4 +42,7 @@ public interface Dependency {
 
     boolean isLoaded();
 
+    static Dependency of(String name, String folder, String link, String sha512sum) {
+        return new DependencyImpl(name, folder, link, sha512sum);
+    }
 }

@@ -39,9 +39,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-import org.bukkit.plugin.Plugin;
-
-abstract class AbstractDependency implements Dependency {
+class DependencyImpl implements Dependency {
 
     private final String name;
     private final File folder;
@@ -50,7 +48,7 @@ abstract class AbstractDependency implements Dependency {
     private final String sha512sum;
     private boolean loaded;
 
-    AbstractDependency(String name, String folder, String link, String sha512sum) {
+    DependencyImpl(String name, String folder, String link, String sha512sum) {
         this.name = name;
         this.folder = new File(folder);
         this.file = new File(this.folder, this.getName() + ".jar");
@@ -59,7 +57,7 @@ abstract class AbstractDependency implements Dependency {
     }
 
     @Override
-    public void load(Plugin plugin) throws Throwable {
+    public void load() throws Throwable {
         if (this.isLoaded())
             return;
 
@@ -83,8 +81,6 @@ abstract class AbstractDependency implements Dependency {
 
         // check signature
         this.checkSignature();
-
-        this.init(plugin);
     }
 
     public void checkSignature() throws IOException, InvalidSignatureException, NoSuchAlgorithmException {
@@ -99,8 +95,6 @@ abstract class AbstractDependency implements Dependency {
         if (!fileHash.equals(this.sha512sum))
             throw new InvalidSignatureException(this.getFile(), this.sha512sum, fileHash);
     }
-
-    protected abstract void init(Plugin plugin) throws Throwable;
 
     @Override
     public String getName() {
