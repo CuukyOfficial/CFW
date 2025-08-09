@@ -37,11 +37,11 @@ import java.util.Set;
  * 
  * @author Almighty-Satan
  */
-class BukkitJarLoader implements JarLoader {
+public class BukkitJarLoader implements JarLoader {
 
     private final HackClassLoader hackClassLoader;
 
-    BukkitJarLoader() throws NoSuchFieldException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
+    public BukkitJarLoader() throws NoSuchFieldException, SecurityException, ClassNotFoundException, IllegalArgumentException, IllegalAccessException {
         Object pluginClassLoader = this.getClass().getClassLoader();
         Class<?> pluginClassLoaderClass = Class.forName("org.bukkit.plugin.java.PluginClassLoader");
 

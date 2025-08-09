@@ -29,11 +29,11 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 
-class UrlJarLoader implements JarLoader {
+public class UrlJarLoader implements JarLoader {
 
     private final Method addUrlMethod;
 
-    UrlJarLoader() throws NoSuchMethodException, SecurityException {
+    public UrlJarLoader() throws NoSuchMethodException, SecurityException {
         this.addUrlMethod = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
         this.addUrlMethod.setAccessible(true);
     }
