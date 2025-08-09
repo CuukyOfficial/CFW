@@ -35,7 +35,7 @@ public class JarDependency extends AbstractDependency {
     }
 
     @Override
-    protected void init(Plugin varo) throws Throwable {
+    protected void init(Plugin plugin) throws Throwable {
         if (jarLoader == null) {
             jarLoader = new BukkitJarLoader();
         }

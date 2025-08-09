@@ -34,8 +34,8 @@ public class PluginDependency extends AbstractDependency {
     }
 
     @Override
-    protected void init(Plugin varo) throws Throwable {
-        Plugin plugin = Bukkit.getPluginManager().loadPlugin(this.getFile());
-        Bukkit.getPluginManager().enablePlugin(plugin);
+    protected void init(Plugin plugin) throws Throwable {
+        Plugin newPlugin = Bukkit.getPluginManager().loadPlugin(this.getFile());
+        Bukkit.getPluginManager().enablePlugin(newPlugin);
     }
 }
