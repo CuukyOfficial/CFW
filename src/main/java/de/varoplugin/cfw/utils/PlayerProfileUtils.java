@@ -37,6 +37,10 @@ import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * @deprecated this uses json-simple which is incredibly outdated
+ */
+@Deprecated
 public class PlayerProfileUtils {
 
     private static final int TIMEOUT_DEFAULT_MILLIS = 30_000;
