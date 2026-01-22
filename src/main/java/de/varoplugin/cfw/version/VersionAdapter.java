@@ -68,6 +68,10 @@ public interface VersionAdapter {
 
     void setNameTagVisibility(Team team, boolean shown);
 
+    /**
+     * @deprecated There is only one implementation for this. See {@link OneEightVersionAdapter}
+     */
+    @Deprecated
     void setArmorStandAttributes(Entity armorStand, boolean visible, boolean customNameVisible, boolean gravity, String customName);
 
     void removeAi(LivingEntity entity);
