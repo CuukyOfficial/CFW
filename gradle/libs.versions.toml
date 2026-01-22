@@ -1,0 +1,14 @@
+[versions]
+junit = "5.14.2"
+
+xseries = "13.6.0"
+spigot = "1.21.11-R0.1-SNAPSHOT"
+json = "1.1.1"
+
+[libraries]
+junit = { module="org.junit.jupiter:junit-jupiter", version.ref="junit" }
+junitplatformlauncher = { module = "org.junit.platform:junit-platform-launcher" }
+
+xseries = { module="com.github.cryptomorin:XSeries", version.ref="xseries" }
+spigot = { module="org.spigotmc:spigot-api", version.ref="spigot" }
+json = { module="com.googlecode.json-simple:json-simple", version.ref="json" }
