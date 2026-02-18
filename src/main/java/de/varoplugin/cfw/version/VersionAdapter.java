@@ -94,4 +94,6 @@ public interface VersionAdapter {
     Properties getServerProperties();
 
     void setServerProperty(String key, Object value);
+
+    Entity spawnNametagEntity(Player target, String nametag);
 }
