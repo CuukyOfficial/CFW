@@ -28,9 +28,11 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * This class uses a fuckton of undocumented stuff and will most likely stop working at some point in the future. Have fun xd
@@ -83,6 +85,13 @@ public class BukkitJarLoader implements JarLoader {
         @Override
         protected void addURL(URL url) {
             super.addURL(url);
+        }
+
+        @Override
+        protected Package[] getPackages() {
+            // Workaround for XSeries
+            // XReflection calls Package#getPackages to find out the NMS version
+            return Stream.concat(Arrays.stream(super.getPackages()), Arrays.stream(Package.getPackages())).toArray(Package[]::new);
         }
     }
 
