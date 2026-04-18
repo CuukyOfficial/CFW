@@ -35,7 +35,7 @@ public enum ServerSoftware {
     URANIUM("Uranium", null, null, "Uranium"),
     THERMOS("Thermos", null, "thermos.Thermos", "Thermos"),
     CAULDRON("Cauldron", null, null, "Cauldron"),
-    FALCHUS_SPIGOT("FalchusSpigot", SpigotVersionAdapter::new, "com.falchus.spigot.FalchusSpigot", "FalchusSpigot"),
+    FALCHUS_SPIGOT("FalchusSpigot", SpigotVersionAdapter::new, "com.falchus.spigot.FalchusSpigot", "FalchusSpigot"), // Proprietary Spigot fork, see https://falchus.com/spigot
     SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
     NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
     TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
