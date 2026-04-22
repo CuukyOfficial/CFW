@@ -35,7 +35,7 @@ import de.varoplugin.cfw.version.VersionUtils;
 class PlayerNameTag {
 
     private static final VersionAdapter VERISON_ADAPTER = VersionUtils.getVersionAdapter();
-    private static final boolean ONE_SEVEN = VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_8);
+    private static final boolean ONE_SEVEN = VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8);
 
     private final ScoreboardInstance scoreboard;
     private String name;

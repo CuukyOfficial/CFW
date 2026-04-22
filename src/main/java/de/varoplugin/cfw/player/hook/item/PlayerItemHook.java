@@ -112,6 +112,6 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
     }
 
     static {
-        KEY = VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_13) ? new NamespacedKey("cfw", "item_hook") : null;
+        KEY = VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_13) ? new NamespacedKey("cfw", "item_hook") : null;
     }
 }

@@ -34,7 +34,7 @@ import de.varoplugin.cfw.version.VersionUtils;
 public class StaticScoreboard {
 
     private static final int TITLE_MAX = 32;
-    private static final int CONTENT_MAX = VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_7) ? 40 : 16;
+    private static final int CONTENT_MAX = VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_7) ? 40 : 16;
     private static final int LINES_MAX = 15;
 
     private final ScoreboardInstance scoreboard;

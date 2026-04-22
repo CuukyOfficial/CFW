@@ -65,7 +65,7 @@ public class Hologram extends BasicSerializable {
     }
 
     private Optional<Entity> findNameTag() {
-        if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(ServerVersion.ONE_8))
+        if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8))
             return Optional.empty();
 
         return Arrays.stream(this.location.getChunk().getEntities()).filter(entity -> this.nameTagUuid.equals(entity.getUniqueId())).findAny();
@@ -82,7 +82,7 @@ public class Hologram extends BasicSerializable {
     }
 
     public void initialize(JavaPlugin plugin, String name) {
-        if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_16))
+        if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_16))
             // temporary paper 1.17+ workaround
             try {
                 Method forceLoadMethod = Chunk.class.getMethod("setForceLoaded", boolean.class);

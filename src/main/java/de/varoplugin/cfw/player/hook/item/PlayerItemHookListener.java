@@ -89,7 +89,7 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> {
             return;
 
         Player damager = (Player) event.getDamager();
-        ItemStack item = VersionUtils.getVersion().isHigherThan(ServerVersion.ONE_8) ? damager.getInventory().getItemInMainHand()
+        ItemStack item = VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_8) ? damager.getInventory().getItemInMainHand()
                 : damager.getItemInHand();
         if (this.ignoreEvent(damager, item))
             return;

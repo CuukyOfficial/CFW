@@ -28,22 +28,22 @@ import java.util.function.Supplier;
 
 public enum ServerVersion {
 
-    TWENTYSIX_1(26, 1, OneTwentyVersionAdapter::new),
-    ONE_21(1, 21, OneTwentyVersionAdapter::new),
-    ONE_20(1, 20, OneTwentyVersionAdapter::new),
-    ONE_19(1, 19, OneNineteenVersionAdapter::new),
-    ONE_18(1, 18, OneSeventeenVersionAdapter::new),
-    ONE_17(1, 17, OneSeventeenVersionAdapter::new),
-    ONE_16(1, 16, OneSixteenVersionAdapter::new),
-    ONE_15(1, 15, OneFourteenVersionAdapter::new),
-    ONE_14(1, 14, OneFourteenVersionAdapter::new),
-    ONE_13(1, 13, OneThirteenVersionAdapter::new),
-    ONE_12(1, 12, OneTwelveVersionAdapter::new),
-    ONE_11(1, 11, OneNineVersionAdapter::new),
-    ONE_10(1, 10, OneNineVersionAdapter::new),
-    ONE_9(1, 9, OneNineVersionAdapter::new),
-    ONE_8(1, 8, OneEightVersionAdapter::new),
-    ONE_7(1, 7, OneSevenVersionAdapter::new),
+    VERSION_26_1(26, 1, OneTwentyVersionAdapter::new),
+    VERSION_1_21(1, 21, OneTwentyVersionAdapter::new),
+    VERSION_1_20(1, 20, OneTwentyVersionAdapter::new),
+    VERSION_1_19(1, 19, OneNineteenVersionAdapter::new),
+    VERSION_1_18(1, 18, OneSeventeenVersionAdapter::new),
+    VERSION_1_17(1, 17, OneSeventeenVersionAdapter::new),
+    VERSION_1_16(1, 16, OneSixteenVersionAdapter::new),
+    VERSION_1_15(1, 15, OneFourteenVersionAdapter::new),
+    VERSION_1_14(1, 14, OneFourteenVersionAdapter::new),
+    VERSION_1_13(1, 13, OneThirteenVersionAdapter::new),
+    VERSION_1_12(1, 12, OneTwelveVersionAdapter::new),
+    VERSION_1_11(1, 11, OneNineVersionAdapter::new),
+    VERSION_1_10(1, 10, OneNineVersionAdapter::new),
+    VERSION_1_9(1, 9, OneNineVersionAdapter::new),
+    VERSION_1_8(1, 8, OneEightVersionAdapter::new),
+    VERSION_1_7(1, 7, OneSevenVersionAdapter::new),
     UNSUPPORTED(0, 0, UnsupportedVersionAdapter::new);
 
     private final int major;
