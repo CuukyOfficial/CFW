@@ -28,6 +28,7 @@ import java.util.function.Supplier;
 
 public enum ServerVersion {
 
+    VERSION_26_2(26, 2, OneTwentyVersionAdapter::new),
     VERSION_26_1(26, 1, OneTwentyVersionAdapter::new),
     VERSION_1_21(1, 21, OneTwentyVersionAdapter::new),
     VERSION_1_20(1, 20, OneTwentyVersionAdapter::new),
