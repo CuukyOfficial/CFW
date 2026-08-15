@@ -25,7 +25,7 @@ repositories {
 
 dependencies {
     implementation(libs.xseries)
-    implementation(libs.spigot)
+    compileOnly(libs.spigot)
     compileOnly(libs.json)
 
     testImplementation(libs.junit)
