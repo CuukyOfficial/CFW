@@ -1,8 +1,8 @@
 [versions]
 junit = "5.14.2"
 
-xseries = "13.6.0"
-spigot = "26.1-R0.1-SNAPSHOT"
+xseries = "13.7.1"
+spigot = "26.2-R0.1-SNAPSHOT"
 json = "1.1.1"
 
 [libraries]
