@@ -61,13 +61,6 @@ public class Hologram extends BasicSerializable {
             this.createNameTag(name);
     }
 
-    private Optional<Entity> findNameTag() {
-        if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8))
-            return Optional.empty();
-
-        return Arrays.stream(this.location.getChunk().getEntities()).filter(entity -> this.nameTagUuid.equals(entity.getUniqueId())).findAny();
-    }
-
     private void createNameTag(String name) {
         Entity armorStand = this.location.getWorld().spawnEntity(this.location, EntityType.ARMOR_STAND);
         this.nameTagUuid = armorStand.getUniqueId();
@@ -76,6 +69,14 @@ public class Hologram extends BasicSerializable {
 
     private void updateNameTag(Entity armorStand, String name) {
         VersionUtils.getVersionAdapter().setArmorStandAttributes(armorStand, false, true, false, name);
+    }
+
+    public Optional<Entity> findNameTag() {
+        if (this.location == null || this.nameTagUuid == null || VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8))
+            return Optional.empty();
+
+        return this.location.getWorld().getNearbyEntities(this.location, 0.1, 0.1, 0.1)
+                .stream().filter(entity -> this.nameTagUuid.equals(entity.getUniqueId())).findAny();
     }
 
     public void initialize(JavaPlugin plugin, String name) {
