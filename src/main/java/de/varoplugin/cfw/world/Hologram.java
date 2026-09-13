@@ -27,18 +27,15 @@ package de.varoplugin.cfw.world;
 import de.varoplugin.cfw.configuration.serialization.BasicSerializable;
 import de.varoplugin.cfw.configuration.serialization.SerializableLocation;
 import de.varoplugin.cfw.configuration.serialization.Serialize;
-import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.ServerSoftware;
+import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
@@ -82,25 +79,16 @@ public class Hologram extends BasicSerializable {
     }
 
     public void initialize(JavaPlugin plugin, String name) {
-        if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_16))
-            // temporary paper 1.17+ workaround
-            try {
-                Method forceLoadMethod = Chunk.class.getMethod("setForceLoaded", boolean.class);
-                forceLoadMethod.invoke(this.location.getChunk(), true);
-
-                this.location.getChunk().load();
-                Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-                    this.checkNameTag(name);
-                    try {
-                        forceLoadMethod.invoke(this.location.getChunk(), false);
-                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                }, 5L * 20L);
-            } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-        else {
+        if (VersionUtils.getServerSoftware() == ServerSoftware.PAPER && VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_16)
+                && VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_19)) {
+            // temporary paper 1.17+ workaround. https://github.com/PaperMC/Paper/issues/5872
+            this.location.getChunk().setForceLoaded(true);
+            this.location.getChunk().load();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                this.checkNameTag(name);
+                this.location.getChunk().setForceLoaded(false);
+            }, 5L * 20L);
+        } else {
             this.checkNameTag(name);
         }
     }
