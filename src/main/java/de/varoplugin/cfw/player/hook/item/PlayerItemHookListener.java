@@ -96,7 +96,7 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onItemMove(InventoryClickEvent event) {
+    public void onInventoryClick(InventoryClickEvent event) {
         ItemStack hotKeyed = event.getClick() == ClickType.NUMBER_KEY ? event.getWhoClicked().getInventory().getItem(event.getHotbarButton()) : null;
         if (this.ignoreEvent(event.getWhoClicked(), event.getCurrentItem()) && this.ignoreEvent(event.getCursor()) && (hotKeyed == null || this.ignoreEvent(hotKeyed)))
             return;
@@ -109,7 +109,7 @@ public class PlayerItemHookListener extends AbstractHookListener<ItemHook> {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onItemMove(InventoryDragEvent event) {
+    public void onInventoryDrag(InventoryDragEvent event) {
         if (this.ignoreEvent(event.getWhoClicked(), event.getOldCursor()))
             return;
         event.setCancelled(true);
