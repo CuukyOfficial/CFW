@@ -24,9 +24,10 @@
 
 package de.varoplugin.cfw.player.hook.item;
 
-import java.util.Collection;
-import java.util.Random;
-
+import de.varoplugin.cfw.player.hook.AbstractHookEvent;
+import de.varoplugin.cfw.player.hook.AbstractPlayerHook;
+import de.varoplugin.cfw.version.ServerVersion;
+import de.varoplugin.cfw.version.VersionUtils;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -34,14 +35,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
-import de.varoplugin.cfw.player.hook.AbstractHookEvent;
-import de.varoplugin.cfw.player.hook.AbstractPlayerHook;
-import de.varoplugin.cfw.version.ServerVersion;
-import de.varoplugin.cfw.version.VersionUtils;
+import java.util.Collection;
+import java.util.Random;
+import java.util.function.Supplier;
 
 public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> implements ItemHook {
 
     private static final Random RANDOM = new Random();
+
+    private static final Supplier<PlayerItemHookListener> LISTENER = VersionUtils.getVersion().isHigherThan(ServerVersion.VERSION_1_8) ? PlayerItemHookListenerOneNine::new : PlayerItemHookListener::new;
 
     static final Object KEY;
 
@@ -52,7 +54,7 @@ public class PlayerItemHook extends AbstractPlayerHook<PlayerItemHookListener> i
     private final boolean droppable;
 
     public PlayerItemHook(boolean cancel, Collection<HookSubscriber<? extends AbstractHookEvent<?, ?>>> subscriber, ItemStack item, int slot, boolean movable, boolean droppable) {
-        super(cancel, subscriber, new PlayerItemHookListener());
+        super(cancel, subscriber, LISTENER.get());
 
         if (item == null)
             throw new IllegalArgumentException("Missing item");
