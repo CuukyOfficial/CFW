@@ -53,7 +53,7 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
         super.addItem(index, this.getLoadingItem());
         TaskScheduler.of(this.getManager().getPlugin()).runAsyncLater(() -> {
             AdvancedAsyncListInventory.super.addShowItem(index, item, click);
-            AdvancedAsyncListInventory.this.getPlayer().updateInventory();
+            TaskScheduler.of(this.getManager().getPlugin()).executeFor(this.getPlayer(), () -> this.getPlayer().updateInventory());
         }, 0L);
     }
 }

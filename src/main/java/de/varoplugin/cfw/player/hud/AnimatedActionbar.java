@@ -45,7 +45,7 @@ public class AnimatedActionbar {
                 return AnimatedActionbar.this.processString(input);
             }
         };
-        this.task = TaskScheduler.of(javaPlugin).runForTimer(player, this::update, 1, 1);
+        this.task = TaskScheduler.of(javaPlugin).runForTimer(player, this::update, 0, 0);
     }
 
     public void queueUpdate() {

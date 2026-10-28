@@ -185,6 +185,10 @@ public interface TaskScheduler {
             // nop
         }
 
+        static synchronized void remove(Plugin plugin) {
+            SCHEDULERS.remove(plugin);
+        }
+
         private static synchronized TaskScheduler of(Plugin plugin) {
             return SCHEDULERS.computeIfAbsent(plugin, p -> FoliaTaskScheduler.isSupported() ? new FoliaTaskScheduler(p) : new BukkitTaskScheduler(p));
         }

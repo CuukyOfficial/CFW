@@ -173,5 +173,6 @@ class BukkitTaskScheduler implements TaskScheduler {
     @Override
     public void cancelTasks() {
         Bukkit.getScheduler().cancelTasks(this.plugin);
+        TaskScheduler.Holder.remove(this.plugin);
     }
 }

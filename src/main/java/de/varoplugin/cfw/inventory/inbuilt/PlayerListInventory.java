@@ -37,6 +37,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.cryptomorin.xseries.XMaterial;
 
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.inventory.list.AdvancedAsyncListInventory;
@@ -72,7 +73,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     @Override
     protected ItemClick getClick(Player item) {
         return event -> {
-            this.getPlayer().teleport(item);
+            TaskScheduler.teleportAsync(this.getPlayer(), item.getLocation());
             this.close();
         };
     }

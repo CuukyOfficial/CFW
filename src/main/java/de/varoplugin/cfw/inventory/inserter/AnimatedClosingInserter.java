@@ -74,7 +74,7 @@ public class AnimatedClosingInserter implements ItemInserter {
         this.scheduler = TaskScheduler.of(plugin).runForTimer(player, () -> {
             for (int i = 0; i < AMOUNT; i++)
                 this.insertNext(inventory, items, player, size, middle);
-        }, 1, DELAY);
+        }, 0, DELAY);
     }
 
     @Override

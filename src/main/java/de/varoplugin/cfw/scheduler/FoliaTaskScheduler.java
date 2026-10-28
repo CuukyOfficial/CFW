@@ -29,6 +29,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -93,7 +94,11 @@ class FoliaTaskScheduler implements TaskScheduler {
             taskCancel = scheduled.getMethod("cancel");
             taskIsCancelled = scheduled.getMethod("isCancelled");
             supported = true;
+        } catch (ClassNotFoundException e) {
+            supported = false; // Not running on Folia
         } catch (ReflectiveOperationException | LinkageError | NullPointerException e) {
+            // Folia was detected but its API does not look as expected. Falling back to the Bukkit scheduler will not work, but at least tell the user why.
+            Bukkit.getLogger().log(Level.SEVERE, "[CFW] Unable to access the Folia scheduler API", e);
             supported = false;
         }
         SUPPORTED = supported;
@@ -314,5 +319,6 @@ class FoliaTaskScheduler implements TaskScheduler {
     public void cancelTasks() {
         invoke(globalCancel, this.global(), this.plugin);
         invoke(asyncCancel, this.async(), this.plugin);
+        TaskScheduler.Holder.remove(this.plugin);
     }
 }
