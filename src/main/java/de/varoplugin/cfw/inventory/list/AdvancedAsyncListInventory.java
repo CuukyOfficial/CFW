@@ -31,10 +31,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.cryptomorin.xseries.XMaterial;
 
-import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.item.ItemBuilder;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 

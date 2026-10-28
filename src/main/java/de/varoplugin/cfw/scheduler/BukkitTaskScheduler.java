@@ -24,7 +24,6 @@
 
 package de.varoplugin.cfw.scheduler;
 
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import org.bukkit.Bukkit;

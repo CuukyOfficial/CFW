@@ -24,13 +24,12 @@
 
 package de.varoplugin.cfw.player;
 
-import java.util.concurrent.CompletableFuture;
-
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.version.VersionUtils;
+import java.util.concurrent.CompletableFuture;
 
 public final class SafeTeleport {
 

@@ -27,7 +27,6 @@ package de.varoplugin.cfw.player.hud;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-
 import de.varoplugin.cfw.version.VersionUtils;
 
 public interface ScoreboardInstance {

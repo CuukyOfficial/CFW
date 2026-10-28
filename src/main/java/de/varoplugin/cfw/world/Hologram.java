@@ -24,10 +24,10 @@
 
 package de.varoplugin.cfw.world;
 
-import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.configuration.serialization.BasicSerializable;
 import de.varoplugin.cfw.configuration.serialization.SerializableLocation;
 import de.varoplugin.cfw.configuration.serialization.Serialize;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.version.ServerSoftware;
 import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.VersionUtils;

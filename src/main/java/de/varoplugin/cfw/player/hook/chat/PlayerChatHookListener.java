@@ -28,8 +28,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.player.hook.AbstractHookListener;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook> {
 

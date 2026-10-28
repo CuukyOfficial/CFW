@@ -28,7 +28,6 @@ import java.util.Objects;
 
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import de.varoplugin.cfw.scheduler.Task;
 import de.varoplugin.cfw.scheduler.TaskScheduler;
 

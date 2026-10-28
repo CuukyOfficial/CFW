@@ -41,9 +41,9 @@ import org.bukkit.inventory.ItemStack;
 import com.cryptomorin.xseries.inventory.BukkitInventoryView;
 import com.cryptomorin.xseries.inventory.XInventoryView;
 
-import de.varoplugin.cfw.scheduler.TaskScheduler;
-import de.varoplugin.cfw.scheduler.Task;
 import de.varoplugin.cfw.inventory.inserter.DirectInserter;
+import de.varoplugin.cfw.scheduler.Task;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public abstract class AdvancedInventory extends InfoProviderHolder implements ContentRefreshable, DefaultInfoProvider {
 

@@ -25,7 +25,6 @@
 package de.varoplugin.cfw.player.hud;
 
 import org.bukkit.plugin.java.JavaPlugin;
-
 import de.varoplugin.cfw.scheduler.Task;
 import de.varoplugin.cfw.scheduler.TaskScheduler;
 
