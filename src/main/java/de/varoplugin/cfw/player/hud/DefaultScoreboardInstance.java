@@ -29,8 +29,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.Team;
+
+import de.varoplugin.cfw.version.ServerVersion;
+import de.varoplugin.cfw.version.VersionAdapter;
+import de.varoplugin.cfw.version.VersionUtils;
 
 class DefaultScoreboardInstance implements ScoreboardInstance {
+
+    private static final VersionAdapter VERSION_ADAPTER = VersionUtils.getVersionAdapter();
+    private static final boolean ONE_SEVEN = VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8);
 
     private final Player player;
     private final Scoreboard scoreboard;
@@ -57,6 +65,50 @@ class DefaultScoreboardInstance implements ScoreboardInstance {
     @Override
     public void clearSideBar() {
         this.getSideBar().unregister();
+    }
+
+    @Override
+    public void setSideBarTitle(String title) {
+        Objective objective = this.getSideBar();
+        if (!objective.getDisplayName().equals(title))
+            objective.setDisplayName(title);
+    }
+
+    @Override
+    public void setSideBarScore(String line, int score) {
+        this.getSideBar().getScore(line).setScore(score);
+    }
+
+    @Override
+    public void resetSideBarScore(String line) {
+        this.scoreboard.resetScores(line);
+    }
+
+    @Override
+    public void setNameTag(Player target, boolean visible, String teamName, String prefix, String suffix) {
+        @SuppressWarnings("deprecation")
+        Team team = ONE_SEVEN ? this.scoreboard.getPlayerTeam(target) : this.scoreboard.getEntryTeam(target.getName());
+
+        if (team != null && !team.getName().equals(teamName)) {
+            team.removeEntry(target.getName());
+            team.unregister();
+            team = null;
+        }
+
+        if (team == null) {
+            if ((team = this.scoreboard.getTeam(teamName)) == null)
+                team = this.scoreboard.registerNewTeam(teamName);
+            team.addEntry(target.getName());
+        }
+
+        team.setPrefix(prefix);
+        team.setSuffix(suffix);
+        VERSION_ADAPTER.setNameTagVisibility(team, visible);
+    }
+
+    @Override
+    public void destroy() {
+        // The Bukkit scoreboard is simply discarded together with the player
     }
 
     @Override

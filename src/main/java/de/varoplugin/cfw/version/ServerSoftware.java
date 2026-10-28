@@ -75,13 +75,6 @@ public enum ServerSoftware {
     }
 
     /**
-     * @return Whether this software supports the Bukkit scoreboard API
-     **/
-    public boolean supportsScoreboards() {
-        return !this.isRegionized();
-    }
-
-    /**
      * @return Name of the software
      **/
     public String getName() {

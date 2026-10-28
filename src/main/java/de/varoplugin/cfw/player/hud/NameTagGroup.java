@@ -29,6 +29,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A group of players that can see each other's name tags. May be used by multiple threads.
+ */
 public class NameTagGroup {
 
     private final List<PlayerNameTag> nameTags;
@@ -37,7 +40,7 @@ public class NameTagGroup {
         this.nameTags = new ArrayList<>();
     }
 
-    public void register(ScoreboardInstance scoreboard, boolean visible, String name, String prefix, String suffix) {
+    public synchronized void register(ScoreboardInstance scoreboard, boolean visible, String name, String prefix, String suffix) {
         PlayerNameTag nameTag = new PlayerNameTag(scoreboard);
         nameTag.setValues(visible, name, prefix, suffix);
         this.nameTags.add(nameTag);
@@ -47,19 +50,19 @@ public class NameTagGroup {
         }
     }
 
-    public void register(ScoreboardInstance scoreboard, boolean visible, String prefix, String suffix) {
+    public synchronized void register(ScoreboardInstance scoreboard, boolean visible, String prefix, String suffix) {
         this.register(scoreboard, visible, scoreboard.getPlayer().getName(), prefix, suffix);
     }
 
-    public void unRegister(ScoreboardInstance scoreboard) {
+    public synchronized void unRegister(ScoreboardInstance scoreboard) {
         this.nameTags.removeIf(nameTag -> nameTag.getScoreboard() == scoreboard);
     }
 
-    public void unRegister(Player player) {
+    public synchronized void unRegister(Player player) {
         this.nameTags.removeIf(nameTag -> nameTag.getScoreboard().getPlayer() == player);
     }
 
-    public void update(Player player, boolean visible, String name, String prefix, String suffix) {
+    public synchronized void update(Player player, boolean visible, String name, String prefix, String suffix) {
         for (PlayerNameTag nameTag : this.nameTags) {
             if (nameTag.getScoreboard().getPlayer() == player)
                 nameTag.setValues(visible, name, prefix, suffix);
@@ -67,15 +70,15 @@ public class NameTagGroup {
         }
     }
 
-    public void update(Player player, boolean visible, String prefix, String suffix) {
+    public synchronized void update(Player player, boolean visible, String prefix, String suffix) {
         this.update(player, visible, player.getName(), prefix, suffix);
     }
 
-    public void update(ScoreboardInstance scoreboard, boolean visible, String name, String prefix, String suffix) {
+    public synchronized void update(ScoreboardInstance scoreboard, boolean visible, String name, String prefix, String suffix) {
         this.update(scoreboard.getPlayer(), visible, name, prefix, suffix);
     }
 
-    public void update(ScoreboardInstance scoreboard, boolean visible, String prefix, String suffix) {
+    public synchronized void update(ScoreboardInstance scoreboard, boolean visible, String prefix, String suffix) {
         this.update(scoreboard, visible, scoreboard.getPlayer().getName(), prefix, suffix);
     }
 }
