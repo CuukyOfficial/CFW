@@ -146,6 +146,25 @@ public interface TaskScheduler {
         return this.runForTimer(entity, t -> task.run(), delay, period);
     }
 
+    // Immediate execution: runs the task right away if the current thread already owns the global region/location/entity, otherwise schedules it.
+
+    /**
+     * Runs the task immediately if called from the main thread (the global region thread on Folia), otherwise schedules it on the global region.
+     */
+    void execute(Runnable task);
+
+    /**
+     * Runs the task immediately if the current thread owns the region of the location (always the main thread on non-Folia servers), otherwise
+     * schedules it on that region.
+     */
+    void executeAt(Location location, Runnable task);
+
+    /**
+     * Runs the task immediately if the current thread owns the entity (always the main thread on non-Folia servers), otherwise schedules it
+     * on the entity's region.
+     */
+    void executeFor(Entity entity, Runnable task);
+
     /**
      * Teleports an entity. On Folia this is performed asynchronously (loading the chunk if necessary).
      *

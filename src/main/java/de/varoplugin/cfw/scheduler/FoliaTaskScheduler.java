@@ -44,6 +44,7 @@ class FoliaTaskScheduler implements TaskScheduler {
     private static final String SCHEDULER_PACKAGE = "io.papermc.paper.threadedregions.scheduler.";
 
     private static final boolean SUPPORTED;
+    private static Method isGlobalTickThread, isOwnedByLocation, isOwnedByEntity;
     private static Method getGlobal, getRegion, getAsync, getEntityScheduler, teleportAsync;
     private static Method globalRun, globalRunDelayed, globalRunFixed, globalCancel;
     private static Method regionRun, regionRunDelayed, regionRunFixed;
@@ -65,6 +66,9 @@ class FoliaTaskScheduler implements TaskScheduler {
             getGlobal = Bukkit.getServer().getClass().getMethod("getGlobalRegionScheduler");
             getRegion = Bukkit.getServer().getClass().getMethod("getRegionScheduler");
             getAsync = Bukkit.getServer().getClass().getMethod("getAsyncScheduler");
+            isGlobalTickThread = Bukkit.class.getMethod("isGlobalTickThread");
+            isOwnedByLocation = Bukkit.class.getMethod("isOwnedByCurrentRegion", Location.class);
+            isOwnedByEntity = Bukkit.class.getMethod("isOwnedByCurrentRegion", Entity.class);
             getEntityScheduler = Entity.class.getMethod("getScheduler");
             teleportAsync = Entity.class.getMethod("teleportAsync", Location.class);
 
@@ -270,6 +274,30 @@ class FoliaTaskScheduler implements TaskScheduler {
         Handle handle = new Handle();
         handle.set(invoke(entityRunFixed, invoke(getEntityScheduler, entity), this.plugin, wrap(handle, task), null, ticks(delay), ticks(period)));
         return handle;
+    }
+
+    @Override
+    public void execute(Runnable task) {
+        if ((boolean) invoke(isGlobalTickThread, null))
+            task.run();
+        else
+            this.run(task);
+    }
+
+    @Override
+    public void executeAt(Location location, Runnable task) {
+        if ((boolean) invoke(isOwnedByLocation, null, location))
+            task.run();
+        else
+            this.runAt(location, task);
+    }
+
+    @Override
+    public void executeFor(Entity entity, Runnable task) {
+        if ((boolean) invoke(isOwnedByEntity, null, entity))
+            task.run();
+        else
+            this.runFor(entity, task);
     }
 
     @SuppressWarnings("unchecked")
