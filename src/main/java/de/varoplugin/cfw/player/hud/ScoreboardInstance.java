@@ -28,7 +28,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
-import de.varoplugin.cfw.version.ServerSoftware;
 import de.varoplugin.cfw.version.VersionUtils;
 
 public interface ScoreboardInstance {
@@ -47,7 +46,7 @@ public interface ScoreboardInstance {
      * @return Whether the server supports the Bukkit scoreboard API. This is not the case on Folia.
      */
     static boolean isSupported() {
-        return VersionUtils.getServerSoftware() != ServerSoftware.FOLIA;
+        return VersionUtils.getServerSoftware().supportsScoreboards();
     }
 
     /**

@@ -192,7 +192,7 @@ class FoliaTaskScheduler implements TaskScheduler {
     }
 
     @Override
-    public boolean isFolia() {
+    public boolean isRegionized() {
         return true;
     }
 
@@ -308,11 +308,6 @@ class FoliaTaskScheduler implements TaskScheduler {
     @SuppressWarnings("unchecked")
     static CompletableFuture<Boolean> teleport0(Entity entity, Location location) {
         return (CompletableFuture<Boolean>) invoke(teleportAsync, entity, location);
-    }
-
-    @Override
-    public CompletableFuture<Boolean> teleport(Entity entity, Location location) {
-        return teleport0(entity, location);
     }
 
     @Override

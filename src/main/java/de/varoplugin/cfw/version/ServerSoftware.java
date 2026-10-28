@@ -67,6 +67,21 @@ public enum ServerSoftware {
     }
 
     /**
+     * @return Whether this software runs the world in multiple independent regions that are ticked by different threads (Folia). Blocks and
+     *         entities may then only be accessed by the thread owning them (see {@link de.varoplugin.cfw.scheduler.TaskScheduler}).
+     **/
+    public boolean isRegionized() {
+        return this == FOLIA;
+    }
+
+    /**
+     * @return Whether this software supports the Bukkit scoreboard API
+     **/
+    public boolean supportsScoreboards() {
+        return !this.isRegionized();
+    }
+
+    /**
      * @return Name of the software
      **/
     public String getName() {

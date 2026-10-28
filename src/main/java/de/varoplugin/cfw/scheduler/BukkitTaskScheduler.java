@@ -71,7 +71,7 @@ class BukkitTaskScheduler implements TaskScheduler {
     }
 
     @Override
-    public boolean isFolia() {
+    public boolean isRegionized() {
         return false;
     }
 
@@ -163,11 +163,6 @@ class BukkitTaskScheduler implements TaskScheduler {
     @Override
     public void executeFor(Entity entity, Runnable task) {
         this.execute(task);
-    }
-
-    @Override
-    public CompletableFuture<Boolean> teleport(Entity entity, Location location) {
-        return CompletableFuture.completedFuture(entity.teleport(location));
     }
 
     @Override
