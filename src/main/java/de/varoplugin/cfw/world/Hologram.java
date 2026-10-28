@@ -90,7 +90,8 @@ public class Hologram extends BasicSerializable {
                 this.location.getChunk().setForceLoaded(false);
             }, 5L * 20L);
         } else {
-            this.checkNameTag(name);
+            // Entities can only be accessed by the thread owning the region on Folia
+            TaskScheduler.of(plugin).executeAt(this.location, () -> this.checkNameTag(name));
         }
     }
 
