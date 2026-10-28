@@ -24,11 +24,11 @@
 
 package de.varoplugin.cfw.player.hook.chat;
 
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.player.hook.AbstractHookListener;
 
 public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook> {
@@ -42,7 +42,7 @@ public class PlayerChatHookListener extends AbstractHookListener<PlayerChatHook>
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         if (this.ignoreEvent(event))
             return;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(this.trigger.getPlugin(), () -> {
+        TaskScheduler.of(this.trigger.getPlugin()).runFor(event.getPlayer(), () -> {
             this.trigger.eventFired(new ChatHookTriggerEvent(this.trigger, event));
         });
         event.setCancelled(true);

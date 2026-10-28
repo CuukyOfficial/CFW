@@ -37,12 +37,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.cryptomorin.xseries.inventory.BukkitInventoryView;
 import com.cryptomorin.xseries.inventory.XInventoryView;
 
+import de.varoplugin.cfw.scheduler.TaskScheduler;
+import de.varoplugin.cfw.scheduler.Task;
 import de.varoplugin.cfw.inventory.inserter.DirectInserter;
 
 public abstract class AdvancedInventory extends InfoProviderHolder implements ContentRefreshable, DefaultInfoProvider {
@@ -71,7 +71,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
     private Inventory inventory;
     private ItemInserter inserter;
     private boolean open, updating;
-    private BukkitTask autoTask;
+    private Task autoTask;
 
     private final Map<Integer, AdvancedItemLink> items = new ConcurrentHashMap<>();
     private final List<PrioritisedInfo> infos = new LinkedList<>();
@@ -167,12 +167,7 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         if (this.interval == -1)
             return;
 
-        this.autoTask = new BukkitRunnable() {
-            @Override
-            public void run() {
-                AdvancedInventory.this.update();
-            }
-        }.runTaskTimer(this.getManager().getPlugin(), this.interval, this.interval);
+        this.autoTask = TaskScheduler.of(this.getManager().getPlugin()).runForTimer(this.player, this::update, this.interval, this.interval);
     }
 
     private void updateInformation() {
@@ -304,15 +299,11 @@ public abstract class AdvancedInventory extends InfoProviderHolder implements Co
         if (this.open)
             throw new IllegalStateException("Cannot reopen already opened inventory");
         this.manager.registerInventory(this);
-        new BukkitRunnable() {
-
-            @Override
-            public void run() {
-                AdvancedInventory.this.startTask();
-                AdvancedInventory.this.updateProvider();
-                AdvancedInventory.this.update();
-            }
-        }.runTaskLater(this.manager.getPlugin(), 0L);
+        TaskScheduler.of(this.manager.getPlugin()).runForLater(this.player, () -> {
+            this.startTask();
+            this.updateProvider();
+            this.update();
+        }, 0L);
     }
 
     public void close(boolean close) {

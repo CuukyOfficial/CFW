@@ -26,14 +26,16 @@ package de.varoplugin.cfw.player.hud;
 
 import java.util.Objects;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import de.varoplugin.cfw.scheduler.Task;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public class AnimatedTablist {
 
     private final StaticTablist tablist;
-    private final int task;
+    private final Task task;
     private Animation<String> header;
     private Animation<String> footer;
     private boolean contentChanged;
@@ -49,7 +51,7 @@ public class AnimatedTablist {
                 return AnimatedTablist.this.processString(input);
             }
         };
-        this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(javaPlugin, this::update, 0, 0);
+        this.task = TaskScheduler.of(javaPlugin).runForTimer(player, this::update, 1, 1);
     }
 
     public void queueUpdate() {
@@ -108,6 +110,6 @@ public class AnimatedTablist {
     }
 
     public void destroy() {
-        Bukkit.getScheduler().cancelTask(this.task);
+        this.task.cancel();
     }
 }
