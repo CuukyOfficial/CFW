@@ -37,7 +37,7 @@ public class AnimatedTablist {
     private final Task task;
     private Animation<String> header;
     private Animation<String> footer;
-    private boolean contentChanged;
+    private volatile boolean contentChanged;
 
     public AnimatedTablist(JavaPlugin javaPlugin, Player player, AnimationData<String> header, AnimationData<String> footer) {
         Objects.requireNonNull(javaPlugin);

@@ -32,9 +32,9 @@ public class AnimatedScoreboard {
 
     private final StaticScoreboard scoreboard;
     private final Task task;
-    private Animation<String> title;
-    private Animation<String[]> content;
-    private boolean contentChanged;
+    private volatile Animation<String> title;
+    private volatile Animation<String[]> content;
+    private volatile boolean contentChanged;
 
     public AnimatedScoreboard(JavaPlugin javaPlugin, ScoreboardInstance scoreboard, AnimationData<String> title, AnimationData<String[]> content) {
         this.title = new Animation<>(title);

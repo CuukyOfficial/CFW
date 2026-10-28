@@ -62,7 +62,7 @@ public class StaticScoreboard {
      * @param title   The title (will not be updated if null)
      * @param content The title (will not be updated if null)
      */
-    public void update(String title, String... content) {
+    public synchronized void update(String title, String... content) {
         if (this.enabledChanged) {
             if (!this.enabled) {
                 this.scoreboard.clearSideBar();
@@ -139,12 +139,12 @@ public class StaticScoreboard {
      * 
      * @param enabled True if enabled
      */
-    public void setEnabled(boolean enabled) {
+    public synchronized void setEnabled(boolean enabled) {
         this.enabledChanged = enabled != this.enabled;
         this.enabled = enabled;
     }
 
-    public boolean isEnabled() {
+    public synchronized boolean isEnabled() {
         return this.enabled;
     }
 
