@@ -73,7 +73,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     @Override
     protected ItemClick getClick(Player item) {
         return event -> {
-            TaskScheduler.teleportAsync(this.getPlayer(), item.getLocation());
+            TaskScheduler.of(this.getManager().getPlugin()).executeFor(item, () -> TaskScheduler.teleportAsync(this.getPlayer(), item.getLocation()));
             this.close();
         };
     }
