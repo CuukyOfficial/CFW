@@ -24,16 +24,17 @@
 
 package de.varoplugin.cfw.player.hud;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import de.varoplugin.cfw.scheduler.Task;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public class AnimatedScoreboard {
 
     private final StaticScoreboard scoreboard;
-    private final int task;
-    private Animation<String> title;
-    private Animation<String[]> content;
-    private boolean contentChanged;
+    private final Task task;
+    private volatile Animation<String> title;
+    private volatile Animation<String[]> content;
+    private volatile boolean contentChanged;
 
     public AnimatedScoreboard(JavaPlugin javaPlugin, ScoreboardInstance scoreboard, AnimationData<String> title, AnimationData<String[]> content) {
         this.title = new Animation<>(title);
@@ -45,7 +46,7 @@ public class AnimatedScoreboard {
                 return AnimatedScoreboard.this.processString(input);
             }
         };
-        this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(javaPlugin, this::update, 0, 0);
+        this.task = TaskScheduler.of(javaPlugin).runForTimer(scoreboard.getPlayer(), this::update, 0, 0);
     }
 
     public void queueUpdate() {
@@ -96,6 +97,6 @@ public class AnimatedScoreboard {
     }
 
     public void destroy() {
-        Bukkit.getScheduler().cancelTask(this.task);
+        this.task.cancel();
     }
 }

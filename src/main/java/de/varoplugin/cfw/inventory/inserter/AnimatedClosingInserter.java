@@ -26,14 +26,14 @@ package de.varoplugin.cfw.inventory.inserter;
 
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import de.varoplugin.cfw.inventory.AdvancedInventory;
 import de.varoplugin.cfw.inventory.ItemInserter;
+import de.varoplugin.cfw.scheduler.Task;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public class AnimatedClosingInserter implements ItemInserter {
 
@@ -41,7 +41,7 @@ public class AnimatedClosingInserter implements ItemInserter {
     private static final int AMOUNT = 4;
 
     private boolean started;
-    private BukkitTask scheduler;
+    private Task scheduler;
     private boolean end;
     private int index;
 
@@ -71,7 +71,7 @@ public class AnimatedClosingInserter implements ItemInserter {
         this.started = true;
         int middle = (size - 1) / 2;
 
-        this.scheduler = Bukkit.getScheduler().runTaskTimer(plugin, () -> {
+        this.scheduler = TaskScheduler.of(plugin).runForTimer(player, () -> {
             for (int i = 0; i < AMOUNT; i++)
                 this.insertNext(inventory, items, player, size, middle);
         }, 0, DELAY);

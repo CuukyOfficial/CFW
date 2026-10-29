@@ -28,13 +28,13 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import com.cryptomorin.xseries.XMaterial;
 
 import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.item.ItemBuilder;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventory<T> {
 
@@ -51,12 +51,9 @@ public abstract class AdvancedAsyncListInventory<T> extends AdvancedListInventor
         if (item == null)
             return;
         super.addItem(index, this.getLoadingItem());
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-                AdvancedAsyncListInventory.super.addShowItem(index, item, click);
-                AdvancedAsyncListInventory.this.getPlayer().updateInventory();
-            }
-        }.runTaskLaterAsynchronously(this.getManager().getPlugin(), 0L);
+        TaskScheduler.of(this.getManager().getPlugin()).runAsyncLater(() -> {
+            AdvancedAsyncListInventory.super.addShowItem(index, item, click);
+            TaskScheduler.of(this.getManager().getPlugin()).executeFor(this.getPlayer(), () -> this.getPlayer().updateInventory());
+        }, 0L);
     }
 }

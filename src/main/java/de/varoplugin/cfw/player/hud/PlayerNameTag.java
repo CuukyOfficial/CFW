@@ -25,17 +25,8 @@
 package de.varoplugin.cfw.player.hud;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team;
-
-import de.varoplugin.cfw.version.ServerVersion;
-import de.varoplugin.cfw.version.VersionAdapter;
-import de.varoplugin.cfw.version.VersionUtils;
 
 class PlayerNameTag {
-
-    private static final VersionAdapter VERISON_ADAPTER = VersionUtils.getVersionAdapter();
-    private static final boolean ONE_SEVEN = VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8);
 
     private final ScoreboardInstance scoreboard;
     private String name;
@@ -55,25 +46,7 @@ class PlayerNameTag {
     }
 
     void updatePlayer(Player player, boolean visible, String name, String prefix, String suffix) {
-        Scoreboard scoreboard = this.scoreboard.getScoreboard();
-        @SuppressWarnings("deprecation")
-        Team team = ONE_SEVEN ? scoreboard.getPlayerTeam(player) : scoreboard.getEntryTeam(player.getName());
-
-        if (team != null && !team.getName().equals(name)) {
-            team.removeEntry(player.getName());
-            team.unregister();
-            team = null;
-        }
-
-        if (team == null) {
-            if ((team = scoreboard.getTeam(name)) == null)
-                team = scoreboard.registerNewTeam(name);
-            team.addEntry(player.getName());
-        }
-
-        team.setPrefix(prefix);
-        team.setSuffix(suffix);
-        VERISON_ADAPTER.setNameTagVisibility(team, visible);
+        this.scoreboard.setNameTag(player, visible, name, prefix, suffix);
     }
 
     void updatePlayer(PlayerNameTag nameTag) {

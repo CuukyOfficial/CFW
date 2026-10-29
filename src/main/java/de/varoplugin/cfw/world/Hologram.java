@@ -27,10 +27,10 @@ package de.varoplugin.cfw.world;
 import de.varoplugin.cfw.configuration.serialization.BasicSerializable;
 import de.varoplugin.cfw.configuration.serialization.SerializableLocation;
 import de.varoplugin.cfw.configuration.serialization.Serialize;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.version.ServerSoftware;
 import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.VersionUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -85,12 +85,13 @@ public class Hologram extends BasicSerializable {
             // temporary paper 1.17+ workaround. https://github.com/PaperMC/Paper/issues/5872
             this.location.getChunk().setForceLoaded(true);
             this.location.getChunk().load();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            TaskScheduler.of(plugin).runAtLater(this.location, () -> {
                 this.checkNameTag(name);
                 this.location.getChunk().setForceLoaded(false);
             }, 5L * 20L);
         } else {
-            this.checkNameTag(name);
+            // Entities can only be accessed by the thread owning the region on Folia
+            TaskScheduler.of(plugin).executeAt(this.location, () -> this.checkNameTag(name));
         }
     }
 

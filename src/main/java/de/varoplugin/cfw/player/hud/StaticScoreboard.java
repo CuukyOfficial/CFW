@@ -26,8 +26,6 @@ package de.varoplugin.cfw.player.hud;
 
 import java.util.Arrays;
 
-import org.bukkit.scoreboard.Objective;
-
 import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.VersionUtils;
 
@@ -39,6 +37,7 @@ public class StaticScoreboard {
 
     private final ScoreboardInstance scoreboard;
     private final String[] buffer;
+    private String currentTitle;
     private boolean enabledChanged;
     private boolean enabled;
 
@@ -63,13 +62,14 @@ public class StaticScoreboard {
      * @param title   The title (will not be updated if null)
      * @param content The title (will not be updated if null)
      */
-    public void update(String title, String... content) {
+    public synchronized void update(String title, String... content) {
         if (this.enabledChanged) {
             if (!this.enabled) {
                 this.scoreboard.clearSideBar();
 
                 // clear buffer
                 Arrays.fill(this.buffer, null);
+                this.currentTitle = null;
             } else
                 this.scoreboard.registerSideBar();
 
@@ -85,33 +85,32 @@ public class StaticScoreboard {
     }
 
     private void sendTitle(String title) {
-        Objective objective = this.scoreboard.getSideBar();
         String realTitle = limit(this.processString(title), TITLE_MAX);
 
-        if (!objective.getDisplayName().equals(realTitle))
-            objective.setDisplayName(realTitle);
+        if (!realTitle.equals(this.currentTitle)) {
+            this.scoreboard.setSideBarTitle(realTitle);
+            this.currentTitle = realTitle;
+        }
     }
 
     private void sendContent(String[] content) {
-        Objective objective = this.scoreboard.getSideBar();
-
         for (int i = 0; i < LINES_MAX; i++) {
             String prevLine = this.buffer[i];
 
             if (i < content.length) {
                 String line = limit(this.checkDuplicate(this.processString(content[i]), i), CONTENT_MAX);
                 if (!line.equals(prevLine)) {
-                    this.checkReset(objective, i);
-                    objective.getScore(line).setScore(LINES_MAX - 1 - i);
+                    this.checkReset(i);
+                    this.scoreboard.setSideBarScore(line, LINES_MAX - 1 - i);
 
                     this.buffer[i] = line;
                 }
-            } else if (this.checkReset(objective, i))
+            } else if (this.checkReset(i))
                 this.buffer[i] = null;
         }
     }
 
-    private boolean checkReset(Objective objective, int i) {
+    private boolean checkReset(int i) {
         String line = this.buffer[i];
         if (line == null)
             return false;
@@ -120,7 +119,7 @@ public class StaticScoreboard {
             if (line.equals(this.buffer[j]))
                 return false;
 
-        objective.getScoreboard().resetScores(line);
+        this.scoreboard.resetSideBarScore(line);
         return true;
     }
 
@@ -140,12 +139,12 @@ public class StaticScoreboard {
      * 
      * @param enabled True if enabled
      */
-    public void setEnabled(boolean enabled) {
+    public synchronized void setEnabled(boolean enabled) {
         this.enabledChanged = enabled != this.enabled;
         this.enabled = enabled;
     }
 
-    public boolean isEnabled() {
+    public synchronized boolean isEnabled() {
         return this.enabled;
     }
 

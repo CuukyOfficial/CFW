@@ -39,6 +39,7 @@ public enum ServerSoftware {
     SPORT_PAPER("SportPaper", SpigotVersionAdapter::new, "org.github.paperspigot.SharedConfig", "SportPaper"),
     NACHO("NachoSpigot", SpigotVersionAdapter::new, "me.elier.nachospigot.config.NachoConfig", "Nacho", "NachoSpigot"),
     TACO("TacoSpigot", SpigotVersionAdapter::new, "net.techcable.tacospigot.TacoSpigotConfig", "Taco", "TacoSpigot"),
+    FOLIA("Folia", SpigotVersionAdapter::new, "io.papermc.paper.threadedregions.RegionizedServer", "Folia"),
     PAPER("Paper", SpigotVersionAdapter::new, "co.aikar.timings.Timings", "Paper", "PaperSpigot"),
     SPIGOT("Spigot", SpigotVersionAdapter::new, "org.spigotmc.SpigotConfig", "Spigot"),
     BUKKIT("CraftBukkit", null, "org.bukkit.Bukkit", "CraftBukkit", "Bukkit"),
@@ -63,6 +64,14 @@ public enum ServerSoftware {
         this.versionnames = versionnames;
         this.identifierClass = identifierClass == null ? "" : identifierClass;
         this.adapterFunction = adapterFunction == null ? Supplier::get : adapterFunction;
+    }
+
+    /**
+     * @return Whether this software runs the world in multiple independent regions that are ticked by different threads (Folia). Blocks and
+     *         entities may then only be accessed by the thread owning them (see {@link de.varoplugin.cfw.scheduler.TaskScheduler}).
+     **/
+    public boolean isRegionized() {
+        return this == FOLIA;
     }
 
     /**

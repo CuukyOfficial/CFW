@@ -38,10 +38,10 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.NameTagVisibility;
 import org.bukkit.scoreboard.Team;
 
+import de.varoplugin.cfw.scheduler.TaskRunnable;
 import net.md_5.bungee.api.chat.ClickEvent;
 
 @SuppressWarnings("deprecation")
@@ -126,7 +126,7 @@ class OneEightVersionAdapter extends OneSevenVersionAdapter {
 
     @Override
     public void sendActionbar(Player player, String message, int duration, Plugin instance) {
-        new BukkitRunnable() {
+        new TaskRunnable() {
 
             private int count;
 

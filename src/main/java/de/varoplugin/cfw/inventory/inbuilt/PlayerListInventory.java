@@ -41,6 +41,7 @@ import de.varoplugin.cfw.inventory.AdvancedInventoryManager;
 import de.varoplugin.cfw.inventory.ItemClick;
 import de.varoplugin.cfw.inventory.list.AdvancedAsyncListInventory;
 import de.varoplugin.cfw.item.ItemBuilder;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.version.VersionUtils;
 
 public class PlayerListInventory extends AdvancedAsyncListInventory<Player> implements Listener {
@@ -72,7 +73,7 @@ public class PlayerListInventory extends AdvancedAsyncListInventory<Player> impl
     @Override
     protected ItemClick getClick(Player item) {
         return event -> {
-            this.getPlayer().teleport(item);
+            TaskScheduler.of(this.getManager().getPlugin()).executeFor(item, () -> TaskScheduler.teleportAsync(this.getPlayer(), item.getLocation()));
             this.close();
         };
     }

@@ -27,7 +27,9 @@ package de.varoplugin.cfw.player;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 import de.varoplugin.cfw.version.VersionUtils;
+import java.util.concurrent.CompletableFuture;
 
 public final class SafeTeleport {
 
@@ -35,12 +37,37 @@ public final class SafeTeleport {
         // nop
     }
 
+    /**
+     * Teleports the player one block above the given location. On Folia the teleport is performed asynchronously, so the player might not
+     * have arrived yet when this method returns. Use {@link #teleport(Player, Location)} to be notified.
+     *
+     * @param player   The player
+     * @param location The location
+     */
     public static void tp(Player player, Location location) {
+        teleport(player, location);
+    }
+
+    /**
+     * Teleports the player one block above the given location.
+     *
+     * @param player   The player
+     * @param location The location
+     * @return Future that completes with whether the teleport was successful
+     */
+    public static CompletableFuture<Boolean> teleport(Player player, Location location) {
+        Location target = location.clone().add(0, 1, 0);
+
+        if (VersionUtils.getServerSoftware().isRegionized()) {
+            // Folia does not allow blocking chunk loads or synchronous teleports; teleportAsync loads the chunk itself
+            return TaskScheduler.teleportAsync(player, target);
+        }
+
         while (!location.getChunk().isLoaded())
             location.getChunk().load();
 
         Location blockUnder = location.clone().add(0, -1, 0);
         VersionUtils.getVersionAdapter().sendBlockChange(player, blockUnder, blockUnder.getBlock().getType());
-        player.teleport(location.clone().add(0, 1, 0));
+        return CompletableFuture.completedFuture(player.teleport(target));
     }
 }

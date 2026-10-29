@@ -24,16 +24,17 @@
 
 package de.varoplugin.cfw.player.hud;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import de.varoplugin.cfw.scheduler.Task;
+import de.varoplugin.cfw.scheduler.TaskScheduler;
 
 public class AnimatedActionbar {
 
     private final StaticActionbar actionbar;
-    private final int task;
+    private final Task task;
     private final Animation<String> content;
-    private boolean contentChanged;
+    private volatile boolean contentChanged;
 
     public AnimatedActionbar(JavaPlugin javaPlugin, Player player, AnimationData<String> content) {
         this.content = new Animation<>(content);
@@ -43,7 +44,7 @@ public class AnimatedActionbar {
                 return AnimatedActionbar.this.processString(input);
             }
         };
-        this.task = Bukkit.getScheduler().scheduleSyncRepeatingTask(javaPlugin, this::update, 0, 0);
+        this.task = TaskScheduler.of(javaPlugin).runForTimer(player, this::update, 0, 0);
     }
 
     public void queueUpdate() {
@@ -70,6 +71,6 @@ public class AnimatedActionbar {
     }
 
     public void destroy() {
-        Bukkit.getScheduler().cancelTask(this.task);
+        this.task.cancel();
     }
 }
