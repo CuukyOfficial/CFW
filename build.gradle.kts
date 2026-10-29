@@ -28,6 +28,8 @@ dependencies {
     compileOnly(libs.spigot)
     compileOnly(libs.json)
 
+    testImplementation(libs.spigot)
+    testImplementation(libs.json)
     testImplementation(libs.junit)
     testImplementation(libs.junitplatformlauncher)
 }

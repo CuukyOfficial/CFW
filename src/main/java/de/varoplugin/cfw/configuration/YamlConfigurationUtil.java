@@ -47,10 +47,14 @@ public class YamlConfigurationUtil {
     }
 
     public static void save(YamlConfiguration configuration, File file) {
+        saveString(configuration.saveToString(), file);
+    }
+
+    public static void saveString(String content, File file) {
         JavaUtils.createFile(file);
         try {
             try (OutputStreamWriter oos = new OutputStreamWriter(Files.newOutputStream(file.toPath()), StandardCharsets.UTF_8)) {
-                oos.write(configuration.saveToString());
+                oos.write(content);
             }
         } catch (Throwable t) {
             t.printStackTrace();

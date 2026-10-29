@@ -25,23 +25,16 @@
 package de.varoplugin.cfw.player.hud;
 
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 
 /**
  * A per player scoreboard that offers a sidebar and name tags (teams).
  * <p>
- * On servers that do not support the Bukkit scoreboard API (Folia) the scoreboard is sent to the player using packets. Such an instance does not
- * offer an {@link Objective} or {@link Scoreboard}, use the abstract methods of this interface instead.
+ * On servers that do not support the Bukkit scoreboard API (Folia) the scoreboard is sent to the player using packets. Everything that is
+ * available on every platform is part of this interface, instances backed by the Bukkit API additionally implement {@link BukkitScoreboardInstance}.
  */
 public interface ScoreboardInstance {
 
-    Objective registerSideBar();
-
-    /**
-     * @throws UnsupportedOperationException If this instance is not backed by the Bukkit scoreboard API
-     */
-    Objective getSideBar();
+    void registerSideBar();
 
     void clearSideBar();
 
@@ -74,11 +67,6 @@ public interface ScoreboardInstance {
     Player getPlayer();
 
     /**
-     * @throws UnsupportedOperationException If this instance is not backed by the Bukkit scoreboard API
-     */
-    Scoreboard getScoreboard();
-
-    /**
      * @return Whether scoreboards can be created on this server. This is always the case if the Bukkit scoreboard API is available. On Folia
      *         scoreboards are sent using packets which requires a Mojang mapped server (1.20.5+).
      */
@@ -95,11 +83,12 @@ public interface ScoreboardInstance {
     }
 
     /**
-     * @return A new scoreboard instance for the player or {@code null} if {@link #isSupported()} is {@code false}
+     * @return A new scoreboard instance for the player
+     * @throws UnsupportedOperationException If {@link #isSupported()} is {@code false}
      */
     static ScoreboardInstance newInstance(Player player) {
         if (!isSupported())
-            return null;
+            throw new UnsupportedOperationException("Scoreboards are not supported on this server");
 
         return PacketScoreboardInstance.isRequired() ? new PacketScoreboardInstance(player) : new DefaultScoreboardInstance(player);
     }

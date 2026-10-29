@@ -35,7 +35,7 @@ import de.varoplugin.cfw.version.ServerVersion;
 import de.varoplugin.cfw.version.VersionAdapter;
 import de.varoplugin.cfw.version.VersionUtils;
 
-class DefaultScoreboardInstance implements ScoreboardInstance {
+class DefaultScoreboardInstance implements BukkitScoreboardInstance {
 
     private static final VersionAdapter VERSION_ADAPTER = VersionUtils.getVersionAdapter();
     private static final boolean ONE_SEVEN = VersionUtils.getVersion().isLowerThan(ServerVersion.VERSION_1_8);
@@ -50,11 +50,10 @@ class DefaultScoreboardInstance implements ScoreboardInstance {
     }
 
     @Override
-    public Objective registerSideBar() {
+    public void registerSideBar() {
         @SuppressWarnings("deprecation")
         Objective objective = this.scoreboard.registerNewObjective("CFW", "dummy");
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-        return objective;
     }
 
     @Override

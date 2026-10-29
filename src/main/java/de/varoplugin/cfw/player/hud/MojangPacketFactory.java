@@ -197,12 +197,14 @@ class MojangPacketFactory implements PacketFactory {
     }
 
     @Override
-    public void send(Player player, Object packet) {
+    public boolean send(Player player, Object packet) {
         try {
             Object connection = this.connection.get(this.getHandle.invoke(player));
             // The connection is not available yet while the player is still logging in
-            if (connection != null)
-                this.send.invoke(connection, packet);
+            if (connection == null)
+                return false;
+            this.send.invoke(connection, packet);
+            return true;
         } catch (ReflectiveOperationException e) {
             throw rethrow(e);
         }

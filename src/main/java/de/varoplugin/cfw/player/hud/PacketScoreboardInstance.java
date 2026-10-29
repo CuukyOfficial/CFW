@@ -34,8 +34,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 
 import de.varoplugin.cfw.version.VersionUtils;
 
@@ -85,34 +83,58 @@ class PacketScoreboardInstance implements ScoreboardInstance {
     }
 
     private final Player player;
-    private final PacketFactory factory = Holder.FACTORY;
+    private final PacketFactory factory;
     private final Map<String, Team> teams = new HashMap<>();
     private final Map<String, String> entryTeams = new HashMap<>();
+    private final Map<String, Integer> scores = new HashMap<>();
     private boolean sideBar;
     private String title = "";
+    /**
+     * Whether a packet could not be delivered. The full state is sent again with the next change.
+     */
+    private boolean outOfSync;
 
     PacketScoreboardInstance(Player player) {
+        this(player, Holder.FACTORY);
+    }
+
+    PacketScoreboardInstance(Player player, PacketFactory factory) {
         this.player = player;
+        this.factory = factory;
     }
 
     private void send(Object packet) {
-        this.factory.send(this.player, packet);
+        if (!this.factory.send(this.player, packet))
+            this.outOfSync = true;
+    }
+
+    /**
+     * Sends the complete state if packets were lost before, as the player had no connection yet. Nothing was delivered in that case.
+     */
+    private void resync() {
+        if (!this.outOfSync)
+            return;
+
+        this.outOfSync = false;
+        if (this.sideBar) {
+            this.send(this.factory.objective(OBJECTIVE_NAME, this.title, PacketFactory.OBJECTIVE_ADD));
+            this.send(this.factory.sideBar(OBJECTIVE_NAME));
+            this.scores.forEach((line, score) -> this.send(this.factory.score(line, OBJECTIVE_NAME, score)));
+        }
+        this.teams.forEach((name, team) -> {
+            this.send(this.factory.team(name, PacketFactory.TEAM_CREATE, team.visible, team.prefix, team.suffix, team.members));
+        });
     }
 
     @Override
-    public synchronized Objective registerSideBar() {
+    public synchronized void registerSideBar() {
         if (this.sideBar)
             throw new IllegalStateException("The sidebar is already registered");
 
+        this.resync();
         this.sideBar = true;
         this.send(this.factory.objective(OBJECTIVE_NAME, this.title, PacketFactory.OBJECTIVE_ADD));
         this.send(this.factory.sideBar(OBJECTIVE_NAME));
-        return null;
-    }
-
-    @Override
-    public Objective getSideBar() {
-        throw new UnsupportedOperationException("Not backed by the Bukkit scoreboard API");
     }
 
     @Override
@@ -120,12 +142,15 @@ class PacketScoreboardInstance implements ScoreboardInstance {
         if (!this.sideBar)
             return;
 
+        this.resync();
         this.sideBar = false;
+        this.scores.clear();
         this.send(this.factory.objective(OBJECTIVE_NAME, this.title, PacketFactory.OBJECTIVE_REMOVE));
     }
 
     @Override
     public synchronized void setSideBarTitle(String title) {
+        this.resync();
         this.title = title;
         if (this.sideBar)
             this.send(this.factory.objective(OBJECTIVE_NAME, title, PacketFactory.OBJECTIVE_UPDATE));
@@ -133,18 +158,25 @@ class PacketScoreboardInstance implements ScoreboardInstance {
 
     @Override
     public synchronized void setSideBarScore(String line, int score) {
-        if (this.sideBar)
+        this.resync();
+        if (this.sideBar) {
+            this.scores.put(line, score);
             this.send(this.factory.score(line, OBJECTIVE_NAME, score));
+        }
     }
 
     @Override
     public synchronized void resetSideBarScore(String line) {
-        if (this.sideBar)
+        this.resync();
+        if (this.sideBar) {
+            this.scores.remove(line);
             this.send(this.factory.resetScore(line, OBJECTIVE_NAME));
+        }
     }
 
     @Override
     public synchronized void setNameTag(Player target, boolean visible, String teamName, String prefix, String suffix) {
+        this.resync();
         String entry = target.getName();
         String currentTeam = this.entryTeams.get(entry);
 
@@ -189,6 +221,7 @@ class PacketScoreboardInstance implements ScoreboardInstance {
 
     @Override
     public synchronized void destroy() {
+        this.resync();
         this.clearSideBar();
         for (String teamName : new HashSet<>(this.teams.keySet()))
             this.removeTeam(teamName);
@@ -197,11 +230,6 @@ class PacketScoreboardInstance implements ScoreboardInstance {
     @Override
     public Player getPlayer() {
         return this.player;
-    }
-
-    @Override
-    public Scoreboard getScoreboard() {
-        throw new UnsupportedOperationException("Not backed by the Bukkit scoreboard API");
     }
 
     /**
@@ -229,7 +257,10 @@ class PacketScoreboardInstance implements ScoreboardInstance {
 
         Object teamRemove(String name);
 
-        void send(Player player, Object packet);
+        /**
+         * @return {@code false} if the packet could not be delivered because the player has no connection (yet)
+         */
+        boolean send(Player player, Object packet);
 
         /**
          * @return The factory for the current server version
