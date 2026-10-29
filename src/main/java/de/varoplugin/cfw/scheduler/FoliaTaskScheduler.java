@@ -97,9 +97,8 @@ class FoliaTaskScheduler implements TaskScheduler {
         } catch (ClassNotFoundException e) {
             supported = false; // Not running on Folia
         } catch (ReflectiveOperationException | LinkageError | NullPointerException e) {
-            // Folia was detected but its API does not look as expected. Falling back to the Bukkit scheduler will not work, but at least tell the user why.
-            Bukkit.getLogger().log(Level.SEVERE, "[CFW] Unable to access the Folia scheduler API", e);
-            supported = false;
+            // Folia was detected but its API does not look as expected. The Bukkit scheduler does not work there, so fail with a clear cause
+            throw new IllegalStateException("Unable to access the Folia scheduler API, this Folia version is not supported", e);
         }
         SUPPORTED = supported;
     }
