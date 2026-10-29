@@ -63,6 +63,7 @@ class SpigotPacketFactory implements PacketFactory {
     private final Constructor<?> serializer;
     private final Method writeComponent;
     private final Method wrappedBuffer;
+    private final Method newBuffer;
     private final Method readableBytes;
     private final Method readBytes;
     private final Constructor<?> objectivePacket, displayPacket, scorePacket, resetScorePacket, teamPacket;
@@ -91,6 +92,7 @@ class SpigotPacketFactory implements PacketFactory {
         this.writeComponent = findMethod(serializerClass, component);
         Class<?> unpooled = Class.forName("io.netty.buffer.Unpooled");
         this.wrappedBuffer = unpooled.getMethod("wrappedBuffer", byte[].class);
+        this.newBuffer = unpooled.getMethod("buffer");
         this.readableBytes = byteBuf.getMethod("readableBytes");
         this.readBytes = byteBuf.getMethod("readBytes", byte[].class);
 
@@ -175,11 +177,12 @@ class SpigotPacketFactory implements PacketFactory {
         }
 
         Buffer component(String legacyText) throws ReflectiveOperationException {
-            Object buffer = SpigotPacketFactory.this.newSerializer(new byte[0]);
+            Object buffer = SpigotPacketFactory.this.newBuffer.invoke(null);
+            Object writer = SpigotPacketFactory.this.serializer.newInstance(buffer);
             Object component = SpigotPacketFactory.this.fromString.invoke(null, legacyText);
             if (component == null) // empty text
                 component = SpigotPacketFactory.this.fromJson.invoke(null, "{\"text\":\"\"}");
-            SpigotPacketFactory.this.writeComponent.invoke(buffer, component);
+            SpigotPacketFactory.this.writeComponent.invoke(writer, component);
             byte[] bytes = new byte[(int) SpigotPacketFactory.this.readableBytes.invoke(buffer)];
             SpigotPacketFactory.this.readBytes.invoke(buffer, (Object) bytes);
             try {
