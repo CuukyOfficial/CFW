@@ -111,11 +111,6 @@ class MojangPacketFactory implements PacketFactory {
         this.actionRemove = Enum.valueOf((Class<Enum>) action, "REMOVE");
     }
 
-    private static RuntimeException rethrow(ReflectiveOperationException e) {
-        Throwable cause = e instanceof InvocationTargetException && e.getCause() != null ? e.getCause() : e;
-        return cause instanceof RuntimeException ? (RuntimeException) cause : new IllegalStateException(cause);
-    }
-
     private Object component(String text) throws ReflectiveOperationException {
         return this.fromString.invoke(null, text);
     }
@@ -133,7 +128,7 @@ class MojangPacketFactory implements PacketFactory {
         try {
             return this.objectivePacket.newInstance(this.newObjective(name, title), mode);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -142,7 +137,7 @@ class MojangPacketFactory implements PacketFactory {
         try {
             return this.displayPacket.newInstance(this.sidebarSlot, this.newObjective(objective, ""));
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -151,7 +146,7 @@ class MojangPacketFactory implements PacketFactory {
         try {
             return this.scorePacket.newInstance(owner, objective, score, Optional.empty(), Optional.empty());
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -160,7 +155,7 @@ class MojangPacketFactory implements PacketFactory {
         try {
             return this.resetScorePacket.newInstance(owner, objective);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -174,7 +169,7 @@ class MojangPacketFactory implements PacketFactory {
             ((Collection<String>) this.getPlayers.invoke(team)).addAll(members);
             return this.teamAddOrModify.invoke(null, team, mode == TEAM_CREATE);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -183,7 +178,7 @@ class MojangPacketFactory implements PacketFactory {
         try {
             return this.teamPlayer.invoke(null, this.newTeam(name), entry, add ? this.actionAdd : this.actionRemove);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -192,7 +187,7 @@ class MojangPacketFactory implements PacketFactory {
         try {
             return this.teamRemove.invoke(null, this.newTeam(name));
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -206,7 +201,7 @@ class MojangPacketFactory implements PacketFactory {
             this.send.invoke(connection, packet);
             return true;
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 }

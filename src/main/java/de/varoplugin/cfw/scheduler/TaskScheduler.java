@@ -72,7 +72,7 @@ public interface TaskScheduler {
      * @return Future that completes with whether the teleport was successful
      */
     static CompletableFuture<Boolean> teleportAsync(Entity entity, Location location) {
-        return FoliaTaskScheduler.isSupported() ? FoliaTaskScheduler.teleport0(entity, location) : CompletableFuture.completedFuture(entity.teleport(location));
+        return Holder.PLATFORM.teleport(entity, location);
     }
 
     /**
@@ -369,6 +369,7 @@ public interface TaskScheduler {
      */
     final class Holder {
 
+        static final Platform PLATFORM = Platform.current();
         private static final Map<Plugin, TaskScheduler> SCHEDULERS = new WeakHashMap<>();
 
         private Holder() {
@@ -380,7 +381,7 @@ public interface TaskScheduler {
         }
 
         private static synchronized TaskScheduler of(Plugin plugin) {
-            return SCHEDULERS.computeIfAbsent(plugin, p -> FoliaTaskScheduler.isSupported() ? new FoliaTaskScheduler(p) : new BukkitTaskScheduler(p));
+            return SCHEDULERS.computeIfAbsent(plugin, PLATFORM::createScheduler);
         }
     }
 }

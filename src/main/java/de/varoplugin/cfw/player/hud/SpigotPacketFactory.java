@@ -138,11 +138,6 @@ class SpigotPacketFactory implements PacketFactory {
         throw new NoSuchMethodException(owner.getName() + "(" + parameter.getName() + ")");
     }
 
-    private static RuntimeException rethrow(ReflectiveOperationException e) {
-        Throwable cause = e instanceof InvocationTargetException && e.getCause() != null ? e.getCause() : e;
-        return cause instanceof RuntimeException ? (RuntimeException) cause : new IllegalStateException(cause);
-    }
-
     /**
      * Writes data in the format of the network protocol
      */
@@ -213,7 +208,7 @@ class SpigotPacketFactory implements PacketFactory {
             }
             return buffer.build(this.objectivePacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -227,7 +222,7 @@ class SpigotPacketFactory implements PacketFactory {
                 buffer.bytes(SIDEBAR_SLOT);
             return buffer.string(objective).build(this.displayPacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -238,7 +233,7 @@ class SpigotPacketFactory implements PacketFactory {
                 return new Buffer().string(owner).string(objective).varInt(score).bool(false).bool(false).build(this.scorePacket);
             return new Buffer().string(owner).varInt(SCORE_CHANGE).string(objective).varInt(score).build(this.scorePacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -249,7 +244,7 @@ class SpigotPacketFactory implements PacketFactory {
                 return new Buffer().string(owner).bool(true).string(objective).build(this.resetScorePacket);
             return new Buffer().string(owner).varInt(SCORE_REMOVE).string(objective).build(this.scorePacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -270,7 +265,7 @@ class SpigotPacketFactory implements PacketFactory {
             }
             return buffer.build(this.teamPacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -279,7 +274,7 @@ class SpigotPacketFactory implements PacketFactory {
         try {
             return new Buffer().string(name).bytes(add ? TEAM_ADD_PLAYERS : TEAM_REMOVE_PLAYERS).varInt(1).string(entry).build(this.teamPacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -288,7 +283,7 @@ class SpigotPacketFactory implements PacketFactory {
         try {
             return new Buffer().string(name).bytes(TEAM_REMOVE).build(this.teamPacket);
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 
@@ -302,7 +297,7 @@ class SpigotPacketFactory implements PacketFactory {
             this.send.invoke(connection, packet);
             return true;
         } catch (ReflectiveOperationException e) {
-            throw rethrow(e);
+            throw Reflection.rethrow(e);
         }
     }
 }

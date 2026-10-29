@@ -21,9 +21,18 @@ repositories {
     mavenCentral()
     maven("https://oss.sonatype.org/content/repositories/snapshots/")
     maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+    maven("https://repo.papermc.io/repository/maven-public/")
+}
+
+// The Folia scheduler uses the Paper API, which must not leak into the code that also runs on Spigot. It is therefore compiled separately
+// and only loaded on Folia.
+val folia: SourceSet by sourceSets.creating {
+    compileClasspath += sourceSets.main.get().output
+    compileClasspath += sourceSets.main.get().compileClasspath
 }
 
 dependencies {
+    "foliaCompileOnly"(libs.folia)
     implementation(libs.xseries)
     compileOnly(libs.spigot)
     compileOnly(libs.json)
@@ -34,7 +43,18 @@ dependencies {
     testImplementation(libs.junitplatformlauncher)
 }
 
+tasks.named<JavaCompile>("compileFoliaJava") {
+    options.encoding = "UTF-8"
+    sourceCompatibility = "17" // Folia runs on Java 17+, the Paper API requires it
+    targetCompatibility = "17"
+}
+
+tasks.named<Jar>("sourcesJar") {
+    from(folia.allSource)
+}
+
 tasks.jar {
+    from(folia.output)
     if (project.hasProperty("destinationDir"))
         destinationDirectory.set(file(project.property("destinationDir").toString()))
     if (project.hasProperty("fileName"))
